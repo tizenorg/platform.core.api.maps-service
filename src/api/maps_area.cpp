@@ -1,0 +1,136 @@
+/* Copyright (c) 2010-2014 Samsung Electronics Co., Ltd. All rights reserved.
+ *
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+#include <glib.h>
+#include "maps_error.h"
+#include "maps_area.h"
+#include "maps_util.h"
+
+EXPORT_API int maps_area_create_rectangle(const maps_coordinates_h left_top,
+					  const maps_coordinates_h right_bottom,
+					  maps_area_h *area)
+{
+	if (not left_top or not right_bottom or not area)
+		return MAPS_ERROR_INVALID_PARAMETER;
+
+	double tf_lat;
+	double tf_lon;
+	double rb_lat;
+	double rb_lon;
+
+	maps_coordinates_get_latitude(left_top, &tf_lat);
+	maps_coordinates_get_latitude(right_bottom, &rb_lat);
+	maps_coordinates_get_longitude(left_top, &tf_lon);
+	maps_coordinates_get_longitude(right_bottom, &rb_lon);
+
+	double lon_interval = rb_lon - tf_lat;
+
+	if (lon_interval < 180 && lon_interval > -180) {
+		if (rb_lon <= tf_lon || rb_lat >= tf_lat)
+			return MAPS_ERROR_INVALID_PARAMETER;
+	}
+	else {
+		if (rb_lon >= tf_lon || rb_lat >= tf_lat)
+			return MAPS_ERROR_INVALID_PARAMETER;
+	}
+
+	maps_area_s *bound = g_slice_new0(maps_area_s);
+
+	if (bound == NULL) {
+		MAPS_LOGE("OUT_OF_MEMORY(0x%08x)", MAPS_ERROR_OUT_OF_MEMORY);
+		return MAPS_ERROR_OUT_OF_MEMORY;
+	}
+
+	bound->type = MAPS_AREA_RECTANGLE;
+
+	bound->rect.left_top = *((maps_coordinates_s *) left_top);
+	bound->rect.right_bottom = *((maps_coordinates_s *) right_bottom);
+
+	*area = (maps_area_h) bound;
+
+	return MAPS_ERROR_NONE;
+}
+
+EXPORT_API int maps_area_create_circle(const maps_coordinates_h center,
+				       const double radius, maps_area_h *area)
+{
+	if (not center or not area)
+		return MAPS_ERROR_INVALID_PARAMETER;
+
+	/* MAPS_CHECK_CONDITION(radius > 0, MAPS_ERROR_INVALID_PARAMETER,
+	* "MAPS_ERROR_INVALID_PARAMETER"); */
+	maps_area_s *bound = g_slice_new0(maps_area_s);
+
+	if (bound == NULL) {
+		MAPS_LOGE("OUT_OF_MEMORY(0x%08x)", MAPS_ERROR_OUT_OF_MEMORY);
+		return MAPS_ERROR_OUT_OF_MEMORY;
+	}
+
+	bound->type = MAPS_AREA_CIRCLE;
+	bound->circle.center = *((maps_coordinates_s *) center);
+	bound->circle.radius = radius;
+	*area = (maps_area_h) bound;
+
+	return MAPS_ERROR_NONE;
+}
+
+EXPORT_API int maps_area_destroy(maps_area_h area)
+{
+	if (not area)
+		return MAPS_ERROR_INVALID_PARAMETER;
+
+	maps_area_s *handle = (maps_area_s *) area;
+
+	g_slice_free(maps_area_s, handle);
+	return MAPS_ERROR_NONE;
+}
+
+EXPORT_API int maps_area_clone(const maps_area_h origin, maps_area_h *cloned)
+{
+	if (not cloned or not origin)
+		return MAPS_ERROR_INVALID_PARAMETER;
+
+	maps_area_s * origin_handle = (maps_area_s *) origin;
+	if (origin_handle->type == MAPS_AREA_RECTANGLE) {
+		maps_area_h new_rect = NULL;
+		maps_area_rectangle_s rect = origin_handle->rect;
+		maps_coordinates_s rec_tl = rect.left_top;
+		maps_coordinates_s rec_br = rect.right_bottom;
+		maps_area_create_rectangle((maps_coordinates_h) & rec_tl,
+			(maps_coordinates_h) & rec_br, &new_rect);
+		if (new_rect) {
+			*cloned = new_rect;
+		}
+		else
+			return MAPS_ERROR_INVALID_PARAMETER;
+
+	}
+	else if (origin_handle->type == MAPS_AREA_CIRCLE) {
+		maps_area_h new_circle = NULL;
+		maps_area_circle_s cir = origin_handle->circle;
+		maps_coordinates_s center = cir.center;
+		double radius = cir.radius;
+		maps_area_create_circle((maps_coordinates_h) & center, radius,
+			&new_circle);
+		if (new_circle) {
+			*cloned = new_circle;
+		}
+		else
+			return MAPS_ERROR_INVALID_PARAMETER;
+	}
+
+	return MAPS_ERROR_NONE;
+}

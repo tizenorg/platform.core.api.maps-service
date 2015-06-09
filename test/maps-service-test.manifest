@@ -1,0 +1,20 @@
+<manifest>
+	<define>
+		<domain name="capi-maps-service-test"/>
+		<request>
+			<smack request="connman::get" type="rw" />
+			<smack request="system::use_internet" type="rw"/>
+		</request>
+		<permit>
+			<smack permit="connman::get" type="rw" />
+			<smack permit="system::use_internet" type="rw" />
+		</permit>
+	</define>
+	<request>
+		<domain name="capi-maps-service-test"/>
+	</request>
+	<assign>
+		<filesystem path="/usr/lib/maps/plugins/libmaps-plugin-here.so*" label="_" exec_label="none" />
+		<filesystem path="/usr/lib/libheremap-engine.so*" label="_" exec_label="none" />
+	</assign>
+</manifest>
