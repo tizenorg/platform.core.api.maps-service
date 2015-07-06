@@ -20,73 +20,8 @@ INCLUDE_DIRECTORIES(
 SET (TEST_SRCS
 
 	###########################################################
-	# Maps Service sources
-
-	# Maps API
-	../src/api/maps_service.cpp
-	../src/api/maps_preference.cpp
-	../src/api/maps_plugin_info.cpp
-
-
-	# Common Data Types API
-	../src/api/maps_coordinates.cpp
-	../src/api/maps_area.cpp
-	../src/api/maps_extra_types.cpp
-
-
-	# Geocode Service
-	../src/api/maps_address.cpp
-
-
-	# Place Service
-	../src/api/maps_place.cpp
-	../src/api/maps_place_contact.cpp
-	../src/api/maps_place_image.cpp
-	../src/api/maps_place_category.cpp
-	../src/api/maps_place_filter.cpp
-	../src/api/maps_place_review.cpp
-	../src/api/maps_place_media.cpp
-	../src/api/maps_place_attribute.cpp
-	../src/api/maps_place_url.cpp
-	../src/api/maps_place_rating.cpp
-	../src/api/maps_place_editorial.cpp
-	../src/api/maps_place_link_object.cpp
-	../src/api/maps_place_category.cpp
-	../src/api/maps_place_attribute.cpp
-	../src/api/maps_place_contact.cpp
-	../src/api/maps_place_editorial.cpp
-	../src/api/maps_place_link_object.cpp
-	../src/api/maps_place_media.cpp
-	../src/api/maps_place_url.cpp
-	../src/api/maps_place_review.cpp
-	../src/api/maps_place_rating.cpp
-	../src/api/maps_place_image.cpp
-
-
-	# Route Service
-	../src/api/maps_route.cpp
-	../src/api/maps_route_maneuver.cpp
-	../src/api/maps_route_segment.cpp
-
-
-	# Plugin Management
-	../src/plugin/discovery.cpp
-	../src/plugin/module.cpp
-
-
-	# Session Management
-	../src/session/command.cpp
-	../src/session/commands.cpp
-	../src/session/command_queue.cpp
-	../src/session/thread.cpp
-
-	../src/maps_util.cpp
-
-
-	###########################################################
 	# Tutorial sources
 	src/tutorial/maps_service_tutorial.cpp
-
 
 	###########################################################
 	# Unit test sources
@@ -145,7 +80,6 @@ SET(CMAKE_EXE_LINKER_FLAGS "-Wl,--as-needed -Wl,--rpath=${LIBDIR}")
 ADD_EXECUTABLE(${fw_test} ${TEST_SRCS})
 TARGET_LINK_LIBRARIES(${fw_test} ${fw_name} ${${fw_test}_LDFLAGS})
 
-INSTALL(TARGETS capi-maps-service-test DESTINATION bin)
-INSTALL(FILES maps-service-test.rule DESTINATION /etc/smack/accesses2.d/)
+INSTALL(TARGETS capi-maps-service-test DESTINATION /opt/usr/devel/)
 
 ADD_SUBDIRECTORY(dummy_plugin)

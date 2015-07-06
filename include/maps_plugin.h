@@ -23,7 +23,7 @@
 /**
  *
  * @ingroup	CAPI_MAPS_PLUGIN_MODULE
- * @defgroup	CAPI_MAPS_PLUGIN_AND_PROVIDERS_MODULE Maps Plugin & Providers
+ * @defgroup	CAPI_MAPS_PLUGIN_AND_PROVIDERS_MODULE Maps Plugin and Providers
  *
  * @file maps_plugin.h
  * @brief This file contains the top level functions of Maps Plugin API

@@ -407,7 +407,7 @@ EXPORT_API int maps_route_set_bounding_box(maps_route_h route,
 EXPORT_API int maps_route_set_total_distance(maps_route_h route,
 					     const double total_distance)
 {
-	if (!route)
+	if (!route || total_distance < 0)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	((maps_route_s *) route)->total_distance = total_distance;
 	return MAPS_ERROR_NONE;
@@ -416,7 +416,7 @@ EXPORT_API int maps_route_set_total_distance(maps_route_h route,
 EXPORT_API int maps_route_set_total_duration(maps_route_h route,
 					     const long total_duration)
 {
-	if (!route)
+	if (!route || total_duration < 0)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	((maps_route_s *) route)->total_duration = total_duration;
 	return MAPS_ERROR_NONE;
@@ -427,6 +427,9 @@ EXPORT_API int maps_route_set_transport_mode(maps_route_h route,
 					     transport_mode)
 {
 	if (!route)
+		return MAPS_ERROR_INVALID_PARAMETER;
+	if ((transport_mode < MAPS_ROUTE_TRANSPORT_MODE_CAR) ||
+		(transport_mode > MAPS_ROUTE_TRANSPORT_MODE_TRUCK))
 		return MAPS_ERROR_INVALID_PARAMETER;
 	((maps_route_s *) route)->transport_mode = transport_mode;
 	return MAPS_ERROR_NONE;
@@ -477,6 +480,9 @@ EXPORT_API int maps_route_set_distance_unit(maps_route_h route,
 					    distance_unit)
 {
 	if (!route)
+		return MAPS_ERROR_INVALID_PARAMETER;
+	if ((distance_unit < MAPS_DISTANCE_UNIT_M) ||
+		(distance_unit > MAPS_DISTANCE_UNIT_YD))
 		return MAPS_ERROR_INVALID_PARAMETER;
 	((maps_route_s *) route)->distance_unit = distance_unit;
 	return MAPS_ERROR_NONE;

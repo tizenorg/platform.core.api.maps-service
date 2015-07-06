@@ -19,7 +19,7 @@
 
 /**
  *
- * @ingroup	CAPI_MAPS_PLUGIN_MODULE
+ * @ingroup	CAPI_MAPS_PLUGIN_AND_PROVIDERS_MODULE
  * @defgroup	CAPI_MAPS_PLUGIN_INFO_MODULE Plugin info
  *
  * @file maps_plugin_info.h

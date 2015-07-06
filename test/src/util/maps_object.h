@@ -202,8 +202,8 @@ namespace maps
 		bool operator!=(const area &a) const;
 	public:
 		maps_area_type_e get_type() const;
-		coordinates get_left_top() const;
-		coordinates get_right_bottom() const;
+		coordinates get_top_left() const;
+		coordinates get_bottom_right() const;
 		coordinates get_center() const;
 		double get_radius() const;
 	};

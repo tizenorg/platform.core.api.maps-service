@@ -18,6 +18,7 @@
 #include "maps_util.h"
 #include "maps_place_private.h"
 #include "maps_route_private.h"
+#include "empty_module.h"
 
 static int __put_to_hashtable(session::command_handler *ch,
 			      maps_service_data_e feature,
@@ -66,22 +67,44 @@ int session::command_geocode::run()
 		return error;
 
 	pending_request pr(plugin());
-	pr.add(my_req_id);
 
-	command_geocode_handler *handler =
-		new command_geocode_handler(plugin(), callback, user_data,
-		my_req_id);
-	error = interface()->maps_plugin_geocode(address.c_str(), preference,
-		command_geocode_handler::foreach_geocode_cb, handler,
-		&handler->plg_req_id);
+	/* Get the plugin interface function */
+	maps_plugin_geocode_f func = interface()->maps_plugin_geocode;
+	command_geocode_handler *handler = NULL;
+	if (func) {
+		/*  need to create the handler when the function is NULL */
+		pr.add(my_req_id);
+		handler = new command_geocode_handler(plugin(),
+					     callback,
+					     user_data,
+					     my_req_id);
 
-	pr.update(my_req_id, handler);
+		if (handler) {
+			/* Run the plugin interface function */
+			error = func(address.c_str(), preference,
+					 command_geocode_handler::foreach_geocode_cb, handler,
+					 &handler->plg_req_id);
 
-	/*MAPS_LOGD("session::command_geocode::run: %d", my_req_id,
-	* handler->plg_req_id); */
+			pr.update(my_req_id, handler);
 
+			MAPS_LOGD("session::command_geocode::run: %d", my_req_id);
+		}
+		else {
+			error = MAPS_ERROR_OUT_OF_MEMORY;
+		}
+	}
+	else {
+		/* Plugin Function is NULL: use default empty function */
+		/*
+		func = plugin::get_empty_interface().maps_plugin_geocode;
+		*/
+		MAPS_LOGE("MAPS_ERROR_NOT_SUPPORTED: Can't get any plugin");
+		error = MAPS_ERROR_NOT_SUPPORTED;
+	}
+
+	const int ret = error;
 	destroy();
-	return error;
+	return ret;
 }
 
 session::command_geocode_handler::command_geocode_handler(plugin::plugin_s *p,
@@ -170,19 +193,46 @@ int session::command_geocode_inside_bounds::run()
 		return error;
 
 	pending_request pr(plugin());
-	pr.add(my_req_id);
 
-	command_geocode_handler *handler =
-		new command_geocode_handler(plugin(), callback, user_data,
-		my_req_id);
-	error = interface()->maps_plugin_geocode_inside_area(address.c_str(),
-		bounds, preference, command_geocode_handler::foreach_geocode_cb,
-		handler, &handler->plg_req_id);
+	/* Get the plugin interface function */
+	maps_plugin_geocode_inside_area_f func =
+		interface()->maps_plugin_geocode_inside_area;
+	command_geocode_handler *handler = NULL;
+	if (func) {
+		/* No need to create the handler when the function is NULL */
+		pr.add(my_req_id);
+		handler = new command_geocode_handler(plugin(),
+						      callback,
+						      user_data,
+						      my_req_id);
 
-	pr.update(my_req_id, handler);
+		if (handler) {
+			/* Run the plugin interface function */
+			error = func(address.c_str(), bounds, preference,
+				     command_geocode_handler::foreach_geocode_cb,
+				     handler, &handler->plg_req_id);
 
+			pr.update(my_req_id, handler);
+
+			MAPS_LOGD("session::command_geocode_inside_bounds::run: %d", my_req_id);
+		}
+		else {
+			error = MAPS_ERROR_OUT_OF_MEMORY;
+		}
+	}
+	else {
+		/* Plugin Function is NULL: use default empty function */
+		/*
+		func = plugin::get_empty_interface().
+			maps_plugin_geocode_inside_area;
+		*/
+		MAPS_LOGE("MAPS_ERROR_NOT_SUPPORTED: Can't get any plugin");
+		error = MAPS_ERROR_NOT_SUPPORTED;
+	}
+
+	const int ret = error;
 	destroy();
-	return error;
+	return ret;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -225,19 +275,44 @@ int session::command_geocode_by_structured_address::run()
 		return error;
 
 	pending_request pr(plugin());
-	pr.add(my_req_id);
 
-	command_geocode_handler *handler =
-		new command_geocode_handler(plugin(), callback, user_data,
-		my_req_id);
-	error = interface()->maps_plugin_geocode_by_structured_address(address,
-		preference, command_geocode_handler::foreach_geocode_cb,
-		handler, &handler->plg_req_id);
+	/* Get the plugin interface function */
+	maps_plugin_geocode_by_structured_address_f func =
+		interface()->maps_plugin_geocode_by_structured_address;
+	command_geocode_handler *handler = NULL;
+	if (func) {
+		/* No need to create the handler when the function is NULL */
+		pr.add(my_req_id);
+		handler = new command_geocode_handler(plugin(),
+						      callback,
+						      user_data,
+						      my_req_id);
 
-	pr.update(my_req_id, handler);
+		if (handler) {
+			/* Run the plugin interface function */
+			error = func(address,
+						 preference, command_geocode_handler::foreach_geocode_cb,
+						 handler, &handler->plg_req_id);
 
+			pr.update(my_req_id, handler);
+		}
+		else {
+			error = MAPS_ERROR_OUT_OF_MEMORY;
+		}
+	}
+	else {
+		/* Plugin Function is NULL: use default empty function */
+		/*
+		func = plugin::get_empty_interface().
+			maps_plugin_geocode_by_structured_address;
+		*/
+		MAPS_LOGE("MAPS_ERROR_NOT_SUPPORTED: Can't get any plugin");
+		error = MAPS_ERROR_NOT_SUPPORTED;
+	}
+
+	const int ret = error;
 	destroy();
-	return error;
+	return ret;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -276,20 +351,46 @@ int session::command_reverse_geocode::run()
 		return error;
 
 	pending_request pr(plugin());
-	pr.add(my_req_id);
 
-	command_reverse_geocode_handler *handler =
-		new command_reverse_geocode_handler(plugin(), callback,
-		user_data, my_req_id);
-	error = interface()->maps_plugin_reverse_geocode(latitude, longitude,
-		preference,
-		command_reverse_geocode_handler::foreach_reverse_geocode_cb,
-		handler, &handler->plg_req_id);
+	/* Get the plugin interface function */
+	maps_plugin_reverse_geocode_f func =
+		interface()->maps_plugin_reverse_geocode;
+	command_reverse_geocode_handler *handler = NULL;
+	if (func) {
+		/* No need to create the handler when the function is NULL */
+		pr.add(my_req_id);
+		handler = new command_reverse_geocode_handler(plugin(),
+							      callback,
+							      user_data,
+							      my_req_id);
 
-	pr.update(my_req_id, handler);
+		if (handler) {
+			/* Run the plugin interface function */
+			error = func(latitude, longitude, preference,
+						command_reverse_geocode_handler::foreach_reverse_geocode_cb,
+					handler, &handler->plg_req_id);
 
+			pr.update(my_req_id, handler);
+
+			MAPS_LOGD("session::command_reverse_geocode::run: %d", my_req_id);
+		}
+		else {
+			error = MAPS_ERROR_OUT_OF_MEMORY;
+		}
+	}
+	else {
+		/* Plugin Function is NULL: use default empty function */
+		/*
+		func = plugin::get_empty_interface().
+			maps_plugin_reverse_geocode;
+		*/
+		MAPS_LOGE("MAPS_ERROR_NOT_SUPPORTED: Can't get any plugin");
+		error = MAPS_ERROR_NOT_SUPPORTED;
+	}
+
+	const int ret = error;
 	destroy();
-	return error;
+	return ret;
 }
 
 session::command_reverse_geocode_handler::command_reverse_geocode_handler(
@@ -382,23 +483,43 @@ int session::command_search_place::run()
 		return error;
 
 	pending_request pr(plugin());
-	pr.add(my_req_id);
 
-	command_search_place_handler *handler =
-		new command_search_place_handler(plugin(), callback, user_data,
-		my_req_id);
-	error = interface()->maps_plugin_search_place(position, distance,
-		filter, preference,
-		command_search_place_handler::foreach_place_cb, handler,
-		&handler->plg_req_id);
+	/* Get the plugin interface function */
+	maps_plugin_search_place_f func = interface()->maps_plugin_search_place;
+	command_search_place_handler *handler = NULL;
+	if (func) {
+		/* No need to create the handler when the function is NULL */
+		pr.add(my_req_id);
+		handler = new command_search_place_handler(plugin(),
+							   callback,
+							   user_data,
+							   my_req_id);
+		if (handler) {
+			/* Run the plugin interface function */
+			error = func(position, distance, filter, preference,
+					 command_search_place_handler::foreach_place_cb, handler,
+					 &handler->plg_req_id);
 
-	pr.update(my_req_id, handler);
+			pr.update(my_req_id, handler);
 
-	/*MAPS_LOGD("session::command_search_place::run: %d", my_req_id,
-	* handler->plg_req_id); */
+			MAPS_LOGD("session::command_search_place::run: %d", my_req_id);
+		}
+		else {
+			error = MAPS_ERROR_OUT_OF_MEMORY;
+		}
+	}
+	else {
+		/* Plugin Function is NULL: use default empty function */
+		/*
+		func = plugin::get_empty_interface().maps_plugin_search_place;
+		*/
+		MAPS_LOGE("MAPS_ERROR_NOT_SUPPORTED: Can't get any plugin");
+		error = MAPS_ERROR_NOT_SUPPORTED;
+	}
 
+	const int ret = error;
 	destroy();
-	return error;
+	return ret;
 }
 
 session::command_search_place_handler::command_search_place_handler(
@@ -530,22 +651,47 @@ int session::command_search_by_area_place::run()
 		return error;
 
 	pending_request pr(plugin());
-	pr.add(my_req_id);
 
-	command_search_place_handler *handler =
-		new command_search_place_handler(plugin(), callback, user_data,
-		my_req_id);
-	error = interface()->maps_plugin_search_place_by_area(boundary, filter,
-		preference, command_search_place_handler::foreach_place_cb,
-		handler, &handler->plg_req_id);
+	/* Get the plugin interface function */
+	maps_plugin_search_place_by_area_f func =
+		interface()->maps_plugin_search_place_by_area;
+	command_search_place_handler *handler = NULL;
+	if (func) {
+		/* No need to create the handler when the function is NULL */
+		pr.add(my_req_id);
+		handler = new command_search_place_handler(plugin(),
+							   callback,
+							   user_data,
+							   my_req_id);
+		if (handler) {
 
-	pr.update(my_req_id, handler);
+			/* Run the plugin interface function */
+			error = func(boundary, filter,
+				preference, command_search_place_handler::foreach_place_cb,
+				handler, &handler->plg_req_id);
 
-	/*MAPS_LOGD("session::command_search_by_area_place::run: %d", my_req_id,
-	* handler->plg_req_id); */
+			pr.update(my_req_id, handler);
 
+			MAPS_LOGD("session::command_search_by_area_place::run: %d", my_req_id);
+		}
+		else {
+			error = MAPS_ERROR_OUT_OF_MEMORY;
+		}
+	}
+	else {
+		/* Plugin Function is NULL: use default empty function */
+		/*
+		func = plugin::get_empty_interface().
+			maps_plugin_search_place_by_area;
+		*/
+
+		MAPS_LOGE("MAPS_ERROR_NOT_SUPPORTED: Can't get any plugin");
+		error = MAPS_ERROR_NOT_SUPPORTED;
+	}
+
+	const int ret = error;
 	destroy();
-	return error;
+	return ret;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -595,23 +741,47 @@ int session::command_search_by_address_place::run()
 		return error;
 
 	pending_request pr(plugin());
-	pr.add(my_req_id);
 
-	command_search_place_handler *handler =
-		new command_search_place_handler(plugin(), callback, user_data,
-		my_req_id);
-	error = interface()->maps_plugin_search_place_by_address(address.
-		c_str(), boundary, filter, preference,
-		command_search_place_handler::foreach_place_cb, handler,
-		&handler->plg_req_id);
+	/* Get the plugin interface function */
+	maps_plugin_search_place_by_address_f func =
+		interface()->maps_plugin_search_place_by_address;
+	command_search_place_handler *handler = NULL;
+	if (func) {
+		/* No need to create the handler when the function is NULL */
+		pr.add(my_req_id);
+		handler = new command_search_place_handler(plugin(),
+							   callback,
+							   user_data,
+							   my_req_id);
+		if (handler) {
+			/* Run the plugin interface function */
+			error = func(address.c_str(), boundary, filter, preference,
+					 command_search_place_handler::foreach_place_cb, handler,
+					 &handler->plg_req_id);
 
-	pr.update(my_req_id, handler);
+			pr.update(my_req_id, handler);
 
-	/*MAPS_LOGD("session::command_search_by_address_place::run: %d",
-	* my_req_id, handler->plg_req_id); */
+			MAPS_LOGD("session::command_search_by_address_place::run: %d",
+				my_req_id);
 
+		}
+		else {
+			error = MAPS_ERROR_OUT_OF_MEMORY;
+		}
+	}
+	else {
+		/* Plugin Function is NULL: use default empty function */
+		/*
+		func = plugin::get_empty_interface().
+			maps_plugin_search_place_by_address;
+		*/
+		MAPS_LOGE("MAPS_ERROR_NOT_SUPPORTED: Can't get any plugin");
+		error = MAPS_ERROR_NOT_SUPPORTED;
+	}
+
+	const int ret = error;
 	destroy();
-	return error;
+	return ret;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -661,22 +831,44 @@ int session::command_search_route::run()
 		return error;
 
 	pending_request pr(plugin());
-	pr.add(my_req_id);
 
-	command_search_route_handler *handler =
-		new command_search_route_handler(plugin(), callback, user_data,
-		my_req_id);
-	error = interface()->maps_plugin_search_route(origin, destination,
-		preference, command_search_route_handler::foreach_route_cb,
-		handler, &handler->plg_req_id);
+	/* Get the plugin interface function */
+	maps_plugin_search_route_f func = interface()->maps_plugin_search_route;
+	command_search_route_handler *handler = NULL;
+	if (func) {
+		/* No need to create the handler when the function is NULL */
+		pr.add(my_req_id);
+		handler = new command_search_route_handler(plugin(),
+							   callback,
+							   user_data,
+							   my_req_id);
 
-	pr.update(my_req_id, handler);
+		if (handler) {
+			/* Run the plugin interface function */
+			error = func(origin, destination, preference,
+		     command_search_route_handler::foreach_route_cb,
+		     handler, &handler->plg_req_id);
 
-	/*MAPS_LOGD("session::command_search_route::run: %d", my_req_id,
-	* handler->plg_req_id); */
+			pr.update(my_req_id, handler);
 
+			MAPS_LOGD("session::command_search_route::run: %d", my_req_id);
+		}
+		else {
+			error = MAPS_ERROR_OUT_OF_MEMORY;
+		}
+	}
+	else {
+		/* Plugin Function is NULL: use default empty function */
+		/*
+		func = plugin::get_empty_interface().maps_plugin_search_route;
+		*/
+		MAPS_LOGE("MAPS_ERROR_NOT_SUPPORTED: Can't get any plugin");
+		error = MAPS_ERROR_NOT_SUPPORTED;
+	}
+
+	const int ret = error;
 	destroy();
-	return error;
+	return ret;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -732,23 +924,46 @@ int session::command_search_route_waypoints::run()
 		return error;
 
 	pending_request pr(plugin());
-	pr.add(my_req_id);
 
-	command_search_route_handler *handler =
-		new command_search_route_handler(plugin(), callback, user_data,
-		my_req_id);
-	error = interface()->maps_plugin_search_route_waypoints(waypoint_list,
-		waypoint_num, preference,
-		command_search_route_handler::foreach_route_cb, handler,
-		&handler->plg_req_id);
+	/* Get the plugin interface function */
+	maps_plugin_search_route_waypoints_f func =
+		interface()->maps_plugin_search_route_waypoints;
 
-	pr.update(my_req_id, handler);
+	command_search_route_handler *handler = NULL;
+	if (func) {
+		/* No need to create the handler when the function is NULL */
+		pr.add(my_req_id);
+		handler = new command_search_route_handler(plugin(),
+						 callback,
+						 user_data,
+						 my_req_id);
+		if (handler) {
+			/* Run the plugin interface function */
+			error = func(waypoint_list, waypoint_num, preference,
+					 command_search_route_handler::foreach_route_cb, handler,
+					 &handler->plg_req_id);
 
-	/*MAPS_LOGD("session::command_search_place::run: %d", my_req_id,
-	* handler->plg_req_id); */
+			pr.update(my_req_id, handler);
 
+			MAPS_LOGD("session::command_search_place::run: %d", my_req_id);
+		}
+		else {
+			error = MAPS_ERROR_OUT_OF_MEMORY;
+		}
+	}
+	else {
+		/* Plugin Function is NULL: use default empty function */
+		/*
+		func = plugin::get_empty_interface().
+			maps_plugin_search_route_waypoints;
+		*/
+		MAPS_LOGE("MAPS_ERROR_NOT_SUPPORTED: Can't get any plugin");
+		error = MAPS_ERROR_NOT_SUPPORTED;
+	}
+
+	const int ret = error;
 	destroy();
-	return error;
+	return ret;
 }
 
 session::command_search_route_handler::command_search_route_handler(
@@ -831,6 +1046,8 @@ int session::command_cancel_request::run()
 		(pr.contains(request_id)) ? interface()->
 		maps_plugin_cancel_request(pr.
 		extract_plg_id(request_id)) : MAPS_ERROR_NOT_FOUND;
+
+	const int ret = error;
 	destroy();
-	return error;
+	return ret;
 }

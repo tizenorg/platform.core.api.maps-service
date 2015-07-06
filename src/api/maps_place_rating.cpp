@@ -103,7 +103,7 @@ EXPORT_API int maps_place_rating_get_average(const maps_place_rating_h place,
 EXPORT_API int maps_place_rating_set_count(maps_place_rating_h place,
 					   const int count)
 {
-	if (!place)
+	if (!place || (count < 0))
 		return MAPS_ERROR_INVALID_PARAMETER;
 	((maps_place_rating_s *) place)->count = count;
 	return MAPS_ERROR_NONE;
@@ -112,7 +112,7 @@ EXPORT_API int maps_place_rating_set_count(maps_place_rating_h place,
 EXPORT_API int maps_place_rating_set_average(maps_place_rating_h place,
 					     const double average)
 {
-	if (!place)
+	if (!place || (average < 0))
 		return MAPS_ERROR_INVALID_PARAMETER;
 	((maps_place_rating_s *) place)->average = average;
 	return MAPS_ERROR_NONE;

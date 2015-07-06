@@ -67,8 +67,7 @@ class test_env
 
 			/* HERE */
 			{ "HERE",
-				"app_id=gMutJ6Bo9jyMtOfJRGG1/app_code="
-					"nXvwmBWgoCqp9U5_yslkcw",
+				"gMutJ6Bo9jyMtOfJRGG1/nXvwmBWgoCqp9U5_yslkcw",
 				true }
 		};
 		 return info[idx];
@@ -310,7 +309,7 @@ void utc_maps_service_provider_is_service_supported_n(void)
 
 	g_assert_cmpint(maps_service_provider_is_service_supported(e.m,
 			(maps_service_e) (-1), &supported), ==,
-		MAPS_ERROR_NOT_SUPPORTED);
+		MAPS_ERROR_INVALID_PARAMETER);
 	g_assert(!supported);
 
 	g_assert_cmpint(maps_service_provider_is_service_supported(e.m,
@@ -403,7 +402,7 @@ void utc_maps_service_provider_is_data_supported_n(void)
 
 	g_assert_cmpint(maps_service_provider_is_data_supported(e.m,
 			(maps_service_data_e) (-1), &supported), ==,
-		MAPS_ERROR_NOT_SUPPORTED);
+		MAPS_ERROR_INVALID_PARAMETER);
 	g_assert(!supported);
 
 	g_assert_cmpint(maps_service_provider_is_data_supported(e.m,
@@ -673,7 +672,70 @@ static void __utc_maps_service_reverse_geocode_cb(maps_error_e result,
 	g_assert_cmpint(result, ==, MAPS_ERROR_NONE);
 
 	g_assert(address);
-	int error = maps_address_destroy(address);
+
+	int error = 0;
+
+	if (address) {
+		g_print("[%s] address\n", __FUNCTION__);
+
+		char *building_number = NULL;
+		if (maps_address_get_building_number(address,
+				&building_number) == MAPS_ERROR_NONE)
+			g_print("\tbuilding number\t: %s\n", building_number);
+		g_free(building_number);
+
+		char *street = NULL;
+		if (maps_address_get_street(address, &street) == MAPS_ERROR_NONE)
+			g_print("\tstreet\t: %s\n", street);
+		g_free(street);
+
+		char *district = NULL;
+		if (maps_address_get_district(address,
+				&district) == MAPS_ERROR_NONE)
+			g_print("\tdistrict\t: %s\n", district);
+		g_free(district);
+
+		char *city;
+		if (maps_address_get_city(address, &city) == MAPS_ERROR_NONE)
+			g_print("\tcity\t: %s\n", city);
+
+		char *state = NULL;
+		if (maps_address_get_state(address, &state) == MAPS_ERROR_NONE)
+			g_print("\tstate\t: %s\n", state);
+		g_free(state);
+
+		char *country = NULL;
+		if (maps_address_get_country(address,
+				&country) == MAPS_ERROR_NONE)
+			g_print("\tcountry\t: %s\n", country);
+		g_free(country);
+
+		char *country_code = NULL;
+		if (maps_address_get_country_code(address,
+				&country_code) == MAPS_ERROR_NONE)
+			g_print("\tcountry code\t: %s\n", country_code);
+		g_free(country_code);
+
+		char *county = NULL;
+		if (maps_address_get_county(address, &county) == MAPS_ERROR_NONE)
+			g_print("\tcounty\t: %s\n", county);
+		g_free(county);
+
+		char *postal_code = NULL;
+		if (maps_address_get_postal_code(address,
+				&postal_code) == MAPS_ERROR_NONE)
+			g_print("\tpostal code\t: %s\n", postal_code);
+		g_free(postal_code);
+
+		char *free_text = NULL;
+		if (maps_address_get_freetext(address,
+				&free_text) == MAPS_ERROR_NONE)
+			g_print("\tfreetext\t: %s\n", free_text);
+		g_free(free_text);
+
+		error = maps_address_destroy(address);
+	}
+
 	g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
 
 	test_env* e = (test_env*) user_data;

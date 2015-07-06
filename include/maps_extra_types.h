@@ -20,7 +20,7 @@
 #include <tizen_type.h>
 
 /**
- * @ingroup	CAPI_MAPS_SERVICE_AND_PREFERENCE_MODULE
+ * @ingroup	CAPI_MAPS_PREFERENCE_MODULE
  * @defgroup	CAPI_MAPS_CONTAINERS_MODULE Container Data Types
  *
  * @file maps_extra_types.h
@@ -38,7 +38,7 @@ extern "C" {
 
 /**
  * @ingroup	CAPI_MAPS_CONTAINERS_MODULE
- * @defgroup	CAPI_MAPS_CONTAINERS_MODULE_ITEM_LIST List of item pointers
+ * @defgroup	CAPI_MAPS_CONTAINERS_MODULE_ITEM_LIST Maps Item Lists
  *
  * @file maps_extra_types.h
  * @brief This section contains API for using List of item pointers.
@@ -278,8 +278,7 @@ int maps_item_list_remove_all(maps_item_list_h list,
 
 /**
  * @ingroup	CAPI_MAPS_CONTAINERS_MODULE
- * @defgroup	CAPI_MAPS_CONTAINERS_MODULE_STRING_HASHTABLE Hash Table of
- * strings
+ * @defgroup	CAPI_MAPS_CONTAINERS_MODULE_STRING_HASHTABLE Maps String Hash Tables
  *
  * @file maps_extra_types.h
  * @brief This section contains API for using Hash Table of strings.
@@ -526,8 +525,7 @@ int maps_string_hashtable_contains(maps_string_hashtable_h table,
 
 /**
  * @ingroup	CAPI_MAPS_CONTAINERS_MODULE
- * @defgroup	CAPI_MAPS_CONTAINERS_MODULE_ITEM_HASHTABLE Hash Table of
- * arbitrary items
+ * @defgroup	CAPI_MAPS_CONTAINERS_MODULE_ITEM_HASHTABLE Maps Item Hash Tables
  *
  * @file maps_extra_types.h
  * @brief This section contains API for using Hash Table of arbitrary items.

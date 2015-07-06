@@ -21,7 +21,7 @@
 #include <tizen_error.h>
 
 /**
- * @ingroup	CAPI_MAPS_SERVICE_AND_PREFERENCE_MODULE
+ * @ingroup	CAPI_MAPS_SERVICE_MODULE
  * @defgroup	CAPI_MAPS_ERROR_MODULE Errors
  *
  * @file maps_error.h
@@ -59,9 +59,10 @@ typedef enum _maps_error_e {
 	MAPS_ERROR_KEY_NOT_AVAILABLE =
 		TIZEN_ERROR_KEY_NOT_AVAILABLE,	/**< Invalid key */
 	MAPS_ERROR_RESOURCE_BUSY =
-		TIZEN_ERROR_RESOURCE_BUSY,	/**< Places service busy */
+		TIZEN_ERROR_RESOURCE_BUSY,	/**< Maps Service busy */
 	MAPS_ERROR_CANCELED =
-		TIZEN_ERROR_CANCELED,		/**< Places service aborted */
+		TIZEN_ERROR_CANCELED,		/**< Maps Service
+						   request aborted */
 	MAPS_ERROR_UNKNOWN =
 		TIZEN_ERROR_UNKNOWN,		/**< Unknown error */
 	MAPS_ERROR_SERVICE_NOT_AVAILABLE =

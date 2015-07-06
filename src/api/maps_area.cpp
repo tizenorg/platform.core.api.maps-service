@@ -19,22 +19,22 @@
 #include "maps_area.h"
 #include "maps_util.h"
 
-EXPORT_API int maps_area_create_rectangle(const maps_coordinates_h left_top,
-					  const maps_coordinates_h right_bottom,
+EXPORT_API int maps_area_create_rectangle(const maps_coordinates_h top_left,
+					  const maps_coordinates_h bottom_right,
 					  maps_area_h *area)
 {
-	if (not left_top or not right_bottom or not area)
+	if (not top_left or not bottom_right or not area)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
-	double tf_lat;
-	double tf_lon;
-	double rb_lat;
-	double rb_lon;
+	double tf_lat = .0;
+	double tf_lon = .0;
+	double rb_lat = .0;
+	double rb_lon = .0;
 
-	maps_coordinates_get_latitude(left_top, &tf_lat);
-	maps_coordinates_get_latitude(right_bottom, &rb_lat);
-	maps_coordinates_get_longitude(left_top, &tf_lon);
-	maps_coordinates_get_longitude(right_bottom, &rb_lon);
+	maps_coordinates_get_latitude(top_left, &tf_lat);
+	maps_coordinates_get_latitude(bottom_right, &rb_lat);
+	maps_coordinates_get_longitude(top_left, &tf_lon);
+	maps_coordinates_get_longitude(bottom_right, &rb_lon);
 
 	double lon_interval = rb_lon - tf_lat;
 
@@ -56,8 +56,8 @@ EXPORT_API int maps_area_create_rectangle(const maps_coordinates_h left_top,
 
 	bound->type = MAPS_AREA_RECTANGLE;
 
-	bound->rect.left_top = *((maps_coordinates_s *) left_top);
-	bound->rect.right_bottom = *((maps_coordinates_s *) right_bottom);
+	bound->rect.top_left = *((maps_coordinates_s *) top_left);
+	bound->rect.bottom_right = *((maps_coordinates_s *) bottom_right);
 
 	*area = (maps_area_h) bound;
 
@@ -68,6 +68,8 @@ EXPORT_API int maps_area_create_circle(const maps_coordinates_h center,
 				       const double radius, maps_area_h *area)
 {
 	if (not center or not area)
+		return MAPS_ERROR_INVALID_PARAMETER;
+	if(radius < 0)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
 	/* MAPS_CHECK_CONDITION(radius > 0, MAPS_ERROR_INVALID_PARAMETER,
@@ -107,8 +109,8 @@ EXPORT_API int maps_area_clone(const maps_area_h origin, maps_area_h *cloned)
 	if (origin_handle->type == MAPS_AREA_RECTANGLE) {
 		maps_area_h new_rect = NULL;
 		maps_area_rectangle_s rect = origin_handle->rect;
-		maps_coordinates_s rec_tl = rect.left_top;
-		maps_coordinates_s rec_br = rect.right_bottom;
+		maps_coordinates_s rec_tl = rect.top_left;
+		maps_coordinates_s rec_br = rect.bottom_right;
 		maps_area_create_rectangle((maps_coordinates_h) & rec_tl,
 			(maps_coordinates_h) & rec_br, &new_rect);
 		if (new_rect) {

@@ -26,10 +26,10 @@
 /* */
 /* */
 /*  - Correctness Unit Tests */
-/*#define MAPS_SERVICE_CORRECTNESS_TEST*/
+#define MAPS_SERVICE_CORRECTNESS_TEST
 /* */
 /*  - Load Unit Tests */
-#define MAPS_SERVICE_LOAD_TEST
+/*#define MAPS_SERVICE_LOAD_TEST*/
 /* */
 /*  - Valgrind Tests */
 /*#define MAPS_SERVICE_VALGRIND_TEST */

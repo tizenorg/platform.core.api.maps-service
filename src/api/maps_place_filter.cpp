@@ -144,16 +144,6 @@ EXPORT_API int maps_place_filter_get_category(const maps_place_filter_h filter,
 		"MAPS_PLACE_FILTER_CATEGORY", (void **) category);
 }
 
-EXPORT_API int maps_place_filter_get_cateory(const maps_place_filter_h filter,
-					     maps_place_category_h *category)
-{
-	if (!filter || !category)
-		return MAPS_ERROR_INVALID_PARAMETER;
-	return maps_item_hashtable_get(((maps_place_filter_s *) filter)->table,
-		"MAPS_PLACE_FILTER_CATEGORY", (void **) category);
-}
-
-
 /*----------------------------------------------------------------------------*/
 
 EXPORT_API int maps_place_filter_set(maps_place_filter_h filter,
@@ -185,16 +175,6 @@ int maps_place_filter_set_place_name(maps_place_filter_h filter,
 
 int maps_place_filter_set_category(maps_place_filter_h filter,
 				   const maps_place_category_h category)
-{
-	if (!filter || !category)
-		return MAPS_ERROR_INVALID_PARAMETER;
-	return maps_item_hashtable_set(((maps_place_filter_s *) filter)->table,
-		"MAPS_PLACE_FILTER_CATEGORY", (void **) category,
-		maps_place_category_clone, maps_place_category_destroy);
-}
-
-int maps_place_filter_set_cateory(maps_place_filter_h filter,
-				  const maps_place_category_h category)
 {
 	if (!filter || !category)
 		return MAPS_ERROR_INVALID_PARAMETER;

@@ -43,7 +43,7 @@
  *
  *
  *
- * @section CAPI_LOCATION_FRAMEWORK_FEATURES Features
+ * @section	CAPI_MAPS_SERVICE_MODULE_FEATURE Features
  *
  * Geocoding
  * - The Maps Geocoding API allows mapping an address to its geographical
@@ -113,6 +113,19 @@
  * .
  * The developer is allowed to choose one of map providers by manipulating map
  * plugins.
+ *
+ * @if WEARABLE
+ * @section	CAPI_MAPS_SERVICE_MODULE_FEATURE Related Features
+ * This API is related with the following features:
+ *  - http://tizen.org/feature/network.internet
+ *
+ * It is recommended to design feature related codes in your application for reliability.\n
+ *
+ * You can check if a devrice supports the related features for this API by using @ref CAPI_SYSTEM_SYSTEM_INFO_MODULE, thereby controlling the procedure of your application.\n
+ *
+ * To ensure your application is only running on the device with specific features, please define the features in your manifest file using the manifest editor in the SDK.\n
+ *
+ * More details on featuring your application can be found from <a href="../org.tizen.mobile.native.appprogramming/html/ide_sdk_tools/feature_element.htm"><b>Feature Element</b>.</a>
  */
 
 #endif /*__MAPS_SERVICE_DOC_H__ */

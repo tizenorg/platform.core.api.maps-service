@@ -24,19 +24,13 @@
 #include <maps_preference.h>
 
 /**
- * @ingroup	CAPI_MAPS_PLUGIN_MODULE
- * @defgroup	CAPI_MAPS_PLUGIN_ROUTE_MODULE Route
- */
-
-/**
- *
- * @ingroup	CAPI_MAPS_PLUGIN_ROUTE_MODULE
- * @defgroup	CAPI_MAPS_PLUGIN_ROUTE_DATA_MODULE Route
+ * @ingroup	CAPI_MAPS_ROUTE_MODULE
+ * @defgroup	CAPI_MAPS_ROUTE_DATA_MODULE Route
  *
  * @file maps_route.h
  * @brief This file contains the functions related to Route information.
  *
- * @addtogroup CAPI_MAPS_PLUGIN_ROUTE_DATA_MODULE
+ * @addtogroup CAPI_MAPS_ROUTE_DATA_MODULE
  * @{
  * @brief This provides APIs related to Route information, used in Route Search.
  */

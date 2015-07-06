@@ -1,8 +1,8 @@
 Name:       capi-maps-service
-Summary:    Tizen Maps Service Library
-Version:    0.3.2
+Summary:    Tizen Maps Service API
+Version:    0.3.3
 Release:    1
-Group:      Location/Libraries
+Group:      Location/API
 License:    Apache-2.0
 Source0:    %{name}-%{version}.tar.gz
 
@@ -24,7 +24,7 @@ Provides: capi-maps-service-plugin-devel
 %endif
 
 %description
-This provides the Tizen Map Service Library to access and handle the map data.
+This provides the Tizen Map Service API to access and handle the map data.
 
 %prep
 %setup -q
@@ -111,9 +111,8 @@ Requires:   capi-maps-service = %{version}-%{release}
 This is a program to test the Tizen Maps Service Library internally.
 
 %files test
-%manifest test/maps-service-test.manifest
-%config /etc/smack/accesses2.d/maps-service-test.rule
-%{_bindir}/capi-maps-service-test
+%manifest test/capi-maps-service-test.manifest
+/opt/usr/devel/capi-maps-service-test
 
 #################################################################################
 # Test plugin library

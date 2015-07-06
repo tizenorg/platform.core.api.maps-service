@@ -21,7 +21,7 @@
 
 /**
  * @ingroup	CAPI_MAPS_PLUGIN_MODULE
- * @defgroup	CAPI_MAPS_PLUGIN_PLACE_MODULE Place
+ * @defgroup	CAPI_MAPS_PLUGIN_PLACE_MODULE Places
  */
 
 /**

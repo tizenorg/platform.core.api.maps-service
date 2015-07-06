@@ -19,77 +19,61 @@
 #include "maps_error.h"
 #include <glib.h>
 
-/* int maps_area_create_rectangle (maps_coordinates_h left_top,
-*  maps_coordinates_h right_bottom, maps_area_h* area); */
+/* int maps_area_create_rectangle (maps_coordinates_h top_left,
+*  maps_coordinates_h bottom_right maps_area_h* area); */
 void utc_maps_area_create_rectangle_p(void)
 {
 
-	maps_coordinates_h left_top = NULL;
-	int error = maps_coordinates_create(44.4, 22.2,
-#if _MAPS_COORDS_3D_
-		33.3,
-#endif
-		&left_top);
+	maps_coordinates_h top_left = NULL;
+	int error = maps_coordinates_create(44.4, 22.2, &top_left);
 	g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
 
-	maps_coordinates_h right_bottom = NULL;
-	error = maps_coordinates_create(11.1, 55.5,
-#if _MAPS_COORDS_3D_
-		66.6,
-#endif
-		&right_bottom);
+	maps_coordinates_h bottom_right = NULL;
+	error = maps_coordinates_create(11.1, 55.5, &bottom_right);
 	g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
 
 	maps_area_h area = NULL;
-	error = maps_area_create_rectangle(left_top, right_bottom, &area);
+	error = maps_area_create_rectangle(top_left, bottom_right, &area);
 	g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
 	g_assert(area);
 
 	error = maps_area_destroy(area);
 	g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
 
-	error = maps_coordinates_destroy(left_top);
+	error = maps_coordinates_destroy(top_left);
 	g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
 
-	error = maps_coordinates_destroy(right_bottom);
+	error = maps_coordinates_destroy(bottom_right);
 	g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
 }
 
 void utc_maps_area_create_rectangle_n(void)
 {
-	maps_coordinates_h left_top = NULL;
-	int error = maps_coordinates_create(11.1, 22.2,
-#if _MAPS_COORDS_3D_
-		33.3,
-#endif
-		&left_top);
+	maps_coordinates_h top_left = NULL;
+	int error = maps_coordinates_create(11.1, 22.2, &top_left);
 	g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
 
-	maps_coordinates_h right_bottom = NULL;
-	error = maps_coordinates_create(44.4, 55.5,
-#if _MAPS_COORDS_3D_
-		66.6,
-#endif
-		&right_bottom);
+	maps_coordinates_h bottom_right = NULL;
+	error = maps_coordinates_create(44.4, 55.5, &bottom_right);
 	g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
 
 	maps_area_h area = NULL;
-	error = maps_area_create_rectangle(NULL, right_bottom, &area);
+	error = maps_area_create_rectangle(NULL, bottom_right, &area);
 	g_assert_cmpint(error, ==, MAPS_ERROR_INVALID_PARAMETER);
 	g_assert(!area);
 
-	error = maps_area_create_rectangle(left_top, NULL, &area);
+	error = maps_area_create_rectangle(top_left, NULL, &area);
 	g_assert_cmpint(error, ==, MAPS_ERROR_INVALID_PARAMETER);
 	g_assert(!area);
 
-	error = maps_area_create_rectangle(left_top, right_bottom, NULL);
+	error = maps_area_create_rectangle(top_left, bottom_right, NULL);
 	g_assert_cmpint(error, ==, MAPS_ERROR_INVALID_PARAMETER);
 	g_assert(!area);
 
-	error = maps_coordinates_destroy(left_top);
+	error = maps_coordinates_destroy(top_left);
 	g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
 
-	error = maps_coordinates_destroy(right_bottom);
+	error = maps_coordinates_destroy(bottom_right);
 	g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
 }
 
@@ -186,24 +170,16 @@ void utc_maps_area_clone_p(void)
 	}
 
 	{			/* Clone rectangular area */
-		maps_coordinates_h left_top = NULL;
-		int error = maps_coordinates_create(44.4, 22.2,
-#if _MAPS_COORDS_3D_
-			33.3,
-#endif
-			&left_top);
+		maps_coordinates_h top_left = NULL;
+		int error = maps_coordinates_create(44.4, 22.2,	&top_left);
 		g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
 
-		maps_coordinates_h right_bottom = NULL;
-		error = maps_coordinates_create(11.1, 55.5,
-#if _MAPS_COORDS_3D_
-			66.6,
-#endif
-			&right_bottom);
+		maps_coordinates_h bottom_right = NULL;
+		error = maps_coordinates_create(11.1, 55.5, &bottom_right);
 		g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
 
 		maps_area_h area = NULL;
-		error = maps_area_create_rectangle(left_top, right_bottom,
+		error = maps_area_create_rectangle(top_left, bottom_right,
 			&area);
 		g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
 		g_assert(area);
@@ -219,10 +195,10 @@ void utc_maps_area_clone_p(void)
 		error = maps_area_destroy(cloned);
 		g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
 
-		error = maps_coordinates_destroy(left_top);
+		error = maps_coordinates_destroy(top_left);
 		g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
 
-		error = maps_coordinates_destroy(right_bottom);
+		error = maps_coordinates_destroy(bottom_right);
 		g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
 	}
 }

@@ -24,7 +24,7 @@ extern "C" {
 #endif
 
 /**
- * @ingroup		CAPI_MAPS_SERVICE_AND_PREFERENCE_MODULE
+ * @ingroup		CAPI_MAPS_SERVICE_MODULE
  * @defgroup	CAPI_MAPS_PREFERENCE_MODULE Preference
  *
  * @file maps_preference.h

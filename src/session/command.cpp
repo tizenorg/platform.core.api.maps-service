@@ -59,12 +59,12 @@ void session::command::destroy()
 plugin::interface_s *session::command::interface() const
 {
 	if (!m)
-		return &plugin::empty_interface;	/* PROBLEM!!! Why have
+		return plugin::get_empty_interface_ptr(); /* PROBLEM!!! Why have
 			no maps service!! Returning default empty interface */
 
 	plugin::plugin_s *p = __extract_plugin(m);
 	if (!p)
-		return &plugin::empty_interface;	/* PROBLEM!!! Why have
+		return plugin::get_empty_interface_ptr(); /* PROBLEM!!! Why have
 				no plugin!! Returning default empty interface */
 
 	return &p->interface;

@@ -60,7 +60,8 @@ void session::thread::run(plugin::plugin_s *p)
 	p->is_working = true;
 
 	p->thread = g_thread_new("queue_thread", &queue_thread, p);
-	g_thread_unref(p->thread);
+	if(p->thread)
+		g_thread_unref(p->thread);
 }
 
 void session::thread::stop(plugin::plugin_s *p)

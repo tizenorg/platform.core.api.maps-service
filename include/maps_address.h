@@ -18,7 +18,7 @@
 #define __MAPS_ADDRESS_H__
 
 /**
- * @ingroup	CAPI_MAPS_GEOCODER_MODULE
+ * @ingroup	CAPI_MAPS_SERVICE_MODULE
  * @defgroup	CAPI_MAPS_ADDRESS_MODULE Address
  *
  * @file maps_address.h

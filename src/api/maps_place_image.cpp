@@ -204,7 +204,7 @@ EXPORT_API int maps_place_image_set_url(maps_place_image_h place,
 EXPORT_API int maps_place_image_set_width(maps_place_image_h place,
 					  const int width)
 {
-	if (!place)
+	if (!place || width < 0)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	((maps_place_image_s *) place)->width = width;
 	return MAPS_ERROR_NONE;
@@ -213,7 +213,7 @@ EXPORT_API int maps_place_image_set_width(maps_place_image_h place,
 EXPORT_API int maps_place_image_set_height(maps_place_image_h place,
 					   const int height)
 {
-	if (!place)
+	if (!place || height < 0)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	((maps_place_image_s *) place)->height = height;
 	return MAPS_ERROR_NONE;

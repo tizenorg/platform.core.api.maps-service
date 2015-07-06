@@ -20,7 +20,7 @@
 #include <maps_coordinates.h>
 
 /**
- * @ingroup	CAPI_MAPS_SERVICE_AND_PREFERENCE_MODULE
+ * @ingroup	CAPI_MAPS_SERVICE_MODULE
  * @defgroup	CAPI_MAPS_GEOAREA_MODULE Area
  *
  * @file maps_area.h
@@ -77,9 +77,9 @@ typedef enum {
  * @see maps_area_s
  */
 typedef struct _maps_area_rectangle_s {
-	maps_coordinates_s left_top;		/**< left top position
+	maps_coordinates_s top_left;		/**< The top left position
 						  of rectangle. */
-	maps_coordinates_s right_bottom;	/**< The right bottom position
+	maps_coordinates_s bottom_right;	/**< The bottom right position
 						  of rectangle. */
 } maps_area_rectangle_s;
 
@@ -128,18 +128,18 @@ typedef struct _maps_area_s {
  * @since_tizen 2.4
  * @remarks @a area must be released using maps_area_destroy().
  * \n @a area may be cloned using maps_area_clone().
- * \n @a left_top and @a right_bottom must be released using
+ * \n @a top_left and @a bottom_right must be released using
  * maps_coordinates_destroy().
  *
- * @param[in]	left_top	The left top position
- * @param[in]	right_bottom	The right bottom position
+ * @param[in]	top_left	The left top position
+ * @param[in]	bottom_right	The right bottom position
  * @param[out]	area		The area handle
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
  *
- * @pre @a left_top and @a right_bottom are created using
+ * @pre @a top_left and @a bottom_right are created using
  * maps_coordinates_create().
  *
  * @see maps_area_clone()
@@ -149,8 +149,8 @@ typedef struct _maps_area_s {
  * @see maps_coordinates_create()
  * @see maps_coordinates_destroy()
  */
-int maps_area_create_rectangle(const maps_coordinates_h left_top,
-			       const maps_coordinates_h right_bottom,
+int maps_area_create_rectangle(const maps_coordinates_h top_left,
+			       const maps_coordinates_h bottom_right,
 			       maps_area_h *area);
 
 /**
@@ -160,7 +160,7 @@ int maps_area_create_rectangle(const maps_coordinates_h left_top,
  * Geographical Area with a specified center coordinates and a radius.
  * @since_tizen 2.4
  * @remarks @a area must be released using maps_area_destroy().
- * \n @a left_top and @a right_bottom must be released using
+ * \n @a top_left and @a bottom_right must be released using
  * maps_coordinates_destroy().
  *
  * @param[in]	center		The central position of the area

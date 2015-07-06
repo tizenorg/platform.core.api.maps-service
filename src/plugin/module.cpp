@@ -20,6 +20,7 @@
 #include "thread.h"
 #include "command.h"
 #include "command_queue.h"
+#include "empty_module.h"
 
 extern const char *MAPS_PLUGINS_PATH_PREFIX;
 
@@ -104,6 +105,7 @@ maps_plugin_h plugin::binary_extractor::init(const provider_info &info)
 		new_plugin->module = plugin;
 
 		/* 2.2 Set plugin interface */
+		new_plugin->interface = get_empty_interface();
 
 		/* Plugin dedicated functions */
 		new_plugin->interface.maps_plugin_init =
@@ -230,18 +232,17 @@ maps_plugin_h plugin::binary_extractor::init(const provider_info &info)
 
 		if (!new_plugin->interface.maps_plugin_is_data_supported) {
 			MAPS_LOGE(
-		"ERROR! Plugin support_is_data_supported function is NULL: %d",
+				"ERROR! Plugin support_is_data_supported function is NULL: %d",
 				ret);
 			break;
 		}
 
 		if (!new_plugin->interface.maps_plugin_is_service_supported) {
 			MAPS_LOGE(
-	"ERROR! Plugin support_is_service_supported function is NULL: %d",
+				"ERROR! Plugin support_is_service_supported function is NULL: %d",
 				ret);
 			break;
 		}
-
 
 		/* 2.7 Create a queue with asynchronous requests to plugin */
 		if (session::command_queue::is_async())

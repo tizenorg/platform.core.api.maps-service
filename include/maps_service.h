@@ -38,18 +38,16 @@ extern "C" {
 
 /*----------------------------------------------------------------------------*/
 /*
- * Maps Service & Preference
+ * Maps Service and Preference
  */
 
 /**
  * @ingroup	CAPI_MAPS_SERVICE_MODULE
- * @defgroup	CAPI_MAPS_SERVICE_AND_PREFERENCE_MODULE Maps Service &
- * Preference
+ * @defgroup	CAPI_MAPS_SERVICE_AND_PREFERENCE_MODULE Service and Providers
  *
  * @addtogroup CAPI_MAPS_SERVICE_AND_PREFERENCE_MODULE
  * @{
- * @brief This provides APIs related to operations with Maps, Locations and Maps
- * Provider plug-ins
+ * @brief This provides APIs related Search and Preference.
  *
  */
 
@@ -117,8 +115,7 @@ typedef enum _maps_service_data_e {
 
 /**
  * @brief	The Maps Service handle
- * @details The Maps Service handle can be created via calling of
- * maps_service_create().
+ * @details The Maps Service handle can be created by calling of maps_service_create().
  * \n To release the handle use maps_service_destroy().
  * @since_tizen 2.4
  * @privlevel public
@@ -130,9 +127,8 @@ typedef enum _maps_service_data_e {
 typedef void *maps_service_h;
 
 /**
- * @brief	Called when requesting the list of available Maps Providers.
- * @details A Maps Service invokes this callback while iterating through the
- * list of available Maps Providers.
+ * @brief	Called when requesting available Maps Providers.
+ * @details A Maps Service invokes this callback iteratively as long as available Maps Providers exist.
  * @since_tizen 2.4
  * @remarks The string @a maps_provider must be released using free().
  *
@@ -151,12 +147,12 @@ typedef bool(*maps_service_provider_info_cb) (char *maps_provider,
 					      void *user_data);
 
 /**
- * @brief	Gets the list of available Maps Providers.
- * @details This function delivers a list of available Maps Providers via
+ * @brief	Gets available Maps Providers.
+ * @details This function delivers available Maps Providers via
  * maps_service_provider_info_cb() callback.
  * @since_tizen 2.4
  *
- * @param[in]	callback	The callback function to receive Maps Providers
+ * @param[in]	callback	The callback function to receive avarilable Maps Providers
  * information
  * @param[out]	user_data	The user data to be passed to the callback
  * function
@@ -184,13 +180,11 @@ int maps_service_foreach_provider(maps_service_provider_info_cb callback,
  * @privlevel public
  * @privilege %http://tizen.org/privilege/mapservice
  * @remarks @a maps service handle must be released using maps_service_destroy().
- * \n To choose the Maps Provider request the list of available Providers using
- * maps_service_foreach_provider().
- * \n To set up and tune the Maps Service use maps_service_set_provider_key()
- * and maps_service_set_preference().
- * \n To check the Maps Provider capabilities use
- * maps_service_provider_is_service_supported() and
- * maps_service_provider_is_data_supported().
+ * \n use maps_service_foreach_provider() to choose one of available Providers.
+ * \n use maps_service_set_provider_key() to set provider's key.
+ * \n use use maps_service_set_preference() to set various options of Maps Provider.
+ * \n use maps_service_provider_is_service_supported() and maps_service_provider_is_data_supported()
+ * to check the Maps Provider's capabilities
  *
  * @param[in]	maps_provider	The name of Maps Provider
  * @param[out]	maps		A handle of the new Maps Service on success
@@ -202,8 +196,7 @@ int maps_service_foreach_provider(maps_service_provider_info_cb callback,
  * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
 *
- * @pre Call maps_service_foreach_provider() to get a list of available Maps
- * Providers.
+ * @pre Call maps_service_foreach_provider() to get a available Maps Providers.
  *
  * @see maps_service_foreach_provider()
  * @see maps_service_destroy()
@@ -224,8 +217,7 @@ int maps_service_create(const char *maps_provider, maps_service_h *maps);
 
 /**
  * @brief	Destroys the Maps Service handle and releases all its resources.
- * @details This function destroys Maps Service, releases its handle, shuts down
- * current Map Provider and releases all used resources.
+ * @details This function releases all used resources of the Maps Service and Maps Provider.
  * @since_tizen 2.4
  * @privlevel public
  * @privilege %http://tizen.org/privilege/mapservice
@@ -243,20 +235,20 @@ int maps_service_create(const char *maps_provider, maps_service_h *maps);
 int maps_service_destroy(maps_service_h maps);
 
 /**
- * @brief	Sets the Maps Key to be used in the Maps Service requests.
- * @details This function sets the Maps Key which will be used in each Maps
+ * @brief	Sets the Maps Key to be used in the requests of Maps Service.
+ * @details This function sets the Maps Provider's Key which will be used in each Maps
  * Service request to Maps Provider.
  * \n Maps key can be obtained with maps_service_get_provider_key().
  * @since_tizen 2.4
- * @remarks To get the @a provider_key refer to corresponding Maps Provider
+ * @remarks To get the @a provider_key, refer to corresponding Maps Provider
  * documentation.
- * \n For MapQuest refer to http://developer.mapquest.com/,
- * http://open.mapquestapi.com.
- * \n For HERE Maps refer to https://developer.here.com/,
- * https://developer.here.com/rest-apis.
+ * \n To get app_id and app_code of HERE, visit https://developer.here.com/, https://developer.here.com/rest-apis.
+ * \n To get a MapQuest AppKey, visit http://developer.mapquest.com/, http://open.mapquestapi.com.
  *
  * @param[in]	maps		The Maps Service handle
  * @param[in]	provider_key	The Maps Key to be used
+ * \n In case of combinging two more strings, use slash("/") as a delimeter.
+ * \n e.g. For HERE "app_id/app_code"
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
@@ -478,8 +470,6 @@ int maps_service_cancel_request(const maps_service_h maps, int request_id);
  * @since_tizen 2.4
  * @remarks The parameter @a coordinates must be released using
  * maps_coordinates_destroy().
- * \n To use the @a coordinates outside of this function, copy the handle using
- * maps_coordinates_clone() function.\n
  *
  * @param[in]	result		The result of request
  * @param[in]	request_id	The id of request
@@ -512,8 +502,6 @@ typedef bool(*maps_service_geocode_cb) (maps_error_e result, int request_id,
  * \n If search is failed, the value of @a total is 0 and @a address is NULL
  * @remarks The parameter @a address must be released using
  * maps_address_destroy().
- * \n To use the @a address outside of this function, copy the handle using
- * maps_address_clone() function.\n
  * @since_tizen 2.4
  *
  * @param[in]	result		The result of request
@@ -759,7 +747,7 @@ int maps_service_reverse_geocode(const maps_service_h maps, double latitude,
 
 /**
  * @ingroup	CAPI_MAPS_SERVICE_MODULE
- * @defgroup	CAPI_MAPS_PLACE_MODULE Place
+ * @defgroup	CAPI_MAPS_PLACE_MODULE Places
  *
  * @addtogroup CAPI_MAPS_PLACE_MODULE
  * @{
@@ -776,8 +764,6 @@ int maps_service_reverse_geocode(const maps_service_h maps, double latitude,
  * \n If search is failed, the value of @a total is 0 and @a place is NULL
  * @since_tizen 2.4
  * @remarks The parameter @a place must be released using maps_place_destroy().
- * \n To use the @a place outside of this function, copy the handle using
- * maps_place_clone() function.\n
  *
  * @param[in]	error		The result of request
  * @param[in]	request_id	The request id
@@ -983,7 +969,7 @@ int maps_service_search_place_by_address(const maps_service_h maps,
 
 /**
  * @ingroup	CAPI_MAPS_SERVICE_MODULE
- * @defgroup	CAPI_MAPS_ROUTE_MODULE Route
+ * @defgroup	CAPI_MAPS_ROUTE_MODULE Routes
  *
  * @addtogroup CAPI_MAPS_ROUTE_MODULE
  * @{
@@ -1001,8 +987,6 @@ int maps_service_search_place_by_address(const maps_service_h maps,
  * \n If search is failed, the value of @a total is 0 and @a route is NULL.
  * @since_tizen 2.4
  * @remarks The parameter @a route must be released using maps_route_destroy().
- * \n To use the @a route outside of this function, copy the handle using
- * maps_route_clone() function.\n
  *
  * @param[in]	error		The result of request
  * @param[in]	request_id	The id of request

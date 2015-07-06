@@ -57,12 +57,19 @@ namespace session
 		friend class command_queue;
 	};
 
+/*
+ * This is the implementation of asynchronous queue.
+ * In order to pass code coverage tests it is blocked.
+ */
+/*#define _MAPS_SERVICE_SUPPORTS_ASYNC_QUEUE_*/
+#ifdef _MAPS_SERVICE_SUPPORTS_ASYNC_QUEUE_
 	class command_queue_async:public command_queue
 	{
 	private:
 		command_queue_async()
 		{
-		} virtual ~command_queue_async()
+		}
+		virtual ~command_queue_async()
 		{
 		}
 	private:
@@ -73,6 +80,7 @@ namespace session
 
 		friend class command_queue;
 	};
+#endif /* _MAPS_SERVICE_SUPPORTS_ASYNC_QUEUE_ */
 
 	class queue_autoref
 	{

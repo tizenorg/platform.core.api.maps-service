@@ -223,9 +223,6 @@ int maps_place_filter_get_place_name(const maps_place_filter_h filter,
 int maps_place_filter_get_category(const maps_place_filter_h filter,
 				   maps_place_category_h *category);
 
-int maps_place_filter_get_cateory(const maps_place_filter_h filter,
-		 maps_place_category_h *category) __attribute__ ((deprecated));
-
 /**
  * @brief Retrieves all filter properties.
  * @details This function retrieves all place filter properties.
@@ -334,9 +331,6 @@ int maps_place_filter_set_place_name(maps_place_filter_h filter,
  */
 int maps_place_filter_set_category(maps_place_filter_h filter,
 				   const maps_place_category_h category);
-
-int maps_place_filter_set_cateory(maps_place_filter_h filter,
-	  const maps_place_category_h category) __attribute__ ((deprecated));
 
 #ifdef __cplusplus
 }

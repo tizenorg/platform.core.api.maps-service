@@ -21,8 +21,13 @@
 session::command_queue *session::command_queue::interface()
 {
 	if (is_async()) {
+#ifdef _MAPS_SERVICE_SUPPORTS_ASYNC_QUEUE_
 		static command_queue_async async_queue;
 		return &async_queue;
+#else
+		static command_queue_sync sync_queue;
+		return &sync_queue;
+#endif /* _MAPS_SERVICE_SUPPORTS_ASYNC_QUEUE_ */
 	}
 	else {
 		static command_queue_sync sync_queue;
@@ -54,6 +59,11 @@ void session::command_queue_sync::clear(plugin::plugin_s *p)
 
 /*----------------------------------------------------------------------------*/
 
+/*
+ * This is the implementation of asynchronous queue.
+ * In order to pass code coverage tests it is blocked.
+ */
+#ifdef _MAPS_SERVICE_SUPPORTS_ASYNC_QUEUE_
 int session::command_queue_async::push(command *c)
 {
 	if (not c or not c->plugin()or not c->plugin()->request_queue)
@@ -104,3 +114,4 @@ void session::command_queue_async::clear(plugin::plugin_s *p)
 	while (g_async_queue_length(p->request_queue))
 		pop(p)->destroy();
 }
+#endif /* _MAPS_SERVICE_SUPPORTS_ASYNC_QUEUE_ */

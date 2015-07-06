@@ -26,6 +26,13 @@ EXPORT_API int maps_coordinates_create(const double latitude,
 	if (not coords)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
+	MAPS_CHECK_CONDITION(latitude >= -90
+		&& latitude <= 90, MAPS_ERROR_INVALID_PARAMETER,
+		"MAPS_ERROR_INVALID_PARAMETER");
+	MAPS_CHECK_CONDITION(longitude >= -180
+		&& longitude <= 180, MAPS_ERROR_INVALID_PARAMETER,
+		"MAPS_ERROR_INVALID_PARAMETER");
+
 	maps_coordinates_s *coord = g_slice_new0(maps_coordinates_s);
 
 	if (coord == NULL) {

@@ -35,27 +35,49 @@ namespace session
 		void *user_data;
 		int error;
 	public:
-		 command_geocode(maps_service_h ms,
+		command_geocode(maps_service_h ms,
 				 const string address,
 				 const maps_item_hashtable_h preference,
 				 maps_service_geocode_cb callback,
 				 void *user_data, int *request_id);
-		 virtual ~command_geocode();
+		virtual ~command_geocode();
 	private:
-		 virtual int run();
+		command_geocode() : command(NULL)
+		{
+		}
+		command_geocode(const command_geocode &src) : command(NULL)
+		{
+		}
+		command_geocode &operator=(const command_geocode &src)
+		{
+			return *this;
+		}
+	private:
+		virtual int run();
 	};
 
 	class command_geocode_handler : public command_handler
 	{
 		maps_service_geocode_cb callback;
 	public:
-		 command_geocode_handler(plugin::plugin_s *plugin,
+		command_geocode_handler(plugin::plugin_s *plugin,
 					 maps_service_geocode_cb callback,
 					 void *user_data,
 					 int user_req_id);
 		 virtual ~command_geocode_handler()
 		{
 		};
+	private:
+		command_geocode_handler() : command_handler(NULL, NULL, 0) {}
+		command_geocode_handler(const command_geocode_handler &src) :
+			 command_handler(NULL, NULL, 0)
+		{
+		}
+		command_geocode_handler &operator=(
+			const command_geocode_handler &src)
+		{
+			return *this;
+		}
 	private:
 		static bool foreach_geocode_cb(maps_error_e result,
 					       int request_id, int index,
@@ -68,6 +90,9 @@ namespace session
 	};
 
 /*----------------------------------------------------------------------------*/
+
+	/* TODO: rename to command_geocode_inside_area */
+
 	/*typedef int (*maps_plugin_geocode_inside_area_f)(maps_service_h maps,
 	* const char *address, maps_area_h bounds,
 	* maps_service_geocode_cb callback, void *user_data,
@@ -82,7 +107,7 @@ namespace session
 		void *user_data;
 		int error;
 	public:
-		 command_geocode_inside_bounds(maps_service_h ms,
+		command_geocode_inside_bounds(maps_service_h ms,
 					       const char *address,
 					       const maps_area_h bounds,
 					       const maps_item_hashtable_h
@@ -90,9 +115,23 @@ namespace session
 					       maps_service_geocode_cb callback,
 					       void *user_data,
 					       int *request_id);
-		 virtual ~command_geocode_inside_bounds();
+		virtual ~command_geocode_inside_bounds();
 	private:
-		 virtual int run();
+		command_geocode_inside_bounds() : command(NULL)
+		{
+		}
+		command_geocode_inside_bounds(
+			const command_geocode_inside_bounds &src)
+			 : command(NULL)
+		{
+		}
+		command_geocode_inside_bounds &operator=(
+			const command_geocode_inside_bounds &src)
+		{
+			return *this;
+		}
+	private:
+		virtual int run();
 	};
 
 /*----------------------------------------------------------------------------*/
@@ -109,7 +148,7 @@ namespace session
 		void *user_data;
 		int error;
 	public:
-		 command_geocode_by_structured_address(maps_service_h ms,
+		command_geocode_by_structured_address(maps_service_h ms,
 						       const maps_address_h
 						       address,
 						       const
@@ -119,9 +158,23 @@ namespace session
 						       callback,
 						       void *user_data,
 						       int *request_id);
-		 virtual ~command_geocode_by_structured_address();
+		virtual ~command_geocode_by_structured_address();
 	private:
-		 virtual int run();
+		command_geocode_by_structured_address() : command(NULL)
+		{
+		}
+		command_geocode_by_structured_address(
+			const command_geocode_by_structured_address &src)
+			 : command(NULL)
+		{
+		}
+		command_geocode_by_structured_address &operator=(
+			const command_geocode_by_structured_address &src)
+		{
+			return *this;
+		}
+	private:
+		virtual int run();
 	};
 
 /*----------------------------------------------------------------------------*/
@@ -140,29 +193,57 @@ namespace session
 		void *user_data;
 		int error;
 	public:
-		 command_reverse_geocode(maps_service_h ms,
+		command_reverse_geocode(maps_service_h ms,
 					 double latitude, double longitude,
 					 const maps_item_hashtable_h preference,
 					 maps_service_reverse_geocode_cb
 					 callback,
 					 void *user_data, int *request_id);
-		 virtual ~command_reverse_geocode();
+		virtual ~command_reverse_geocode();
 	private:
-		 virtual int run();
+		command_reverse_geocode() : command(NULL)
+		{
+		}
+		command_reverse_geocode(const command_reverse_geocode &src)
+			 : command(NULL)
+		{
+		}
+		command_reverse_geocode& operator=(
+			const command_reverse_geocode &src)
+		{
+			return *this;
+		}
+	private:
+		virtual int run();
 	};
 
 	class command_reverse_geocode_handler : public command_handler
 	{
 		maps_service_reverse_geocode_cb callback;
 	public:
-		 command_reverse_geocode_handler(plugin::plugin_s *plugin,
+		command_reverse_geocode_handler(plugin::plugin_s *plugin,
 						 maps_service_reverse_geocode_cb
 						 callback,
 						 void *user_data,
 						 int user_req_id);
-		 virtual ~command_reverse_geocode_handler()
+		virtual ~command_reverse_geocode_handler()
 		{
 		};
+	private:
+		command_reverse_geocode_handler()
+			 : command_handler(NULL, NULL, 0)
+		{
+		}
+		command_reverse_geocode_handler(
+			command_reverse_geocode_handler &src)
+			 : command_handler(NULL, NULL, 0)
+		{
+		}
+		command_reverse_geocode_handler &operator=(
+			const command_reverse_geocode_handler &src)
+		{
+			return *this;
+		}
 	private:
 		static void foreach_reverse_geocode_cb(maps_error_e result,
 						       int request_id,
@@ -190,29 +271,56 @@ namespace session
 
 		int error;
 	public:
-		 command_search_place(maps_service_h ms,
+		command_search_place(maps_service_h ms,
 				      const maps_coordinates_h position,
 				      int distance,
 				      const maps_item_hashtable_h preference,
 				      const maps_place_filter_h filter,
 				      maps_service_search_place_cb callback,
 				      void *user_data, int *request_id);
-		 virtual ~command_search_place();
+		virtual ~command_search_place();
 	private:
-		 virtual int run();
+		command_search_place() : command(NULL)
+		{
+		}
+		command_search_place(const command_search_place &src)
+			 : command(NULL)
+		{
+		}
+		command_search_place &operator=(
+			const command_search_place &src)
+		{
+			return *this;
+		}
+	private:
+		virtual int run();
 	};
 
 	class command_search_place_handler : public command_handler
 	{
 		maps_service_search_place_cb callback;
 	public:
-		 command_search_place_handler(plugin::plugin_s *plugin,
+		command_search_place_handler(plugin::plugin_s *plugin,
 					      maps_service_search_place_cb
 					      callback,
 					      void *user_data, int user_req_id);
-		 virtual ~command_search_place_handler()
+		virtual ~command_search_place_handler()
 		{
 		};
+	private:
+		command_search_place_handler()
+			 : command_handler(NULL, NULL, 0)
+		{
+		}
+		command_search_place_handler(
+			const command_search_place_handler &src)
+			 : command_handler(NULL, NULL, 0)
+		{
+		}
+		command_search_place_handler &operator=(
+			const command_search_place_handler &src)
+		{ return *this;
+		}
 	private:
 		static bool foreach_place_cb(maps_error_e error, int request_id,
 					     int index, int length,
@@ -240,7 +348,7 @@ namespace session
 
 		int error;
 	public:
-		 command_search_by_area_place(maps_service_h ms,
+		command_search_by_area_place(maps_service_h ms,
 					      const maps_area_h boundary,
 					      const maps_item_hashtable_h
 					      preference,
@@ -248,9 +356,23 @@ namespace session
 					      maps_service_search_place_cb
 					      callback,
 					      void *user_data, int *request_id);
-		 virtual ~command_search_by_area_place();
+		virtual ~command_search_by_area_place();
 	private:
-		 virtual int run();
+		command_search_by_area_place() : command(NULL)
+		{
+		}
+		command_search_by_area_place(
+			const command_search_by_area_place &src)
+			 : command(NULL)
+		{
+		}
+		command_search_by_area_place &operator=(
+			const command_search_by_area_place &src)
+		{
+			return *this;
+		}
+	private:
+		virtual int run();
 	};
 
 /*----------------------------------------------------------------------------*/
@@ -271,16 +393,30 @@ namespace session
 
 		int error;
 	public:
-		 command_search_by_address_place(maps_service_h ms,
+		command_search_by_address_place(maps_service_h ms,
 			const char *address,
 			const maps_area_h boundary,
 			const maps_item_hashtable_h preference,
 			const maps_place_filter_h filter,
 			maps_service_search_place_cb callback,
 			void *user_data, int *request_id);
-		 virtual ~command_search_by_address_place();
+		virtual ~command_search_by_address_place();
 	private:
-		 virtual int run();
+		command_search_by_address_place() : command(NULL)
+		{
+		}
+		command_search_by_address_place(
+			const command_search_by_address_place &src)
+			 : command(NULL)
+		{
+		}
+		command_search_by_address_place &operator=(
+			const command_search_by_address_place &src)
+		{
+			return *this;
+		}
+	private:
+		virtual int run();
 	};
 
 /*----------------------------------------------------------------------------*/
@@ -293,13 +429,28 @@ namespace session
 	{
 		maps_service_search_route_cb callback;
 	public:
-		 command_search_route_handler(plugin::plugin_s *plugin,
+		command_search_route_handler(plugin::plugin_s *plugin,
 					      maps_service_search_route_cb
 					      callback,
 					      void *user_data, int user_req_id);
-		 virtual ~command_search_route_handler()
+		virtual ~command_search_route_handler()
 		{
 		};
+	private:
+		command_search_route_handler()
+			 : command_handler(NULL, NULL, 0)
+		{
+		}
+		command_search_route_handler(
+			const command_search_route_handler &src)
+			 : command_handler(NULL, NULL, 0)
+		{
+		}
+		command_search_route_handler &operator=(
+			const command_search_route_handler &src)
+		{
+			return *this;
+		}
 	private:
 		static bool foreach_route_cb(maps_error_e error, int request_id,
 					     int index, int length,
@@ -321,16 +472,29 @@ namespace session
 
 		int error;
 	public:
-		 command_search_route(maps_service_h ms,
+		command_search_route(maps_service_h ms,
 				      const maps_item_hashtable_h preference,
 				      const maps_coordinates_h origin,
 				      const maps_coordinates_h destination,
 				      maps_service_search_route_cb callback,
 				      void *user_data, int *request_id);
-		 virtual ~command_search_route();
-
+		virtual ~command_search_route();
 	private:
-		 virtual int run();
+		command_search_route() : command(NULL)
+		{
+		}
+		command_search_route(
+			const command_search_route &src)
+			 : command(NULL)
+		{
+		}
+		command_search_route &operator=(
+			const command_search_route &src)
+		{
+			return *this;
+		}
+	private:
+		virtual int run();
 	};
 
 /*----------------------------------------------------------------------------*/
@@ -349,16 +513,29 @@ namespace session
 
 		int error;
 	public:
-		 command_search_route_waypoints(maps_service_h ms,
+		command_search_route_waypoints(maps_service_h ms,
 					const maps_item_hashtable_h preference,
 					const maps_coordinates_h *waypoint_list,
 					int waypoint_num,
 					maps_service_search_route_cb callback,
 					void *user_data, int *request_id);
-		 virtual ~command_search_route_waypoints();
-
+		virtual ~command_search_route_waypoints();
 	private:
-		 virtual int run();
+		command_search_route_waypoints() : command(NULL)
+		{
+		}
+		command_search_route_waypoints(
+			const command_search_route_waypoints &src)
+			 : command(NULL)
+		{
+		}
+		command_search_route_waypoints &operator=(
+			const command_search_route_waypoints &src)
+		{
+			return *this;
+		}
+	private:
+		virtual int run();
 	};
 
 /*----------------------------------------------------------------------------*/
@@ -369,7 +546,7 @@ namespace session
 	public:
 		int request_id;
 	public:
-		 command_cancel_request(maps_service_h ms, int rid)
+		command_cancel_request(maps_service_h ms, int rid)
 		 : command(ms),
 			request_id(rid)
 		{
@@ -377,6 +554,19 @@ namespace session
 		virtual ~command_cancel_request()
 		{
 		};
+	private:
+		command_cancel_request() : command(NULL)
+		{
+		}
+		command_cancel_request(const command_cancel_request &src)
+			: command(NULL)
+		{
+		}
+		command_cancel_request &operator=(
+			const command_cancel_request &src)
+		{
+			return *this;
+		}
 	private:
 		virtual int run();
 	};

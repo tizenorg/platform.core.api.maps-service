@@ -195,6 +195,8 @@ EXPORT_API int maps_service_set_preference(maps_service_h maps,
 EXPORT_API int maps_service_get_preference(maps_service_h maps,
 					   maps_string_hashtable_h *preference)
 {
+	if (!maps || !preference)
+		return MAPS_ERROR_INVALID_PARAMETER;
 	const plugin::plugin_s *p = __extract_plugin(maps);
 	if (!p)
 		return MAPS_ERROR_INVALID_PARAMETER;
@@ -207,6 +209,8 @@ EXPORT_API int maps_service_provider_is_service_supported(const maps_service_h
 							bool *supported)
 {
 	if (not maps or not supported)
+		return MAPS_ERROR_INVALID_PARAMETER;
+	if ((service < MAPS_SERVICE_GEOCODE) || (service > MAPS_SERVICE_CANCEL_REQUEST))
 		return MAPS_ERROR_INVALID_PARAMETER;
 	const plugin::plugin_s *p = __extract_plugin(maps);
 	if (!p)
@@ -221,6 +225,8 @@ EXPORT_API int maps_service_provider_is_data_supported(const maps_service_h
 						       bool *supported)
 {
 	if (not maps or not supported)
+		return MAPS_ERROR_INVALID_PARAMETER;
+	if ((data < MAPS_PLACE_ADDRESS) || (data > MAPS_ROUTE_SEGMENTS_MANEUVERS))
 		return MAPS_ERROR_INVALID_PARAMETER;
 	const plugin::plugin_s *p = __extract_plugin(maps);
 	if (!p)
@@ -289,7 +295,7 @@ EXPORT_API int maps_service_reverse_geocode(const maps_service_h maps,
 					    callback, void * user_data,
 					    int *request_id)
 {
-	if (!maps || !preference || !request_id)
+	if (!maps || !preference || !callback || !request_id)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	if (not __maps_provider_supported(maps, MAPS_SERVICE_REVERSE_GEOCODE))
 		return MAPS_ERROR_NOT_SUPPORTED;

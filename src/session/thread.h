@@ -33,7 +33,7 @@ namespace session
 	private:
 		/* Thread function: pops the item from the queue and performs
 		* the command */
-		static void* queue_thread(void *data);
+		static void *queue_thread(void *data);
 	};
 };
 

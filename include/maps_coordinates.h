@@ -18,7 +18,7 @@
 #define __MAPS_COORDINATES_H__
 
 /**
- * @ingroup	CAPI_MAPS_SERVICE_AND_PREFERENCE_MODULE
+ * @ingroup	CAPI_MAPS_SERVICE_MODULE
  * @defgroup	CAPI_MAPS_COORDS_MODULE Coordinates
  *
  * @file maps_coordinates.h

@@ -150,20 +150,20 @@ maps_area_type_e maps::area::get_type() const
 	return a->type;
 }
 
-maps::coordinates maps::area::get_left_top() const
+maps::coordinates maps::area::get_top_left() const
 {
 	if (!handle)
 		return coordinates(.0, .0);
 	maps_area_s* a = (maps_area_s*) handle;
-	return coordinates(a->rect.left_top);
+	return coordinates(a->rect.top_left);
 }
 
-maps::coordinates maps::area::get_right_bottom() const
+maps::coordinates maps::area::get_bottom_right() const
 {
 	if (!handle)
 		return coordinates(.0, .0);
 	maps_area_s* a = (maps_area_s*) handle;
-	return coordinates(a->rect.right_bottom);
+	return coordinates(a->rect.bottom_right);
 }
 
 maps::coordinates maps::area::get_center() const
@@ -190,9 +190,9 @@ bool maps::area::operator==(const area & a) const
 		return false;
 	switch (get_type()) {
 	case MAPS_AREA_RECTANGLE:
-		if (get_left_top() != a.get_left_top())
+		if (get_top_left() != a.get_top_left())
 			return false;
-		if (get_right_bottom() != a.get_right_bottom())
+		if (get_bottom_right() != a.get_bottom_right())
 			return false;
 		break;
 	case MAPS_AREA_CIRCLE:
