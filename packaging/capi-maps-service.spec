@@ -1,6 +1,6 @@
 Name:       capi-maps-service
 Summary:    Tizen Maps Service API
-Version:    0.3.3
+Version:    0.4.2
 Release:    1
 Group:      Location/API
 License:    Apache-2.0
@@ -79,6 +79,7 @@ This provides the Tizen Maps Service Library to access and handle the map data. 
 %{_libdir}/libcapi-maps-service.so
 %exclude %{_includedir}/maps/maps_plugin*.h
 %exclude %{_includedir}/maps/maps_*_plugin.h
+%exclude %{_includedir}/maps/maps_extra_types.h
 
 
 %package plugin-devel
@@ -99,9 +100,9 @@ This provides the Tizen Map Service APIs to access and handle map data for the M
 %defattr(-,root,root,-)
 %{_includedir}/maps/maps_plugin*.h
 %{_includedir}/maps/maps_*plugin.h
+%{_includedir}/maps/maps_extra_types.h
 
 
-### Some API signatures are changed
 %package test
 Summary:    Tizen Maps Service Library Test (Internal Dev)
 Group:      Location/Testing

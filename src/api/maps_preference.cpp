@@ -225,9 +225,6 @@ EXPORT_API int maps_preference_get(const maps_preference_h preference,
 }
 
 
-
-
-
 EXPORT_API int maps_preference_foreach_property(const maps_preference_h
 						preference,
 						maps_preference_properties_cb

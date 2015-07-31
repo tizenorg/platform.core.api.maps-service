@@ -19,6 +19,7 @@
 
 #include <maps_service.h>
 #include <maps_plugin_info.h>
+#include <maps_extra_types.h>
 
 /**
  *
@@ -50,7 +51,7 @@ typedef void *maps_plugin_h;
  */
 
 /**
- * @brief	Init a new Maps Plugin.
+ * @brief	Initialize a new Maps Plugin.
  * @details A maps plugin handle can be used to access a specified plugin.
  * @since_tizen 2.4
  * @remarks @a plugin and it resources must be released in

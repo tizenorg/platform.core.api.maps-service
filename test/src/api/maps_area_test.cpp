@@ -82,11 +82,7 @@ void utc_maps_area_create_rectangle_n(void)
 void utc_maps_area_create_circle_p(void)
 {
 	maps_coordinates_h center = NULL;
-	int error = maps_coordinates_create(11.1, 22.2,
-#if _MAPS_COORDS_3D_
-		33.3,
-#endif
-		&center);
+	int error = maps_coordinates_create(11.1, 22.2, &center);
 	g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
 
 	maps_area_h area = NULL;
@@ -104,11 +100,7 @@ void utc_maps_area_create_circle_p(void)
 void utc_maps_area_create_circle_n(void)
 {
 	maps_coordinates_h center = NULL;
-	int error = maps_coordinates_create(11.1, 22.2,
-#if _MAPS_COORDS_3D_
-		33.3,
-#endif
-		&center);
+	int error = maps_coordinates_create(11.1, 22.2, &center);
 	g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
 
 	maps_area_h area = NULL;
@@ -142,11 +134,7 @@ void utc_maps_area_clone_p(void)
 
 	{			/* Clone circular area */
 		maps_coordinates_h center = NULL;
-		int error = maps_coordinates_create(11.1, 22.2,
-#if _MAPS_COORDS_3D_
-			33.3,
-#endif
-			&center);
+		int error = maps_coordinates_create(11.1, 22.2, &center);
 		g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
 
 		maps_area_h area = NULL;
@@ -206,11 +194,7 @@ void utc_maps_area_clone_p(void)
 void utc_maps_area_clone_n(void)
 {
 	maps_coordinates_h center = NULL;
-	int error = maps_coordinates_create(11.1, 22.2,
-#if _MAPS_COORDS_3D_
-		33.3,
-#endif
-		&center);
+	int error = maps_coordinates_create(11.1, 22.2, &center);
 	g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
 
 	maps_area_h area = NULL;

@@ -16,7 +16,7 @@
 
 #include "maps_place_test.h"
 #include "maps_place_plugin.h"
-#include "maps_place_category_plugin.h"
+#include "maps_place_category.h"
 #include "maps_place_attribute_plugin.h"
 #include "maps_error.h"
 #include <glib.h>

@@ -14,10 +14,10 @@
  */
 
 #include "maps_error.h"
-#include "maps_place_category_plugin.h"
 #include "maps_extra_types.h"
 #include <glib.h>
 #include "maps_util.h"
+#include "maps_place_category.h"
 
 typedef struct _maps_place_category_s
 {

@@ -18,6 +18,7 @@
 #define __MAPS_ROUTE_PLUGIN_H__
 
 #include <maps_route.h>
+#include <maps_extra_types.h>
 
 /**
  * @ingroup	CAPI_MAPS_PLUGIN_MODULE

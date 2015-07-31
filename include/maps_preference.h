@@ -409,7 +409,7 @@ int maps_preference_get_max_results(const maps_preference_h preference,
  * @brief	Gets the country code.
  * @details This function gets the country code.
  * @since_tizen 2.4
- * @remarks @a countre_code must be released using free().
+ * @remarks @a country_code must be released using free().
  *
  * @param[in]	preference	The preference handle
  * @param[out]	country_code	The country code

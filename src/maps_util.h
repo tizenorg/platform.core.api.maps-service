@@ -100,18 +100,19 @@ int maps_get_string(const char *src, const int max_length, char **dst);
 
 /* Prevent utility highlights defects in std::vector and std::string, so
 *  simplified versions of that classes are implemented */
-template < class T > class vector {
-	private:
+template <class T> class vector {
+private:
 	GArray *parray;
 	unsigned int current_size;
-	public:
+public:
 	vector() : parray(NULL), current_size(0)
 	{
-		parray = g_array_new(false, false, sizeof(T*));
+		parray = g_array_new(false, false, sizeof(T *));
 	}
 	~vector()
 	{
-		if (!parray || (current_size == 0))
+		/*if (!parray || (current_size == 0))*/
+		if (!parray)
 			return;
 		for (unsigned int i = 0; i < current_size; i++) {
 			T *item = g_array_index(parray, T *, i);
@@ -122,7 +123,7 @@ template < class T > class vector {
 		parray = NULL;
 		current_size = 0;
 	}
-	public:
+public:
 	void push_back(const T &value)
 	{
 		T *clone = new T(value);
@@ -142,12 +143,13 @@ template < class T > class vector {
 
 class string
 {
-	private:
+private:
 	char *pstring;
-	public:
+public:
 	string() : pstring(NULL)
 	{
-	} string(const char *pstr) : pstring(NULL)
+	}
+	string(const char *pstr) : pstring(NULL)
 	{
 		pstring = g_strdup(pstr);
 	}
@@ -160,7 +162,7 @@ class string
 		g_free(pstring);
 		pstring = NULL;
 	}
-	public:
+public:
 	string &operator=(const string &s)
 	{
 		if (this != &s) {
@@ -177,7 +179,7 @@ class string
 	{
 		return !(*this == s);
 	}
-	public:
+public:
 	char *c_str() const
 	{
 		return pstring;

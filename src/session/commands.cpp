@@ -51,7 +51,8 @@ session::command_geocode::command_geocode(maps_service_h ms, const string a,
 	*request_id = command::command_request_id++;
 	my_req_id = *request_id;
 
-	if (maps_item_hashtable_clone(pref, &preference) != MAPS_ERROR_NONE)
+	if (pref &&
+	    (maps_item_hashtable_clone(pref, &preference) != MAPS_ERROR_NONE))
 		error = MAPS_ERROR_INVALID_PARAMETER;
 }
 
@@ -177,7 +178,8 @@ session::command_geocode_inside_bounds::command_geocode_inside_bounds(
 	if (maps_area_clone(b, &bounds) != MAPS_ERROR_NONE)
 		error = MAPS_ERROR_INVALID_PARAMETER;
 
-	if (maps_item_hashtable_clone(pref, &preference) != MAPS_ERROR_NONE)
+	if (pref &&
+	    (maps_item_hashtable_clone(pref, &preference) != MAPS_ERROR_NONE))
 		error = MAPS_ERROR_INVALID_PARAMETER;
 }
 
@@ -258,7 +260,8 @@ session::command_geocode_by_structured_address::
 	if (maps_address_clone(a, &address) != MAPS_ERROR_NONE)
 		error = MAPS_ERROR_INVALID_PARAMETER;
 
-	if (maps_item_hashtable_clone(pref, &preference) != MAPS_ERROR_NONE)
+	if (pref &&
+	    (maps_item_hashtable_clone(pref, &preference) != MAPS_ERROR_NONE))
 		error = MAPS_ERROR_INVALID_PARAMETER;
 }
 
@@ -335,7 +338,8 @@ session::command_reverse_geocode::command_reverse_geocode(maps_service_h ms,
 	*request_id = command::command_request_id++;
 	my_req_id = *request_id;
 
-	if (maps_item_hashtable_clone(pref, &preference) != MAPS_ERROR_NONE)
+	if (pref &&
+	    (maps_item_hashtable_clone(pref, &preference) != MAPS_ERROR_NONE))
 		error = MAPS_ERROR_INVALID_PARAMETER;
 }
 
@@ -462,7 +466,8 @@ session::command_search_place::command_search_place(maps_service_h ms,
 	if (maps_coordinates_clone(pos, &position) != MAPS_ERROR_NONE)
 		error = MAPS_ERROR_INVALID_PARAMETER;
 
-	if (maps_item_hashtable_clone(pref, &preference) != MAPS_ERROR_NONE)
+	if (pref &&
+	    (maps_item_hashtable_clone(pref, &preference) != MAPS_ERROR_NONE))
 		error = MAPS_ERROR_INVALID_PARAMETER;
 
 	if (maps_place_filter_clone(flt, &filter) != MAPS_ERROR_NONE)
@@ -630,7 +635,8 @@ session::command_search_by_area_place::command_search_by_area_place(
 	if (maps_area_clone(b, &boundary) != MAPS_ERROR_NONE)
 		error = MAPS_ERROR_INVALID_PARAMETER;
 
-	if (maps_item_hashtable_clone(pref, &preference) != MAPS_ERROR_NONE)
+	if (pref &&
+	    (maps_item_hashtable_clone(pref, &preference) != MAPS_ERROR_NONE))
 		error = MAPS_ERROR_INVALID_PARAMETER;
 
 	if (maps_place_filter_clone(flt, &filter) != MAPS_ERROR_NONE)
@@ -721,7 +727,8 @@ session::command_search_by_address_place::command_search_by_address_place(
 	if (maps_area_clone(b, &boundary) != MAPS_ERROR_NONE)
 		error = MAPS_ERROR_INVALID_PARAMETER;
 
-	if (maps_item_hashtable_clone(pref, &preference) != MAPS_ERROR_NONE)
+	if (pref &&
+	    (maps_item_hashtable_clone(pref, &preference) != MAPS_ERROR_NONE))
 		error = MAPS_ERROR_INVALID_PARAMETER;
 
 	if (maps_place_filter_clone(flt, &filter) != MAPS_ERROR_NONE)
@@ -806,7 +813,8 @@ session::command_search_route::command_search_route(maps_service_h ms,
 	*request_id = command::command_request_id++;
 	my_req_id = *request_id;
 
-	if (maps_item_hashtable_clone(pref, &preference) != MAPS_ERROR_NONE)
+	if (pref &&
+	    (maps_item_hashtable_clone(pref, &preference) != MAPS_ERROR_NONE))
 		error = MAPS_ERROR_INVALID_PARAMETER;
 
 	if (maps_coordinates_clone(orig, &origin) != MAPS_ERROR_NONE)
@@ -893,7 +901,8 @@ session::command_search_route_waypoints::command_search_route_waypoints(
 	*request_id = command::command_request_id++;
 	my_req_id = *request_id;
 
-	if (maps_item_hashtable_clone(pref, &preference) != MAPS_ERROR_NONE)
+	if (pref &&
+	    (maps_item_hashtable_clone(pref, &preference) != MAPS_ERROR_NONE))
 		error = MAPS_ERROR_INVALID_PARAMETER;
 
 	waypoint_list = new maps_coordinates_h[num];

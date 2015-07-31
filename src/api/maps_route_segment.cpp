@@ -22,11 +22,11 @@
 #include "maps_util.h"
 #include "maps_route_segment_private.h"
 
-static bool __is_supported(const maps_route_segment_h place,
+static bool __is_supported(const maps_route_segment_h route_segment,
 	maps_service_data_e data)
 {
 	bool supported = false;
-	_maps_route_segment_is_data_supported(place, data, &supported);
+	_maps_route_segment_is_data_supported(route_segment, data, &supported);
 	return supported;
 }
 

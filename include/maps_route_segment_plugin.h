@@ -18,7 +18,7 @@
 #define __MAPS_SEGMENT_PLUGIN_H__
 
 #include <maps_route_segment.h>
-
+#include <maps_extra_types.h>
 /**
  * @ingroup	CAPI_MAPS_PLUGIN_ROUTE_MODULE
  * @defgroup	CAPI_MAPS_PLUGIN_ROUTE_SEGMENT_MODULE Segment

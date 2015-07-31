@@ -17,8 +17,8 @@
 #ifndef __MAPS_ROUTE_H__
 #define __MAPS_ROUTE_H__
 
+#include <tizen_type.h>
 #include <maps_area.h>
-#include <maps_extra_types.h>
 #include <maps_route_segment.h>
 #include <maps_route_maneuver.h>
 #include <maps_preference.h>
@@ -64,6 +64,7 @@ typedef void *maps_route_h;
  *
  * @param[in]	index		The current index of path point
  * @param[in]	total		The total amount of path points
+ * @param[in]	coordinates	The coordinates
  * @param[in]	user_data	The user data passed from
  * maps_route_foreach_path()
  * @return	@c true to continue with the next iteration of the loop, \n @c

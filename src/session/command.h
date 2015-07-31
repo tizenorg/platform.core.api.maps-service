@@ -36,7 +36,7 @@ namespace session
 	public:
 		static command empty_instance;
 	private:
-		 command()
+		command()
 		{
 		}		/* Please, do not construct an empty object */
 	public:
@@ -53,7 +53,7 @@ namespace session
 			return &empty_instance;
 		}
 	protected:
-		 plugin::interface_s *interface() const;
+		plugin::interface_s *interface() const;
 		maps_plugin_h handle() const;
 	public:
 		plugin::plugin_s *plugin()const;

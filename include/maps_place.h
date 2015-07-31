@@ -17,6 +17,7 @@
 #ifndef __MAPS_PLACE_H__
 #define __MAPS_PLACE_H__
 
+#include <tizen_type.h>
 #include <maps_address.h>
 #include <maps_place_category.h>
 #include <maps_place_attribute.h>
@@ -27,7 +28,6 @@
 #include <maps_place_review.h>
 #include <maps_place_rating.h>
 #include <maps_coordinates.h>
-#include <maps_extra_types.h>
 
 /**
  * @ingroup	CAPI_MAPS_PLACE_MODULE
@@ -542,7 +542,7 @@ int maps_place_foreach_image(const maps_place_h place,
  *
  * @param[in]	place		The place handle
  * @param[in]	callback	The callback function to invoke
- * @param[in]	user_data	TThe user data to be passed to the callback
+ * @param[in]	user_data	The user data to be passed to the callback
  * function
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful

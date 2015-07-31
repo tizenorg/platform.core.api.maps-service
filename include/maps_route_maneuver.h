@@ -218,7 +218,7 @@ int maps_route_maneuver_get_instruction_text(const maps_route_maneuver_h
 					     char **instruction_text);
 
 /**
- * @brief	Gets the the route maneuver locale.
+ * @brief	Gets the route maneuver locale.
  * @details This function gets the route maneuver locale.
  * @since_tizen 2.4
  * @remarks @a locale must be released using free().

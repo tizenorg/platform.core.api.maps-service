@@ -355,8 +355,8 @@ plugin::GMod *plugin::binary_extractor::gmod_new(const string &module_file,
 		return NULL;
 	}
 	MAPS_LOGD("open module");
-	if (is_resident)
-		g_module_make_resident(gmod->module);
+	/*if (is_resident)
+		g_module_make_resident(gmod->module);*/
 
 	return gmod;
 }

@@ -28,7 +28,7 @@
 #include <maps_place_media_plugin.h>
 #include <maps_place_link_object_plugin.h>
 #include <maps_place_contact_plugin.h>
-#include <maps_place_category_plugin.h>
+#include <maps_place_category.h>
 #include <maps_route_plugin.h>
 #include <maps_route_segment_plugin.h>
 #include <maps_route_maneuver_plugin.h>

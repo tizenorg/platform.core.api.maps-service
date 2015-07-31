@@ -14,20 +14,19 @@
  * limitations under the License.
  */
 
+#include <glib.h>
 #include "maps_util.h"
 #include "maps_route_plugin.h"
 #include "maps_error.h"
-#include "maps_place_category_plugin.h"
-#include <glib.h>
 #include "maps_preference.h"
 #include "maps_route_segment_plugin.h"
 #include "maps_route_private.h"
 #include "maps_route_segment_private.h"
 
-static bool __is_supported(const maps_route_h place, maps_service_data_e data)
+static bool __is_supported(const maps_route_h route, maps_service_data_e data)
 {
 	bool supported = false;
-	_maps_route_is_data_supported(place, data, &supported);
+	_maps_route_is_data_supported(route, data, &supported);
 	return supported;
 }
 

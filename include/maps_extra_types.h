@@ -20,7 +20,7 @@
 #include <tizen_type.h>
 
 /**
- * @ingroup	CAPI_MAPS_PREFERENCE_MODULE
+ * @ingroup	CAPI_MAPS_PLUGIN_AND_PROVIDERS_MODULE
  * @defgroup	CAPI_MAPS_CONTAINERS_MODULE Container Data Types
  *
  * @file maps_extra_types.h
@@ -868,7 +868,7 @@ int maps_item_hashtable_set_string(maps_item_hashtable_h table,
  /**
  * @brief	Sets the association between string key and integer value in the
  * table.
- * @details This sunction sets the association between string key and integer
+ * @details This function sets the association between string key and integer
  * value in the Hash Table.
  * @since_tizen 2.4
  * @remark New instances of key and value will be put to the table. The key and
@@ -1012,7 +1012,7 @@ int maps_item_hashtable_get_string(maps_item_hashtable_h table,
 /**
  * @brief	Gets the association between string key and integer value in the
  * table.
- * @details This sunction gets the association between string key and integer
+ * @details This function gets the association between string key and integer
  * value in the Hash Table.
  * @since_tizen 2.4
  *

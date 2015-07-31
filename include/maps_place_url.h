@@ -100,8 +100,8 @@ int maps_place_url_clone(const maps_place_url_h origin,
 int maps_place_url_get_path(const maps_place_url_h url, char **path);
 
 /**
- * @brief	Gets the place URL desc.
- * @details This function gets the place URL desc.
+ * @brief	Gets the place URL description.
+ * @details This function gets the place URL description.
  * @since_tizen 2.4
  * @remarks @a desc must be released using free().
  *

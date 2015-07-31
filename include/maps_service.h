@@ -17,6 +17,7 @@
 #ifndef __MAPS_SERVICE_H__
 #define __MAPS_SERVICE_H__
 
+#include <tizen_type.h>
 #include <maps_error.h>
 #include <maps_address.h>
 #include <maps_area.h>
@@ -152,7 +153,7 @@ typedef bool(*maps_service_provider_info_cb) (char *maps_provider,
  * maps_service_provider_info_cb() callback.
  * @since_tizen 2.4
  *
- * @param[in]	callback	The callback function to receive avarilable Maps Providers
+ * @param[in]	callback	The callback function to receive available Maps Providers
  * information
  * @param[out]	user_data	The user data to be passed to the callback
  * function
@@ -247,7 +248,7 @@ int maps_service_destroy(maps_service_h maps);
  *
  * @param[in]	maps		The Maps Service handle
  * @param[in]	provider_key	The Maps Key to be used
- * \n In case of combinging two more strings, use slash("/") as a delimeter.
+ * \n In case of combining two more strings, use slash("/") as a delimiter.
  * \n e.g. For HERE "app_id/app_code"
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
@@ -532,8 +533,7 @@ typedef void (*maps_service_reverse_geocode_cb) (maps_error_e result,
  * @since_tizen 2.4
  * @privlevel public
  * @privilege %http://tizen.org/privilege/mapservice
- * @privilege %http://tizen.org/privilege/internet
- * @remarks This function requires network access.
+ * @remarks %http://tizen.org/privilege/internet is needed to access internet.
  * \n To cancel the request use maps_service_cancel_request().
  * \n To check if Maps Provider is capable of Geocoding and which Geocode
  * preferences are supported, see the lists of capacities and preferences above.
@@ -583,8 +583,7 @@ int maps_service_geocode(const maps_service_h maps, const char *address,
  * @since_tizen 2.4
  * @privlevel public
  * @privilege %http://tizen.org/privilege/mapservice
- * @privilege %http://tizen.org/privilege/internet
- * @remarks This function requires network access.
+ * @remarks %http://tizen.org/privilege/internet is needed to access internet.
  * \n Polygonal bounding box is not supported.
  * \n To cancel the request use maps_service_cancel_request().
  * \n To check if Maps Provider is capable of Geocoding and which Geocode
@@ -640,8 +639,7 @@ int maps_service_geocode_inside_area(const maps_service_h maps,
  * @since_tizen 2.4
  * @privlevel public
  * @privilege %http://tizen.org/privilege/mapservice
- * @privilege %http://tizen.org/privilege/internet
- * @remarks This function requires network access.
+ * @remarks %http://tizen.org/privilege/internet is needed to access internet.
  * \n To cancel the request use maps_service_cancel_request().
  * \n To check if Maps Provider is capable of Geocoding and which Geocode
  * preferences are supported see the lists of capacities and preferences above.
@@ -693,8 +691,7 @@ int maps_service_geocode_by_structured_address(const maps_service_h maps,
  * @since_tizen 2.4
  * @privlevel public
  * @privilege %http://tizen.org/privilege/mapservice
- * @privilege %http://tizen.org/privilege/internet
- * @remarks This function requires network access.
+ * @remarks %http://tizen.org/privilege/internet is needed to access internet.
  * \n To cancel the request use maps_service_cancel_request().
  * \n To check if Maps Provider is capable of Reverse Geocoding and which
  * Reverse Geocode preferences are supported, see the lists of capacities and
@@ -797,8 +794,7 @@ typedef bool(*maps_service_search_place_cb) (maps_error_e error,
  * @since_tizen 2.4
  * @privlevel public
  * @privilege %http://tizen.org/privilege/mapservice
- * @privilege %http://tizen.org/privilege/internet
- * @remarks This function requires internet connection.
+ * @remarks %http://tizen.org/privilege/internet is needed to access internet.
  * \n To cancel the search request use maps_service_cancel_request().
  * \n To check if Maps Provider is capable of Place Search and which Place
  * preferences are supported, see the lists of capacities and preferences above.
@@ -852,8 +848,7 @@ int maps_service_search_place(const maps_service_h maps,
  * @since_tizen 2.4
  * @privlevel public
  * @privilege %http://tizen.org/privilege/mapservice
- * @privilege %http://tizen.org/privilege/internet
- * @remarks This function requires network access.
+ * @remarks %http://tizen.org/privilege/internet is needed to access internet.
  * \n @a boundary is supporting only circle type bounds for search.
  * \n To cancel the search request use maps_service_cancel_request().
  * \n To check if Maps Provider is capable of Place Search and which Place
@@ -908,8 +903,7 @@ int maps_service_search_place_by_area(const maps_service_h maps,
  * @since_tizen 2.4
  * @privlevel public
  * @privilege %http://tizen.org/privilege/mapservice
- * @privilege %http://tizen.org/privilege/internet
- * @remarks This function requires network access.
+ * @remarks %http://tizen.org/privilege/internet is needed to access internet.
  * \n @a boundary is supporting only circle type bounds for search.
  * \n To cancel the search request use maps_service_cancel_request().
  * \n To check if Maps Provider is capable of Place Search and which Place
@@ -1019,8 +1013,7 @@ typedef bool(*maps_service_search_route_cb) (maps_error_e error,
  * @since_tizen 2.4
  * @privlevel public
  * @privilege %http://tizen.org/privilege/mapservice
- * @privilege %http://tizen.org/privilege/internet
- * @remarks This function requires network access.
+ * @remarks %http://tizen.org/privilege/internet is needed to access internet.
  * \n To cancel the search request use maps_service_cancel_request().
  * \n To check if Maps Provider is capable of Route Search and which Route
  * preferences are supported, see the lists of capacities and preferences above.
@@ -1068,8 +1061,7 @@ int maps_service_search_route(const maps_service_h maps,
  * @since_tizen 2.4
  * @privlevel public
  * @privilege %http://tizen.org/privilege/mapservice
- * @privilege %http://tizen.org/privilege/internet
- * @remarks This function requires network access.
+ * @remarks %http://tizen.org/privilege/internet is needed to access internet.
  * \n To cancel the search request use maps_service_cancel_request().
  * \n To check if Maps Provider is capable of Route Search and which Route
  * preferences are supported, see the lists of capacities and preferences above.

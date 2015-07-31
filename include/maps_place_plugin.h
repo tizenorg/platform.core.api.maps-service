@@ -18,6 +18,7 @@
 #define __MAPS_PLACE_PLUGIN_H__
 
 #include <maps_place.h>
+#include <maps_extra_types.h>
 
 /**
  * @ingroup	CAPI_MAPS_PLUGIN_MODULE

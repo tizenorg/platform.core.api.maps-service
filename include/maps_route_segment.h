@@ -17,10 +17,10 @@
 #ifndef __MAPS_SEGMENT_H__
 #define __MAPS_SEGMENT_H__
 
+#include <tizen_type.h>
 #include <maps_coordinates.h>
 #include <maps_route_maneuver.h>
 #include <maps_area.h>
-#include <maps_extra_types.h>
 
 /**
  * @ingroup	CAPI_MAPS_ROUTE_MODULE
@@ -141,7 +141,7 @@ int maps_route_segment_clone(const maps_route_segment_h origin,
  * @brief	Gets the route segment origin.
  * @details This function gets the route segment origin.
  * @since_tizen 2.4
- * @remarks @a origin must be released using maps_cordinates_destroy().
+ * @remarks @a origin must be released using maps_coordinates_destroy().
  *
  * @param[in]	segment		The segment handle
  * @param[out]	origin		The origin of segment
