@@ -36,7 +36,7 @@ void *session::thread::queue_thread(void *data)
 	sleep(0);		/* Just switch the thread to accomplish previous
 				   initialization routines */
 
-	if (not data)
+	if (!data)
 		return NULL;
 	plugin::plugin_s *p = (plugin::plugin_s *) data;
 
@@ -50,7 +50,7 @@ void *session::thread::queue_thread(void *data)
 void session::thread::run(plugin::plugin_s *p)
 {
 
-	if (not p)
+	if (!p)
 		return;
 	if (p->thread)
 		return;		/* Check whether the thread is already
@@ -66,7 +66,7 @@ void session::thread::run(plugin::plugin_s *p)
 
 void session::thread::stop(plugin::plugin_s *p)
 {
-	if (not p)
+	if (!p)
 		return;
 
 	p->is_working = false;

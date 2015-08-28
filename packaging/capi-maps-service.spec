@@ -45,6 +45,9 @@ rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/license
 cp LICENSE %{buildroot}/usr/share/license/%{name}
 
+mkdir -p %{buildroot}%{_prefix}/lib/maps/plugins
+cp -a lib/libmaps-plugin-test.so* %{buildroot}%{_prefix}/lib/maps/plugins
+
 %post
 /sbin/ldconfig
 
@@ -56,6 +59,7 @@ cp LICENSE %{buildroot}/usr/share/license/%{name}
 %defattr(-,root,root,-)
 /usr/share/license/capi-maps-service
 %{_libdir}/libcapi-maps-service.so.*
+%{_prefix}/lib/maps/plugins/libmaps-plugin-test.so*
 
 
 %package devel

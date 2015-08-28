@@ -66,7 +66,7 @@ void session::command_queue_sync::clear(plugin::plugin_s *p)
 #ifdef _MAPS_SERVICE_SUPPORTS_ASYNC_QUEUE_
 int session::command_queue_async::push(command *c)
 {
-	if (not c or not c->plugin()or not c->plugin()->request_queue)
+	if (!c || !c->plugin() || !c->plugin()->request_queue)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
 	queue_autoref(c->plugin()->request_queue);
@@ -98,7 +98,7 @@ session::command *session::command_queue_async::pop(plugin::plugin_s *p)
 
 void session::command_queue_async::process(plugin::plugin_s *p)
 {
-	if (not p or not p->request_queue)
+	if (!p || !p->request_queue)
 		return;
 
 	queue_autoref(p->request_queue);
@@ -107,7 +107,7 @@ void session::command_queue_async::process(plugin::plugin_s *p)
 
 void session::command_queue_async::clear(plugin::plugin_s *p)
 {
-	if (not p or not p->request_queue)
+	if (!p || !p->request_queue)
 		return;
 
 	queue_autoref(p->request_queue);

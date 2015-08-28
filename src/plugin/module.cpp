@@ -377,7 +377,6 @@ void plugin::binary_extractor::gmod_free(GMod *gmod) const
 	g_free(gmod);
 
 	MAPS_LOGD("close module");
-	MAPS_LOGD("last module error: %s", g_module_error());
 }
 
 /* Find the address of a function in a binary (which contains a plugin) */
