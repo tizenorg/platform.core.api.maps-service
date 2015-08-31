@@ -1,5 +1,6 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
 SET(fw_name "capi-maps-service")
+SET(DUMMY_PLUGIN "maps-plugin-test")
 
 PROJECT(${fw_name})
 
@@ -12,8 +13,15 @@ SET(INTERNAL_INC_DIR
 	src/api
 	src/plugin
 	src/session
+	test/dummy_plugin/
+	test/src/util/
 	)
 INCLUDE_DIRECTORIES(${INC_DIR} ${INTERNAL_INC_DIR})
+
+SET(DUMMY_PLUGIN_SRC
+	test/dummy_plugin/dummy_plugin.cpp
+	test/src/util/maps_object.cpp
+	)
 
 SET(dependents "glib-2.0 gmodule-2.0 dlog capi-base-common")
 SET(pc_dependents "capi-base-common")
@@ -46,18 +54,27 @@ aux_source_directory(src SOURCES)
 aux_source_directory(src/api SOURCES_API)
 aux_source_directory(src/plugin SOURCES_PLUGIN)
 aux_source_directory(src/session SOURCES_SESSION)
+
 ADD_LIBRARY(${fw_name} SHARED ${SOURCES} ${SOURCES_API} ${SOURCES_PLUGIN} ${SOURCES_SESSION})
-
 TARGET_LINK_LIBRARIES(${fw_name} ${${fw_name}_LDFLAGS})
-
 SET_TARGET_PROPERTIES(${fw_name}
 	PROPERTIES
 	VERSION ${FULLVER}
 	SOVERSION ${MAJORVER}
 	CLEAN_DIRECT_OUTPUT 1
 	)
-
 INSTALL(TARGETS ${fw_name} DESTINATION ${LIBDIR})
+
+ADD_LIBRARY(${DUMMY_PLUGIN} SHARED ${DUMMY_PLUGIN_SRC})
+TARGET_LINK_LIBRARIES(${DUMMY_PLUGIN} ${fw_name} ${${DUMMY_PLUGIN}_LDFLAGS})
+SET_TARGET_PROPERTIES(${DUMMY_PLUGIN}
+	PROPERTIES
+	VERSION ${FULLVER}
+	SOVERSION ${MAJORVER}
+	CLEAN_DIRECT_OUTPUT 1
+	)
+INSTALL(TARGETS ${DUMMY_PLUGIN} DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/maps/plugins)
+
 INSTALL(
 	DIRECTORY ${INC_DIR}/ DESTINATION include/maps
 	FILES_MATCHING

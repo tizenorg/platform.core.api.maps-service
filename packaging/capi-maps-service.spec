@@ -46,7 +46,6 @@ mkdir -p %{buildroot}/usr/share/license
 cp LICENSE %{buildroot}/usr/share/license/%{name}
 
 mkdir -p %{buildroot}%{_prefix}/lib/maps/plugins
-cp -a lib/libmaps-plugin-test.so* %{buildroot}%{_prefix}/lib/maps/plugins
 
 %post
 /sbin/ldconfig
@@ -122,15 +121,15 @@ This is a program to test the Tizen Maps Service Library internally.
 #################################################################################
 # Test plugin library
 
-%package -n maps-plugin-test
-Summary:    Tizen Maps Service Plug-in Test (Internal Dev)
-Group:      Location/Testing
-Requires:   %{name} = %{version}-%{release}
+#%package -n maps-plugin-test
+#Summary:    Tizen Maps Service Plug-in Test (Internal Dev)
+#Group:      Location/Testing
+#Requires:   %{name} = %{version}-%{release}
 
-%description -n maps-plugin-test
-This is a program to test the Tizen Maps Service for Plug-in internally.
+#%description -n maps-plugin-test
+#This is a program to test the Tizen Maps Service for Plug-in internally.
 
-%files -n maps-plugin-test
-%manifest test/dummy_plugin/maps-plugin-test.manifest
-%defattr(-,root,root,-)
-%{_libdir}/maps/plugins/libmaps-plugin-test.so*
+#%files -n maps-plugin-test
+#%manifest test/dummy_plugin/maps-plugin-test.manifest
+#%defattr(-,root,root,-)
+#%{_libdir}/maps/plugins/libmaps-plugin-test.so*
