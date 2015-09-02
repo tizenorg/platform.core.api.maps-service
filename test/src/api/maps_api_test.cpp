@@ -62,12 +62,12 @@ class test_env
 
 			/* MAPQUEST */
 			{ "Open Street Maps",
-				"Fmjtd%7Cluur250220%2C80%3Do5-9w7w9r",
+				"test_key"
 				true },
 
 			/* HERE */
 			{ "HERE",
-				"gMutJ6Bo9jyMtOfJRGG1/nXvwmBWgoCqp9U5_yslkcw",
+				"test_app_id/test_app_code"
 				true }
 		};
 		 return info[idx];
