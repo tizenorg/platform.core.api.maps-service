@@ -62,12 +62,12 @@ class test_env
 
 			/* MAPQUEST */
 			{ "Open Street Maps",
-				"test_key"
+				"test_key",
 				true },
 
 			/* HERE */
 			{ "HERE",
-				"test_app_id/test_app_code"
+				"test_app_id/test_app_code",
 				true }
 		};
 		 return info[idx];
