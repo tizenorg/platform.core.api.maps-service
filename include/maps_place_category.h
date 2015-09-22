@@ -86,7 +86,7 @@ int maps_place_category_create(maps_place_category_h *category);
  * @see maps_place_category_destroy()
  */
 int maps_place_category_clone(const maps_place_category_h origin,
-                              maps_place_category_h *cloned);
+			      maps_place_category_h *cloned);
 
 
 /**
@@ -125,7 +125,7 @@ int maps_place_category_destroy(maps_place_category_h category);
  * @see maps_place_category_get_id()
  */
 int maps_place_category_set_id(maps_place_category_h category,
-                               const char *id);
+			       const char *id);
 
 
 /**
@@ -145,7 +145,7 @@ int maps_place_category_set_id(maps_place_category_h category,
  * @see maps_place_category_get_name()
  */
 int maps_place_category_set_name(maps_place_category_h category,
-                                 const char *name);
+				 const char *name);
 
 
 /**
@@ -165,7 +165,7 @@ int maps_place_category_set_name(maps_place_category_h category,
  * @see maps_place_category_get_url()
  */
 int maps_place_category_set_url(maps_place_category_h category,
-                                const char *url);
+				const char *url);
 
 
 /**

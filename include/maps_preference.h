@@ -171,10 +171,10 @@ typedef void *maps_preference_h;
  * @see #maps_preference_h
  */
 typedef enum _maps_distance_unit_e {
-    MAPS_DISTANCE_UNIT_M,	/**< for Meter */
-    MAPS_DISTANCE_UNIT_KM,	/**< for Kilometer */
-    MAPS_DISTANCE_UNIT_FT,	/**< for Foot */
-    MAPS_DISTANCE_UNIT_YD	/**< for Yard */
+	MAPS_DISTANCE_UNIT_M,	/**< for Meter */
+	MAPS_DISTANCE_UNIT_KM,	/**< for Kilometer */
+	MAPS_DISTANCE_UNIT_FT,	/**< for Foot */
+	MAPS_DISTANCE_UNIT_YD	/**< for Yard */
 } maps_distance_unit_e;
 
 /**
@@ -189,14 +189,21 @@ typedef enum _maps_distance_unit_e {
  * @see #_maps_route_request_feature_e
  */
 typedef enum _maps_route_optimization_e {
-    MAPS_ROUTE_TYPE_FASTEST,	/**< Indicates the fastest route */
-    MAPS_ROUTE_TYPE_SHORTEST,	/**< Indicates the shortest route
-				  (car mode only) */
-    MAPS_ROUTE_TYPE_ECONOMIC,	/**< Indicates the most economic route
-				  (car mode only) */
-    MAPS_ROUTE_TYPE_SCENIC,	/**< Indicates the most scenic route */
-    MAPS_ROUTE_TYPE_FASTESTNOW,	/**< Indicates the most fastest route now */
-    MAPS_ROUTE_TYPE_DIRECTDRIVE,/**< Indicates direct drive */
+
+	MAPS_ROUTE_TYPE_FASTEST, /**< Indicates the fastest route */
+
+	MAPS_ROUTE_TYPE_SHORTEST, /**< Indicates the shortest route
+				    (car mode only) */
+
+	MAPS_ROUTE_TYPE_ECONOMIC, /**< Indicates the most economic route
+				    (car mode only) */
+
+	MAPS_ROUTE_TYPE_SCENIC, /**< Indicates the most scenic route */
+
+	MAPS_ROUTE_TYPE_FASTESTNOW, /**< Indicates the most fastest route now */
+
+	MAPS_ROUTE_TYPE_DIRECTDRIVE /**< Indicates direct drive */
+
 } maps_route_optimization_e;
 
 /**
@@ -211,17 +218,22 @@ typedef enum _maps_route_optimization_e {
  * @see #_maps_route_request_feature_e
  */
 typedef enum _maps_route_transport_mode_e {
-    MAPS_ROUTE_TRANSPORT_MODE_CAR,		/**< Indicates that the route is
-						  to be traveled by car. */
-    MAPS_ROUTE_TRANSPORT_MODE_PEDESTRIAN,	/**< Indicates that the route is
-						  for a pedestrian. */
-    MAPS_ROUTE_TRANSPORT_MODE_BICYCLE,		/**< Indicates that the route is
-						  for a cyclist. */
-    MAPS_ROUTE_TRANSPORT_MODE_PUBLICTRANSIT,	/**< Indicates that the route is
-						  to be traveled  using public
-						  transport. */
-    MAPS_ROUTE_TRANSPORT_MODE_TRUCK		/**< Indicates that the route is
-						  for a truck. */
+
+	MAPS_ROUTE_TRANSPORT_MODE_CAR, /**< Indicates that the route is to be
+					 traveled by car. */
+
+	MAPS_ROUTE_TRANSPORT_MODE_PEDESTRIAN, /**< Indicates that the route is
+						for a pedestrian. */
+
+	MAPS_ROUTE_TRANSPORT_MODE_BICYCLE, /**< Indicates that the route is for
+					     a cyclist. */
+
+	MAPS_ROUTE_TRANSPORT_MODE_PUBLICTRANSIT, /**< Indicates that the route
+						   is to be traveled  using
+						   public transport. */
+
+	MAPS_ROUTE_TRANSPORT_MODE_TRUCK /**< Indicates that the route is for a
+					  truck. */
 } maps_route_transport_mode_e;
 
 /**
@@ -236,15 +248,19 @@ typedef enum _maps_route_transport_mode_e {
  * @see #_maps_route_request_feature_e
  */
 typedef enum _maps_route_feature_weight_e {
-    MAPS_ROUTE_FEATURE_WEIGHT_NORMAL,		/**< Indicates normal
-						  weighting. */
-    MAPS_ROUTE_FEATURE_WEIGHT_PREFER,		/**< Indicates that a feature is
-						  preferred. */
-    MAPS_ROUTE_FEATURE_WEIGHT_AVOID,		/**< Indicates that a feature is
-						  to be avoided. */
-    MAPS_ROUTE_FEATURE_WEIGHT_SOFTEXCLUDE,	/**< Indicates that soft-exclude
-						  applies to the feature. */
-    MAPS_ROUTE_FEATURE_WEIGHT_STRICTEXCLUDE,	/**< Indicates that the feature
+
+	MAPS_ROUTE_FEATURE_WEIGHT_NORMAL, /**< Indicates normal weighting. */
+
+	MAPS_ROUTE_FEATURE_WEIGHT_PREFER, /**< Indicates that a feature is
+					    preferred. */
+
+	MAPS_ROUTE_FEATURE_WEIGHT_AVOID, /**< Indicates that a feature is to be
+					   avoided. */
+
+	MAPS_ROUTE_FEATURE_WEIGHT_SOFTEXCLUDE, /**< Indicates that soft-exclude
+						 applies to the feature. */
+
+	MAPS_ROUTE_FEATURE_WEIGHT_STRICTEXCLUDE /**< Indicates that the feature
 						  is to be strictly excluded. */
 } maps_route_feature_weight_e;
 
@@ -260,22 +276,31 @@ typedef enum _maps_route_feature_weight_e {
  * @see #_maps_route_feature_weight_e
  */
 typedef enum _maps_route_request_feature_e {
-    MAPS_ROUTE_FEATURE_NO,			/**< Indicates no route features
-						  (are selected). */
-    MAPS_ROUTE_FEATURE_TOLL,			/**< Indicates toll roads
-						  (toll gates/booths). */
-    MAPS_ROUTE_FEATURE_MOTORWAY,		/**< Indicates motorway. */
-    MAPS_ROUTE_FEATURE_BOATFERRY,		/**< Indicates a boat ferry. */
-    MAPS_ROUTE_FEATURE_RAILFERRY,		/**< Indicates rail (train)
-						  ferry. */
-    MAPS_ROUTE_FEATURE_PUBLICTTRANSIT,		/**< Indicates public
-						  transport. */
-    MAPS_ROUTE_FEATURE_TUNNEL,			/**< Indicates tunnel. */
-    MAPS_ROUTE_FEATURE_DIRTROAD,		/**< Indicates dirt road. */
-    MAPS_ROUTE_FEATURE_PARKS,			/**< Indicates park. */
-    MAPS_ROUTE_FEATURE_HOVLANE,			/**< Indicates a high-occupancy
-						  vehicle lane. */
-    MAPS_ROUTE_FEATURE_STAIRS			/**< Indicates stairs. */
+
+	MAPS_ROUTE_FEATURE_NO, /**< Indicates no route features
+				  (are selected). */
+
+	MAPS_ROUTE_FEATURE_TOLL, /**< Indicates toll roads
+				   (toll gates/booths). */
+
+	MAPS_ROUTE_FEATURE_MOTORWAY, /**< Indicates motorway. */
+
+	MAPS_ROUTE_FEATURE_BOATFERRY, /**< Indicates a boat ferry. */
+
+	MAPS_ROUTE_FEATURE_RAILFERRY, /**< Indicates rail (train) ferry. */
+
+	MAPS_ROUTE_FEATURE_PUBLICTTRANSIT, /**< Indicates public transport. */
+
+	MAPS_ROUTE_FEATURE_TUNNEL, /**< Indicates tunnel. */
+
+	MAPS_ROUTE_FEATURE_DIRTROAD, /**< Indicates dirt road. */
+
+	MAPS_ROUTE_FEATURE_PARKS, /**< Indicates park. */
+
+	MAPS_ROUTE_FEATURE_HOVLANE, /**< Indicates a high-occupancy vehicle
+				      lane. */
+
+	MAPS_ROUTE_FEATURE_STAIRS /**< Indicates stairs. */
 } maps_route_feature_e;
 
 /*----------------------------------------------------------------------------*/

@@ -245,7 +245,7 @@ EXPORT_API int maps_preference_set_distance_unit(maps_preference_h preference,
 {
 	if (!preference)
 		return MAPS_ERROR_INVALID_PARAMETER;
-	if((unit < MAPS_DISTANCE_UNIT_M) || (unit > MAPS_DISTANCE_UNIT_YD))
+	if ((unit < MAPS_DISTANCE_UNIT_M) || (unit > MAPS_DISTANCE_UNIT_YD))
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_item_hashtable_set_int(preference,
 		"MAPS_PREFERENCE_DISTANCE_UNIT", unit);
@@ -285,7 +285,7 @@ EXPORT_API int maps_preference_set_route_optimization(maps_preference_h
 {
 	if (!preference)
 		return MAPS_ERROR_INVALID_PARAMETER;
-	if((optimization < MAPS_ROUTE_TYPE_FASTEST)
+	if ((optimization < MAPS_ROUTE_TYPE_FASTEST)
 	   || (optimization > MAPS_ROUTE_TYPE_DIRECTDRIVE))
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_item_hashtable_set_int(preference,
@@ -299,7 +299,7 @@ EXPORT_API int maps_preference_set_route_transport_mode(maps_preference_h
 {
 	if (!preference)
 		return MAPS_ERROR_INVALID_PARAMETER;
-	if((transport_mode < MAPS_ROUTE_TRANSPORT_MODE_CAR)
+	if ((transport_mode < MAPS_ROUTE_TRANSPORT_MODE_CAR)
 	   || (transport_mode > MAPS_ROUTE_TRANSPORT_MODE_TRUCK))
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_item_hashtable_set_int(preference,
@@ -313,7 +313,7 @@ EXPORT_API int maps_preference_set_route_feature_weight(maps_preference_h
 {
 	if (!preference)
 		return MAPS_ERROR_INVALID_PARAMETER;
-	if((feature_weight < MAPS_ROUTE_FEATURE_WEIGHT_NORMAL)
+	if ((feature_weight < MAPS_ROUTE_FEATURE_WEIGHT_NORMAL)
 	   || (feature_weight > MAPS_ROUTE_FEATURE_WEIGHT_STRICTEXCLUDE))
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_item_hashtable_set_int(preference,
@@ -326,7 +326,7 @@ EXPORT_API int maps_preference_set_route_feature(maps_preference_h preference,
 {
 	if (!preference)
 		return MAPS_ERROR_INVALID_PARAMETER;
-	if((feature < MAPS_ROUTE_FEATURE_NO)
+	if ((feature < MAPS_ROUTE_FEATURE_NO)
 	   || (feature > MAPS_ROUTE_FEATURE_STAIRS))
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_item_hashtable_set_int(preference,

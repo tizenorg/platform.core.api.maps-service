@@ -155,7 +155,7 @@ EXPORT_API int maps_place_filter_set(maps_place_filter_h filter,
 		table, key, value);
 }
 
-int maps_place_filter_set_keyword(maps_place_filter_h filter,
+EXPORT_API int maps_place_filter_set_keyword(maps_place_filter_h filter,
 				  const char *keyword)
 {
 	if (!filter || !keyword)
@@ -164,7 +164,7 @@ int maps_place_filter_set_keyword(maps_place_filter_h filter,
 		table, "MAPS_PLACE_FILTER_KEYWORD", keyword);
 }
 
-int maps_place_filter_set_place_name(maps_place_filter_h filter,
+EXPORT_API int maps_place_filter_set_place_name(maps_place_filter_h filter,
 				     const char *place_name)
 {
 	if (!filter || !place_name)
@@ -173,7 +173,7 @@ int maps_place_filter_set_place_name(maps_place_filter_h filter,
 		table, "MAPS_PLACE_FILTER_PLACE_NAME", place_name);
 }
 
-int maps_place_filter_set_category(maps_place_filter_h filter,
+EXPORT_API int maps_place_filter_set_category(maps_place_filter_h filter,
 				   const maps_place_category_h category)
 {
 	if (!filter || !category)

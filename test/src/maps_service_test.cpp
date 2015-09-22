@@ -40,7 +40,7 @@
 /* It it is not a memory leak test, */
 /* the value of iterations will be automatically  reduced to 1 */
 static long long iterations = 250* 1000;	/* For load test */
-/* */
+
 /* */
 #ifdef MAPS_SERVICE_LOAD_TEST
 	/* Sleep before next iteration */
@@ -930,23 +930,23 @@ static void __add_maps_api_tests(int i)
 
 	if (1) {		/* API: Place */
 		__test_add_func_load("/api/place/search_p",
-			utc_maps_service_search_place_p, i);
-	__test_add_func_load("/api/place/search_p",
-			 utc_maps_service_search_place_p, i);
-	__test_add_func_load("/api/place/search_n",
-			utc_maps_service_search_place_n, i);
-	__test_add_func_load("/api/place/search_by_area_p",
-			utc_maps_service_search_place_by_area_p, i);
-	__test_add_func_load("/api/place/search_by_area_n",
-			utc_maps_service_search_place_by_area_n, i);
-	__test_add_func_load("/api/place/search_by_address_p",
-			utc_maps_service_search_place_by_address_p, i);
-	__test_add_func_load("/api/place/search_by_address_n",
-			utc_maps_service_search_place_by_address_n, i);
-	__test_add_func_load("/api/place/cancel_search_p",
-			utc_maps_cancel_place_p, i);
-	__test_add_func_load("/api/place/cancel_search_n",
-			utc_maps_cancel_place_n, i);
+				     utc_maps_service_search_place_p, i);
+		__test_add_func_load("/api/place/search_p",
+				     utc_maps_service_search_place_p, i);
+		__test_add_func_load("/api/place/search_n",
+				     utc_maps_service_search_place_n, i);
+		__test_add_func_load("/api/place/search_by_area_p",
+				utc_maps_service_search_place_by_area_p, i);
+		__test_add_func_load("/api/place/search_by_area_n",
+				utc_maps_service_search_place_by_area_n, i);
+		__test_add_func_load("/api/place/search_by_address_p",
+				utc_maps_service_search_place_by_address_p, i);
+		__test_add_func_load("/api/place/search_by_address_n",
+				utc_maps_service_search_place_by_address_n, i);
+		__test_add_func_load("/api/place/cancel_search_p",
+				     utc_maps_cancel_place_p, i);
+		__test_add_func_load("/api/place/cancel_search_n",
+				     utc_maps_cancel_place_n, i);
 	}
 
 	if (1) {		/* API: Route */
@@ -967,6 +967,11 @@ static void __add_maps_api_tests(int i)
 	if (1)
 		__test_add_func_load("/api/route/search_realistic_p",
 			utc_maps_service_search_route_real_p, i);
+
+	if(1) {
+		__test_add_func_load("/api/serial_p",
+			utc_maps_service_serial_p, i);
+	}
 
 #endif
 }
