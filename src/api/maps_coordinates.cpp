@@ -23,7 +23,7 @@ EXPORT_API int maps_coordinates_create(const double latitude,
 				       const double longitude,
 				       maps_coordinates_h *coords)
 {
-	if (not coords)
+	if (!coords)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
 	MAPS_CHECK_CONDITION(latitude >= -90
@@ -48,7 +48,7 @@ EXPORT_API int maps_coordinates_create(const double latitude,
 
 EXPORT_API int maps_coordinates_destroy(maps_coordinates_h coords)
 {
-	if (not coords)
+	if (!coords)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
 	maps_coordinates_s *handle = (maps_coordinates_s *) coords;
@@ -62,7 +62,7 @@ EXPORT_API int maps_coordinates_destroy(maps_coordinates_h coords)
 EXPORT_API int maps_coordinates_clone(const maps_coordinates_h origin,
 				      maps_coordinates_h *cloned)
 {
-	if (not cloned or not origin)
+	if (!cloned || !origin)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
 	int error = MAPS_ERROR_NONE;
@@ -88,7 +88,7 @@ EXPORT_API int maps_coordinates_clone(const maps_coordinates_h origin,
 EXPORT_API int maps_coordinates_get_latitude(const maps_coordinates_h coords,
 					     double *latitude)
 {
-	if (not coords or not latitude)
+	if (!coords || !latitude)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	*latitude = ((maps_coordinates_s *) coords)->latitude;
 	return MAPS_ERROR_NONE;
@@ -97,7 +97,7 @@ EXPORT_API int maps_coordinates_get_latitude(const maps_coordinates_h coords,
 EXPORT_API int maps_coordinates_get_longitude(const maps_coordinates_h coords,
 					      double *longitude)
 {
-	if (not coords or not longitude)
+	if (!coords || !longitude)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	*longitude = ((maps_coordinates_s *) coords)->longitude;
 	return MAPS_ERROR_NONE;
@@ -108,7 +108,7 @@ EXPORT_API int maps_coordinates_get_longitude(const maps_coordinates_h coords,
 EXPORT_API int maps_coordinates_set_latitude(maps_coordinates_h coords,
 					     const double latitude)
 {
-	if (not coords)
+	if (!coords)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	MAPS_CHECK_CONDITION(latitude >= -90
 		&& latitude <= 90, MAPS_ERROR_INVALID_PARAMETER,
@@ -120,7 +120,7 @@ EXPORT_API int maps_coordinates_set_latitude(maps_coordinates_h coords,
 EXPORT_API int maps_coordinates_set_longitude(maps_coordinates_h coords,
 	const double longitude)
 {
-	if (not coords)
+	if (!coords)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	MAPS_CHECK_CONDITION(longitude >= -180
 		&& longitude <= 180, MAPS_ERROR_INVALID_PARAMETER,
