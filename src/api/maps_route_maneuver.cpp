@@ -244,7 +244,7 @@ EXPORT_API int maps_route_maneuver_set_direction_id(maps_route_maneuver_h
 {
 	if (!maneuver)
 		return MAPS_ERROR_INVALID_PARAMETER;
-	if((direction_id < MAPS_ROUTE_DIRECTION_NONE)
+	if ((direction_id < MAPS_ROUTE_DIRECTION_NONE)
 	   || (direction_id > MAPS_ROUTE_DIRECTION_EAST))
 		return MAPS_ERROR_INVALID_PARAMETER;
 	((maps_route_maneuver_s *) maneuver)->direction_id = direction_id;
@@ -257,7 +257,7 @@ EXPORT_API int maps_route_maneuver_set_turn_type(maps_route_maneuver_h maneuver,
 {
 	if (!maneuver)
 		return MAPS_ERROR_INVALID_PARAMETER;
-	if((turn_type < MAPS_ROUTE_TURN_TYPE_NONE)
+	if ((turn_type < MAPS_ROUTE_TURN_TYPE_NONE)
 	   || (turn_type > MAPS_ROUTE_TURN_TYPE_STRAIGHT_FORK))
 		return MAPS_ERROR_INVALID_PARAMETER;
 	((maps_route_maneuver_s *) maneuver)->turn_type = turn_type;

@@ -111,8 +111,6 @@ int maps_plugin_get_info(maps_plugin_info_h *info);
  * @since_tizen 2.4
  * @remarks To obtain the @a provider_key refer to corresponding Maps Provider
  * documentation.
- * \n For MapQuest refer to http://developer.mapquest.com/,
- * http://open.mapquestapi.com.
  * \n For HERE Maps refer to https://developer.here.com/,
  * https://developer.here.com/rest-apis.
  *

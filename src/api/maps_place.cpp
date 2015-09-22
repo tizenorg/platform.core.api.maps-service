@@ -358,20 +358,36 @@ EXPORT_API int maps_place_get_distance(const maps_place_h place, int *distance)
 EXPORT_API int maps_place_get_address(const maps_place_h place,
 				      maps_address_h *address)
 {
-	if (!place || !address)
+	/* Check if the handle of the Place is valid */
+	if (!place)
 		return MAPS_ERROR_INVALID_PARAMETER;
+
+	/* Check if this API feature available */
 	if (!__is_supported(place, MAPS_PLACE_ADDRESS))
 		return MAPS_ERROR_NOT_SUPPORTED;
+
+	/* Check if parameters are valid */
+	if (!address)
+		return MAPS_ERROR_INVALID_PARAMETER;
+
 	return maps_address_clone(((maps_place_s *) place)->address, address);
 }
 
 EXPORT_API int maps_place_get_rating(const maps_place_h place,
 				     maps_place_rating_h *rating)
 {
-	if (!place || !rating)
+	/* Check if the handle of the Place is valid */
+	if (!place)
 		return MAPS_ERROR_INVALID_PARAMETER;
+
+	/* Check if this API feature available */
 	if (!__is_supported(place, MAPS_PLACE_RATING))
 		return MAPS_ERROR_NOT_SUPPORTED;
+
+	/* Check if parameters are valid */
+	if (!rating)
+		return MAPS_ERROR_INVALID_PARAMETER;
+
 	return maps_place_rating_clone(((maps_place_s *) place)->rating,
 		rating);
 }
@@ -390,10 +406,18 @@ EXPORT_API int maps_place_foreach_category(const maps_place_h place,
 					   maps_place_categories_cb callback,
 					   void *user_data)
 {
-	if (!place || !callback)
+	/* Check if the handle of the Place is valid */
+	if (!place)
 		return MAPS_ERROR_INVALID_PARAMETER;
+
+	/* Check if this API feature available */
 	if (!__is_supported(place, MAPS_PLACE_CATEGORIES))
 		return MAPS_ERROR_NOT_SUPPORTED;
+
+	/* Check if parameters are valid */
+	if (!callback)
+		return MAPS_ERROR_INVALID_PARAMETER;
+
 	return maps_item_list_foreach(((maps_place_s *) place)->categories,
 		maps_place_category_clone, callback, user_data);
 }
@@ -402,10 +426,18 @@ EXPORT_API int maps_place_foreach_attribute(const maps_place_h place,
 					    maps_place_attributes_cb callback,
 					    void * user_data)
 {
-	if (!place || !callback)
+	/* Check if the handle of the Place is valid */
+	if (!place)
 		return MAPS_ERROR_INVALID_PARAMETER;
+
+	/* Check if this API feature available */
 	if (!__is_supported(place, MAPS_PLACE_ATTRIBUTES))
 		return MAPS_ERROR_NOT_SUPPORTED;
+
+	/* Check if parameters are valid */
+	if (!callback)
+		return MAPS_ERROR_INVALID_PARAMETER;
+
 	return maps_item_list_foreach(((maps_place_s *) place)->attribute,
 		maps_place_attribute_clone, callback, user_data);
 }
@@ -414,10 +446,18 @@ EXPORT_API int maps_place_foreach_contact(const maps_place_h place,
 					  maps_place_contacts_cb callback,
 					  void *user_data)
 {
-	if (!place || !callback)
+	/* Check if the handle of the Place is valid */
+	if (!place)
 		return MAPS_ERROR_INVALID_PARAMETER;
+
+	/* Check if this API feature available */
 	if (!__is_supported(place, MAPS_PLACE_CONTACTS))
 		return MAPS_ERROR_NOT_SUPPORTED;
+
+	/* Check if parameters are valid */
+	if (!callback)
+		return MAPS_ERROR_INVALID_PARAMETER;
+
 	return maps_item_list_foreach(((maps_place_s *) place)->contacts,
 		maps_place_contact_clone, callback, user_data);
 }
@@ -426,10 +466,18 @@ EXPORT_API int maps_place_foreach_editorial(const maps_place_h place,
 					    maps_place_editorials_cb callback,
 					    void *user_data)
 {
-	if (!place || !callback)
+	/* Check if the handle of the Place is valid */
+	if (!place)
 		return MAPS_ERROR_INVALID_PARAMETER;
+
+	/* Check if this API feature available */
 	if (!__is_supported(place, MAPS_PLACE_EDITORIALS))
 		return MAPS_ERROR_NOT_SUPPORTED;
+
+	/* Check if parameters are valid */
+	if (!callback)
+		return MAPS_ERROR_INVALID_PARAMETER;
+
 	return maps_item_list_foreach(((maps_place_s *) place)->editorials,
 		maps_place_editorial_clone, callback, user_data);
 }
@@ -438,10 +486,18 @@ EXPORT_API int maps_place_foreach_image(const maps_place_h place,
 					maps_place_images_cb callback,
 					void *user_data)
 {
-	if (!place || !callback)
+	/* Check if the handle of the Place is valid */
+	if (!place)
 		return MAPS_ERROR_INVALID_PARAMETER;
+
+	/* Check if this API feature available */
 	if (!__is_supported(place, MAPS_PLACE_IMAGE))
 		return MAPS_ERROR_NOT_SUPPORTED;
+
+	/* Check if parameters are valid */
+	if (!callback)
+		return MAPS_ERROR_INVALID_PARAMETER;
+
 	return maps_item_list_foreach(((maps_place_s *) place)->images,
 		maps_place_image_clone, callback, user_data);
 }
@@ -450,10 +506,18 @@ EXPORT_API int maps_place_foreach_review(const maps_place_h place,
 					 maps_place_reviews_cb callback,
 					 void *user_data)
 {
-	if (!place || !callback)
+	/* Check if the handle of the Place is valid */
+	if (!place)
 		return MAPS_ERROR_INVALID_PARAMETER;
+
+	/* Check if this API feature available */
 	if (!__is_supported(place, MAPS_PLACE_REVIEWS))
 		return MAPS_ERROR_NOT_SUPPORTED;
+
+	/* Check if parameters are valid */
+	if (!callback)
+		return MAPS_ERROR_INVALID_PARAMETER;
+
 	return maps_item_list_foreach(((maps_place_s *) place)->reviews,
 		maps_place_review_clone, callback, user_data);
 }
@@ -461,10 +525,18 @@ EXPORT_API int maps_place_foreach_review(const maps_place_h place,
 EXPORT_API int maps_place_get_supplier_link(const maps_place_image_h place,
 					    maps_place_link_object_h *supplier)
 {
-	if (!place || !supplier)
+	/* Check if the handle of the Place is valid */
+	if (!place)
 		return MAPS_ERROR_INVALID_PARAMETER;
+
+	/* Check if this API feature available */
 	if (!__is_supported(place, MAPS_PLACE_SUPPLIER))
 		return MAPS_ERROR_NOT_SUPPORTED;
+
+	/* Check if parameters are valid */
+	if (!supplier)
+		return MAPS_ERROR_INVALID_PARAMETER;
+
 	return maps_place_link_object_clone(((maps_place_s *) place)->supplier,
 		supplier);
 }
@@ -472,10 +544,18 @@ EXPORT_API int maps_place_get_supplier_link(const maps_place_image_h place,
 EXPORT_API int maps_place_get_related_link(const maps_place_image_h place,
 					   maps_place_link_object_h *related)
 {
-	if (!place || !related)
+	/* Check if the handle of the Place is valid */
+	if (!place)
 		return MAPS_ERROR_INVALID_PARAMETER;
+
+	/* Check if this API feature available */
 	if (!__is_supported(place, MAPS_PLACE_RELATED))
 		return MAPS_ERROR_NOT_SUPPORTED;
+
+	/* Check if parameters are valid */
+	if (!related)
+		return MAPS_ERROR_INVALID_PARAMETER;
+
 	return maps_place_link_object_clone(((maps_place_s *) place)->related,
 		related);
 }

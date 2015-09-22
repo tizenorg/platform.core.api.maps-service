@@ -54,7 +54,7 @@ const gsize _MAPS_ADDRESS_COUNTY_MAX_LENGTH = 128;
 
 EXPORT_API int maps_address_create(maps_address_h *address)
 {
-	if (not address)
+	if (!address)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
 	maps_address_s *a = g_slice_new0(maps_address_s);
@@ -69,7 +69,7 @@ EXPORT_API int maps_address_create(maps_address_h *address)
 
 EXPORT_API int maps_address_destroy(maps_address_h address)
 {
-	if (not address)
+	if (!address)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
 	maps_address_s *a = (maps_address_s *) address;
@@ -191,7 +191,7 @@ EXPORT_API int maps_address_clone(const maps_address_h origin,
 EXPORT_API int maps_address_get_building_number(const maps_address_h address,
 						char **building_number)
 {
-	if (not address or not building_number)
+	if (!address || !building_number)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_get_string(((maps_address_s *) address)->building_number,
 		_MAPS_ADDRESS_BUILDING_NUMBER_MAX_LENGTH, building_number);
@@ -200,7 +200,7 @@ EXPORT_API int maps_address_get_building_number(const maps_address_h address,
 EXPORT_API int maps_address_get_street(const maps_address_h address,
 				       char **street)
 {
-	if (not address or not street)
+	if (!address || !street)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_get_string(((maps_address_s *) address)->street,
 		_MAPS_ADDRESS_STREET_MAX_LENGTH, street);
@@ -209,7 +209,7 @@ EXPORT_API int maps_address_get_street(const maps_address_h address,
 EXPORT_API int maps_address_get_district(const maps_address_h address,
 					 char **district)
 {
-	if (not address or not district)
+	if (!address || !district)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_get_string(((maps_address_s *) address)->district,
 		_MAPS_ADDRESS_DISTRICT_MAX_LENGTH, district);
@@ -217,7 +217,7 @@ EXPORT_API int maps_address_get_district(const maps_address_h address,
 
 EXPORT_API int maps_address_get_city(const maps_address_h address, char **city)
 {
-	if (not address or not city)
+	if (!address || !city)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_get_string(((maps_address_s *) address)->city,
 		_MAPS_ADDRESS_CITY_MAX_LENGTH, city);
@@ -226,7 +226,7 @@ EXPORT_API int maps_address_get_city(const maps_address_h address, char **city)
 EXPORT_API int maps_address_get_state(const maps_address_h address,
 				      char **state)
 {
-	if (not address or not state)
+	if (!address || !state)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_get_string(((maps_address_s *) address)->state,
 		_MAPS_ADDRESS_STATE_MAX_LENGTH, state);
@@ -235,7 +235,7 @@ EXPORT_API int maps_address_get_state(const maps_address_h address,
 EXPORT_API int maps_address_get_country(const maps_address_h address,
 					char **country)
 {
-	if (not address or not country)
+	if (!address || !country)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_get_string(((maps_address_s *) address)->country,
 		_MAPS_ADDRESS_COUNTRY_MAX_LENGTH, country);
@@ -244,7 +244,7 @@ EXPORT_API int maps_address_get_country(const maps_address_h address,
 EXPORT_API int maps_address_get_country_code(const maps_address_h address,
 					     char **country_code)
 {
-	if (not address or not country_code)
+	if (!address || !country_code)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_get_string(((maps_address_s *) address)->country_code,
 		_MAPS_ADDRESS_COUNTRY_CODE_MAX_LENGTH, country_code);
@@ -253,7 +253,7 @@ EXPORT_API int maps_address_get_country_code(const maps_address_h address,
 EXPORT_API int maps_address_get_county(const maps_address_h address,
 				       char **county)
 {
-	if (not address or not county)
+	if (!address || !county)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_get_string(((maps_address_s *) address)->county,
 		_MAPS_ADDRESS_COUNTY_MAX_LENGTH, county);
@@ -262,7 +262,7 @@ EXPORT_API int maps_address_get_county(const maps_address_h address,
 EXPORT_API int maps_address_get_postal_code(const maps_address_h address,
 					    char **postal_code)
 {
-	if (not address or not postal_code)
+	if (!address || !postal_code)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_get_string(((maps_address_s *) address)->postal_code,
 		_MAPS_ADDRESS_POSTAL_CODE_MAX_LENGTH, postal_code);
@@ -271,7 +271,7 @@ EXPORT_API int maps_address_get_postal_code(const maps_address_h address,
 EXPORT_API int maps_address_get_freetext(const maps_address_h address,
 					 char **freetext)
 {
-	if (not address or not freetext)
+	if (!address || !freetext)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_get_string(((maps_address_s *) address)->freetext,
 		_MAPS_ADDRESS_FREE_TEXT_MAX_LENGTH, freetext);
@@ -282,7 +282,7 @@ EXPORT_API int maps_address_get_freetext(const maps_address_h address,
 EXPORT_API int maps_address_set_building_number(maps_address_h address,
 						const char *building_number)
 {
-	if (not address or not building_number)
+	if (!address || !building_number)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_set_string(building_number,
 		_MAPS_ADDRESS_BUILDING_NUMBER_MAX_LENGTH,
@@ -292,7 +292,7 @@ EXPORT_API int maps_address_set_building_number(maps_address_h address,
 EXPORT_API int maps_address_set_street(maps_address_h address,
 				       const char *street)
 {
-	if (not address or not street)
+	if (!address || !street)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_set_string(street, _MAPS_ADDRESS_STREET_MAX_LENGTH,
 		&((maps_address_s *) address)->street);
@@ -301,7 +301,7 @@ EXPORT_API int maps_address_set_street(maps_address_h address,
 EXPORT_API int maps_address_set_district(maps_address_h address,
 					 const char *district)
 {
-	if (not address or not district)
+	if (!address || !district)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_set_string(district, _MAPS_ADDRESS_DISTRICT_MAX_LENGTH,
 		&((maps_address_s *) address)->district);
@@ -309,7 +309,7 @@ EXPORT_API int maps_address_set_district(maps_address_h address,
 
 EXPORT_API int maps_address_set_city(maps_address_h address, const char *city)
 {
-	if (not address or not city)
+	if (!address || !city)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_set_string(city, _MAPS_ADDRESS_CITY_MAX_LENGTH,
 		&((maps_address_s *) address)->city);
@@ -317,7 +317,7 @@ EXPORT_API int maps_address_set_city(maps_address_h address, const char *city)
 
 EXPORT_API int maps_address_set_state(maps_address_h address, const char *state)
 {
-	if (not address or not state)
+	if (!address || !state)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_set_string(state, _MAPS_ADDRESS_STATE_MAX_LENGTH,
 		&((maps_address_s *) address)->state);
@@ -326,7 +326,7 @@ EXPORT_API int maps_address_set_state(maps_address_h address, const char *state)
 EXPORT_API int maps_address_set_country(maps_address_h address,
 					const char *country)
 {
-	if (not address or not country)
+	if (!address || !country)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_set_string(country, _MAPS_ADDRESS_COUNTRY_MAX_LENGTH,
 		&((maps_address_s *) address)->country);
@@ -335,7 +335,7 @@ EXPORT_API int maps_address_set_country(maps_address_h address,
 EXPORT_API int maps_address_set_country_code(maps_address_h address,
 					     const char *country_code)
 {
-	if (not address or not country_code)
+	if (!address || !country_code)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_set_string(country_code,
 		_MAPS_ADDRESS_COUNTRY_CODE_MAX_LENGTH,
@@ -345,7 +345,7 @@ EXPORT_API int maps_address_set_country_code(maps_address_h address,
 EXPORT_API int maps_address_set_county(maps_address_h address,
 				       const char *county)
 {
-	if (not address or not county)
+	if (!address || !county)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_set_string(county, _MAPS_ADDRESS_COUNTY_MAX_LENGTH,
 		&((maps_address_s *) address)->county);
@@ -354,7 +354,7 @@ EXPORT_API int maps_address_set_county(maps_address_h address,
 EXPORT_API int maps_address_set_postal_code(maps_address_h address,
 					    const char *postal_code)
 {
-	if (not address or not postal_code)
+	if (!address || !postal_code)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_set_string(postal_code,
 		_MAPS_ADDRESS_POSTAL_CODE_MAX_LENGTH,
@@ -364,7 +364,7 @@ EXPORT_API int maps_address_set_postal_code(maps_address_h address,
 EXPORT_API int maps_address_set_freetext(maps_address_h address,
 					 const char *freetext)
 {
-	if (not address or not freetext)
+	if (!address || !freetext)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_set_string(freetext, _MAPS_ADDRESS_FREE_TEXT_MAX_LENGTH,
 		&((maps_address_s *) address)->freetext);

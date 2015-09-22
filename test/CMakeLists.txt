@@ -8,6 +8,9 @@ ENDFOREACH(flag)
 
 SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${EXTRA_CFLAGS} -Wall -Werror")
 
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${EXTRA_CFLAGS} -Wall -Werror -fvisibility=default")
+SET(CMAKE_CXX_FLAGS_DEBUG "-O0 -g")
+
 INCLUDE_DIRECTORIES(
 	src
 	src/util
@@ -61,7 +64,6 @@ SET (TEST_SRCS
 	src/api/maps_place_image_test.cpp
 	src/api/maps_place_filter_test.cpp
 
-
 	src/api/maps_route_test.cpp
 	src/api/maps_route_maneuver_test.cpp
 	src/api/maps_route_segment_test.cpp
@@ -77,9 +79,14 @@ MESSAGE(">>>>>>>>>>>>>${TEST_SRCS}")
 
 SET(CMAKE_EXE_LINKER_FLAGS "-Wl,--as-needed -Wl,--rpath=${LIBDIR}")
 
+
 ADD_EXECUTABLE(${fw_test} ${TEST_SRCS})
 TARGET_LINK_LIBRARIES(${fw_test} ${fw_name} ${${fw_test}_LDFLAGS})
 
+
 INSTALL(TARGETS capi-maps-service-test DESTINATION /opt/usr/devel/)
+INSTALL(FILES capi-maps-service-test.efl DESTINATION /etc/smack/accesses.d)
+#INSTALL(FILES ${CMAKE_SOURCE_DIR}/test/capi-maps-service-test.xml DESTINATION /usr/share/packages)
+INSTALL(FILES capi-maps-service-test.xml DESTINATION /usr/share/packages)
 
 ADD_SUBDIRECTORY(dummy_plugin)

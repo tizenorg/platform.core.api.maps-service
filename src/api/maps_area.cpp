@@ -23,7 +23,7 @@ EXPORT_API int maps_area_create_rectangle(const maps_coordinates_h top_left,
 					  const maps_coordinates_h bottom_right,
 					  maps_area_h *area)
 {
-	if (not top_left or not bottom_right or not area)
+	if (!top_left || !bottom_right || !area)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
 	double tf_lat = .0;
@@ -67,9 +67,9 @@ EXPORT_API int maps_area_create_rectangle(const maps_coordinates_h top_left,
 EXPORT_API int maps_area_create_circle(const maps_coordinates_h center,
 				       const double radius, maps_area_h *area)
 {
-	if (not center or not area)
+	if (!center || !area)
 		return MAPS_ERROR_INVALID_PARAMETER;
-	if(radius < 0)
+	if (radius < 0)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
 	/* MAPS_CHECK_CONDITION(radius > 0, MAPS_ERROR_INVALID_PARAMETER,
@@ -91,7 +91,7 @@ EXPORT_API int maps_area_create_circle(const maps_coordinates_h center,
 
 EXPORT_API int maps_area_destroy(maps_area_h area)
 {
-	if (not area)
+	if (!area)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
 	maps_area_s *handle = (maps_area_s *) area;
@@ -102,7 +102,7 @@ EXPORT_API int maps_area_destroy(maps_area_h area)
 
 EXPORT_API int maps_area_clone(const maps_area_h origin, maps_area_h *cloned)
 {
-	if (not cloned or not origin)
+	if (!cloned || !origin)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
 	maps_area_s * origin_handle = (maps_area_s *) origin;
