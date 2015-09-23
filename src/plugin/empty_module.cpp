@@ -107,6 +107,14 @@ int maps_plugin_reverse_geocode_empty(double latitude, double longitude,
 	return 0;
 }
 
+int maps_plugin_multi_reverse_geocode_empty(const maps_coordinates_list_h maps_list,
+						const maps_preference_h preference,
+						maps_service_multi_reverse_geocode_cb callback,
+						void *user_data, int *request_id)
+{
+	return 0;
+}
+
 /* Place */
 int maps_plugin_search_place_empty(const maps_coordinates_h position,
 				   int distance,
@@ -165,6 +173,70 @@ int maps_plugin_cancel_request_empty(int request_id)
 	return 0;
 }
 
+/* Mapping */
+int maps_plugin_set_map_view_empty(const map_view_h view)
+{
+	return 0;
+}
+
+int maps_plugin_render_map_empty(const maps_coordinates_h coordinates,
+				 const double zoom_factor,
+				 const double rotation_angle,
+				 maps_plugin_render_map_cb callback,
+				 void* user_data,
+				 int* request_id)
+{
+	return 0;
+}
+
+int maps_plugin_move_center_empty(const int delta_x,
+				  const int delta_y,
+				  maps_plugin_render_map_cb callback,
+				  void* user_data,
+				  int* request_id)
+{
+	return 0;
+}
+
+int maps_plugin_draw_map_empty(Evas* canvas, const int x, const int y,
+			       const int width, const int height)
+{
+	return 0;
+}
+
+int maps_plugin_on_object_empty(const map_object_h object,
+				     const map_object_operation_e
+				     operation)
+{
+	return 0;
+}
+
+int maps_plugin_screen_to_geography_empty(const int x, const int y,
+					  maps_coordinates_h *coordinates)
+{
+	return 0;
+}
+
+int maps_plugin_geography_to_screen_empty(const maps_coordinates_h coordinates,
+					  int* x, int* y)
+{
+	return 0;
+}
+
+int maps_plugin_get_min_zoom_level_empty(int *min_zoom_level)
+{
+	return 0;
+}
+
+int maps_plugin_get_max_zoom_level_empty(int *max_zoom_level)
+{
+	return 0;
+}
+
+int maps_plugin_get_center_empty(maps_coordinates_h *coordinates)
+{
+	return 0;
+}
 
 /* Interface of a plugin with all empty functions */
 plugin::interface_s empty_interface = {
@@ -185,6 +257,7 @@ plugin::interface_s empty_interface = {
 	maps_plugin_geocode_inside_area_empty,
 	maps_plugin_geocode_by_structured_address_empty,
 	maps_plugin_reverse_geocode_empty,
+	maps_plugin_multi_reverse_geocode_empty,
 
 	/* Place */
 	maps_plugin_search_place_empty,
@@ -197,6 +270,18 @@ plugin::interface_s empty_interface = {
 
 	/* Cancel Request */
 	maps_plugin_cancel_request_empty,
+
+	/* Mapping */
+	maps_plugin_set_map_view_empty,
+	maps_plugin_render_map_empty,
+	maps_plugin_move_center_empty,
+	maps_plugin_draw_map_empty,
+	maps_plugin_on_object_empty,
+	maps_plugin_screen_to_geography_empty,
+	maps_plugin_geography_to_screen_empty,
+	maps_plugin_get_min_zoom_level_empty,
+	maps_plugin_get_max_zoom_level_empty,
+	maps_plugin_get_center_empty
 };
 
 

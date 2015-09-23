@@ -33,7 +33,7 @@ bool __equal_double(const double &d1, const double &d2)
 /* Simple type library, helpful for operating with Maps Objects */
 
 /* Coordinates */
- maps::coordinates::coordinates():object(NULL)
+maps::coordinates::coordinates():object(NULL)
 {
 }
 
@@ -52,7 +52,7 @@ maps::coordinates::coordinates(const coordinates & c):object(NULL)
 	*this = c;
 }
 
-maps::coordinates & maps::coordinates::operator=(const coordinates & c)
+maps::coordinates &maps::coordinates::operator=(const coordinates & c)
 {
 	if (this != &c) {
 		maps_coordinates_destroy(handle);

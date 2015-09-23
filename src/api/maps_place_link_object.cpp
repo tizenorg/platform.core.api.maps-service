@@ -35,6 +35,7 @@ const gsize _MAPS_PLACE_LINK_OBJECT_STRING_MAX_LENGTH = 256;
 
 EXPORT_API int maps_place_link_object_create(maps_place_link_object_h *place)
 {
+	MAPS_LOG_API;
 	if (!place)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	*place = (maps_place_link_object_h)
@@ -50,6 +51,7 @@ EXPORT_API int maps_place_link_object_create(maps_place_link_object_h *place)
 
 EXPORT_API int maps_place_link_object_destroy(maps_place_link_object_h place)
 {
+	MAPS_LOG_API;
 	if (!place)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -72,6 +74,7 @@ EXPORT_API int maps_place_link_object_clone(const maps_place_link_object_h
 					    origin, maps_place_link_object_h *
 					    cloned)
 {
+	MAPS_LOG_API;
 	if (!cloned || !origin)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -125,6 +128,7 @@ EXPORT_API int maps_place_link_object_get_string(const maps_place_link_object_h
 						 place,
 						 char **string)
 {
+	MAPS_LOG_API;
 	if (!place || !string)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_get_string(((maps_place_link_object_s *) place)->string,
@@ -135,6 +139,7 @@ EXPORT_API int maps_place_link_object_get_type(const maps_place_link_object_h
 					       place,
 					       char **type)
 {
+	MAPS_LOG_API;
 	if (!place || !type)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_get_string(((maps_place_link_object_s *) place)->type,
@@ -145,6 +150,7 @@ EXPORT_API int maps_place_link_object_get_id(const maps_place_link_object_h
 					     place,
 					     char **id)
 {
+	MAPS_LOG_API;
 	if (!place || !id)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_get_string(((maps_place_link_object_s *) place)->id,
@@ -154,6 +160,7 @@ EXPORT_API int maps_place_link_object_get_id(const maps_place_link_object_h
 EXPORT_API int maps_place_link_object_get_name(const maps_place_link_object_h
 					       place, char **name)
 {
+	MAPS_LOG_API;
 	if (!place || !name)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_get_string(((maps_place_link_object_s *) place)->name,
@@ -165,6 +172,7 @@ EXPORT_API int maps_place_link_object_get_name(const maps_place_link_object_h
 EXPORT_API int maps_place_link_object_set_id(maps_place_link_object_h place,
 					     const char *id)
 {
+	MAPS_LOG_API;
 	if (!place || !id)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_set_string(id, _MAPS_PLACE_LINK_OBJECT_ID_MAX_LENGTH,
@@ -174,6 +182,7 @@ EXPORT_API int maps_place_link_object_set_id(maps_place_link_object_h place,
 EXPORT_API int maps_place_link_object_set_string(maps_place_link_object_h place,
 						 const char *string)
 {
+	MAPS_LOG_API;
 	if (!place || !string)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_set_string(string,
@@ -184,6 +193,7 @@ EXPORT_API int maps_place_link_object_set_string(maps_place_link_object_h place,
 EXPORT_API int maps_place_link_object_set_type(maps_place_link_object_h place,
 					       const char *type)
 {
+	MAPS_LOG_API;
 	if (!place || !type)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_set_string(type, _MAPS_PLACE_LINK_OBJECT_TYPE_MAX_LENGTH,
@@ -193,6 +203,7 @@ EXPORT_API int maps_place_link_object_set_type(maps_place_link_object_h place,
 EXPORT_API int maps_place_link_object_set_name(maps_place_link_object_h place,
 					       const char *name)
 {
+	MAPS_LOG_API;
 	if (!place || !name)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_set_string(name, _MAPS_PLACE_LINK_OBJECT_NAME_MAX_LENGTH,

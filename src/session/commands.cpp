@@ -19,19 +19,30 @@
 #include "maps_place_private.h"
 #include "maps_route_private.h"
 #include "empty_module.h"
+#include "maps_extra_types_private.h"
+
+extern int _map_view_move_center(map_view_h view,
+				 const int delta_x,
+				 const int delta_y);
+
+extern int _map_view_set_zoom_rotate(map_view_h view,
+				     const bool zoom_changed,
+				     const double zoom_factor,
+				     const bool rotation_changed,
+				     const double rotation_angle);
 
 static int __put_to_hashtable(session::command_handler *ch,
 			      maps_service_data_e feature,
-			      const char *feature_str,
-			      maps_string_hashtable_h t)
+			      maps_int_hashtable_h t)
 {
-	if (!ch || !feature_str || !t)
+	if (!ch || !t)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	bool supported = false;
 	ch->plugin()->interface.maps_plugin_is_data_supported(feature,
-		&supported);
-	return (supported) ? maps_string_hashtable_set(t, feature_str,
-		feature_str) : MAPS_ERROR_NONE;
+							      &supported);
+	if(supported)
+		return  maps_int_hashtable_set(t, feature, feature);
+	return MAPS_ERROR_NONE;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -440,6 +451,117 @@ void session::command_reverse_geocode_handler::foreach_reverse_geocode_cb(
 }
 
 /*----------------------------------------------------------------------------*/
+/*typedef int (*maps_plugin_multi_reverse_geocode_f) (maps_service_h maps,
+* maps_coordinates_list_h maps_list, maps_preference_h preference,
+* maps_service_multi_reverse_geocode_cb callback, void * user_data, int *request_id) */
+session::command_multi_reverse_geocode::command_multi_reverse_geocode(
+			maps_service_h ms, const maps_coordinates_list_h list, const maps_item_hashtable_h pref,
+			maps_service_multi_reverse_geocode_cb cb, void *ud, int *request_id)
+ : command(ms)
+ , maps_list(NULL)
+ , preference(NULL)
+ , callback(cb)
+ , user_data(ud)
+ , error(0)
+{
+	*request_id = command::command_request_id++;
+	my_req_id = *request_id;
+
+	int list_size = 0;
+	maps_coordinates_list_get_length(list, &list_size);
+	if (list_size < 2 || list_size > 100)
+		error = MAPS_ERROR_INVALID_PARAMETER;
+
+	if (pref && (maps_item_hashtable_clone(pref, &preference) != MAPS_ERROR_NONE))
+		error = MAPS_ERROR_INVALID_PARAMETER;
+
+	maps_list = list;
+}
+
+session::command_multi_reverse_geocode::~command_multi_reverse_geocode()
+{
+	maps_item_hashtable_destroy(preference);
+}
+
+int session::command_multi_reverse_geocode::run()
+{
+	if (error != MAPS_ERROR_NONE)
+		return error;
+
+	pending_request pr(plugin());
+
+	/* Get the plugin interface function */
+	maps_plugin_multi_reverse_geocode_f func =
+		interface()->maps_plugin_multi_reverse_geocode;
+
+	command_multi_reverse_geocode_handler *handler = NULL;
+	if (func) {
+		/* No need to create the handler when the function is NULL */
+		pr.add(my_req_id);
+		handler = new command_multi_reverse_geocode_handler(plugin(), callback, user_data, my_req_id);
+
+		if (handler) {
+			/* Run the plugin interface function */
+			error = func(maps_list, preference,
+						command_multi_reverse_geocode_handler::foreach_multi_reverse_geocode_cb,
+						handler, &handler->plg_req_id);
+
+			pr.update(my_req_id, handler);
+
+			MAPS_LOGD("session::command_multi_reverse_geocode::run: %d", my_req_id);
+		}
+		else {
+			error = MAPS_ERROR_OUT_OF_MEMORY;
+		}
+	}
+	else {
+		/* Plugin Function is NULL: use default empty function */
+		/*
+		func = plugin::get_empty_interface().
+			maps_plugin_multi_reverse_geocode;
+		*/
+		MAPS_LOGE("MAPS_ERROR_NOT_SUPPORTED: Can't get any plugin");
+		error = MAPS_ERROR_NOT_SUPPORTED;
+	}
+
+	const int ret = error;
+	destroy();
+	return ret;
+}
+
+session::command_multi_reverse_geocode_handler::command_multi_reverse_geocode_handler(
+			plugin::plugin_s *p, maps_service_multi_reverse_geocode_cb cb, void *ud, int urid)
+ : command_handler(p, ud, urid)
+ , callback(cb)
+{
+}
+
+bool session::command_multi_reverse_geocode_handler::foreach_multi_reverse_geocode_cb(
+			maps_error_e error, int request_id, int total, maps_coordinates_list_h address_list, void *user_data)
+{
+	command_multi_reverse_geocode_handler *handler =
+		(command_multi_reverse_geocode_handler *) user_data;
+
+	if (request_id != handler->plg_req_id) {
+		MAPS_LOGE("\n\nERROR! Incorrect request id [%d] come from the plugin; expected [%d]\n\n",
+			request_id, handler->plg_req_id);
+	}
+
+	/* Make a user's copy of result data */
+	maps_coordinates_list_h cloned_result = NULL;
+	cloned_result = address_list;
+
+	/* Send data to user */
+	const bool b = handler->callback(error, handler->user_req_id, total, cloned_result, handler->user_data);
+	/*if(index>=(total-1)) */
+
+	pending_request pr(handler->plugin());
+	pr.remove(handler->user_req_id);
+
+	return b;
+}
+
+/*----------------------------------------------------------------------------*/
 /*typedef int (*maps_plugin_search_place_f)(maps_service_h maps,
 * maps_coordinates_h position, int distance, maps_item_hashtable_h preference,
 * maps_place_filter_h filter, maps_service_search_place_cb callback,
@@ -542,33 +664,23 @@ void session::command_search_place_handler::set_supported_data(maps_place_h
 	if (!place || !plugin())
 		return;
 
-	maps_string_hashtable_h data_supported = NULL;
-	if (maps_string_hashtable_create(&data_supported) != MAPS_ERROR_NONE)
+	maps_int_hashtable_h data_supported = NULL;
+	if (maps_int_hashtable_create(&data_supported) != MAPS_ERROR_NONE)
 		return;
 
-	__put_to_hashtable(this, MAPS_PLACE_ADDRESS, _S(MAPS_PLACE_ADDRESS),
-		data_supported);
-	__put_to_hashtable(this, MAPS_PLACE_RATING, _S(MAPS_PLACE_RATING),
-		data_supported);
-	__put_to_hashtable(this, MAPS_PLACE_CATEGORIES,
-		_S(MAPS_PLACE_CATEGORIES), data_supported);
-	__put_to_hashtable(this, MAPS_PLACE_ATTRIBUTES,
-		_S(MAPS_PLACE_ATTRIBUTES), data_supported);
-	__put_to_hashtable(this, MAPS_PLACE_CONTACTS, _S(MAPS_PLACE_CONTACTS),
-		data_supported);
-	__put_to_hashtable(this, MAPS_PLACE_EDITORIALS,
-		_S(MAPS_PLACE_EDITORIALS), data_supported);
-	__put_to_hashtable(this, MAPS_PLACE_REVIEWS, _S(MAPS_PLACE_REVIEWS),
-		data_supported);
-	__put_to_hashtable(this, MAPS_PLACE_IMAGE, _S(MAPS_PLACE_IMAGE),
-		data_supported);
-	__put_to_hashtable(this, MAPS_PLACE_SUPPLIER, _S(MAPS_PLACE_SUPPLIER),
-		data_supported);
-	__put_to_hashtable(this, MAPS_PLACE_RELATED, _S(MAPS_PLACE_RELATED),
-		data_supported);
+	__put_to_hashtable(this, MAPS_PLACE_ADDRESS, data_supported);
+	__put_to_hashtable(this, MAPS_PLACE_RATING, data_supported);
+	__put_to_hashtable(this, MAPS_PLACE_CATEGORIES, data_supported);
+	__put_to_hashtable(this, MAPS_PLACE_ATTRIBUTES, data_supported);
+	__put_to_hashtable(this, MAPS_PLACE_CONTACTS, data_supported);
+	__put_to_hashtable(this, MAPS_PLACE_EDITORIALS, data_supported);
+	__put_to_hashtable(this, MAPS_PLACE_REVIEWS, data_supported);
+	__put_to_hashtable(this, MAPS_PLACE_IMAGE, data_supported);
+	__put_to_hashtable(this, MAPS_PLACE_SUPPLIER, data_supported);
+	__put_to_hashtable(this, MAPS_PLACE_RELATED, data_supported);
 
 	_maps_place_set_supported_data(place, data_supported);
-	maps_string_hashtable_destroy(data_supported);
+	maps_int_hashtable_destroy(data_supported);
 }
 
 bool session::command_search_place_handler::foreach_place_cb(maps_error_e error,
@@ -673,12 +785,14 @@ int session::command_search_by_area_place::run()
 
 			/* Run the plugin interface function */
 			error = func(boundary, filter,
-				preference, command_search_place_handler::foreach_place_cb,
+				preference,
+				command_search_place_handler::foreach_place_cb,
 				handler, &handler->plg_req_id);
 
 			pr.update(my_req_id, handler);
 
-			MAPS_LOGD("session::command_search_by_area_place::run: %d", my_req_id);
+			MAPS_LOGD("session::command_search_by_area_place::run: %d",
+				  my_req_id);
 		}
 		else {
 			error = MAPS_ERROR_OUT_OF_MEMORY;
@@ -762,9 +876,11 @@ int session::command_search_by_address_place::run()
 							   my_req_id);
 		if (handler) {
 			/* Run the plugin interface function */
-			error = func(address.c_str(), boundary, filter, preference,
-					 command_search_place_handler::foreach_place_cb, handler,
-					 &handler->plg_req_id);
+			error = func(address.c_str(), boundary, filter,
+				     preference,
+				     command_search_place_handler::foreach_place_cb,
+				     handler,
+				     &handler->plg_req_id);
 
 			pr.update(my_req_id, handler);
 
@@ -859,7 +975,8 @@ int session::command_search_route::run()
 
 			pr.update(my_req_id, handler);
 
-			MAPS_LOGD("session::command_search_route::run: %d", my_req_id);
+			MAPS_LOGD("session::command_search_route::run: %d",
+				  my_req_id);
 		}
 		else {
 			error = MAPS_ERROR_OUT_OF_MEMORY;
@@ -949,12 +1066,14 @@ int session::command_search_route_waypoints::run()
 		if (handler) {
 			/* Run the plugin interface function */
 			error = func(waypoint_list, waypoint_num, preference,
-					 command_search_route_handler::foreach_route_cb, handler,
-					 &handler->plg_req_id);
+				command_search_route_handler::foreach_route_cb,
+				handler,
+				&handler->plg_req_id);
 
 			pr.update(my_req_id, handler);
 
-			MAPS_LOGD("session::command_search_place::run: %d", my_req_id);
+			MAPS_LOGD("session::command_search_place::run: %d",
+				  my_req_id);
 		}
 		else {
 			error = MAPS_ERROR_OUT_OF_MEMORY;
@@ -990,19 +1109,16 @@ void session::command_search_route_handler::set_supported_data(maps_route_h
 	if (!route || !plugin())
 		return;
 
-	maps_string_hashtable_h data_supported = NULL;
-	if (maps_string_hashtable_create(&data_supported) != MAPS_ERROR_NONE)
+	maps_int_hashtable_h data_supported = NULL;
+	if (maps_int_hashtable_create(&data_supported) != MAPS_ERROR_NONE)
 		return;
 
-	__put_to_hashtable(this, MAPS_ROUTE_PATH, _S(MAPS_ROUTE_PATH),
-		data_supported);
-	__put_to_hashtable(this, MAPS_ROUTE_SEGMENTS_PATH,
-		_S(MAPS_ROUTE_SEGMENTS_PATH), data_supported);
-	__put_to_hashtable(this, MAPS_ROUTE_SEGMENTS_MANEUVERS,
-		_S(MAPS_ROUTE_SEGMENTS_MANEUVERS), data_supported);
+	__put_to_hashtable(this, MAPS_ROUTE_PATH, data_supported);
+	__put_to_hashtable(this, MAPS_ROUTE_SEGMENTS_PATH, data_supported);
+	__put_to_hashtable(this, MAPS_ROUTE_SEGMENTS_MANEUVERS, data_supported);
 
 	_maps_route_set_supported_data(route, data_supported);
-	maps_string_hashtable_destroy(data_supported);
+	maps_int_hashtable_destroy(data_supported);
 }
 
 bool session::command_search_route_handler::foreach_route_cb(maps_error_e error,
@@ -1016,9 +1132,9 @@ bool session::command_search_route_handler::foreach_route_cb(maps_error_e error,
 		(command_search_route_handler *) user_data;
 
 	if (request_id != handler->plg_req_id) {
-		MAPS_LOGE(
-"\n\nERROR! Incorrect request id [%d] come from the plugin; expected [%d]\n\n",
-			request_id, handler->plg_req_id);
+		MAPS_LOGE("\n\nERROR! Incorrect request "
+			  "id [%d] come from the plugin; expected [%d]\n\n",
+			  request_id, handler->plg_req_id);
 	}
 
 	/* Make a user's copy of result data */
@@ -1055,8 +1171,284 @@ int session::command_cancel_request::run()
 		(pr.contains(request_id)) ? interface()->
 		maps_plugin_cancel_request(pr.
 		extract_plg_id(request_id)) : MAPS_ERROR_NOT_FOUND;
+	destroy();
+	return error;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*
+ *		Mapping API commands
+ */
+/*----------------------------------------------------------------------------*/
+
+session::command_view_set_center::command_view_set_center(maps_service_h ms,
+							   map_view_h view,
+						const maps_coordinates_h coords)
+	: command(ms)
+	, v(view)
+	, c(NULL)
+{
+	maps_coordinates_clone(coords, &c);
+}
+
+session::command_view_set_center::~command_view_set_center()
+{
+	maps_coordinates_destroy(c);
+}
+
+int session::command_view_set_center::run()
+{
+	{ /* TODO: remove it in release */
+		double lat = 0, lon = 0;
+		maps_coordinates_get_latitude_longitude(c, &lat, &lon);
+		MAPS_LOGD("session::command_view_set_center::run lat,lon=%f,%f",
+			  lat, lon);
+	}
+
+	if(!v)
+		return MAPS_ERROR_INVALID_PARAMETER;
+
+	int error = MAPS_ERROR_NONE;
+	do {
+		error = map_view_set_center(v, c);
+		if(error != MAPS_ERROR_NONE)
+			break;
+
+	} while(false);
 
 	const int ret = error;
 	destroy();
 	return ret;
+}
+
+session::command_type_e session::command_view_set_center::get_type() const
+{
+	return MAP_VIEW_SET_CENTER_COMMAND;
+}
+
+int session::command_view_set_center::get_priority() const
+{
+	return 3;
+}
+
+void session::command_view_set_center::merge(const command *c)
+{
+	if (!c || (get_type() != c->get_type())) return;
+	command_view_set_center *cmd = (command_view_set_center *)c;
+	if (v == cmd->v) {
+		double lat = .0;
+		double lon = .0;
+		maps_coordinates_get_latitude_longitude(cmd->c, &lat, &lon);
+		maps_coordinates_set_latitude_longitude(this->c, lat, lon);
+		cmd->set_merged();
+	}
+}
+
+
+/*----------------------------------------------------------------------------*/
+
+
+session::command_view_move_center::command_view_move_center(maps_service_h ms,
+							   map_view_h view,
+							   const int delta_x,
+							   const int delta_y)
+	: command(ms)
+	, v(view)
+	, _delta_x(delta_x)
+	, _delta_y(delta_y)
+{
+}
+
+session::command_view_move_center::~command_view_move_center()
+{
+}
+
+int session::command_view_move_center::run()
+{
+	MAPS_LOGD("session::command_view_move_center::run "
+		  "delta_x = %d, delta_y = %d",
+		  _delta_x, _delta_y);
+
+	if(!v)
+		return MAPS_ERROR_INVALID_PARAMETER;
+
+	int error = MAPS_ERROR_NONE;
+	do {
+		error = _map_view_move_center(v, _delta_x, _delta_y);
+		if(error != MAPS_ERROR_NONE)
+			break;
+
+	} while(false);
+
+	const int ret = error;
+	destroy();
+	return ret;
+}
+
+session::command_type_e session::command_view_move_center::get_type() const
+{
+	return MAP_VIEW_MOVE_CENTER_COMMAND;
+}
+
+int session::command_view_move_center::get_priority() const
+{
+	return 3;
+}
+
+void session::command_view_move_center::merge(const command *c)
+{
+	if (!c || (get_type() != c->get_type())) return;
+	command_view_move_center *cmd = (command_view_move_center *)c;
+	if (v == cmd->v) {
+		_delta_x += cmd->_delta_x;
+		_delta_y += cmd->_delta_y;
+		cmd->set_merged();
+	}
+}
+
+/*----------------------------------------------------------------------------*/
+
+int session::command_view_zoom::run()
+{
+	MAPS_LOGD ("session::command_view_zoom::run factor = %f", zoom_factor);
+
+	if (!v)
+		return MAPS_ERROR_INVALID_PARAMETER;
+
+	const int ret = map_view_set_zoom_factor (v, zoom_factor);
+
+	destroy ();
+	return ret;
+}
+
+session::command_type_e session::command_view_zoom::get_type() const
+{
+	return MAP_VIEW_ZOOM_COMMAND;
+}
+
+int session::command_view_zoom::get_priority() const
+{
+	return 2;
+}
+
+void session::command_view_zoom::merge(const command *c)
+{
+	if (!c || (get_type() != c->get_type())) return;
+	command_view_zoom *cmd = (command_view_zoom *)c;
+	if (v == cmd->v) {
+		zoom_factor = cmd->zoom_factor;
+		cmd->set_merged ();
+	}
+}
+
+/*----------------------------------------------------------------------------*/
+int session::command_view_rotate::run()
+{
+	MAPS_LOGD ("session::command_view_rotate::run angle = %f",
+		  rotation_angle);
+
+	if (!v)
+		return MAPS_ERROR_INVALID_PARAMETER;
+
+	const int ret = map_view_set_orientation(v, rotation_angle);
+
+	destroy ();
+	return ret;
+}
+
+session::command_type_e session::command_view_rotate::get_type() const
+{
+	return MAP_VIEW_ROTATE_COMMAND;
+}
+
+int session::command_view_rotate::get_priority() const
+{
+	return 2;
+}
+
+void session::command_view_rotate::merge(const command *c)
+{
+	if (!c || (get_type() != c->get_type())) return;
+	command_view_rotate *cmd = (command_view_rotate *)c;
+	if (v == cmd->v) {
+		rotation_angle += cmd->rotation_angle;
+		cmd->set_merged();
+	}
+}
+
+/*----------------------------------------------------------------------------*/
+
+int session::command_view_zoom_rotate::run()
+{
+	MAPS_LOGD ("session::command_view_zoom_rotate::run "
+		   "factor = %f, angle = %f",
+		   zoom_factor, rotation_angle);
+
+	if (!v)
+		return MAPS_ERROR_INVALID_PARAMETER;
+
+	const int ret = _map_view_set_zoom_rotate(v,
+						  true, zoom_factor,
+						  true, rotation_angle);
+
+	destroy ();
+	return ret;
+}
+
+session::command_type_e session::command_view_zoom_rotate::get_type() const
+{
+	return MAP_VIEW_ZOOM_ROTATE_COMMAND;
+}
+
+int session::command_view_zoom_rotate::get_priority() const
+{
+	return 2;
+}
+
+void session::command_view_zoom_rotate::merge(const command *c)
+{
+	if (!c || (get_type() != c->get_type())) return;
+	command_view_zoom_rotate *cmd = (command_view_zoom_rotate *)c;
+	if (v == cmd->v) {
+		zoom_factor = cmd->zoom_factor;
+		rotation_angle += cmd->rotation_angle;
+		cmd->set_merged();
+	}
+}
+
+/*----------------------------------------------------------------------------*/
+extern int __map_view_ready(map_view_h view);
+
+int session::command_view_ready::run()
+{
+	MAPS_LOGD ("session::command_view_ready::run");
+
+	if (!v)
+		return MAPS_ERROR_INVALID_PARAMETER;
+
+	const int ret = __map_view_ready(v);
+
+	destroy ();
+	return ret;
+}
+
+
+session::command_type_e session::command_view_ready::get_type() const
+{
+	return MAP_VIEW_READY_COMMAND;
+}
+
+int session::command_view_ready::get_priority() const
+{
+	return 1;
+}
+
+void session::command_view_ready::merge(const command *c)
+{
+	/*g_print("+");*/
+	if (!c || (get_type() != c->get_type())) return;
+	command_view_ready *cmd = (command_view_ready *)c;
+	if (v == cmd->v)
+		cmd->set_merged ();
 }

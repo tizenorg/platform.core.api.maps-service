@@ -40,6 +40,7 @@ const gsize _MAPS_ROUTE_MANEUVER_LOCALE_MAX_LENGTH = 32;
 
 EXPORT_API int maps_route_maneuver_create(maps_route_maneuver_h *maneuver)
 {
+	MAPS_LOG_API;
 	if (!maneuver)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	*maneuver = (maps_route_maneuver_h) g_slice_new0(maps_route_maneuver_s);
@@ -54,6 +55,7 @@ EXPORT_API int maps_route_maneuver_create(maps_route_maneuver_h *maneuver)
 
 EXPORT_API int maps_route_maneuver_destroy(maps_route_maneuver_h maneuver)
 {
+	MAPS_LOG_API;
 	if (!maneuver)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -75,6 +77,7 @@ EXPORT_API int maps_route_maneuver_destroy(maps_route_maneuver_h maneuver)
 EXPORT_API int maps_route_maneuver_clone(const maps_route_maneuver_h origin,
 					 maps_route_maneuver_h *cloned)
 {
+	MAPS_LOG_API;
 	if (!cloned || !origin)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -149,6 +152,7 @@ EXPORT_API int maps_route_maneuver_get_direction_id(const maps_route_maneuver_h
 						    maps_route_direction_e *
 						    direction_id)
 {
+	MAPS_LOG_API;
 	if (!maneuver || !direction_id)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	*direction_id = ((maps_route_maneuver_s *) maneuver)->direction_id;
@@ -160,6 +164,7 @@ EXPORT_API int maps_route_maneuver_get_turn_type(const maps_route_maneuver_h
 						 maps_route_turn_type_e *
 						 turn_type)
 {
+	MAPS_LOG_API;
 	if (!maneuver || !turn_type)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	*turn_type = ((maps_route_maneuver_s *) maneuver)->turn_type;
@@ -170,6 +175,7 @@ EXPORT_API int maps_route_maneuver_get_position(const maps_route_maneuver_h
 						maneuver,
 						maps_coordinates_h * position)
 {
+	MAPS_LOG_API;
 	if (!maneuver || !position)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_coordinates_clone(((maps_route_maneuver_s *) maneuver)->
@@ -180,6 +186,7 @@ EXPORT_API int maps_route_maneuver_get_road_name(const maps_route_maneuver_h
 						 maneuver,
 						 char ** road_name)
 {
+	MAPS_LOG_API;
 	if (!maneuver || !road_name)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_get_string(((maps_route_maneuver_s *) maneuver)->road_name,
@@ -192,6 +199,7 @@ EXPORT_API int maps_route_maneuver_get_instruction_text(const
 							char **
 							instruction_text)
 {
+	MAPS_LOG_API;
 	if (!maneuver || !instruction_text)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_get_string(((maps_route_maneuver_s *) maneuver)->
@@ -204,6 +212,7 @@ EXPORT_API int maps_route_maneuver_get_locale(const maps_route_maneuver_h
 					      maneuver,
 					      char **locale)
 {
+	MAPS_LOG_API;
 	if (!maneuver || !locale)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_get_string(((maps_route_maneuver_s *) maneuver)->locale,
@@ -215,6 +224,7 @@ EXPORT_API int maps_route_maneuver_get_time_to_next_instruction(const
 							maneuver,
 						int *time_to_next_instruction)
 {
+	MAPS_LOG_API;
 	if (!maneuver || !time_to_next_instruction)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	*time_to_next_instruction =
@@ -226,6 +236,7 @@ EXPORT_API int maps_route_maneuver_get_distance_to_next_instruction(const
 					maps_route_maneuver_h maneuver,
 					double *distance_to_next_instruction)
 {
+	MAPS_LOG_API;
 	if (!maneuver || !distance_to_next_instruction)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	*distance_to_next_instruction =
@@ -242,9 +253,10 @@ EXPORT_API int maps_route_maneuver_set_direction_id(maps_route_maneuver_h
 						    maps_route_direction_e
 						    direction_id)
 {
+	MAPS_LOG_API;
 	if (!maneuver)
 		return MAPS_ERROR_INVALID_PARAMETER;
-	if((direction_id < MAPS_ROUTE_DIRECTION_NONE)
+	if ((direction_id < MAPS_ROUTE_DIRECTION_NONE)
 	   || (direction_id > MAPS_ROUTE_DIRECTION_EAST))
 		return MAPS_ERROR_INVALID_PARAMETER;
 	((maps_route_maneuver_s *) maneuver)->direction_id = direction_id;
@@ -255,9 +267,10 @@ EXPORT_API int maps_route_maneuver_set_turn_type(maps_route_maneuver_h maneuver,
 						 const maps_route_turn_type_e
 						 turn_type)
 {
+	MAPS_LOG_API;
 	if (!maneuver)
 		return MAPS_ERROR_INVALID_PARAMETER;
-	if((turn_type < MAPS_ROUTE_TURN_TYPE_NONE)
+	if ((turn_type < MAPS_ROUTE_TURN_TYPE_NONE)
 	   || (turn_type > MAPS_ROUTE_TURN_TYPE_STRAIGHT_FORK))
 		return MAPS_ERROR_INVALID_PARAMETER;
 	((maps_route_maneuver_s *) maneuver)->turn_type = turn_type;
@@ -268,6 +281,7 @@ EXPORT_API int maps_route_maneuver_set_position(maps_route_maneuver_h maneuver,
 						const maps_coordinates_h
 						position)
 {
+	MAPS_LOG_API;
 	if (!maneuver || !position)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_route_maneuver_s *p = (maps_route_maneuver_s *) maneuver;
@@ -279,6 +293,7 @@ EXPORT_API int maps_route_maneuver_set_position(maps_route_maneuver_h maneuver,
 EXPORT_API int maps_route_maneuver_set_road_name(maps_route_maneuver_h maneuver,
 						 const char *road_name)
 {
+	MAPS_LOG_API;
 	if (!maneuver || !road_name)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_set_string(road_name,
@@ -291,6 +306,7 @@ EXPORT_API int maps_route_maneuver_set_instruction_text(maps_route_maneuver_h
 							const char *
 							instruction_text)
 {
+	MAPS_LOG_API;
 	if (!maneuver || !instruction_text)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_set_string(instruction_text,
@@ -301,6 +317,7 @@ EXPORT_API int maps_route_maneuver_set_instruction_text(maps_route_maneuver_h
 EXPORT_API int maps_route_maneuver_set_locale(maps_route_maneuver_h maneuver,
 					      const char *locale)
 {
+	MAPS_LOG_API;
 	if (!maneuver || !locale)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_route_maneuver_s *p = (maps_route_maneuver_s *) maneuver;
@@ -312,6 +329,7 @@ EXPORT_API int maps_route_maneuver_set_time_to_next_instruction(
 					maps_route_maneuver_h maneuver,
 					const int time_to_next_instruction)
 {
+	MAPS_LOG_API;
 	if (!maneuver || time_to_next_instruction < 0)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	((maps_route_maneuver_s *) maneuver)->time_to_next_instruction =
@@ -323,6 +341,7 @@ EXPORT_API int maps_route_maneuver_set_distance_to_next_instruction(
 				maps_route_maneuver_h maneuver,
 				const double distance_to_next_instruction)
 {
+	MAPS_LOG_API;
 	if (!maneuver || distance_to_next_instruction < 0)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	((maps_route_maneuver_s *) maneuver)->distance_to_next_instruction =

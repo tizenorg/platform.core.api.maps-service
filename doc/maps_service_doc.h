@@ -97,11 +97,11 @@
  *
  *  - Category Search: search for popular places for the given location context
  *  and matching the category filter criteria.
- *    You can refine your search request by secifying the categories of place
+ *    You can refine your search request by specifying the categories of place
  *    you are searching for.
  *
  * - Result item type of searching
- *  - id, name, location, distance, uri, rating, category.
+ *  - id, name, location, distance, URI, rating, category.
  *  .
  * - Place information allows to fetch details about a place. The following
  * place content is supported:
@@ -111,21 +111,38 @@
  *  closings, disabled access.
  *  .
  * .
+ * Snapshots
+ * - The Maps Snapshot API allows to capture a snapshot of the map with
+ * specified parameters:
+ *  - geographical coordinates of central map location
+ *  - zoom level
+ *  - orientation (rotation angle)
+ *  - width and height in pixels
+ *  - etc
+ *  .
+ * .
  * The developer is allowed to choose one of map providers by manipulating map
- * plugins.
+ * plug-ins.
  *
  * @if WEARABLE
  * @section	CAPI_MAPS_SERVICE_MODULE_FEATURE Related Features
  * This API is related with the following features:
  *  - http://tizen.org/feature/network.internet
  *
- * It is recommended to design feature related codes in your application for reliability.\n
+ * It is recommended to design feature related codes in your application for
+ * reliability.\n
  *
- * You can check if a devrice supports the related features for this API by using @ref CAPI_SYSTEM_SYSTEM_INFO_MODULE, thereby controlling the procedure of your application.\n
+ * You can check if a device supports the related features for this API by using
+ * @ref CAPI_SYSTEM_SYSTEM_INFO_MODULE, thereby controlling the procedure of
+ * your application.\n
  *
- * To ensure your application is only running on the device with specific features, please define the features in your manifest file using the manifest editor in the SDK.\n
+ * To ensure your application is only running on the device with specific
+ * features, please define the features in your manifest file using the manifest
+ * editor in the SDK.\n
  *
- * More details on featuring your application can be found from <a href="../org.tizen.mobile.native.appprogramming/html/ide_sdk_tools/feature_element.htm"><b>Feature Element</b>.</a>
+ * More details on featuring your application can be found from
+ * <a href="https://developer.tizen.org/development/tools/native-tools/manifest-text-editor#feature"><b>Feature Element</b>.</a>
+ * @endif
  */
 
 #endif /*__MAPS_SERVICE_DOC_H__ */

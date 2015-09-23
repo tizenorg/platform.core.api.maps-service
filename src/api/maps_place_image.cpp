@@ -38,6 +38,7 @@ const gsize _MAPS_PLACE_IMAGE_URL_MAX_LENGTH = 128;
 
 EXPORT_API int maps_place_image_create(maps_place_image_h *place)
 {
+	MAPS_LOG_API;
 	if (!place)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	*place = (maps_place_image_h) g_slice_new0(maps_place_image_s);
@@ -52,6 +53,7 @@ EXPORT_API int maps_place_image_create(maps_place_image_h *place)
 
 EXPORT_API int maps_place_image_destroy(maps_place_image_h place)
 {
+	MAPS_LOG_API;
 	if (!place)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -74,6 +76,7 @@ EXPORT_API int maps_place_image_destroy(maps_place_image_h place)
 EXPORT_API int maps_place_image_clone(const maps_place_image_h origin,
 				      maps_place_image_h *cloned)
 {
+	MAPS_LOG_API;
 	if (!cloned || !origin)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -131,6 +134,7 @@ EXPORT_API int maps_place_image_clone(const maps_place_image_h origin,
 EXPORT_API int maps_place_image_get_url(const maps_place_image_h place,
 					char **url)
 {
+	MAPS_LOG_API;
 	if (!place || !url)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_get_string(((maps_place_image_s *) place)->url,
@@ -140,6 +144,7 @@ EXPORT_API int maps_place_image_get_url(const maps_place_image_h place,
 EXPORT_API int maps_place_image_get_id(const maps_place_image_h place,
 				       char **id)
 {
+	MAPS_LOG_API;
 	if (!place || !id)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_get_string(((maps_place_image_s *) place)->id,
@@ -149,6 +154,7 @@ EXPORT_API int maps_place_image_get_id(const maps_place_image_h place,
 EXPORT_API int maps_place_image_get_width(const maps_place_image_h place,
 					  int *width)
 {
+	MAPS_LOG_API;
 	if (!place || !width)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	*width = ((maps_place_image_s *) place)->width;
@@ -158,6 +164,7 @@ EXPORT_API int maps_place_image_get_width(const maps_place_image_h place,
 EXPORT_API int maps_place_image_get_height(const maps_place_image_h place,
 					   int *height)
 {
+	MAPS_LOG_API;
 	if (!place || !height)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	*height = ((maps_place_image_s *) place)->height;
@@ -167,6 +174,7 @@ EXPORT_API int maps_place_image_get_height(const maps_place_image_h place,
 EXPORT_API int maps_place_image_get_user_link(const maps_place_image_h place,
 					      maps_place_link_object_h *user)
 {
+	MAPS_LOG_API;
 	if (!place || !user)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_place_link_object_clone(((maps_place_image_s *) place)->
@@ -176,6 +184,7 @@ EXPORT_API int maps_place_image_get_user_link(const maps_place_image_h place,
 EXPORT_API int maps_place_image_get_media(const maps_place_image_h place,
 					  maps_place_media_h *media)
 {
+	MAPS_LOG_API;
 	if (!place || !media)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_place_media_clone(((maps_place_image_s *) place)->media,
@@ -186,6 +195,7 @@ EXPORT_API int maps_place_image_get_media(const maps_place_image_h place,
 
 EXPORT_API int maps_place_image_set_id(maps_place_image_h place, const char *id)
 {
+	MAPS_LOG_API;
 	if (!place || !id)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_set_string(id, _MAPS_PLACE_IMAGE_ID_MAX_LENGTH,
@@ -195,6 +205,7 @@ EXPORT_API int maps_place_image_set_id(maps_place_image_h place, const char *id)
 EXPORT_API int maps_place_image_set_url(maps_place_image_h place,
 					const char *url)
 {
+	MAPS_LOG_API;
 	if (!place || !url)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_set_string(url, _MAPS_PLACE_IMAGE_URL_MAX_LENGTH,
@@ -204,6 +215,7 @@ EXPORT_API int maps_place_image_set_url(maps_place_image_h place,
 EXPORT_API int maps_place_image_set_width(maps_place_image_h place,
 					  const int width)
 {
+	MAPS_LOG_API;
 	if (!place || width < 0)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	((maps_place_image_s *) place)->width = width;
@@ -213,6 +225,7 @@ EXPORT_API int maps_place_image_set_width(maps_place_image_h place,
 EXPORT_API int maps_place_image_set_height(maps_place_image_h place,
 					   const int height)
 {
+	MAPS_LOG_API;
 	if (!place || height < 0)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	((maps_place_image_s *) place)->height = height;
@@ -223,6 +236,7 @@ EXPORT_API int maps_place_image_set_user_link(maps_place_image_h place,
 					      const maps_place_link_object_h
 					      user)
 {
+	MAPS_LOG_API;
 	if (!place || !user)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_place_image_s *i = (maps_place_image_s *) place;
@@ -234,6 +248,7 @@ EXPORT_API int maps_place_image_set_user_link(maps_place_image_h place,
 EXPORT_API int maps_place_image_set_media(maps_place_image_h place,
 					  const maps_place_media_h media)
 {
+	MAPS_LOG_API;
 	if (!place || !media)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_place_image_s *i = (maps_place_image_s *) place;

@@ -18,6 +18,7 @@
 #include "maps_route_segment_plugin.h"
 #include "maps_route_maneuver_plugin.h"
 #include "maps_extra_types.h"
+#include "maps_extra_types_private.h"
 #include <glib.h>
 #include "maps_util.h"
 #include "maps_route_segment_private.h"
@@ -44,14 +45,14 @@ typedef struct _maps_route_segment_s
 					  maps_route_maneuver_h */
 
 	/* The table of available data features */
-	maps_string_hashtable_h supported_data;
-	/* TODO: implement hashtable<int, int> */
+	maps_int_hashtable_h supported_data;
 } maps_route_segment_s;
 
 /*----------------------------------------------------------------------------*/
 
 EXPORT_API int maps_route_segment_create(maps_route_segment_h *segment)
 {
+	MAPS_LOG_API;
 	if (!segment)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	*segment = (maps_route_segment_h) g_slice_new0(maps_route_segment_s);
@@ -66,6 +67,7 @@ EXPORT_API int maps_route_segment_create(maps_route_segment_h *segment)
 
 EXPORT_API int maps_route_segment_destroy(maps_route_segment_h segment)
 {
+	MAPS_LOG_API;
 	if (!segment)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -88,7 +90,7 @@ EXPORT_API int maps_route_segment_destroy(maps_route_segment_h segment)
 	}
 
 	if (p->supported_data)
-		maps_item_hashtable_destroy(p->supported_data);
+		maps_int_hashtable_destroy(p->supported_data);
 
 	g_slice_free(maps_route_segment_s, segment);
 	return MAPS_ERROR_NONE;
@@ -97,6 +99,7 @@ EXPORT_API int maps_route_segment_destroy(maps_route_segment_h segment)
 EXPORT_API int maps_route_segment_clone(const maps_route_segment_h segment,
 					maps_route_segment_h *cloned)
 {
+	MAPS_LOG_API;
 	if (!cloned || !segment)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -170,6 +173,7 @@ EXPORT_API int maps_route_segment_clone(const maps_route_segment_h segment,
 EXPORT_API int maps_route_segment_get_origin(const maps_route_segment_h segment,
 					     maps_coordinates_h *origin)
 {
+	MAPS_LOG_API;
 	if (!segment || !origin)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_coordinates_clone(((maps_route_segment_s *) segment)->
@@ -180,6 +184,7 @@ EXPORT_API int maps_route_segment_get_destination(const maps_route_segment_h
 						  segment,
 						maps_coordinates_h *destination)
 {
+	MAPS_LOG_API;
 	if (!segment || !destination)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_coordinates_clone(((maps_route_segment_s *) segment)->
@@ -190,6 +195,7 @@ EXPORT_API int maps_route_segment_get_bounding_box(const maps_route_segment_h
 						   segment, maps_area_h *
 						   bounding_box)
 {
+	MAPS_LOG_API;
 	if (!segment || !bounding_box)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_area_clone(((maps_route_segment_s *) segment)->bounding_box,
@@ -200,6 +206,7 @@ EXPORT_API int maps_route_segment_get_distance(const maps_route_segment_h
 					       segment,
 					       double *distance)
 {
+	MAPS_LOG_API;
 	if (!segment || !distance)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	*distance = ((maps_route_segment_s *) segment)->distance;
@@ -210,6 +217,7 @@ EXPORT_API int maps_route_segment_get_duration(const maps_route_segment_h
 					       segment,
 					       long *duration)
 {
+	MAPS_LOG_API;
 	if (!segment || !duration)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	*duration = ((maps_route_segment_s *) segment)->duration;
@@ -221,10 +229,19 @@ EXPORT_API int maps_route_segment_foreach_path(const maps_route_segment_h
 					maps_route_segment_path_cb callback,
 					void *user_data)
 {
-	if (!segment || !callback)
+	MAPS_LOG_API;
+	/* Check if the handle of the Segment is valid */
+	if (!segment)
 		return MAPS_ERROR_INVALID_PARAMETER;
+
+	/* Check if this API feature available */
 	if (!__is_supported(segment, MAPS_ROUTE_SEGMENTS_PATH))
 		return MAPS_ERROR_NOT_SUPPORTED;
+
+	/* Check if parameters are valid */
+	if (!callback)
+		return MAPS_ERROR_INVALID_PARAMETER;
+
 	return maps_item_list_foreach(((maps_route_segment_s *) segment)->path,
 		maps_coordinates_clone, callback, user_data);
 }
@@ -235,10 +252,19 @@ EXPORT_API int maps_route_segment_foreach_maneuver(const maps_route_segment_h
 						callback,
 						void *user_data)
 {
-	if (!segment || !callback)
+	MAPS_LOG_API;
+	/* Check if the handle of the Segment is valid */
+	if (!segment)
 		return MAPS_ERROR_INVALID_PARAMETER;
+
+	/* Check if this API feature available */
 	if (!__is_supported(segment, MAPS_ROUTE_SEGMENTS_MANEUVERS))
 		return MAPS_ERROR_NOT_SUPPORTED;
+
+	/* Check if parameters are valid */
+	if (!callback)
+		return MAPS_ERROR_INVALID_PARAMETER;
+
 	return maps_item_list_foreach(((maps_route_segment_s *) segment)->
 		maneuvers, maps_route_maneuver_clone, callback, user_data);
 }
@@ -250,7 +276,8 @@ int _maps_route_segment_is_data_supported(const maps_route_segment_h segment,
 	if (!segment || !supported)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
-	if (!((maps_route_segment_s *) segment)->supported_data) {
+	maps_route_segment_s *s = (maps_route_segment_s *)segment;
+	if (!s->supported_data) {
 		/* This is a case when the "supported" flags are not set yet */
 		/* No need to limit access to fields */
 		*supported = true;
@@ -258,20 +285,7 @@ int _maps_route_segment_is_data_supported(const maps_route_segment_h segment,
 	}
 
 	*supported = false;
-	string data_feature;
-	switch (data) {
-	case MAPS_ROUTE_SEGMENTS_PATH:
-		data_feature = _S(MAPS_ROUTE_SEGMENTS_PATH);
-		break;
-	case MAPS_ROUTE_SEGMENTS_MANEUVERS:
-		data_feature = _S(MAPS_ROUTE_SEGMENTS_MANEUVERS);
-		break;
-	default:
-		return MAPS_ERROR_NOT_SUPPORTED;
-	}
-	return maps_string_hashtable_contains(((maps_route_segment_s *)
-			segment)->supported_data, data_feature.c_str(),
-		supported);
+	return maps_int_hashtable_contains(s->supported_data, data, supported);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -279,6 +293,7 @@ int _maps_route_segment_is_data_supported(const maps_route_segment_h segment,
 EXPORT_API int maps_route_segment_set_origin(maps_route_segment_h segment,
 					     const maps_coordinates_h origin)
 {
+	MAPS_LOG_API;
 	if (!segment || !origin)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_route_segment_s *p = (maps_route_segment_s *) segment;
@@ -291,6 +306,7 @@ EXPORT_API int maps_route_segment_set_destination(maps_route_segment_h segment,
 						  const maps_coordinates_h
 						  destination)
 {
+	MAPS_LOG_API;
 	if (!segment || !destination)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_route_segment_s *p = (maps_route_segment_s *) segment;
@@ -304,6 +320,7 @@ EXPORT_API int maps_route_segment_set_bounding_box(maps_route_segment_h segment,
 						   const maps_area_h
 						   bounding_box)
 {
+	MAPS_LOG_API;
 	if (!segment || !bounding_box)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_route_segment_s *p = (maps_route_segment_s *) segment;
@@ -315,6 +332,7 @@ EXPORT_API int maps_route_segment_set_bounding_box(maps_route_segment_h segment,
 EXPORT_API int maps_route_segment_set_distance(maps_route_segment_h segment,
 					       const double distance)
 {
+	MAPS_LOG_API;
 	if (!segment || distance < 0)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	((maps_route_segment_s *) segment)->distance = distance;
@@ -324,6 +342,7 @@ EXPORT_API int maps_route_segment_set_distance(maps_route_segment_h segment,
 EXPORT_API int maps_route_segment_set_duration(maps_route_segment_h segment,
 					       const long duration)
 {
+	MAPS_LOG_API;
 	if (!segment || duration < 0)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	((maps_route_segment_s *) segment)->duration = duration;
@@ -333,6 +352,7 @@ EXPORT_API int maps_route_segment_set_duration(maps_route_segment_h segment,
 EXPORT_API int maps_route_segment_set_path(maps_route_segment_h segment,
 					   const maps_item_list_h path)
 {
+	MAPS_LOG_API;
 	if (!segment || !path)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_route_segment_s *s = (maps_route_segment_s *) segment;
@@ -348,6 +368,7 @@ EXPORT_API int maps_route_segment_set_maneuvers(maps_route_segment_h segment,
 						const maps_item_list_h
 						maneuvers)
 {
+	MAPS_LOG_API;
 	if (!segment || !maneuvers)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_route_segment_s *s = (maps_route_segment_s *) segment;
@@ -362,7 +383,7 @@ EXPORT_API int maps_route_segment_set_maneuvers(maps_route_segment_h segment,
 }
 
 int _maps_route_segment_set_supported_data(maps_route_segment_h segment,
-					   const maps_string_hashtable_h
+					   const maps_int_hashtable_h
 					   supported_data)
 {
 
@@ -370,6 +391,6 @@ int _maps_route_segment_set_supported_data(maps_route_segment_h segment,
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_route_segment_s *p = (maps_route_segment_s *) segment;
 	if (p->supported_data)
-		maps_string_hashtable_destroy(p->supported_data);
-	return maps_string_hashtable_clone(supported_data, &p->supported_data);
+		maps_int_hashtable_destroy(p->supported_data);
+	return maps_int_hashtable_clone(supported_data, &p->supported_data);
 }
