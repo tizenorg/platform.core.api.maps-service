@@ -22,6 +22,7 @@
 #include <glib.h>
 #include "maps_place_private.h"
 #include "maps_util.h"
+#include "maps_extra_types_private.h"
 
  /* int maps_place_create(maps_place_h* place); */
 /* int maps_place_destroy(maps_place_h place); */
@@ -46,49 +47,57 @@ void utc_maps_place_create_n(void)
 }
 
 /*----------------------------------------------------------------------------*/
-static int __utc_put_to_hashtable(const char* feature_str,
-	maps_string_hashtable_h t)
-{
-	if (!feature_str || !t)
-		return MAPS_ERROR_INVALID_PARAMETER;
-	return maps_string_hashtable_set(t, feature_str, feature_str);
-}
 
 class test_env
 {
- public:
+public:
 	maps_place_h p;
 	int iteration;
- public:
-	 test_env():p(NULL), iteration(0)
+public:
+	test_env():p(NULL), iteration(0)
 	{
 		const int error = maps_place_create(&p);
-		 g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
-		 g_assert(p);
+		g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
+		g_assert(p);
 
-		maps_string_hashtable_h data_supported = NULL;
-		if (maps_string_hashtable_create(&data_supported) !=
-			MAPS_ERROR_NONE)
-			 return;
+		maps_int_hashtable_h data_supported = NULL;
+		if (maps_int_hashtable_create(&data_supported) !=
+		    MAPS_ERROR_NONE)
+			return;
 
-		 __utc_put_to_hashtable(_S(MAPS_PLACE_ADDRESS), data_supported);
-		 __utc_put_to_hashtable(_S(MAPS_PLACE_RATING), data_supported);
-		 __utc_put_to_hashtable(_S(MAPS_PLACE_CATEGORIES),
-			data_supported);
-		 __utc_put_to_hashtable(_S(MAPS_PLACE_ATTRIBUTES),
-			data_supported);
-		 __utc_put_to_hashtable(_S(MAPS_PLACE_CONTACTS),
-			data_supported);
-		 __utc_put_to_hashtable(_S(MAPS_PLACE_EDITORIALS),
-			data_supported);
-		 __utc_put_to_hashtable(_S(MAPS_PLACE_REVIEWS), data_supported);
-		 __utc_put_to_hashtable(_S(MAPS_PLACE_IMAGE), data_supported);
-		 __utc_put_to_hashtable(_S(MAPS_PLACE_SUPPLIER),
-			data_supported);
-		 __utc_put_to_hashtable(_S(MAPS_PLACE_RELATED), data_supported);
+		maps_int_hashtable_set(data_supported,
+				       MAPS_PLACE_ADDRESS,
+				       MAPS_PLACE_ADDRESS);
+		maps_int_hashtable_set(data_supported,
+				       MAPS_PLACE_RATING,
+				       MAPS_PLACE_RATING);
+		maps_int_hashtable_set(data_supported,
+				       MAPS_PLACE_CATEGORIES,
+				       MAPS_PLACE_CATEGORIES);
+		maps_int_hashtable_set(data_supported,
+				       MAPS_PLACE_ATTRIBUTES,
+				       MAPS_PLACE_ATTRIBUTES);
+		maps_int_hashtable_set(data_supported,
+				       MAPS_PLACE_CONTACTS,
+				       MAPS_PLACE_CONTACTS);
+		maps_int_hashtable_set(data_supported,
+				       MAPS_PLACE_EDITORIALS,
+				       MAPS_PLACE_EDITORIALS);
+		maps_int_hashtable_set(data_supported,
+				       MAPS_PLACE_REVIEWS,
+				       MAPS_PLACE_REVIEWS);
+		maps_int_hashtable_set(data_supported,
+				       MAPS_PLACE_IMAGE,
+				       MAPS_PLACE_IMAGE);
+		maps_int_hashtable_set(data_supported,
+				       MAPS_PLACE_SUPPLIER,
+				       MAPS_PLACE_SUPPLIER);
+		maps_int_hashtable_set(data_supported,
+				       MAPS_PLACE_RELATED,
+				       MAPS_PLACE_RELATED);
 
-		 _maps_place_set_supported_data(p, data_supported);
-		 maps_string_hashtable_destroy(data_supported);
+		_maps_place_set_supported_data(p, data_supported);
+		maps_int_hashtable_destroy(data_supported);
 
 	}
 	~test_env()
@@ -240,11 +249,7 @@ void utc_maps_place_set_location_p(void)
 	test_env e;
 
 	maps_coordinates_h location = NULL;
-	int error = maps_coordinates_create(44.4, 22.2,
-#if _MAPS_COORDS_3D_
-		33.3,
-#endif
-		&location);
+	int error = maps_coordinates_create(44.4, 22.2, &location);
 	g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
 	g_assert(location);
 
@@ -257,25 +262,15 @@ void utc_maps_place_set_location_p(void)
 	g_assert(location_obtained);
 
 	double lat = .0, lon = .0;
-#if _MAPS_COORDS_3D_
-	double alt = .0;
-#endif
 
 	error = maps_coordinates_get_latitude(location_obtained, &lat);
 	g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
 	error = maps_coordinates_get_longitude(location_obtained, &lon);
 	g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
 
-#if _MAPS_COORDS_3D
-	error = maps_coordinates_get_altitude(location_obtained, &alt);
-	g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
-#endif
 
 	g_assert_cmpfloat(44.4, ==, lat);
 	g_assert_cmpfloat(22.2, ==, lon);
-#if _MAPS_COORDS_3D_
-	g_assert_cmpfloat(33.3, ==, alt);
-#endif
 
 	error = maps_coordinates_destroy(location);
 	g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
@@ -288,11 +283,7 @@ void utc_maps_place_set_location_n(void)
 	test_env e;
 
 	maps_coordinates_h location = NULL;
-	int error = maps_coordinates_create(44.4, 22.2,
-#if _MAPS_COORDS_3D_
-		33.3,
-#endif
-		&location);
+	int error = maps_coordinates_create(44.4, 22.2, &location);
 	g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
 	g_assert(location);
 

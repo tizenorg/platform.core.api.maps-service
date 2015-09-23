@@ -1,6 +1,5 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
 SET(fw_name "capi-maps-service")
-SET(DUMMY_PLUGIN "maps-plugin-test")
 
 PROJECT(${fw_name})
 
@@ -13,17 +12,35 @@ SET(INTERNAL_INC_DIR
 	src/api
 	src/plugin
 	src/session
-	test/dummy_plugin/
-	test/src/util/
+	src/view
 	)
 INCLUDE_DIRECTORIES(${INC_DIR} ${INTERNAL_INC_DIR})
 
-SET(DUMMY_PLUGIN_SRC
-	test/dummy_plugin/dummy_plugin.cpp
-	test/src/util/maps_object.cpp
-	)
 
-SET(dependents "glib-2.0 gmodule-2.0 dlog capi-base-common")
+SET(dependents
+	# Maps API dependencies
+	glib-2.0
+	gmodule-2.0
+	capi-base-common
+	dlog
+	capi-appfw-app-manager
+	capi-appfw-package-manager
+	pkgmgr-info
+	privacy-manager-client
+	capi-system-info
+
+	# Mapping API dependencies
+	capi-appfw-application
+	ecore
+	ecore-evas
+	elementary
+#	ecore-imf
+#	ecore-x
+#	eina
+#	ecore-input
+#	capi-appfw-application
+#	appcore-efl
+	)
 SET(pc_dependents "capi-base-common")
 
 INCLUDE(FindPkgConfig)
@@ -37,7 +54,7 @@ SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${EXTRA_CFLAGS} -fPIC -Wall -Werror -fvisibi
 SET(CMAKE_C_FLAGS_DEBUG "-O0 -g")
 
 #SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${EXTRA_CFLAGS} -fPIC -Wall -Werror -g -fPIC -fdump-rtl-expand -std=c++0x")
-SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${EXTRA_CFLAGS} -fPIC -Wall -Werror")
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${EXTRA_CFLAGS} -fPIC -Wall -Werror -fvisibility=hidden")
 SET(CMAKE_CXX_FLAGS_DEBUG "-O0 -g")
 
 IF("${ARCH}" STREQUAL "arm")
@@ -54,27 +71,19 @@ aux_source_directory(src SOURCES)
 aux_source_directory(src/api SOURCES_API)
 aux_source_directory(src/plugin SOURCES_PLUGIN)
 aux_source_directory(src/session SOURCES_SESSION)
-
+aux_source_directory(src/view SOURCES_SESSION)
 ADD_LIBRARY(${fw_name} SHARED ${SOURCES} ${SOURCES_API} ${SOURCES_PLUGIN} ${SOURCES_SESSION})
+
 TARGET_LINK_LIBRARIES(${fw_name} ${${fw_name}_LDFLAGS})
+
 SET_TARGET_PROPERTIES(${fw_name}
 	PROPERTIES
 	VERSION ${FULLVER}
 	SOVERSION ${MAJORVER}
 	CLEAN_DIRECT_OUTPUT 1
 	)
+
 INSTALL(TARGETS ${fw_name} DESTINATION ${LIBDIR})
-
-ADD_LIBRARY(${DUMMY_PLUGIN} SHARED ${DUMMY_PLUGIN_SRC})
-TARGET_LINK_LIBRARIES(${DUMMY_PLUGIN} ${fw_name} ${${DUMMY_PLUGIN}_LDFLAGS})
-SET_TARGET_PROPERTIES(${DUMMY_PLUGIN}
-	PROPERTIES
-	VERSION ${FULLVER}
-	SOVERSION ${MAJORVER}
-	CLEAN_DIRECT_OUTPUT 1
-	)
-INSTALL(TARGETS ${DUMMY_PLUGIN} DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/maps/plugins)
-
 INSTALL(
 	DIRECTORY ${INC_DIR}/ DESTINATION include/maps
 	FILES_MATCHING
@@ -96,7 +105,17 @@ CONFIGURE_FILE(
 	)
 INSTALL(FILES ${CMAKE_CURRENT_SOURCE_DIR}/${fw_name}.pc DESTINATION ${LIBDIR}/pkgconfig)
 
-ADD_SUBDIRECTORY(test)
+
+
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+# WARNING! FOR TESTING PURPOSES ONLY
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+#Please don't release the below comment when you submit.
+#Please release the below comment, if you want to test code in local.
+#It is not good for security and increases binary size.
+#SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${EXTRA_CFLAGS} -fPIC -Wall -Werror -fvisibility=default")
+#ADD_SUBDIRECTORY(test)
 
 IF(UNIX)
 

@@ -18,6 +18,7 @@
 #define __MAPS_SERVICE_SESSION_COMMANDS_H__
 
 #include "command.h"
+#include "map_view.h"
 
 namespace session
 {
@@ -569,6 +570,134 @@ namespace session
 		}
 	private:
 		virtual int run();
+	};
+
+
+/*----------------------------------------------------------------------------*/
+/*
+ *		Mapping API commands
+ */
+/*----------------------------------------------------------------------------*/
+
+	class command_view_set_center : public command {
+	private:
+		map_view_h v;
+	public:
+		maps_coordinates_h c;
+	public:
+		command_view_set_center(maps_service_h ms, map_view_h view,
+					const maps_coordinates_h coords);
+		virtual ~command_view_set_center();
+	private:
+		virtual int run();
+	private:
+		virtual command_type_e get_type() const;
+		virtual int get_priority() const;
+		virtual void merge(const command *c);
+	};
+
+	class command_view_move_center : public command {
+	private:
+		map_view_h v;
+	public:
+		int _delta_x;
+		int _delta_y;
+	public:
+		command_view_move_center(maps_service_h ms, map_view_h view,
+					 const int delta_x, const int delta_y);
+		virtual ~command_view_move_center();
+	private:
+		virtual int run();
+	private:
+		virtual command_type_e get_type() const;
+		virtual int get_priority() const;
+		virtual void merge(const command *c);
+	};
+
+	class command_view_zoom : public command {
+	private:
+		map_view_h v;
+	public:
+		double zoom_factor;
+	public:
+		command_view_zoom(maps_service_h ms, map_view_h view,
+				  const double  &factor) :
+			command(ms), v(view), zoom_factor(factor)
+		{
+		}
+		virtual ~command_view_zoom()
+		{
+		}
+	private:
+		virtual int run();
+	private:
+		virtual command_type_e get_type() const;
+		virtual int get_priority() const;
+		virtual void merge(const command *c);
+	};
+
+	class command_view_rotate : public command {
+	private:
+		map_view_h v;
+	public:
+		double rotation_angle;
+	public:
+		command_view_rotate(maps_service_h ms, map_view_h view,
+				    const double  &angle) :
+			command(ms), v(view), rotation_angle(angle)
+		{
+		}
+		virtual ~command_view_rotate()
+		{
+		}
+	private:
+		virtual int run();
+	private:
+		virtual command_type_e get_type() const;
+		virtual int get_priority() const;
+		virtual void merge(const command *c);
+	};
+
+	class command_view_tilt : public command {
+	private:
+		map_view_h v;
+	public:
+		double t;
+	public:
+		command_view_tilt(maps_service_h ms, map_view_h view,
+				    const double  &tilt) :
+			command(ms), v(view), t(tilt)
+		{
+		}
+		virtual ~command_view_tilt()
+		{
+		}
+	private:
+		virtual int run();
+	private:
+		virtual command_type_e get_type() const;
+		virtual int get_priority() const;
+		virtual void merge(const command *c);
+	};
+
+
+	class command_view_ready : public command {
+	private:
+		map_view_h v;
+	public:
+		command_view_ready(maps_service_h ms, map_view_h view) :
+			command(ms), v(view)
+		{
+		}
+		virtual ~command_view_ready()
+		{
+		}
+	private:
+		virtual int run();
+	private:
+		virtual command_type_e get_type() const;
+		virtual int get_priority() const;
+		virtual void merge(const command *c);
 	};
 }
 

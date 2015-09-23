@@ -29,6 +29,7 @@ typedef struct _maps_place_filter_s
 
 EXPORT_API int maps_place_filter_create(maps_place_filter_h *filter)
 {
+	MAPS_LOG_API;
 	if (!filter)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	*filter = (maps_place_filter_h) g_slice_new0(maps_place_filter_s);
@@ -46,6 +47,7 @@ EXPORT_API int maps_place_filter_create(maps_place_filter_h *filter)
 
 EXPORT_API int maps_place_filter_destroy(maps_place_filter_h filter)
 {
+	MAPS_LOG_API;
 	if (!filter)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -61,6 +63,7 @@ EXPORT_API int maps_place_filter_destroy(maps_place_filter_h filter)
 EXPORT_API int maps_place_filter_clone(const maps_place_filter_h origin,
 				       maps_place_filter_h *cloned)
 {
+	MAPS_LOG_API;
 	if (!cloned || !origin)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -98,6 +101,7 @@ EXPORT_API int maps_place_filter_clone(const maps_place_filter_h origin,
 EXPORT_API int maps_place_filter_get(const maps_place_filter_h filter,
 				     const char *key, char **value)
 {
+	MAPS_LOG_API;
 	if (!filter)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_item_hashtable_get_string(((maps_place_filter_s *) filter)->
@@ -110,6 +114,7 @@ EXPORT_API int maps_place_filter_foreach_property(const maps_place_filter_h
 						 callback,
 						 void *user_data)
 {
+	MAPS_LOG_API;
 	if (!filter || !callback)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_item_hashtable_foreach(((maps_place_filter_s *) filter)->
@@ -119,6 +124,7 @@ EXPORT_API int maps_place_filter_foreach_property(const maps_place_filter_h
 EXPORT_API int maps_place_filter_get_keyword(const maps_place_filter_h filter,
 					     char **keyword)
 {
+	MAPS_LOG_API;
 	if (!filter || !keyword)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_item_hashtable_get_string(((maps_place_filter_s *) filter)->
@@ -129,6 +135,7 @@ EXPORT_API int maps_place_filter_get_place_name(const maps_place_filter_h
 						filter,
 						char **place_name)
 {
+	MAPS_LOG_API;
 	if (!filter || !place_name)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_item_hashtable_get_string(((maps_place_filter_s *) filter)->
@@ -138,6 +145,7 @@ EXPORT_API int maps_place_filter_get_place_name(const maps_place_filter_h
 EXPORT_API int maps_place_filter_get_category(const maps_place_filter_h filter,
 					      maps_place_category_h *category)
 {
+	MAPS_LOG_API;
 	if (!filter || !category)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_item_hashtable_get(((maps_place_filter_s *) filter)->table,
@@ -149,13 +157,14 @@ EXPORT_API int maps_place_filter_get_category(const maps_place_filter_h filter,
 EXPORT_API int maps_place_filter_set(maps_place_filter_h filter,
 				     const char *key, const char *value)
 {
+	MAPS_LOG_API;
 	if (!filter)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_item_hashtable_set_string(((maps_place_filter_s *) filter)->
 		table, key, value);
 }
 
-int maps_place_filter_set_keyword(maps_place_filter_h filter,
+EXPORT_API int maps_place_filter_set_keyword(maps_place_filter_h filter,
 				  const char *keyword)
 {
 	if (!filter || !keyword)
@@ -164,7 +173,7 @@ int maps_place_filter_set_keyword(maps_place_filter_h filter,
 		table, "MAPS_PLACE_FILTER_KEYWORD", keyword);
 }
 
-int maps_place_filter_set_place_name(maps_place_filter_h filter,
+EXPORT_API int maps_place_filter_set_place_name(maps_place_filter_h filter,
 				     const char *place_name)
 {
 	if (!filter || !place_name)
@@ -173,7 +182,7 @@ int maps_place_filter_set_place_name(maps_place_filter_h filter,
 		table, "MAPS_PLACE_FILTER_PLACE_NAME", place_name);
 }
 
-int maps_place_filter_set_category(maps_place_filter_h filter,
+EXPORT_API int maps_place_filter_set_category(maps_place_filter_h filter,
 				   const maps_place_category_h category)
 {
 	if (!filter || !category)

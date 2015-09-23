@@ -39,6 +39,17 @@ void utc_maps_string_hashtable_foreach_n(void);
 
 /*----------------------------------------------------------------------------*/
 
+void utc_maps_int_hashtable_create_p(void);
+void utc_maps_int_hashtable_create_n(void);
+
+void utc_maps_int_hashtable_set_p(void);
+void utc_maps_int_hashtable_set_n(void);
+
+void utc_maps_int_hashtable_foreach_p(void);
+void utc_maps_int_hashtable_foreach_n(void);
+
+/*----------------------------------------------------------------------------*/
+
 void utc_maps_item_hashtable_create_p(void);
 void utc_maps_item_hashtable_create_n(void);
 

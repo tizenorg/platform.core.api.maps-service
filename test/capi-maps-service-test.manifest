@@ -1,5 +1,8 @@
 <manifest>
-	<request>
-		<domain name="_"/>
-	</request>
+	<define>
+		<domain name="capi-maps-service-test"/>
+	</define>
+	<assign>
+		<filesystem path="/usr/share/packages/capi-maps-service-test.xml" label="_"/>
+	</assign>
 </manifest>

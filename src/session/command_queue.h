@@ -82,6 +82,34 @@ namespace session
 	};
 #endif /* _MAPS_SERVICE_SUPPORTS_ASYNC_QUEUE_ */
 
+	/*
+	 * This queue is intended to process mainly the commands, assigned to
+	 * user gestures
+	 */
+	class command_queue_view : public command_queue
+	{
+	private:
+		command_queue_view()
+		{
+		}
+		virtual ~command_queue_view()
+		{
+		}
+	public:
+		static command_queue* interface();
+	private:
+		virtual int push(command *c);
+		virtual command *pop(plugin::plugin_s *p);
+		virtual void process(plugin::plugin_s *p);
+		virtual void clear(plugin::plugin_s *p);
+
+		friend class command_queue;
+	private:
+		static gint iterate(gconstpointer a,
+				    gconstpointer b,
+				    gpointer user_data);
+	};
+
 	class queue_autoref
 	{
 	public:

@@ -165,6 +165,76 @@ int maps_plugin_cancel_request_empty(int request_id)
 	return 0;
 }
 
+/* Mapping */
+int maps_plugin_set_map_view_empty(const map_view_h view)
+{
+	return 0;
+}
+
+int maps_plugin_render_map_empty(const maps_coordinates_h coordinates,
+				 const double zoom_factor,
+				 const double rotation_angle,
+				 const double tilt,
+				 maps_plugin_render_map_cb callback,
+				 void* user_data,
+				 int* request_id)
+{
+	return 0;
+}
+
+int maps_plugin_move_center_empty(const int delta_x,
+				  const int delta_y,
+				  maps_plugin_render_map_cb callback,
+				  void* user_data,
+				  int* request_id)
+{
+	return 0;
+}
+
+int maps_plugin_draw_map_empty(Evas* canvas, const int x, const int y,
+			       const int width, const int height)
+{
+	return 0;
+}
+
+int maps_plugin_on_view_object_empty(const map_view_object_h object,
+				     const map_view_object_operation_e
+				     operation)
+{
+	return 0;
+}
+
+int maps_plugin_screen_to_geography_empty(const int x, const int y,
+					  maps_coordinates_h *coordinates)
+{
+	return 0;
+}
+
+int maps_plugin_geography_to_screen_empty(const maps_coordinates_h coordinates,
+					  int* x, int* y)
+{
+	return 0;
+}
+
+int maps_plugin_get_min_zoom_level_empty(int *min_zoom_level)
+{
+	return 0;
+}
+
+int maps_plugin_get_max_zoom_level_empty(int *max_zoom_level)
+{
+	return 0;
+}
+
+int maps_plugin_get_min_tilt_empty(int *min_tilt)
+{
+	return 0;
+}
+
+int maps_plugin_get_max_tilt_empty(int *max_tilt)
+{
+	return 0;
+}
 
 /* Interface of a plugin with all empty functions */
 plugin::interface_s empty_interface = {
@@ -197,6 +267,19 @@ plugin::interface_s empty_interface = {
 
 	/* Cancel Request */
 	maps_plugin_cancel_request_empty,
+
+	/* Mapping */
+	maps_plugin_set_map_view_empty,
+	maps_plugin_render_map_empty,
+	maps_plugin_move_center_empty,
+	maps_plugin_draw_map_empty,
+	maps_plugin_on_view_object_empty,
+	maps_plugin_screen_to_geography_empty,
+	maps_plugin_geography_to_screen_empty,
+	maps_plugin_get_min_zoom_level_empty,
+	maps_plugin_get_max_zoom_level_empty,
+	maps_plugin_get_min_tilt_empty,
+	maps_plugin_get_max_tilt_empty
 };
 
 

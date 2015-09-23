@@ -24,7 +24,7 @@
 
 extern const char *MAPS_PLUGINS_PATH_PREFIX;
 
- plugin::scope_mutex::scope_mutex(GMutex *m) : mutex(m)
+plugin::scope_mutex::scope_mutex(GMutex *m) : mutex(m)
 {
 	g_mutex_lock(mutex);
 }
@@ -183,10 +183,47 @@ maps_plugin_h plugin::binary_extractor::init(const provider_info &info)
 			(maps_plugin_cancel_request_f) gmod_find_sym(plugin,
 			"maps_plugin_cancel_request");
 
+		/* Mapping */
+		new_plugin->interface.maps_plugin_set_map_view =
+			(maps_plugin_set_map_view_f) gmod_find_sym(plugin,
+			"maps_plugin_set_map_view");
+		new_plugin->interface.maps_plugin_render_map =
+			(maps_plugin_render_map_f) gmod_find_sym(plugin,
+			"maps_plugin_render_map");
+		new_plugin->interface.maps_plugin_move_center =
+			(maps_plugin_move_center_f) gmod_find_sym(plugin,
+			"maps_plugin_move_center");
+		new_plugin->interface.maps_plugin_draw_map =
+			(maps_plugin_draw_map_f) gmod_find_sym(plugin,
+			"maps_plugin_draw_map");
+		new_plugin->interface.maps_plugin_on_view_object =
+			(maps_plugin_on_view_object_f) gmod_find_sym(plugin,
+			"maps_plugin_on_view_object");
+		new_plugin->interface.maps_plugin_screen_to_geography =
+			(maps_plugin_screen_to_geography_f)
+			gmod_find_sym(plugin,
+			"maps_plugin_screen_to_geography");
+		new_plugin->interface.maps_plugin_geography_to_screen =
+			(maps_plugin_geography_to_screen_f)
+			gmod_find_sym(plugin,
+			"maps_plugin_geography_to_screen");
+		new_plugin->interface.maps_plugin_get_min_zoom_level =
+			(maps_plugin_get_min_zoom_level_f) gmod_find_sym(plugin,
+			"maps_plugin_get_min_zoom_level");
+		new_plugin->interface.maps_plugin_get_max_zoom_level =
+			(maps_plugin_get_max_zoom_level_f) gmod_find_sym(plugin,
+			"maps_plugin_get_max_zoom_level");
+		new_plugin->interface.maps_plugin_get_min_tilt =
+			(maps_plugin_get_min_tilt_f) gmod_find_sym(plugin,
+			"maps_plugin_get_min_tilt");
+		new_plugin->interface.maps_plugin_get_max_tilt =
+			(maps_plugin_get_max_tilt_f) gmod_find_sym(plugin,
+			"maps_plugin_get_max_tilt");
+
 		/* 2.3 Check whether the plugin init function is valid */
 		if (!new_plugin->interface.maps_plugin_init) {
-			MAPS_LOGE(
-			"ERROR! Plugin initialization function is invalid");
+			MAPS_LOGE("ERROR! Plugin initialization function is "
+				  "invalid");
 			break;
 		}
 
@@ -196,51 +233,44 @@ maps_plugin_h plugin::binary_extractor::init(const provider_info &info)
 			new_plugin->interface.
 			maps_plugin_init((maps_plugin_h *) (&new_plugin));
 		if (ret != MAPS_ERROR_NONE) {
-			MAPS_LOGE(
-			"ERROR! Plugin initialization function ""failed: %d",
-				ret);
+			MAPS_LOGE("ERROR! Plugin initialization function "
+				  "failed: %d", ret);
 			break;
 		}
 
 		if (!new_plugin->interface.maps_plugin_set_provider_key) {
-			MAPS_LOGE(
-			"ERROR! Plugin set_provider_key function is NULL: %d",
-				ret);
+			MAPS_LOGE("ERROR! Plugin set_provider_key function "
+				  "is NULL: %d", ret);
 			break;
 		}
 
 		if (!new_plugin->interface.maps_plugin_get_provider_key) {
-			MAPS_LOGE(
-			"ERROR! Plugin set_provider_key function is NULL: %d",
-				ret);
+			MAPS_LOGE("ERROR! Plugin set_provider_key function is "
+				  "NULL: %d", ret);
 			break;
 		}
 
 		if (!new_plugin->interface.maps_plugin_set_preference) {
-			MAPS_LOGE(
-			"ERROR! Plugin set_preference function is NULL: %d",
-				ret);
+			MAPS_LOGE("ERROR! Plugin set_preference function is "
+				  "NULL: %d", ret);
 			break;
 		}
 
 		if (!new_plugin->interface.maps_plugin_get_preference) {
-			MAPS_LOGE(
-			"ERROR! Plugin get_preference function is NULL: %d",
-				ret);
+			MAPS_LOGE("ERROR! Plugin get_preference function is "
+				  "NULL: %d", ret);
 			break;
 		}
 
 		if (!new_plugin->interface.maps_plugin_is_data_supported) {
-			MAPS_LOGE(
-				"ERROR! Plugin support_is_data_supported function is NULL: %d",
-				ret);
+			MAPS_LOGE("ERROR! Plugin support_is_data_supported "
+				  "function is NULL: %d", ret);
 			break;
 		}
 
 		if (!new_plugin->interface.maps_plugin_is_service_supported) {
-			MAPS_LOGE(
-				"ERROR! Plugin support_is_service_supported function is NULL: %d",
-				ret);
+			MAPS_LOGE("ERROR! Plugin support_is_service_supported "
+				  "function is NULL: %d", ret);
 			break;
 		}
 
@@ -305,7 +335,7 @@ void plugin::binary_extractor::shutdown(maps_plugin_h plugin_h)
 	gmod_free((GMod *) plugin->module);
 
 	/* 5. Destroying the table with plugin capabilities */
-	/*maps_string_hashtable_destroy(plugin->capabilities); */
+	/*maps_int_hashtable_destroy(plugin->capabilities); */
 
 	/* 6. Release memory used by plugin structure */
 	g_slice_free(plugin_s, plugin);
@@ -377,6 +407,7 @@ void plugin::binary_extractor::gmod_free(GMod *gmod) const
 	g_free(gmod);
 
 	MAPS_LOGD("close module");
+	MAPS_LOGD("last module error: %s", g_module_error());
 }
 
 /* Find the address of a function in a binary (which contains a plugin) */

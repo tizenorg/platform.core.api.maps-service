@@ -39,6 +39,8 @@
 #define MAPS_LOGE(fmt,args...)  LOGE(fmt, ##args)
 #define MAPS_SECLOG(fmt,args...)  SECURE_LOGD(fmt, ##args)
 
+#define MAPS_LOG_API  MAPS_LOGI("%s", __func__)
+
 #define MAPS_CHECK_CONDITION(condition, error, msg)	\
 	do { \
 		if (condition) { \
@@ -138,6 +140,10 @@ public:
 	unsigned int size() const
 	{
 		return current_size;
+	}
+	bool empty() const
+	{
+		return size() == 0;
 	}
 };
 

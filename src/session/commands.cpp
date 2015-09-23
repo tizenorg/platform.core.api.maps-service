@@ -19,19 +19,24 @@
 #include "maps_place_private.h"
 #include "maps_route_private.h"
 #include "empty_module.h"
+#include "maps_extra_types_private.h"
+
+extern int _map_view_move_center(map_view_h view,
+				 const int delta_x,
+				 const int delta_y);
 
 static int __put_to_hashtable(session::command_handler *ch,
 			      maps_service_data_e feature,
-			      const char *feature_str,
-			      maps_string_hashtable_h t)
+			      maps_int_hashtable_h t)
 {
-	if (!ch || !feature_str || !t)
+	if (!ch || !t)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	bool supported = false;
 	ch->plugin()->interface.maps_plugin_is_data_supported(feature,
-		&supported);
-	return (supported) ? maps_string_hashtable_set(t, feature_str,
-		feature_str) : MAPS_ERROR_NONE;
+							      &supported);
+	if(supported)
+		return  maps_int_hashtable_set(t, feature, feature);
+	return MAPS_ERROR_NONE;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -542,33 +547,23 @@ void session::command_search_place_handler::set_supported_data(maps_place_h
 	if (!place || !plugin())
 		return;
 
-	maps_string_hashtable_h data_supported = NULL;
-	if (maps_string_hashtable_create(&data_supported) != MAPS_ERROR_NONE)
+	maps_int_hashtable_h data_supported = NULL;
+	if (maps_int_hashtable_create(&data_supported) != MAPS_ERROR_NONE)
 		return;
 
-	__put_to_hashtable(this, MAPS_PLACE_ADDRESS, _S(MAPS_PLACE_ADDRESS),
-		data_supported);
-	__put_to_hashtable(this, MAPS_PLACE_RATING, _S(MAPS_PLACE_RATING),
-		data_supported);
-	__put_to_hashtable(this, MAPS_PLACE_CATEGORIES,
-		_S(MAPS_PLACE_CATEGORIES), data_supported);
-	__put_to_hashtable(this, MAPS_PLACE_ATTRIBUTES,
-		_S(MAPS_PLACE_ATTRIBUTES), data_supported);
-	__put_to_hashtable(this, MAPS_PLACE_CONTACTS, _S(MAPS_PLACE_CONTACTS),
-		data_supported);
-	__put_to_hashtable(this, MAPS_PLACE_EDITORIALS,
-		_S(MAPS_PLACE_EDITORIALS), data_supported);
-	__put_to_hashtable(this, MAPS_PLACE_REVIEWS, _S(MAPS_PLACE_REVIEWS),
-		data_supported);
-	__put_to_hashtable(this, MAPS_PLACE_IMAGE, _S(MAPS_PLACE_IMAGE),
-		data_supported);
-	__put_to_hashtable(this, MAPS_PLACE_SUPPLIER, _S(MAPS_PLACE_SUPPLIER),
-		data_supported);
-	__put_to_hashtable(this, MAPS_PLACE_RELATED, _S(MAPS_PLACE_RELATED),
-		data_supported);
+	__put_to_hashtable(this, MAPS_PLACE_ADDRESS, data_supported);
+	__put_to_hashtable(this, MAPS_PLACE_RATING, data_supported);
+	__put_to_hashtable(this, MAPS_PLACE_CATEGORIES, data_supported);
+	__put_to_hashtable(this, MAPS_PLACE_ATTRIBUTES, data_supported);
+	__put_to_hashtable(this, MAPS_PLACE_CONTACTS, data_supported);
+	__put_to_hashtable(this, MAPS_PLACE_EDITORIALS, data_supported);
+	__put_to_hashtable(this, MAPS_PLACE_REVIEWS, data_supported);
+	__put_to_hashtable(this, MAPS_PLACE_IMAGE, data_supported);
+	__put_to_hashtable(this, MAPS_PLACE_SUPPLIER, data_supported);
+	__put_to_hashtable(this, MAPS_PLACE_RELATED, data_supported);
 
 	_maps_place_set_supported_data(place, data_supported);
-	maps_string_hashtable_destroy(data_supported);
+	maps_int_hashtable_destroy(data_supported);
 }
 
 bool session::command_search_place_handler::foreach_place_cb(maps_error_e error,
@@ -673,12 +668,14 @@ int session::command_search_by_area_place::run()
 
 			/* Run the plugin interface function */
 			error = func(boundary, filter,
-				preference, command_search_place_handler::foreach_place_cb,
+				preference,
+				command_search_place_handler::foreach_place_cb,
 				handler, &handler->plg_req_id);
 
 			pr.update(my_req_id, handler);
 
-			MAPS_LOGD("session::command_search_by_area_place::run: %d", my_req_id);
+			MAPS_LOGD("session::command_search_by_area_place::run: %d",
+				  my_req_id);
 		}
 		else {
 			error = MAPS_ERROR_OUT_OF_MEMORY;
@@ -762,9 +759,11 @@ int session::command_search_by_address_place::run()
 							   my_req_id);
 		if (handler) {
 			/* Run the plugin interface function */
-			error = func(address.c_str(), boundary, filter, preference,
-					 command_search_place_handler::foreach_place_cb, handler,
-					 &handler->plg_req_id);
+			error = func(address.c_str(), boundary, filter,
+				     preference,
+				     command_search_place_handler::foreach_place_cb,
+				     handler,
+				     &handler->plg_req_id);
 
 			pr.update(my_req_id, handler);
 
@@ -859,7 +858,8 @@ int session::command_search_route::run()
 
 			pr.update(my_req_id, handler);
 
-			MAPS_LOGD("session::command_search_route::run: %d", my_req_id);
+			MAPS_LOGD("session::command_search_route::run: %d",
+				  my_req_id);
 		}
 		else {
 			error = MAPS_ERROR_OUT_OF_MEMORY;
@@ -949,12 +949,14 @@ int session::command_search_route_waypoints::run()
 		if (handler) {
 			/* Run the plugin interface function */
 			error = func(waypoint_list, waypoint_num, preference,
-					 command_search_route_handler::foreach_route_cb, handler,
-					 &handler->plg_req_id);
+				command_search_route_handler::foreach_route_cb,
+				handler,
+				&handler->plg_req_id);
 
 			pr.update(my_req_id, handler);
 
-			MAPS_LOGD("session::command_search_place::run: %d", my_req_id);
+			MAPS_LOGD("session::command_search_place::run: %d",
+				  my_req_id);
 		}
 		else {
 			error = MAPS_ERROR_OUT_OF_MEMORY;
@@ -990,19 +992,16 @@ void session::command_search_route_handler::set_supported_data(maps_route_h
 	if (!route || !plugin())
 		return;
 
-	maps_string_hashtable_h data_supported = NULL;
-	if (maps_string_hashtable_create(&data_supported) != MAPS_ERROR_NONE)
+	maps_int_hashtable_h data_supported = NULL;
+	if (maps_int_hashtable_create(&data_supported) != MAPS_ERROR_NONE)
 		return;
 
-	__put_to_hashtable(this, MAPS_ROUTE_PATH, _S(MAPS_ROUTE_PATH),
-		data_supported);
-	__put_to_hashtable(this, MAPS_ROUTE_SEGMENTS_PATH,
-		_S(MAPS_ROUTE_SEGMENTS_PATH), data_supported);
-	__put_to_hashtable(this, MAPS_ROUTE_SEGMENTS_MANEUVERS,
-		_S(MAPS_ROUTE_SEGMENTS_MANEUVERS), data_supported);
+	__put_to_hashtable(this, MAPS_ROUTE_PATH, data_supported);
+	__put_to_hashtable(this, MAPS_ROUTE_SEGMENTS_PATH, data_supported);
+	__put_to_hashtable(this, MAPS_ROUTE_SEGMENTS_MANEUVERS, data_supported);
 
 	_maps_route_set_supported_data(route, data_supported);
-	maps_string_hashtable_destroy(data_supported);
+	maps_int_hashtable_destroy(data_supported);
 }
 
 bool session::command_search_route_handler::foreach_route_cb(maps_error_e error,
@@ -1016,9 +1015,9 @@ bool session::command_search_route_handler::foreach_route_cb(maps_error_e error,
 		(command_search_route_handler *) user_data;
 
 	if (request_id != handler->plg_req_id) {
-		MAPS_LOGE(
-"\n\nERROR! Incorrect request id [%d] come from the plugin; expected [%d]\n\n",
-			request_id, handler->plg_req_id);
+		MAPS_LOGE("\n\nERROR! Incorrect request "
+			  "id [%d] come from the plugin; expected [%d]\n\n",
+			  request_id, handler->plg_req_id);
 	}
 
 	/* Make a user's copy of result data */
@@ -1055,8 +1054,280 @@ int session::command_cancel_request::run()
 		(pr.contains(request_id)) ? interface()->
 		maps_plugin_cancel_request(pr.
 		extract_plg_id(request_id)) : MAPS_ERROR_NOT_FOUND;
+	destroy();
+	return error;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*
+ *		Mapping API commands
+ */
+/*----------------------------------------------------------------------------*/
+
+session::command_view_set_center::command_view_set_center(maps_service_h ms,
+							   map_view_h view,
+						const maps_coordinates_h coords)
+	: command(ms)
+	, v(view)
+	, c(NULL)
+{
+	maps_coordinates_clone(coords, &c);
+}
+
+session::command_view_set_center::~command_view_set_center()
+{
+	maps_coordinates_destroy(c);
+}
+
+int session::command_view_set_center::run()
+{
+	{ /* TODO: remove it in release */
+		double lat = 0, lon = 0;
+		maps_coordinates_get_latlon(c, &lat, &lon);
+		MAPS_LOGD("session::command_view_set_center::run lat,lon=%f,%f",
+			  lat, lon);
+	}
+
+	if(!v)
+		return MAPS_ERROR_INVALID_PARAMETER;
+
+	int error = MAPS_ERROR_NONE;
+	do {
+		error = map_view_set_center(v, c);
+		if(error != MAPS_ERROR_NONE)
+			break;
+
+	} while(false);
 
 	const int ret = error;
 	destroy();
 	return ret;
+}
+
+session::command_type_e session::command_view_set_center::get_type() const
+{
+	return MAP_VIEW_SET_CENTER_COMMAND;
+}
+
+int session::command_view_set_center::get_priority() const
+{
+	return 3;
+}
+
+void session::command_view_set_center::merge(const command *c)
+{
+	/*g_print(".");*/
+	if (!c || (get_type() != c->get_type())) return;
+	command_view_set_center *cmd = (command_view_set_center *)c;
+	if (v == cmd->v) {
+		double lat = .0;
+		double lon = .0;
+		maps_coordinates_get_latlon(cmd->c, &lat, &lon);
+		maps_coordinates_set_latlon(this->c, lat, lon);
+		cmd->set_merged();
+	}
+}
+
+
+/*----------------------------------------------------------------------------*/
+
+
+session::command_view_move_center::command_view_move_center(maps_service_h ms,
+							   map_view_h view,
+							   const int delta_x,
+							   const int delta_y)
+	: command(ms)
+	, v(view)
+	, _delta_x(delta_x)
+	, _delta_y(delta_y)
+{
+}
+
+session::command_view_move_center::~command_view_move_center()
+{
+}
+
+int session::command_view_move_center::run()
+{
+	MAPS_LOGD("session::command_view_move_center::run "
+		  "delta_x = %d, delta_y = %d",
+		  _delta_x, _delta_y);
+
+	if(!v)
+		return MAPS_ERROR_INVALID_PARAMETER;
+
+	int error = MAPS_ERROR_NONE;
+	do {
+		error = _map_view_move_center(v, _delta_x, _delta_y);
+		if(error != MAPS_ERROR_NONE)
+			break;
+
+	} while(false);
+
+	const int ret = error;
+	destroy();
+	return ret;
+}
+
+session::command_type_e session::command_view_move_center::get_type() const
+{
+	return MAP_VIEW_MOVE_CENTER_COMMAND;
+}
+
+int session::command_view_move_center::get_priority() const
+{
+	return 3;
+}
+
+void session::command_view_move_center::merge(const command *c)
+{
+	/*g_print(".");*/
+	if (!c || (get_type() != c->get_type())) return;
+	command_view_move_center *cmd = (command_view_move_center *)c;
+	if (v == cmd->v) {
+		_delta_x += cmd->_delta_x;
+		_delta_y += cmd->_delta_y;
+		cmd->set_merged();
+	}
+}
+
+/*----------------------------------------------------------------------------*/
+
+int session::command_view_zoom::run()
+{
+	MAPS_LOGD ("session::command_view_zoom::run factor = %f", zoom_factor);
+
+	if (!v)
+		return MAPS_ERROR_INVALID_PARAMETER;
+
+	const int ret = map_view_set_zoom_factor (v, zoom_factor);
+
+	destroy ();
+	return ret;
+}
+
+session::command_type_e session::command_view_zoom::get_type() const
+{
+	return MAP_VIEW_ZOOM_COMMAND;
+}
+
+int session::command_view_zoom::get_priority() const
+{
+	return 2;
+}
+
+void session::command_view_zoom::merge(const command *c)
+{
+	if (!c || (get_type() != c->get_type())) return;
+	command_view_zoom *cmd = (command_view_zoom *)c;
+	if (v == cmd->v) {
+		zoom_factor = cmd->zoom_factor;
+		cmd->set_merged ();
+	}
+}
+
+/*----------------------------------------------------------------------------*/
+int session::command_view_rotate::run()
+{
+	MAPS_LOGD ("session::command_view_rotate::run angle = %f",
+		  rotation_angle);
+
+	if (!v)
+		return MAPS_ERROR_INVALID_PARAMETER;
+
+	const int ret = map_view_set_orientation(v, rotation_angle);
+
+	destroy ();
+	return ret;
+}
+
+session::command_type_e session::command_view_rotate::get_type() const
+{
+	return MAP_VIEW_ROTATE_COMMAND;
+}
+
+int session::command_view_rotate::get_priority() const
+{
+	return 2;
+}
+
+void session::command_view_rotate::merge(const command *c)
+{
+	if (!c || (get_type() != c->get_type())) return;
+	command_view_rotate *cmd = (command_view_rotate *)c;
+	if (v == cmd->v) {
+		rotation_angle += cmd->rotation_angle;
+		cmd->set_merged();
+	}
+}
+
+/*----------------------------------------------------------------------------*/
+int session::command_view_tilt::run()
+{
+	MAPS_LOGD("session::command_view_tilt::run tilt = %f", t);
+
+	if (!v)
+		return MAPS_ERROR_INVALID_PARAMETER;
+
+	const int ret = map_view_set_tilt(v, t);
+
+	destroy();
+	return ret;
+}
+
+session::command_type_e session::command_view_tilt::get_type() const
+{
+	return MAP_VIEW_TILT_COMMAND;
+}
+
+int session::command_view_tilt::get_priority() const
+{
+	return 2;
+}
+
+void session::command_view_tilt::merge(const command *c)
+{
+	if (!c || (get_type() != c->get_type())) return;
+	command_view_tilt *cmd = (command_view_tilt *)c;
+	if (v == cmd->v) {
+		t = cmd->t;
+		cmd->set_merged();
+	}
+}
+
+/*----------------------------------------------------------------------------*/
+extern int __map_view_ready(map_view_h view);
+
+int session::command_view_ready::run()
+{
+	MAPS_LOGD ("session::command_view_ready::run");
+
+	if (!v)
+		return MAPS_ERROR_INVALID_PARAMETER;
+
+	const int ret = __map_view_ready(v);
+
+	destroy ();
+	return ret;
+}
+
+
+session::command_type_e session::command_view_ready::get_type() const
+{
+	return MAP_VIEW_READY_COMMAND;
+}
+
+int session::command_view_ready::get_priority() const
+{
+	return 1;
+}
+
+void session::command_view_ready::merge(const command *c)
+{
+	/*g_print("+");*/
+	if (!c || (get_type() != c->get_type())) return;
+	command_view_ready *cmd = (command_view_ready *)c;
+	if (v == cmd->v)
+		cmd->set_merged ();
 }

@@ -87,6 +87,7 @@ static bool __maps_preference_properties_helper_cb(int index, int total,
 
 EXPORT_API int maps_preference_create(maps_preference_h *preference)
 {
+	MAPS_LOG_API;
 	if (!preference)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -119,6 +120,7 @@ EXPORT_API int maps_preference_create(maps_preference_h *preference)
 
 EXPORT_API int maps_preference_destroy(maps_preference_h preference)
 {
+	MAPS_LOG_API;
 	if (!preference)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_item_hashtable_destroy(preference);
@@ -127,6 +129,7 @@ EXPORT_API int maps_preference_destroy(maps_preference_h preference)
 EXPORT_API int maps_preference_clone(const maps_preference_h origin,
 				     maps_preference_h *cloned)
 {
+	MAPS_LOG_API;
 	if (!cloned || !origin)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_item_hashtable_clone(origin, cloned);
@@ -138,6 +141,7 @@ EXPORT_API int maps_preference_get_distance_unit(const maps_preference_h
 						 preference,
 						 maps_distance_unit_e *unit)
 {
+	MAPS_LOG_API;
 	if (!preference || !unit)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_item_hashtable_get_int(preference,
@@ -147,6 +151,7 @@ EXPORT_API int maps_preference_get_distance_unit(const maps_preference_h
 EXPORT_API int maps_preference_get_language(const maps_preference_h preference,
 					    char **language)
 {
+	MAPS_LOG_API;
 	if (!preference || !language)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_item_hashtable_get_string(preference,
@@ -157,6 +162,7 @@ EXPORT_API int maps_preference_get_max_results(const maps_preference_h
 					       preference,
 					       int *max_results)
 {
+	MAPS_LOG_API;
 	if (!preference || !max_results)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_item_hashtable_get_int(preference,
@@ -167,6 +173,7 @@ EXPORT_API int maps_preference_get_country_code(const maps_preference_h
 						preference,
 						char **country_code)
 {
+	MAPS_LOG_API;
 	if (!preference || !country_code)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_item_hashtable_get_string(preference,
@@ -178,6 +185,7 @@ EXPORT_API int maps_preference_get_route_optimization(const maps_preference_h
 						      maps_route_optimization_e*
 						      optimization)
 {
+	MAPS_LOG_API;
 	if (!preference || !optimization)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_item_hashtable_get_int(preference,
@@ -189,6 +197,7 @@ EXPORT_API int maps_preference_get_route_transport_mode(const maps_preference_h
 						maps_route_transport_mode_e *
 						transport_mode)
 {
+	MAPS_LOG_API;
 	if (!preference || !transport_mode)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_item_hashtable_get_int(preference,
@@ -200,6 +209,7 @@ EXPORT_API int maps_preference_get_route_feature_weight(const maps_preference_h
 						maps_route_feature_weight_e *
 						feature_weight)
 {
+	MAPS_LOG_API;
 	if (!preference || !feature_weight)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_item_hashtable_get_int(preference,
@@ -210,6 +220,7 @@ EXPORT_API int maps_preference_get_route_feature(const maps_preference_h
 						 preference,
 						 maps_route_feature_e * feature)
 {
+	MAPS_LOG_API;
 	if (!preference || !feature)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_item_hashtable_get_int(preference,
@@ -219,6 +230,7 @@ EXPORT_API int maps_preference_get_route_feature(const maps_preference_h
 EXPORT_API int maps_preference_get(const maps_preference_h preference,
 				   const char *key, char **value)
 {
+	MAPS_LOG_API;
 	if (!preference || !key || !value)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_item_hashtable_get_string(preference, key, value);
@@ -230,6 +242,7 @@ EXPORT_API int maps_preference_foreach_property(const maps_preference_h
 						maps_preference_properties_cb
 						callback, void *user_data)
 {
+	MAPS_LOG_API;
 	if (!preference || !callback)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	callback_data cd = { callback, user_data };
@@ -243,9 +256,10 @@ EXPORT_API int maps_preference_set_distance_unit(maps_preference_h preference,
 						 const maps_distance_unit_e
 						 unit)
 {
+	MAPS_LOG_API;
 	if (!preference)
 		return MAPS_ERROR_INVALID_PARAMETER;
-	if((unit < MAPS_DISTANCE_UNIT_M) || (unit > MAPS_DISTANCE_UNIT_YD))
+	if ((unit < MAPS_DISTANCE_UNIT_M) || (unit > MAPS_DISTANCE_UNIT_YD))
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_item_hashtable_set_int(preference,
 		"MAPS_PREFERENCE_DISTANCE_UNIT", unit);
@@ -254,6 +268,7 @@ EXPORT_API int maps_preference_set_distance_unit(maps_preference_h preference,
 EXPORT_API int maps_preference_set_language(maps_preference_h preference,
 					    const char *language)
 {
+	MAPS_LOG_API;
 	if (!preference || !language)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_item_hashtable_set_string(preference,
@@ -263,6 +278,7 @@ EXPORT_API int maps_preference_set_language(maps_preference_h preference,
 EXPORT_API int maps_preference_set_max_results(maps_preference_h preference,
 					       const int max_results)
 {
+	MAPS_LOG_API;
 	if (!preference || max_results <= 0)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_item_hashtable_set_int(preference,
@@ -272,6 +288,7 @@ EXPORT_API int maps_preference_set_max_results(maps_preference_h preference,
 EXPORT_API int maps_preference_set_country_code(maps_preference_h preference,
 						const char *country_code)
 {
+	MAPS_LOG_API;
 	if (!preference || !country_code)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_item_hashtable_set_string(preference,
@@ -283,9 +300,10 @@ EXPORT_API int maps_preference_set_route_optimization(maps_preference_h
 						const maps_route_optimization_e
 						optimization)
 {
+	MAPS_LOG_API;
 	if (!preference)
 		return MAPS_ERROR_INVALID_PARAMETER;
-	if((optimization < MAPS_ROUTE_TYPE_FASTEST)
+	if ((optimization < MAPS_ROUTE_TYPE_FASTEST)
 	   || (optimization > MAPS_ROUTE_TYPE_DIRECTDRIVE))
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_item_hashtable_set_int(preference,
@@ -297,9 +315,10 @@ EXPORT_API int maps_preference_set_route_transport_mode(maps_preference_h
 					const maps_route_transport_mode_e
 					transport_mode)
 {
+	MAPS_LOG_API;
 	if (!preference)
 		return MAPS_ERROR_INVALID_PARAMETER;
-	if((transport_mode < MAPS_ROUTE_TRANSPORT_MODE_CAR)
+	if ((transport_mode < MAPS_ROUTE_TRANSPORT_MODE_CAR)
 	   || (transport_mode > MAPS_ROUTE_TRANSPORT_MODE_TRUCK))
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_item_hashtable_set_int(preference,
@@ -311,9 +330,10 @@ EXPORT_API int maps_preference_set_route_feature_weight(maps_preference_h
 					const maps_route_feature_weight_e
 					feature_weight)
 {
+	MAPS_LOG_API;
 	if (!preference)
 		return MAPS_ERROR_INVALID_PARAMETER;
-	if((feature_weight < MAPS_ROUTE_FEATURE_WEIGHT_NORMAL)
+	if ((feature_weight < MAPS_ROUTE_FEATURE_WEIGHT_NORMAL)
 	   || (feature_weight > MAPS_ROUTE_FEATURE_WEIGHT_STRICTEXCLUDE))
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_item_hashtable_set_int(preference,
@@ -324,9 +344,10 @@ EXPORT_API int maps_preference_set_route_feature(maps_preference_h preference,
 						 const maps_route_feature_e
 						 feature)
 {
+	MAPS_LOG_API;
 	if (!preference)
 		return MAPS_ERROR_INVALID_PARAMETER;
-	if((feature < MAPS_ROUTE_FEATURE_NO)
+	if ((feature < MAPS_ROUTE_FEATURE_NO)
 	   || (feature > MAPS_ROUTE_FEATURE_STAIRS))
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_item_hashtable_set_int(preference,
@@ -336,6 +357,7 @@ EXPORT_API int maps_preference_set_route_feature(maps_preference_h preference,
 EXPORT_API int maps_preference_set_property(maps_preference_h preference,
 					    const char *key, const char *value)
 {
+	MAPS_LOG_API;
 	if (!preference || !key || !value)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_item_hashtable_set_string(preference, key, value);
@@ -348,6 +370,7 @@ EXPORT_API int maps_preference_append_route_feature(maps_preference_h
 	preference, maps_item_list_h feature_list,
 	maps_route_feature_weight_e feature)
 {
+	MAPS_LOG_API;
 
 	if (!preference || max_result_count <= 0)
 		return MAPS_ERROR_INVALID_PARAMETER;
@@ -373,6 +396,7 @@ EXPORT_API int maps_preference_remove_route_feature(maps_preference_h
 	preference, maps_item_list_h feature_list,
 	maps_route_feature_weight_e feature)
 {
+	MAPS_LOG_API;
 
 	if (!preference || !feature_list)
 		return MAPS_ERROR_INVALID_PARAMETER;

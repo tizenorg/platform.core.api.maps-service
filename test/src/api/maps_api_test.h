@@ -73,5 +73,7 @@ void utc_maps_cancel_route_n(void);
 
 void utc_maps_service_search_route_real_p(void);
 
+void utc_maps_service_serial_p(void);
+
 #endif /* __MAPS_SERVICE_TEST_API_H__ */
 
