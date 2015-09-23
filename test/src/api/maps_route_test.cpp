@@ -45,13 +45,6 @@ void utc_maps_route_create_n(void)
 }
 
 /*----------------------------------------------------------------------------*/
-static int __utc_put_to_hashtable(const char* feature_str,
-	maps_string_hashtable_h t)
-{
-	if (!feature_str || !t)
-		return MAPS_ERROR_INVALID_PARAMETER;
-	return maps_string_hashtable_set(t, feature_str, feature_str);
-}
 
 class test_env
 {
@@ -65,19 +58,23 @@ class test_env
 		 g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
 		 g_assert(h);
 
-		maps_string_hashtable_h data_supported = NULL;
-		if (maps_string_hashtable_create(&data_supported) !=
+		maps_int_hashtable_h data_supported = NULL;
+		if (maps_int_hashtable_create(&data_supported) !=
 			MAPS_ERROR_NONE)
 			 return;
 
-		 __utc_put_to_hashtable(_S(MAPS_ROUTE_PATH), data_supported);
-		 __utc_put_to_hashtable(_S(MAPS_ROUTE_SEGMENTS_PATH),
-			data_supported);
-		 __utc_put_to_hashtable(_S(MAPS_ROUTE_SEGMENTS_MANEUVERS),
-			data_supported);
+		maps_int_hashtable_set(data_supported,
+				       MAPS_ROUTE_PATH,
+				       MAPS_ROUTE_PATH);
+		maps_int_hashtable_set(data_supported,
+				       MAPS_ROUTE_SEGMENTS_PATH,
+				       MAPS_ROUTE_SEGMENTS_PATH);
+		maps_int_hashtable_set(data_supported,
+				       MAPS_ROUTE_SEGMENTS_MANEUVERS,
+				       MAPS_ROUTE_SEGMENTS_MANEUVERS);
 
 		 _maps_route_set_supported_data(h, data_supported);
-		 maps_string_hashtable_destroy(data_supported);
+		 maps_int_hashtable_destroy(data_supported);
 
 	}
 	~test_env()
@@ -158,11 +155,7 @@ void utc_maps_route_origin_p(void)
 	test_env e;
 
 	maps_coordinates_h coords = NULL;
-	int error = maps_coordinates_create(11.1, 22.2,
-#if _MAPS_COORDS_3D_
-		33.3,
-#endif
-		&coords);
+	int error = maps_coordinates_create(11.1, 22.2, &coords);
 	g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
 
 	/* start test ------------------------------------------------------- */
@@ -185,11 +178,7 @@ void utc_maps_route_origin_n(void)
 	test_env e;
 
 	maps_coordinates_h coords = NULL;
-	int error = maps_coordinates_create(11.1, 22.2,
-#if _MAPS_COORDS_3D_
-		33.3,
-#endif
-		&coords);
+	int error = maps_coordinates_create(11.1, 22.2, &coords);
 	g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
 
 	/* start test ------------------------------------------------------- */
@@ -220,11 +209,7 @@ void utc_maps_route_destination_p(void)
 	test_env e;
 
 	maps_coordinates_h coords = NULL;
-	int error = maps_coordinates_create(11.1, 22.2,
-#if _MAPS_COORDS_3D_
-		33.3,
-#endif
-		&coords);
+	int error = maps_coordinates_create(11.1, 22.2, &coords);
 	g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
 
 	/* start test ------------------------------------------------------- */
@@ -247,11 +232,7 @@ void utc_maps_route_destination_n(void)
 	test_env e;
 
 	maps_coordinates_h coords = NULL;
-	int error = maps_coordinates_create(11.1, 22.2,
-#if _MAPS_COORDS_3D_
-		33.3,
-#endif
-		&coords);
+	int error = maps_coordinates_create(11.1, 22.2, &coords);
 	g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
 
 	/* start test ------------------------------------------------------- */
@@ -282,11 +263,7 @@ void utc_maps_route_bounding_box_p(void)
 	test_env e;
 
 	maps_coordinates_h coords = NULL;
-	int error = maps_coordinates_create(11.1, 22.2,
-#if _MAPS_COORDS_3D_
-		33.3,
-#endif
-		&coords);
+	int error = maps_coordinates_create(11.1, 22.2, &coords);
 	g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
 
 	maps_area_h bounding_box = NULL;
@@ -316,11 +293,7 @@ void utc_maps_route_bounding_box_n(void)
 	test_env e;
 
 	maps_coordinates_h coords = NULL;
-	int error = maps_coordinates_create(11.1, 22.2,
-#if _MAPS_COORDS_3D_
-		33.3,
-#endif
-		&coords);
+	int error = maps_coordinates_create(11.1, 22.2, &coords);
 	g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
 
 	maps_area_h bounding_box = NULL;

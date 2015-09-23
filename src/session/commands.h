@@ -18,6 +18,7 @@
 #define __MAPS_SERVICE_SESSION_COMMANDS_H__
 
 #include "command.h"
+#include "map_view.h"
 
 namespace session
 {
@@ -251,6 +252,78 @@ namespace session
 						       maps_address_h address,
 						       void *user_data);
 		friend class command_reverse_geocode;
+	};
+
+/*----------------------------------------------------------------------------*/
+	/*typedef int (*maps_plugin_multi_reverse_geocode_f)(maps_service_h maps,
+	* maps_maps_h maps_list, maps_preference_h preference,
+	* maps_service_multi_reverse_geocode_cb callback, void *user_data, * int *request_id); */
+	class command_multi_reverse_geocode : public command
+	{
+	public:
+		const string address;
+		maps_coordinates_list_h maps_list;
+		maps_item_hashtable_h preference;
+		maps_service_multi_reverse_geocode_cb callback;
+		void *user_data;
+		int error;
+	public:
+		command_multi_reverse_geocode(maps_service_h ms,
+					 const maps_coordinates_list_h maps_list,
+					 const maps_item_hashtable_h preference,
+					 maps_service_multi_reverse_geocode_cb callback,
+					 void *user_data, int *request_id);
+		virtual ~command_multi_reverse_geocode();
+	private:
+		command_multi_reverse_geocode() : command(NULL)
+		{
+		}
+		command_multi_reverse_geocode(const command_multi_reverse_geocode &src)
+			 : command(NULL)
+		{
+		}
+		command_multi_reverse_geocode& operator=(
+			const command_multi_reverse_geocode &src)
+		{
+			return *this;
+		}
+	private:
+		virtual int run();
+	};
+
+	class command_multi_reverse_geocode_handler : public command_handler
+	{
+		maps_service_multi_reverse_geocode_cb callback;
+	public:
+		command_multi_reverse_geocode_handler(plugin::plugin_s *plugin,
+						 maps_service_multi_reverse_geocode_cb callback,
+						 void *user_data,
+						 int user_req_id);
+		virtual ~command_multi_reverse_geocode_handler()
+		{
+		};
+	private:
+		command_multi_reverse_geocode_handler()
+			 : command_handler(NULL, NULL, 0)
+		{
+		}
+		command_multi_reverse_geocode_handler(
+			command_multi_reverse_geocode_handler &src)
+			 : command_handler(NULL, NULL, 0)
+		{
+		}
+		command_multi_reverse_geocode_handler &operator=(
+			const command_multi_reverse_geocode_handler &src)
+		{
+			return *this;
+		}
+	private:
+		static bool foreach_multi_reverse_geocode_cb(maps_error_e result,
+						       int request_id,
+							   int total,
+							   maps_coordinates_list_h address_list,
+						       void *user_data);
+		friend class command_multi_reverse_geocode;
 	};
 
 /*----------------------------------------------------------------------------*/
@@ -569,6 +642,161 @@ namespace session
 		}
 	private:
 		virtual int run();
+	};
+
+
+/*----------------------------------------------------------------------------*/
+/*
+ *		Mapping API commands
+ */
+/*----------------------------------------------------------------------------*/
+
+	class command_view_set_center : public command {
+	private:
+		map_view_h v;
+	public:
+		maps_coordinates_h c;
+	public:
+		command_view_set_center(maps_service_h ms, map_view_h view,
+					const maps_coordinates_h coords);
+		virtual ~command_view_set_center();
+	private:
+		virtual int run();
+	private:
+		virtual command_type_e get_type() const;
+		virtual int get_priority() const;
+		virtual void merge(const command *c);
+	};
+
+	class command_view_move_center : public command {
+	private:
+		map_view_h v;
+	public:
+		int _delta_x;
+		int _delta_y;
+	public:
+		command_view_move_center(maps_service_h ms, map_view_h view,
+					 const int delta_x, const int delta_y);
+		virtual ~command_view_move_center();
+	private:
+		virtual int run();
+	private:
+		virtual command_type_e get_type() const;
+		virtual int get_priority() const;
+		virtual void merge(const command *c);
+	};
+
+	class command_view_zoom : public command {
+	private:
+		map_view_h v;
+	public:
+		double zoom_factor;
+	public:
+		command_view_zoom(maps_service_h ms, map_view_h view,
+				  const double  &factor) :
+			command(ms), v(view), zoom_factor(factor)
+		{
+		}
+		virtual ~command_view_zoom()
+		{
+		}
+	private:
+		virtual int run();
+	private:
+		virtual command_type_e get_type() const;
+		virtual int get_priority() const;
+		virtual void merge(const command *c);
+	};
+
+	class command_view_rotate : public command {
+	private:
+		map_view_h v;
+	public:
+		double rotation_angle;
+	public:
+		command_view_rotate(maps_service_h ms, map_view_h view,
+				    const double  &angle) :
+			command(ms), v(view), rotation_angle(angle)
+		{
+		}
+		virtual ~command_view_rotate()
+		{
+		}
+	private:
+		virtual int run();
+	private:
+		virtual command_type_e get_type() const;
+		virtual int get_priority() const;
+		virtual void merge(const command *c);
+	};
+
+	class command_view_zoom_rotate : public command {
+	private:
+		map_view_h v;
+	public:
+		double zoom_factor;
+		double rotation_angle;
+	public:
+		command_view_zoom_rotate(maps_service_h ms, map_view_h view,
+					 const double  &factor,
+					 const double  &angle)
+			: command(ms)
+			  , v(view)
+			  , zoom_factor(factor)
+			  , rotation_angle(angle)
+		{
+		}
+		virtual ~command_view_zoom_rotate()
+		{
+		}
+	private:
+		virtual int run();
+	private:
+		virtual command_type_e get_type() const;
+		virtual int get_priority() const;
+		virtual void merge(const command *c);
+	};
+
+	class command_view_tilt : public command {
+	private:
+		map_view_h v;
+	public:
+		double t;
+	public:
+		command_view_tilt(maps_service_h ms, map_view_h view,
+				    const double  &tilt) :
+			command(ms), v(view), t(tilt)
+		{
+		}
+		virtual ~command_view_tilt()
+		{
+		}
+	private:
+		virtual int run();
+	private:
+		virtual command_type_e get_type() const;
+		virtual int get_priority() const;
+		virtual void merge(const command *c);
+	};
+
+
+	class command_view_ready : public command {
+	private:
+		map_view_h v;
+	public:
+		command_view_ready(maps_service_h ms, map_view_h view) :
+			command(ms), v(view)
+		{
+		}
+		virtual ~command_view_ready()
+		{
+		}
+	private:
+		virtual int run();
+	private:
+		virtual command_type_e get_type() const;
+		virtual int get_priority() const;
+		virtual void merge(const command *c);
 	};
 }
 

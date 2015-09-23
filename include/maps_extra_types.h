@@ -24,11 +24,12 @@
  * @defgroup	CAPI_MAPS_CONTAINERS_MODULE Container Data Types
  *
  * @file maps_extra_types.h
- * @brief This file contains definitions and functions of useful data types.
+ * @brief This file contains definitions and functions of several Maps Service
+ * data types, such as lists and hash tables.
  *
  * @addtogroup CAPI_MAPS_CONTAINERS_MODULE
  * @{
- * @brief This provides variable Maps Service data types, such as lists and hash
+ * @brief This provides several Maps Service data types, such as lists and hash
  * tables.
  */
 
@@ -40,11 +41,9 @@ extern "C" {
  * @ingroup	CAPI_MAPS_CONTAINERS_MODULE
  * @defgroup	CAPI_MAPS_CONTAINERS_MODULE_ITEM_LIST Maps Item Lists
  *
- * @file maps_extra_types.h
- * @brief This section contains API for using List of item pointers.
- *
  * @addtogroup CAPI_MAPS_CONTAINERS_MODULE_ITEM_LIST
  * @{
+ * @file maps_extra_types.h
  * @brief This provides API for using List of item pointers.
  */
 
@@ -247,10 +246,39 @@ int maps_item_list_foreach(maps_item_list_h list,
 typedef int (*maps_item_list_free_cb) (void *data);
 
 /**
- * @brief	Removes and destroys all list items
+ * @brief	Removes and destroys list item.
+ * @details This function removes the given items from the @a list and releases
+ * resources, assigned with it.
+ * @since_tizen 2.4
+ * @remarks The @a item is destroyed with #maps_item_list_free_cb. If this
+ * callback is NULL, item will not be destroyed.
+ *
+ * @param[in]	list		The handle of list
+ * @param[in]	item		The to remove
+ * @param[in]	free_func	The callback to be invoked for destroying each
+ * list item
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ *
+ * @pre @a list is created using maps_item_list_create().
+ * @post #maps_item_list_free_cb is used to destroy the item of the list.
+ *
+ * @see maps_item_list_free_cb()
+ * @see maps_item_list_create()
+ * @see maps_item_list_remove_all()
+ */
+int maps_item_list_remove(maps_item_list_h list,
+			  void *item,
+			  maps_item_list_free_cb free_func);
+
+/**
+ * @brief	Removes and destroys all list items.
  * @details This function removes all items of the @a list and releases
  * resources, assigned with them.
- * @since_tizen 2.4
+ * If two elements contain the same data, only the first is removed.
+ * If none of the elements contain the data, the GList is unchanged.
+ * @since_tizen 3.0
  * @remarks Each item is destroyed with #maps_item_list_free_cb. If this
  * callback is NULL, items will not be destroyed.
  *
@@ -280,11 +308,9 @@ int maps_item_list_remove_all(maps_item_list_h list,
  * @ingroup	CAPI_MAPS_CONTAINERS_MODULE
  * @defgroup	CAPI_MAPS_CONTAINERS_MODULE_STRING_HASHTABLE Maps String Hash Tables
  *
- * @file maps_extra_types.h
- * @brief This section contains API for using Hash Table of strings.
- *
  * @addtogroup CAPI_MAPS_CONTAINERS_MODULE_STRING_HASHTABLE
  * @{
+ * @file maps_extra_types.h
  * @brief This provides API for using Hash Table of strings.
  */
 
@@ -527,11 +553,9 @@ int maps_string_hashtable_contains(maps_string_hashtable_h table,
  * @ingroup	CAPI_MAPS_CONTAINERS_MODULE
  * @defgroup	CAPI_MAPS_CONTAINERS_MODULE_ITEM_HASHTABLE Maps Item Hash Tables
  *
- * @file maps_extra_types.h
- * @brief This section contains API for using Hash Table of arbitrary items.
- *
  * @addtogroup CAPI_MAPS_CONTAINERS_MODULE_ITEM_HASHTABLE
  * @{
+ * @file maps_extra_types.h
  * @brief This provides API for using Hash Table of arbitrary items.
  */
 
@@ -1181,6 +1205,55 @@ int maps_item_hashtable_foreach(maps_item_hashtable_h table,
  */
 int maps_item_hashtable_contains(maps_item_hashtable_h table, const char *key,
 				 bool *contains);
+
+/**
+ * @}
+ */
+
+
+/*----------------------------------------------------------------------------*/
+
+/**
+ * @ingroup	CAPI_MAPS_CONTAINERS_MODULE
+ * @defgroup	CAPI_MAPS_CONTAINERS_MODULE_UTILITY Maps Container Utilities
+ *
+ * @addtogroup CAPI_MAPS_CONTAINERS_MODULE_UTILITY
+ * @{
+ * @file maps_extra_types.h
+ * @brief This provides API for helping usage of container types, such as
+ * maps_item_list_h and maps_item_hashtable_h.
+ */
+
+
+/**
+* @brief	Copies the table item of arbitrary type type without cloning.
+ * @details This is a helper function of type #maps_item_no_clone,
+ * which is useful while adding to the table or list an item of arbitrary type
+ * without cloning it. It allows to add to the container the given object
+ * instead of its clone and, consequently, reduce the memory consumption.
+ * This function is intended to be passed as the @a
+ * clone_func argument in functions, such as the maps_item_hashtable_set() ot
+ * maps_item_list_append().
+ * @since_tizen 3.0
+ * @remarks This function will be called implicitly in the
+ * maps_item_hashtable_clone(), maps_item_list_append() or similar procedure.
+ *
+ * @param[in]	origin		The pointer of the item to be cloned
+ * @param[out]	cloned		The pointer of the clone
+ * @return	void pointer of a copy floating point number
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ *
+ * @pre maps_item_hashtable_clone() will invoke this callback.
+ * @pre maps_item_list_append() will invoke this callback.
+ *
+ * @see maps_item_list_append()
+ * @see maps_item_hashtable_clone_cb()
+ * @see maps_item_hashtable_set()
+ * @see maps_item_hashtable_free_float()
+ */
+int maps_item_no_clone(void *origin, void **cloned);
 
 /**
  * @}

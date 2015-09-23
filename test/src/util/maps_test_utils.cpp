@@ -25,6 +25,9 @@ void __utc_print_error_string(int error)
 	case MAPS_ERROR_NONE:
 		g_print("MAPS_ERROR_NONE\n");
 		break;
+	case MAPS_ERROR_PERMISSION_DENIED:
+		g_print("MAPS_ERROR_PERMISSION_DENIED\n");
+		break;
 	case MAPS_ERROR_OUT_OF_MEMORY:
 		g_print("MAPS_ERROR_OUT_OF_MEMORY\n");
 		break;

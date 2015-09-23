@@ -48,6 +48,13 @@ extern "C" {
  */
 typedef void *maps_address_h;
 
+/**
+ * @brief The address list handle
+ * @details The address list handle can be obtained via calling of maps_address_list_create().
+ * @since_tizen 3.0
+ */
+typedef void *maps_address_list_h;
+
 /*----------------------------------------------------------------------------*/
 
 /**
@@ -488,6 +495,112 @@ int maps_address_set_postal_code(maps_address_h address,
  * @see maps_address_get_freetext()
  */
 int maps_address_set_freetext(maps_address_h address, const char *freetext);
+
+/**
+ * @brief	Creates a address list having a set of addresses.
+ * @since_tizen 3.0
+ *
+ * @param[out]	address_list	The address list handle
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
+ *
+ * @see maps_address_list_destroy()
+ */
+int maps_address_list_create(maps_address_list_h *address_list);
+
+/**
+ * @brief	Appends an address to an address list.
+ * @since_tizen 3.0
+ *
+ * @param[in]	address_list	The address list handle
+ * @param[in]	address	The address handle
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
+ *
+ * @see maps_address_list_create()
+ * @see maps_address_list_destroy()
+ */
+int maps_address_list_append(maps_address_list_h address_list, maps_address_h address);
+
+/**
+ * @brief	Removes an address from an address list.
+ * @since_tizen 3.0
+ *
+ * @param[in]	address_list	The address list handle
+ * @param[in]	address	The address handle
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ *
+ * @see maps_address_list_create()
+ * @see maps_address_list_destroy()
+ */
+int maps_address_list_remove(maps_address_list_h address_list, maps_address_h address);
+
+/**
+ * @brief	Gets the number of elements in an address list.
+ * @since_tizen 3.0
+ *
+ * @param[in]	address_list	The address list handle
+ * @param[out]	length	The number of elements in the address list
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ *
+ * @see maps_address_list_create()
+ * @see maps_address_list_destroy()
+ */
+int maps_address_list_get_length(maps_address_list_h address_list, int *length);
+
+/**
+ * @brief	Called iteratively to get address information.
+ * @since_tizen 3.0
+ *
+ * @param[in]	index	The index of iteration
+ * @param[in]	address	The address handle
+ * @param[in]	user_data	The user data passed from the foreach function
+ *
+ * @return @c true to continue with the next iteration of the loop, \n
+ *         @c false to break out of the loop
+ * @see maps_address_list_foreach_address()
+ */
+typedef bool (*maps_address_cb)(int index, maps_address_h address, void *user_data);
+
+/**
+ * @brief Retrieves all addresses by invoking a specific callback for each address of address list.
+ * @since_tizen 3.0
+ *
+ * @param[in]	address_list	The address list handle
+ * @param[in]	callback	The iteration callback
+ * @param[in]	user_data	The user data to be passed to the callback function
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ *
+ * @see maps_address_list_create()
+ * @see maps_address_list_destroy()
+ * @see maps_address_list_get_length()
+ */
+int maps_address_list_foreach(maps_address_list_h address_list, maps_address_cb callback, void *user_data);
+
+/**
+ * @brief	Frees all of the memory used by a address list.
+ * @since_tizen 3.0
+ *
+ * @param[in]	address_list	The address list handle
+ * @param[in]	maps_address_h	The address handle
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ *
+ * @see maps_address_list_create()
+ */
+int maps_address_list_destroy(maps_address_list_h address_list);
+
 
 #ifdef __cplusplus
 }

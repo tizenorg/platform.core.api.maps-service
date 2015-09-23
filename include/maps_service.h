@@ -75,8 +75,10 @@ typedef enum _maps_service_e {
 			maps_service_search_route() service is allowed */
 	MAPS_SERVICE_SEARCH_ROUTE_WAYPOINTS,		/** Indicates that
 		maps_service_search_route_waypoints() service is allowed */
-	MAPS_SERVICE_CANCEL_REQUEST			/** Indicates that
+	MAPS_SERVICE_CANCEL_REQUEST,			/** Indicates that
 			maps_service_cancel_request() service is allowed */
+	MAPS_SERVICE_MULTI_REVERSE_GEOCODE	/** Indicates that
+	maps_service_multi_reverse_geocode() service is allowed (Since 3.0)*/
 } maps_service_e;
 
 /**
@@ -119,19 +121,23 @@ typedef enum _maps_service_data_e {
  * @details The Maps Service handle can be created by calling of maps_service_create().
  * \n To release the handle use maps_service_destroy().
  * @since_tizen 2.4
- * @privlevel public
- * @privilege %http://tizen.org/privilege/mapservice
  *
  * @see maps_service_create()
  * @see maps_service_destroy()
  */
 typedef void *maps_service_h;
 
+
 /**
  * @brief	Called when requesting available Maps Providers.
  * @details A Maps Service invokes this callback iteratively as long as available Maps Providers exist.
  * @since_tizen 2.4
  * @remarks The string @a maps_provider must be released using free().
+ *
+ *
+ * TODO: it would be greate to add such a detailed message to all callbacks
+ * /n This callback is synchronous.
+ *
  *
  * @param[in]	maps_provider	The info of Maps Provider
  * @param[in]	user_data	The user data passed from
@@ -179,7 +185,9 @@ int maps_service_foreach_provider(maps_service_provider_info_cb callback,
  * such as Geocoding, Searching Places and Routing.
  * @since_tizen 2.4
  * @privlevel public
- * @privilege %http://tizen.org/privilege/mapservice
+ * @privilege %http://tizen.org/privilege/mapservice \n
+ *            %http://tizen.org/privilege/network.get
+ *
  * @remarks @a maps service handle must be released using maps_service_destroy().
  * \n use maps_service_foreach_provider() to choose one of available Providers.
  * \n use maps_service_set_provider_key() to set provider's key.
@@ -244,7 +252,6 @@ int maps_service_destroy(maps_service_h maps);
  * @remarks To get the @a provider_key, refer to corresponding Maps Provider
  * documentation.
  * \n To get app_id and app_code of HERE, visit https://developer.here.com/, https://developer.here.com/rest-apis.
- * \n To get a MapQuest AppKey, visit http://developer.mapquest.com/, http://open.mapquestapi.com.
  *
  * @param[in]	maps		The Maps Service handle
  * @param[in]	provider_key	The Maps Key to be used
@@ -393,7 +400,6 @@ int maps_service_provider_is_data_supported(const maps_service_h maps,
  * @since_tizen 2.4
  * @privlevel public
  * @privilege %http://tizen.org/privilege/mapservice
- * @remarks This function requires network access.
  *
  * @param[in]	maps		The Maps Service handle
  * @param[in]	request_id	The id of request
@@ -532,7 +538,9 @@ typedef void (*maps_service_reverse_geocode_cb) (maps_error_e result,
  * address string.
  * @since_tizen 2.4
  * @privlevel public
- * @privilege %http://tizen.org/privilege/mapservice
+ * @privilege %http://tizen.org/privilege/mapservice \n
+ *            %http://tizen.org/privilege/internet \n
+ *            %http://tizen.org/privilege/network.get
  * @remarks %http://tizen.org/privilege/internet is needed to access internet.
  * \n To cancel the request use maps_service_cancel_request().
  * \n To check if Maps Provider is capable of Geocoding and which Geocode
@@ -558,8 +566,6 @@ typedef void (*maps_service_reverse_geocode_cb) (maps_error_e result,
  * @retval	#MAPS_ERROR_NOT_FOUND Result not found
  * @retval	#MAPS_ERROR_KEY_NOT_AVAILABLE Invalid key
  * @retval	#MAPS_ERROR_UNKNOWN Unknown error
-
- #MAPS_ERROR_UNKNOWN Unknown error
  *
  * @pre Call maps_service_create() to create Maps Service and obtain its handle.
  * @post It invokes maps_service_geocode_cb() to deliver obtained position
@@ -582,7 +588,9 @@ int maps_service_geocode(const maps_service_h maps, const char *address,
  * address string within the specified bounding box.
  * @since_tizen 2.4
  * @privlevel public
- * @privilege %http://tizen.org/privilege/mapservice
+ * @privilege %http://tizen.org/privilege/mapservice \n
+ *            %http://tizen.org/privilege/internet \n
+ *            %http://tizen.org/privilege/network.get
  * @remarks %http://tizen.org/privilege/internet is needed to access internet.
  * \n Polygonal bounding box is not supported.
  * \n To cancel the request use maps_service_cancel_request().
@@ -638,7 +646,9 @@ int maps_service_geocode_inside_area(const maps_service_h maps,
  * address.
  * @since_tizen 2.4
  * @privlevel public
- * @privilege %http://tizen.org/privilege/mapservice
+ * @privilege %http://tizen.org/privilege/mapservice \n
+ *            %http://tizen.org/privilege/internet \n
+ *            %http://tizen.org/privilege/network.get
  * @remarks %http://tizen.org/privilege/internet is needed to access internet.
  * \n To cancel the request use maps_service_cancel_request().
  * \n To check if Maps Provider is capable of Geocoding and which Geocode
@@ -690,7 +700,9 @@ int maps_service_geocode_by_structured_address(const maps_service_h maps,
  * position coordinates.
  * @since_tizen 2.4
  * @privlevel public
- * @privilege %http://tizen.org/privilege/mapservice
+ * @privilege %http://tizen.org/privilege/mapservice \n
+ *            %http://tizen.org/privilege/internet \n
+ *            %http://tizen.org/privilege/network.get
  * @remarks %http://tizen.org/privilege/internet is needed to access internet.
  * \n To cancel the request use maps_service_cancel_request().
  * \n To check if Maps Provider is capable of Reverse Geocoding and which
@@ -733,6 +745,82 @@ int maps_service_reverse_geocode(const maps_service_h maps, double latitude,
 				 maps_service_reverse_geocode_cb callback,
 				 void *user_data, int *request_id);
 
+
+/**
+ * @brief	Called when requested Multi Reverse Geocodes are responded by
+ * the Maps Provider.
+ * @since_tizen 3.0
+ *
+ * @param[in]	result			The result of request
+ * @param[in]	request_id		The id of request
+ * @param[in]	total			The total number of results
+ * @param[in]	address_list		The converted address list from the
+ * requested coordinates list
+ * @param[in]	user_data		The user data pointer passed from
+ * maps_service_multi_reverse_geocode()
+ * @return	@c true to continue with the next iteration of the loop, \n @c
+ * false to break out of the loop
+ *
+ * @pre maps_service_multi_reverse_geocode() will invoke this callback.
+ *
+ * @see maps_service_multi_reverse_geocode()
+ * @see maps_service_cancel_request()
+ */
+typedef bool (*maps_service_multi_reverse_geocode_cb) (maps_error_e result,
+					int request_id,
+					int total,
+					maps_address_list_h address_list,
+					void *user_data);
+
+/**
+ * @brief	Gets the address list for a given position coordinates list.
+ * \n The request is asynchronous.
+ * @details This function obtains structured address information.
+ * @since_tizen 3.0
+ * @privlevel public
+ * @privilege %http://tizen.org/privilege/mapservice \n
+ *            %http://tizen.org/privilege/internet \n
+ *            %http://tizen.org/privilege/network.get
+ * @remarks %http://tizen.org/privilege/internet is needed to access internet.
+ * \n To cancel the request use maps_service_cancel_request().
+ * \n To check if Maps Provider is capable of Multi Reverse Geocoding use
+ * maps_service_provider_is_service_supported() with
+ * #MAPS_SERVICE_MULTI_REVERSE_GEOCODE passed as @a service parameter.
+ *
+ * @param[in]	maps		The Maps Service handle
+ * @param[in]	coordinates_list The coordinates list [2 ~ 100] (a set of coordinates)
+ * @param[in]	preference	The set of preferences for processing Reverse
+ * Geocode
+ * @param[in]	callback	The callback which will retrieve address list
+ * @param[in]	user_data	The user data pointer to be passed to the
+ * callback
+ * @param[out]	request_id	The id of request
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NETWORK_UNREACHABLE Network connection failed
+ * @retval	#MAPS_ERROR_SERVICE_NOT_AVAILABLE Service not available
+ * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
+ * @retval	#MAPS_ERROR_CONNECTION_TIME_OUT Timeout error, no answer
+ * @retval	#MAPS_ERROR_INVALID_OPERATION Operation is not valid
+ * @retval	#MAPS_ERROR_NOT_FOUND Result not found
+ * @retval	#MAPS_ERROR_KEY_NOT_AVAILABLE Invalid key
+ * @retval	#MAPS_ERROR_UNKNOWN Unknown error
+ *
+ * @pre Call maps_service_create() to create Maps Service and obtain its handle.
+ * @post This function invokes maps_service_multi_reverse_geocode_cb().
+ *
+ * @see maps_service_multi_reverse_geocode_cb()
+ * @see maps_service_cancel_request()
+ * @see maps_service_reverse_geocode()
+ * @see maps_service_provider_is_service_supported()
+ */
+int maps_service_multi_reverse_geocode(const maps_service_h maps,
+				maps_coordinates_list_h coordinates_list,
+				const maps_preference_h preference,
+				maps_service_multi_reverse_geocode_cb callback,
+				void *user_data, int *request_id);
 /**
  * @}
  */
@@ -793,7 +881,9 @@ typedef bool(*maps_service_search_place_cb) (maps_error_e error,
  * around a given coordinates position.
  * @since_tizen 2.4
  * @privlevel public
- * @privilege %http://tizen.org/privilege/mapservice
+ * @privilege %http://tizen.org/privilege/mapservice \n
+ *            %http://tizen.org/privilege/internet \n
+ *            %http://tizen.org/privilege/network.get
  * @remarks %http://tizen.org/privilege/internet is needed to access internet.
  * \n To cancel the search request use maps_service_cancel_request().
  * \n To check if Maps Provider is capable of Place Search and which Place
@@ -847,7 +937,9 @@ int maps_service_search_place(const maps_service_h maps,
  * coordinates boundary.
  * @since_tizen 2.4
  * @privlevel public
- * @privilege %http://tizen.org/privilege/mapservice
+ * @privilege %http://tizen.org/privilege/mapservice \n
+ *            %http://tizen.org/privilege/internet \n
+ *            %http://tizen.org/privilege/network.get
  * @remarks %http://tizen.org/privilege/internet is needed to access internet.
  * \n @a boundary is supporting only circle type bounds for search.
  * \n To cancel the search request use maps_service_cancel_request().
@@ -902,7 +994,9 @@ int maps_service_search_place_by_area(const maps_service_h maps,
  * formed address string.
  * @since_tizen 2.4
  * @privlevel public
- * @privilege %http://tizen.org/privilege/mapservice
+ * @privilege %http://tizen.org/privilege/mapservice \n
+ *            %http://tizen.org/privilege/internet \n
+ *            %http://tizen.org/privilege/network.get
  * @remarks %http://tizen.org/privilege/internet is needed to access internet.
  * \n @a boundary is supporting only circle type bounds for search.
  * \n To cancel the search request use maps_service_cancel_request().
@@ -1012,7 +1106,9 @@ typedef bool(*maps_service_search_route_cb) (maps_error_e error,
  * destination coordinates.
  * @since_tizen 2.4
  * @privlevel public
- * @privilege %http://tizen.org/privilege/mapservice
+ * @privilege %http://tizen.org/privilege/mapservice \n
+ *            %http://tizen.org/privilege/internet \n
+ *            %http://tizen.org/privilege/network.get
  * @remarks %http://tizen.org/privilege/internet is needed to access internet.
  * \n To cancel the search request use maps_service_cancel_request().
  * \n To check if Maps Provider is capable of Route Search and which Route
@@ -1060,7 +1156,9 @@ int maps_service_search_route(const maps_service_h maps,
  * through a specified set of way points.
  * @since_tizen 2.4
  * @privlevel public
- * @privilege %http://tizen.org/privilege/mapservice
+ * @privilege %http://tizen.org/privilege/mapservice \n
+ *            %http://tizen.org/privilege/internet \n
+ *            %http://tizen.org/privilege/network.get
  * @remarks %http://tizen.org/privilege/internet is needed to access internet.
  * \n To cancel the search request use maps_service_cancel_request().
  * \n To check if Maps Provider is capable of Route Search and which Route

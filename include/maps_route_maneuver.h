@@ -53,15 +53,25 @@ typedef void *maps_route_maneuver_h;
  * @since_tizen 2.4
  */
 typedef enum {
-    MAPS_ROUTE_DIRECTION_NONE,		/**< Indicates unknown direction */
-    MAPS_ROUTE_DIRECTION_NORTH,		/**< Indicates north direction */
-    MAPS_ROUTE_DIRECTION_NORTHWEST,	/**< Indicates north-west direction */
-    MAPS_ROUTE_DIRECTION_NORTHEAST,	/**< Indicates north-east direction */
-    MAPS_ROUTE_DIRECTION_SOUTH,		/**< Indicates south direction */
-    MAPS_ROUTE_DIRECTION_SOUTHEAST,	/**< Indicates south-east direction */
-    MAPS_ROUTE_DIRECTION_SOUTHWEST,	/**< Indicates south-west direction */
-    MAPS_ROUTE_DIRECTION_WEST,		/**< Indicates west direction */
-    MAPS_ROUTE_DIRECTION_EAST,		/**< Indicates east direction */
+
+	MAPS_ROUTE_DIRECTION_NONE, /**< Indicates unknown direction */
+
+	MAPS_ROUTE_DIRECTION_NORTH, /**< Indicates north direction */
+
+	MAPS_ROUTE_DIRECTION_NORTHWEST, /**< Indicates north-west direction */
+
+	MAPS_ROUTE_DIRECTION_NORTHEAST, /**< Indicates north-east direction */
+
+	MAPS_ROUTE_DIRECTION_SOUTH, /**< Indicates south direction */
+
+	MAPS_ROUTE_DIRECTION_SOUTHEAST, /**< Indicates south-east direction */
+
+	MAPS_ROUTE_DIRECTION_SOUTHWEST, /**< Indicates south-west direction */
+
+	MAPS_ROUTE_DIRECTION_WEST, /**< Indicates west direction */
+
+	MAPS_ROUTE_DIRECTION_EAST /**< Indicates east direction */
+
 } maps_route_direction_e;
 
 /**
@@ -69,31 +79,47 @@ typedef enum {
  * @since_tizen 2.4
  */
 typedef enum {
-    MAPS_ROUTE_TURN_TYPE_NONE,		/**< Indicates unknown instruction. */
-    MAPS_ROUTE_TURN_TYPE_STRAIGHT,	/**< Indicates instruction to move
-					  straight */
-    MAPS_ROUTE_TURN_TYPE_BEAR_RIGHT,	/**< Indicates instruction to bear
-					  right. */
-    MAPS_ROUTE_TURN_TYPE_LIGHT_RIGHT,	/**< Indicates instruction slightly to
-					  the right. */
-    MAPS_ROUTE_TURN_TYPE_RIGHT,	/**< Indicates instruction to turn right. */
-    MAPS_ROUTE_TURN_TYPE_HARD_RIGHT,	/**< Indicates instruction to turn hard
-					  to the right. */
-    MAPS_ROUTE_TURN_TYPE_UTURN_RIGHT,	/**< Indicates instruction to u-turn to
-					  the right. */
-    MAPS_ROUTE_TURN_TYPE_UTURN_LEFT,	/**< Indicates instruction to u-turn to
-					  the left. */
-    MAPS_ROUTE_TURN_TYPE_HARD_LEFT,	/**< Indicates instruction to turn hard
+
+	MAPS_ROUTE_TURN_TYPE_NONE, /**< Indicates unknown instruction. */
+
+	MAPS_ROUTE_TURN_TYPE_STRAIGHT, /**< Indicates instruction to move
+					 straight */
+
+	MAPS_ROUTE_TURN_TYPE_BEAR_RIGHT, /**< Indicates instruction to bear
+					   right. */
+
+	MAPS_ROUTE_TURN_TYPE_LIGHT_RIGHT, /**< Indicates instruction slightly to
+					    the right. */
+
+	MAPS_ROUTE_TURN_TYPE_RIGHT, /**< Indicates instruction to turn right. */
+
+	MAPS_ROUTE_TURN_TYPE_HARD_RIGHT, /**< Indicates instruction to turn hard
+					   to the right. */
+
+	MAPS_ROUTE_TURN_TYPE_UTURN_RIGHT, /**< Indicates instruction to u-turn
+					    to the right. */
+
+	MAPS_ROUTE_TURN_TYPE_UTURN_LEFT, /**< Indicates instruction to u-turn
+					   to the left. */
+
+	MAPS_ROUTE_TURN_TYPE_HARD_LEFT, /**< Indicates instruction to turn hard
 					  to the left. */
-    MAPS_ROUTE_TURN_TYPE_LEFT,		/**< Indicates instruction to turn left. */
-    MAPS_ROUTE_TURN_TYPE_LIGHT_LEFT,	/**< Indicates instruction to turn
-					  lightly to the left. */
-    MAPS_ROUTE_TURN_TYPE_BEAR_LEFT,	/**< Indicates instruction to bear left. */
-    MAPS_ROUTE_TURN_TYPE_RIGHT_FORK,	/**< Indicates right fork
-					  instruction. */
-    MAPS_ROUTE_TURN_TYPE_LEFT_FORK,	/**< Indicates left fork instruction. */
-    MAPS_ROUTE_TURN_TYPE_STRAIGHT_FORK,/**< Indicates straight fork
-					 instruction. */
+
+	MAPS_ROUTE_TURN_TYPE_LEFT, /**< Indicates instruction to turn left. */
+
+	MAPS_ROUTE_TURN_TYPE_LIGHT_LEFT, /**< Indicates instruction to turn
+					   lightly to the left. */
+
+	MAPS_ROUTE_TURN_TYPE_BEAR_LEFT, /**< Indicates instruction to bear
+					  left. */
+
+	MAPS_ROUTE_TURN_TYPE_RIGHT_FORK, /**< Indicates right fork
+					   instruction. */
+
+	MAPS_ROUTE_TURN_TYPE_LEFT_FORK, /**< Indicates left fork instruction. */
+
+	MAPS_ROUTE_TURN_TYPE_STRAIGHT_FORK /**< Indicates straight fork
+					     instruction. */
 } maps_route_turn_type_e;
 
 /*----------------------------------------------------------------------------*/

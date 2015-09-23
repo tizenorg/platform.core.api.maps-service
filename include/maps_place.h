@@ -63,6 +63,12 @@ typedef void *maps_place_h;
 /**
  * @brief	Called when requesting the list of Place Properties.
  * @details This callback is invoked while iterating through the list of Place
+ *
+ *
+ * TODO: it would be greate to add such a detailed message to all callbacks
+ * /n This callback is synchronous.
+ *
+ *
  * Properties.
  * @since_tizen 2.4
  * @remarks @a key and @a value must be released using free() and corresponding

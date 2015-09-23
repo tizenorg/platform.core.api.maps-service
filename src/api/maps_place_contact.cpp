@@ -33,6 +33,7 @@ const gsize _MAPS_PLACE_CONTACT_VALUE_MAX_LENGTH = 512;
 
 EXPORT_API int maps_place_contact_create(maps_place_contact_h *place)
 {
+	MAPS_LOG_API;
 	if (!place)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	*place = (maps_place_contact_h) g_slice_new0(maps_place_contact_s);
@@ -47,6 +48,7 @@ EXPORT_API int maps_place_contact_create(maps_place_contact_h *place)
 
 EXPORT_API int maps_place_contact_destroy(maps_place_contact_h place)
 {
+	MAPS_LOG_API;
 	if (!place)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -66,6 +68,7 @@ EXPORT_API int maps_place_contact_destroy(maps_place_contact_h place)
 EXPORT_API int maps_place_contact_clone(const maps_place_contact_h origin,
 					maps_place_contact_h *cloned)
 {
+	MAPS_LOG_API;
 	if (!cloned || !origin)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -108,6 +111,7 @@ EXPORT_API int maps_place_contact_clone(const maps_place_contact_h origin,
 EXPORT_API int maps_place_contact_get_label(const maps_place_contact_h place,
 					    char **label)
 {
+	MAPS_LOG_API;
 	if (!place || !label)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_get_string(((maps_place_contact_s *) place)->label,
@@ -117,6 +121,7 @@ EXPORT_API int maps_place_contact_get_label(const maps_place_contact_h place,
 EXPORT_API int maps_place_contact_get_type(const maps_place_contact_h place,
 					   char **type)
 {
+	MAPS_LOG_API;
 	if (!place || !type)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_get_string(((maps_place_contact_s *) place)->type,
@@ -126,6 +131,7 @@ EXPORT_API int maps_place_contact_get_type(const maps_place_contact_h place,
 EXPORT_API int maps_place_contact_get_value(const maps_place_contact_h place,
 					    char **value)
 {
+	MAPS_LOG_API;
 	if (!place || !value)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_get_string(((maps_place_contact_s *) place)->value,
@@ -137,6 +143,7 @@ EXPORT_API int maps_place_contact_get_value(const maps_place_contact_h place,
 EXPORT_API int maps_place_contact_set_label(maps_place_contact_h place,
 					    const char *label)
 {
+	MAPS_LOG_API;
 	if (!place || !label)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_set_string(label, _MAPS_PLACE_CONTACT_LABEL_MAX_LENGTH,
@@ -146,6 +153,7 @@ EXPORT_API int maps_place_contact_set_label(maps_place_contact_h place,
 EXPORT_API int maps_place_contact_set_type(maps_place_contact_h place,
 					   const char *type)
 {
+	MAPS_LOG_API;
 	if (!place || !type)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_set_string(type, _MAPS_PLACE_CONTACT_TYPE_MAX_LENGTH,
@@ -155,6 +163,7 @@ EXPORT_API int maps_place_contact_set_type(maps_place_contact_h place,
 EXPORT_API int maps_place_contact_set_value(maps_place_contact_h place,
 					    const char *value)
 {
+	MAPS_LOG_API;
 	if (!place || !value)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_set_string(value, _MAPS_PLACE_CONTACT_VALUE_MAX_LENGTH,

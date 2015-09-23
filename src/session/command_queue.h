@@ -19,6 +19,8 @@
 
 #include "module.h"
 
+/*#define _MAPS_SERVICE_SUPPORTS_ASYNC_QUEUE_*/
+
 namespace session
 {
 
@@ -33,10 +35,12 @@ namespace session
 		virtual void clear(plugin::plugin_s *p) = 0;
 	public:
 		static command_queue *interface();
+#ifdef _MAPS_SERVICE_SUPPORTS_ASYNC_QUEUE_
 		static bool is_async()
 		{
-			return false;
+			return true;
 		}
+#endif /*_MAPS_SERVICE_SUPPORTS_ASYNC_QUEUE_*/
 	};
 
 	class command_queue_sync:public command_queue
@@ -61,7 +65,6 @@ namespace session
  * This is the implementation of asynchronous queue.
  * In order to pass code coverage tests it is blocked.
  */
-/*#define _MAPS_SERVICE_SUPPORTS_ASYNC_QUEUE_*/
 #ifdef _MAPS_SERVICE_SUPPORTS_ASYNC_QUEUE_
 	class command_queue_async:public command_queue
 	{
@@ -80,7 +83,34 @@ namespace session
 
 		friend class command_queue;
 	};
-#endif /* _MAPS_SERVICE_SUPPORTS_ASYNC_QUEUE_ */
+
+	/*
+	 * This queue is intended to process mainly the commands, assigned to
+	 * user gestures
+	 */
+	class command_queue_view : public command_queue
+	{
+	private:
+		command_queue_view()
+		{
+		}
+		virtual ~command_queue_view()
+		{
+		}
+	public:
+		static command_queue* interface();
+	private:
+		virtual int push(command *c);
+		virtual command *pop(plugin::plugin_s *p);
+		virtual void process(plugin::plugin_s *p);
+		virtual void clear(plugin::plugin_s *p);
+
+		friend class command_queue;
+	private:
+		static gint iterate(gconstpointer a,
+				    gconstpointer b,
+				    gpointer user_data);
+	};
 
 	class queue_autoref
 	{
@@ -96,6 +126,7 @@ namespace session
 			g_async_queue_unref(q);
 		}
 	};
+#endif /* _MAPS_SERVICE_SUPPORTS_ASYNC_QUEUE_ */
 
 };
 

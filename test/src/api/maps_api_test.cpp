@@ -33,7 +33,6 @@ class test_env
 	enum TEST_PLUGIN
 	{
 		DUMMY,
-		MAPQUEST,
 		HERE,
 	};
 	struct test_plugin_info_s
@@ -60,14 +59,9 @@ class test_env
 				"test_key",
 				false },
 
-			/* MAPQUEST */
-			{ "Open Street Maps",
-				"test_key"
-				true },
-
 			/* HERE */
 			{ "HERE",
-				"test_app_id/test_app_code"
+				"test_app_id/test_app_code",
 				true }
 		};
 		 return info[idx];
@@ -79,9 +73,8 @@ class test_env
 
 		/* Chose the Plugin for testing */
 		test_plugin_type =
-			/*DUMMY*/	/* Dummy plugin */
-			/*MAPQUEST*/	/* MapQuest plugin */
-			HERE	/* Nokia Here Maps */
+			DUMMY	/* Dummy plugin */
+			/*HERE*/	/* Nokia Here Maps */
 			;
 
 		i = get_plugin_info(test_plugin_type);
@@ -333,52 +326,50 @@ void utc_maps_service_provider_is_data_supported_p(void)
 			MAPS_PLACE_ADDRESS, &supported), ==, MAPS_ERROR_NONE);
 	g_assert(supported);
 
-	if (e.test_plugin_type != test_env::MAPQUEST) {
-		g_assert_cmpint(maps_service_provider_is_data_supported(e.m,
-				MAPS_PLACE_RATING, &supported), ==,
-			MAPS_ERROR_NONE);
-		g_assert(supported);
+	g_assert_cmpint(maps_service_provider_is_data_supported(e.m,
+			MAPS_PLACE_RATING, &supported), ==,
+		MAPS_ERROR_NONE);
+	g_assert(supported);
 
-		g_assert_cmpint(maps_service_provider_is_data_supported(e.m,
-				MAPS_PLACE_CATEGORIES, &supported), ==,
-			MAPS_ERROR_NONE);
-		g_assert(supported);
+	g_assert_cmpint(maps_service_provider_is_data_supported(e.m,
+			MAPS_PLACE_CATEGORIES, &supported), ==,
+		MAPS_ERROR_NONE);
+	g_assert(supported);
 
-		g_assert_cmpint(maps_service_provider_is_data_supported(e.m,
-				MAPS_PLACE_ATTRIBUTES, &supported), ==,
-			MAPS_ERROR_NONE);
-		g_assert(supported);
+	g_assert_cmpint(maps_service_provider_is_data_supported(e.m,
+			MAPS_PLACE_ATTRIBUTES, &supported), ==,
+		MAPS_ERROR_NONE);
+	g_assert(supported);
 
-		g_assert_cmpint(maps_service_provider_is_data_supported(e.m,
-				MAPS_PLACE_CONTACTS, &supported), ==,
-			MAPS_ERROR_NONE);
-		g_assert(supported);
+	g_assert_cmpint(maps_service_provider_is_data_supported(e.m,
+			MAPS_PLACE_CONTACTS, &supported), ==,
+		MAPS_ERROR_NONE);
+	g_assert(supported);
 
-		g_assert_cmpint(maps_service_provider_is_data_supported(e.m,
-				MAPS_PLACE_EDITORIALS, &supported), ==,
-			MAPS_ERROR_NONE);
-		g_assert(supported);
+	g_assert_cmpint(maps_service_provider_is_data_supported(e.m,
+			MAPS_PLACE_EDITORIALS, &supported), ==,
+		MAPS_ERROR_NONE);
+	g_assert(supported);
 
-		g_assert_cmpint(maps_service_provider_is_data_supported(e.m,
-				MAPS_PLACE_REVIEWS, &supported), ==,
-			MAPS_ERROR_NONE);
-		g_assert(supported);
+	g_assert_cmpint(maps_service_provider_is_data_supported(e.m,
+			MAPS_PLACE_REVIEWS, &supported), ==,
+		MAPS_ERROR_NONE);
+	g_assert(supported);
 
-		g_assert_cmpint(maps_service_provider_is_data_supported(e.m,
-				MAPS_PLACE_IMAGE, &supported), ==,
-			MAPS_ERROR_NONE);
-		g_assert(supported);
+	g_assert_cmpint(maps_service_provider_is_data_supported(e.m,
+			MAPS_PLACE_IMAGE, &supported), ==,
+		MAPS_ERROR_NONE);
+	g_assert(supported);
 
-		g_assert_cmpint(maps_service_provider_is_data_supported(e.m,
-				MAPS_PLACE_SUPPLIER, &supported), ==,
-			MAPS_ERROR_NONE);
-		g_assert(supported);
+	g_assert_cmpint(maps_service_provider_is_data_supported(e.m,
+			MAPS_PLACE_SUPPLIER, &supported), ==,
+		MAPS_ERROR_NONE);
+	g_assert(supported);
 
-		g_assert_cmpint(maps_service_provider_is_data_supported(e.m,
-				MAPS_PLACE_RELATED, &supported), ==,
-			MAPS_ERROR_NONE);
-		g_assert(supported);
-	}
+	g_assert_cmpint(maps_service_provider_is_data_supported(e.m,
+			MAPS_PLACE_RELATED, &supported), ==,
+		MAPS_ERROR_NONE);
+	g_assert(supported);
 
 	g_assert_cmpint(maps_service_provider_is_data_supported(e.m,
 			MAPS_ROUTE_PATH, &supported), ==, MAPS_ERROR_NONE);
@@ -606,12 +597,6 @@ void utc_maps_service_geocode_by_structured_address_p(void)
 {
 	test_env* e = new test_env;
 
-	/* TODO: check if MapQuest supports geocoding by structured address */
-	if (e->test_plugin_type == test_env::MAPQUEST) {
-		delete e;
-		return;
-	}
-
 	maps_address_h address = NULL;
 	int error = maps_address_create(&address);
 	g_assert(address);
@@ -834,7 +819,6 @@ void utc_maps_cancel_geocode_p(void)
 
 void utc_maps_cancel_geocode_p02(void)
 {
-	/* TODO: figure out, why it is failed with MapQuest Plugin */
 	test_env e;
 
 	maps_item_hashtable_set_string(e.p, "no_need_callback",
@@ -1061,6 +1045,8 @@ static bool __utc_maps_service_search_place_cb(maps_error_e error,
 	test_env* e = (test_env*) user_data;
 	g_assert(e);
 
+	e->iterations++;
+
 	if (e->rid > 0) {
 		g_assert_cmpint(e->rid, ==, request_id);
 	}
@@ -1190,11 +1176,12 @@ void utc_maps_service_search_place_p(void)
 {
 	test_env* e = new test_env;
 
-	/*maps::coordinates position(37.7942, -122.4070);*/
-	maps::coordinates position(37.7555302, 127.002253);
+	maps::coordinates position(37.7942, -122.4070);
+	//maps::coordinates position(37.7555302, 127.002253);
 
 	maps::place_filter filter;
-	int error = maps_place_filter_set_place_name(filter, "Seoul");
+	//int error = maps_place_filter_set_place_name(filter, "Seoul");
+	int error = maps_place_filter_set_place_name(filter, "San Francisco");
 	g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
 
 	/* test start --------------------------------- */
@@ -1426,6 +1413,8 @@ static bool __utc_maps_service_search_route_cb(maps_error_e error,
 
 	test_env* e = (test_env*) user_data;
 	g_assert(e);
+
+	e->iterations++;
 
 	if (e->rid > 0) {
 		g_assert_cmpint(e->rid, ==, request_id);
@@ -1856,3 +1845,187 @@ void utc_maps_service_search_route_real_p(void)
 	e->finish_request();
 }
 
+
+
+/*----------------------------------------------------------------------------*/
+/* Serial API test */
+
+void utc_maps_service_serial_p(void)
+{
+	test_env *e = new test_env;
+	const int serial_test_number = 5;
+
+	/* Some test parameters */
+	maps::coordinates berlin_c1(15.665354, 74.311523);
+	maps::coordinates berlin_c2(10.617418, 79.145508);
+	maps::area berlin_area(berlin_c1, berlin_c2);
+
+	maps::address address;
+	maps_address_set_city(address, "Prague");
+	maps_address_set_street(address, "Na Bojisti");
+	maps_address_set_building_number(address, "1733/12");
+
+	maps::coordinates seoul_position(37.7555302, 127.002253);
+	maps::place_filter filter;
+	maps_place_filter_set_place_name(filter, "Seoul");
+	maps::area seoul_area(37.7555302 + 0.2, 127.002253 - 0.2,
+			      37.7555302 - 0.2, 127.002253 + 0.2);
+	maps::area sf_area(37.7942 + 0.2, -122.407 - 0.2,
+			   37.7942 - 0.2, -122.407 + 0.2);
+
+
+	maps::coordinates origin(37.34, 126.58);
+	maps::coordinates destination(37.34, 126.58);
+	maps_coordinates_h waypoint_list[2] = { origin, destination };
+
+	for(int i = 0; i < serial_test_number; i ++) {
+		g_print("\n\n\tIteration: %d**************************\n\n", i);
+
+		/* Geocode */
+		g_print("\t * Geocode [%d]\n", i);
+		int error = maps_service_geocode(e->m,
+						 "Seoul",
+						 e->p,
+						 __utc_maps_service_geocode_cb,
+						 (void*) e,
+						 &e->rid);
+		g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
+		e->wait_for_response();
+		g_assert(e->rid > 0);
+		g_assert(e->iterations > 0);
+		e->rid = 0;
+		e->iterations = 0;
+
+
+		g_print("\t * Geocode Inside Area [%d]\n", i);
+		error = maps_service_geocode_inside_area(e->m,
+							 "Berlin",
+							 berlin_area,
+							 e->p,
+						 __utc_maps_service_geocode_cb,
+							 (void*) e,
+							 &e->rid);
+		g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
+		e->wait_for_response();
+		g_assert(e->rid > 0);
+		g_assert(e->iterations > 0);
+		e->rid = 0;
+		e->iterations = 0;
+
+		g_print("\t * Geocode by Structured Address [%d]\n", i);
+		error = maps_service_geocode_by_structured_address(e->m,
+								   address,
+								   e->p,
+						__utc_maps_service_geocode_cb,
+								   (void*) e,
+								   &e->rid);
+		g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
+		e->wait_for_response();
+		g_assert(e->rid > 0);
+		g_assert(e->iterations > 0);
+		e->rid = 0;
+		e->iterations = 0;
+
+		/* Reverse Geocode */
+		g_print("\t * Reverse Geocode [%d]\n", i);
+		error = maps_service_reverse_geocode(e->m,
+						     12.944594,
+						     77.554303,
+						     e->p,
+					__utc_maps_service_reverse_geocode_cb,
+						     (void*) e,
+						     &e->rid);
+		g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
+		e->wait_for_response();
+		g_assert(e->rid > 0);
+		e->rid = 0;
+		/* In this request we have only one iteration
+		 * g_assert(e->iterations > 0);
+		 * e->iterations = 0;*/
+
+		/* Place */
+		g_print("\t * Search Place [%d]\n", i);
+		error = maps_service_search_place(e->m,
+						  seoul_position,
+						  50000,
+						  filter,
+						  e->p,
+					 __utc_maps_service_search_place_cb,
+						  (void*) e,
+						  &e->rid);
+		g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
+		e->wait_for_response();
+		g_assert(e->rid > 0);
+		g_assert(e->iterations > 0);
+		e->rid = 0;
+		e->iterations = 0;
+
+
+		g_print("\t * Search Place by Area [%d]\n", i);
+		error = maps_service_search_place_by_area(e->m,
+							  seoul_area,
+							  filter,
+							  e->p,
+					 __utc_maps_service_search_place_cb,
+							  (void*) e,
+							  &e->rid);
+		g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
+		e->wait_for_response();
+		g_assert(e->rid > 0);
+		g_assert(e->iterations > 0);
+		e->rid = 0;
+		e->iterations = 0;
+
+
+		g_print("\t * Search Place by Address [%d]\n", i);
+		error = maps_service_search_place_by_address(e->m,
+							     "Jackson",
+							     sf_area,
+							     filter,
+							     e->p,
+					  __utc_maps_service_search_place_cb,
+							     (void*) e,
+							     &e->rid);
+		g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
+		e->wait_for_response();
+		g_assert(e->rid > 0);
+		g_assert(e->iterations > 0);
+		e->rid = 0;
+		e->iterations = 0;
+
+
+		/* Route */
+		g_print("\t * Search Route [%d]\n", i);
+		error = maps_service_search_route(e->m,
+						  origin,
+						  destination,
+						  e->p,
+					 __utc_maps_service_search_route_cb,
+						  (void*) e,
+						  &e->rid);
+		g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
+		e->wait_for_response();
+		g_assert(e->rid > 0);
+		g_assert(e->iterations > 0);
+		e->rid = 0;
+		e->iterations = 0;
+
+
+		g_print("\t * Search Route by Waypoints [%d]\n", i);
+		error = maps_service_search_route_waypoints(e->m,
+							    waypoint_list,
+							    2,
+							    e->p,
+					 __utc_maps_service_search_route_cb,
+							    (void*) e,
+							    &e->rid);
+		g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
+		e->wait_for_response();
+		g_assert(e->rid > 0);
+		g_assert(e->iterations > 0);
+		e->rid = 0;
+		e->iterations = 0;
+	}
+
+	e->finish_request();
+}

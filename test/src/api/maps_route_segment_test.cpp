@@ -23,6 +23,7 @@
 #include <glib.h>
 #include "maps_route_segment_private.h"
 #include "maps_util.h"
+#include "maps_extra_types_private.h"
 
 #include <maps_object.h>
 using namespace maps;
@@ -50,38 +51,33 @@ void utc_maps_route_segment_create_n(void)
 }
 
 /*----------------------------------------------------------------------------*/
-static int __utc_put_to_hashtable(const char* feature_str,
-	maps_string_hashtable_h t)
-{
-	if (!feature_str || !t)
-		return MAPS_ERROR_INVALID_PARAMETER;
-	return maps_string_hashtable_set(t, feature_str, feature_str);
-}
 
 class test_env
 {
- public:
+public:
 	maps_route_segment_h h;
 	int iterations;
- public:
-	 test_env():h(NULL), iterations(0)
+public:
+	test_env() : h(NULL), iterations(0)
 	{
 		const int error = maps_route_segment_create(&h);
-		 g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
-		 g_assert(h);
+		g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
+		g_assert(h);
 
-		maps_string_hashtable_h data_supported = NULL;
-		if (maps_string_hashtable_create(&data_supported) !=
-			MAPS_ERROR_NONE)
-			 return;
+		maps_int_hashtable_h data_supported = NULL;
+		if (maps_int_hashtable_create(&data_supported) !=
+		    MAPS_ERROR_NONE)
+			return;
 
-		 __utc_put_to_hashtable(_S(MAPS_ROUTE_SEGMENTS_PATH),
-			data_supported);
-		 __utc_put_to_hashtable(_S(MAPS_ROUTE_SEGMENTS_MANEUVERS),
-			data_supported);
+		maps_int_hashtable_set(data_supported,
+				       MAPS_ROUTE_SEGMENTS_PATH,
+				       MAPS_ROUTE_SEGMENTS_PATH);
+		maps_int_hashtable_set(data_supported,
+				       MAPS_ROUTE_SEGMENTS_MANEUVERS,
+				       MAPS_ROUTE_SEGMENTS_MANEUVERS);
 
-		 _maps_route_segment_set_supported_data(h, data_supported);
-		 maps_string_hashtable_destroy(data_supported);
+		_maps_route_segment_set_supported_data(h, data_supported);
+		maps_int_hashtable_destroy(data_supported);
 
 	}
 	~test_env()

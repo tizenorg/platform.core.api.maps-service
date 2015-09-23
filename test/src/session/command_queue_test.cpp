@@ -43,12 +43,16 @@ class test_env
 
 		plugin = __extract_plugin(m);
 		g_assert(plugin);
+#ifdef _MAPS_SERVICE_SUPPORTS_ASYNC_QUEUE_
 		queue = plugin->request_queue;
-		if (session::command_queue::is_async())
+
+		/* We are going to use this queue for view commands */
+		/*if (session::command_queue::is_async())
 			g_assert(queue);
 		else
-			g_assert(!queue);
-
+			g_assert(!queue);*/
+			g_assert(queue);
+#endif /*_MAPS_SERVICE_SUPPORTS_ASYNC_QUEUE_*/
 	}
 	~test_env()
 	{
@@ -71,6 +75,7 @@ void utc_command_queue_push_p(void)
 	cq->push(new session::command_cancel_request(e.m, -1));
 	e.plugin->is_working = false;
 
+#ifdef _MAPS_SERVICE_SUPPORTS_ASYNC_QUEUE_
 	if (session::command_queue::is_async())
 		g_assert_cmpint(g_async_queue_length(e.queue), ==, 1);
 
@@ -78,6 +83,7 @@ void utc_command_queue_push_p(void)
 	if (session::command_queue::is_async())
 		if (c)
 			delete c;
+#endif /* _MAPS_SERVICE_SUPPORTS_ASYNC_QUEUE_ */
 }
 
 void utc_command_queue_push_n(void)
