@@ -21,6 +21,7 @@
 #include "maps_coordinates.h"
 #include "maps_service.h"
 #include "maps_test_utils.h"
+#include "maps_extra_types_private.h"
 
 /* int maps_item_list_create(maps_item_list_h* list); */
 /* int maps_item_list_destroy(maps_item_list_h list); */
@@ -323,6 +324,150 @@ void utc_maps_string_hashtable_foreach_n(void)
 	g_assert_cmpint(error, ==, MAPS_ERROR_INVALID_PARAMETER);
 
 	error = maps_string_hashtable_foreach(e.table, NULL, NULL);
+	g_assert_cmpint(error, ==, MAPS_ERROR_INVALID_PARAMETER);
+}
+
+/*----------------------------------------------------------------------------*/
+
+/* int maps_int_hashtable_create(maps_int_hashtable_h* table); */
+/* int maps_int_hashtable_destroy(maps_int_hashtable_h table); */
+void utc_maps_int_hashtable_create_p(void)
+{
+	maps_int_hashtable_h table = NULL;
+	int error = maps_int_hashtable_create(&table);
+	g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
+	g_assert(table);
+
+	error = maps_int_hashtable_destroy(table);
+	g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
+}
+
+void utc_maps_int_hashtable_create_n(void)
+{
+	int error = maps_int_hashtable_create(NULL);
+	g_assert_cmpint(error, ==, MAPS_ERROR_INVALID_PARAMETER);
+
+	error = maps_int_hashtable_destroy(NULL);
+	g_assert_cmpint(error, ==, MAPS_ERROR_INVALID_PARAMETER);
+}
+
+class test_env_int_hashtable
+{
+ public:
+	maps_int_hashtable_h table;
+ public:
+	test_env_int_hashtable():table(NULL)
+	{
+		const int error = maps_int_hashtable_create(&table);
+		 g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
+		 g_assert(table);
+	}
+	~test_env_int_hashtable()
+	{
+		const int error = maps_int_hashtable_destroy(table);
+		g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
+	}
+};
+
+/* int maps_int_hashtable_set(maps_int_hashtable_h table, char* key,
+*  const char* value); */
+/* int maps_int_hashtable_get(maps_int_hashtable_h table, char* key,
+*  char** value); */
+/* int maps_int_hashtable_remove(maps_int_hashtable_h map,
+*  const char* key); */
+void utc_maps_int_hashtable_set_p(void)
+{
+	test_env_int_hashtable e;
+
+	int error = maps_int_hashtable_set(e.table, 1, 101);
+	g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
+
+	error = maps_int_hashtable_set(e.table, 2, 102);
+	g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
+
+	error = maps_int_hashtable_set(e.table, 3, 103);
+	g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
+
+	int value1 = 0;
+	error = maps_int_hashtable_get(e.table, 1, &value1);
+	g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
+	g_assert_cmpint(value1, ==, 101);
+
+	int value2 = 0;
+	error = maps_int_hashtable_get(e.table, 2, &value2);
+	g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
+	g_assert_cmpint(value2, ==, 102);
+
+	int value3 = 0;
+	error = maps_int_hashtable_get(e.table, 3, &value3);
+	g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
+	g_assert_cmpint(value3, ==, 103);
+}
+
+void utc_maps_int_hashtable_set_n(void)
+{
+	test_env_int_hashtable e;
+
+	int error = maps_int_hashtable_set(NULL, 1, 101);
+	g_assert_cmpint(error, ==, MAPS_ERROR_INVALID_PARAMETER);
+}
+
+/* typedef bool (*maps_int_hashtable_foreach_cb)(const int key, const int value,
+*  void* user_data); */
+/* int maps_int_hashtable_foreach(maps_int_hashtable_h table,
+*  maps_int_hashtable_foreach_cb callback, void* user_data); */
+static bool __utc_maps_int_hashtable_foreach_cb(int index, int total,
+	const int key, const int value, void* user_data)
+{
+	g_assert_cmpint(total, ==, 3);
+
+	if (key == 1) {
+		g_assert_cmpint(value, ==, 101);
+
+	}
+	else if (key == 2) {
+		g_assert_cmpint(value, ==, 102);
+
+	}
+	else if (key == 3) {
+		g_assert_cmpint(value, ==, 103);
+
+	}
+	else {
+		g_print("\n\n%d, %d\n\n", key, value);
+		g_assert(false);
+	}
+	return true;
+}
+
+void utc_maps_int_hashtable_foreach_p(void)
+{
+	test_env_int_hashtable e;
+
+	int error = maps_int_hashtable_set(e.table, 1, 101);
+	g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
+
+	error = maps_int_hashtable_set(e.table, 2, 102);
+	g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
+
+	error = maps_int_hashtable_set(e.table, 3, 103);
+	g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
+
+	error = maps_int_hashtable_foreach(e.table,
+		__utc_maps_int_hashtable_foreach_cb, NULL);
+	g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
+}
+
+void utc_maps_int_hashtable_foreach_n(void)
+{
+	test_env_int_hashtable e;
+
+	int error =
+		maps_int_hashtable_foreach(NULL,
+		__utc_maps_int_hashtable_foreach_cb, NULL);
+	g_assert_cmpint(error, ==, MAPS_ERROR_INVALID_PARAMETER);
+
+	error = maps_int_hashtable_foreach(e.table, NULL, NULL);
 	g_assert_cmpint(error, ==, MAPS_ERROR_INVALID_PARAMETER);
 }
 

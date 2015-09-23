@@ -1,29 +1,84 @@
-[Version]   capi-location-manager_0.4.2
+[Version]   capi-maps-service_0.5.4
+[Date]      19 October 2015
+[Title]     Renamed map_view_marker_type_e to map_marker_type_e.
+[Developer] Alexey Shulga <a.shulga@samsung.com>
+
+[Version]   capi-maps-service_0.5.3
+[Date]      14 October 2015
+[Title]     Added map_object_create_group API.
+[Developer] Alexey Shulga <a.shulga@samsung.com>
+
+[Version]   capi-maps-service_0.5.2
+[Date]      13 October 2015
+[Title]     Made more clear API for setting Map View event callback and reaction on User Gesture.
+[Developer] Alexey Shulga <a.shulga@samsung.com>
+
+[Version]   capi-maps-service_0.5.1
+[Date]      06 October 2015
+[Title]     Adopted recommended Map Object Life Cycle: create - set/get - add to view; optimized API names.
+[Developer] Alexey Shulga <a.shulga@samsung.com>
+
+[Version]   capi-maps-service_0.5.0
+[Date]      23 September 2015
+[Title]     Added Mapping API.
+[Developer] Alexey Shulga <a.shulga@samsung.com>
+
+[Version]   capi-maps-service_0.4.6
+[Date]      16 September 2015
+[Title]     Added -fvisibility=hidden to make EXPORT_API useful.
+[Developer] Young-Ae Kang <youngae.kang@samsung.com>
+
+[Version]   capi-maps-service_0.4.5
+[Date]      14 September 2015
+[Title]     [Bug Fixes] Added missing EXPORT_API macros to maps_place_filter.cpp.
+[Developer] Alexey Shulga <a.shulga@samsung.com>
+
+[Version]   capi-maps-service_0.4.4
+[Date]      02 September 2015
+[Title]     [ACR-394] Two more privilege are needed.
+[Developer] Young-Ae Kang <youngae.kang@samsung.com>
+
+[Version]   capi-maps-service_0.4.3
+[Date]      27 July 2015
+[Title]     Corrected order of error checking in Maps Service API, added "maps-service" privilege checking
+[Developer] Alexey Shulga <a.shulga@samsung.com>
+
+[Version]   capi-maps-service_0.4.2
 [Date]      22 July 2015
 [Title]     Removed "resident" mode of plugin binaries; it allowed to release memory properly when many instances of Maps Service are used
 [Developer] Alexey Shulga <a.shulga@samsung.com>
 
-[Version]   capi-location-manager_0.4.1
+[Version]   capi-maps-service_0.4.1
 [Date]      17 July 2015
 [Title]     Changed parameter checks in Maps API requsts: preference allowed to be NULL
 [Developer] Alexey Shulga <a.shulga@samsung.com>
 
-[Version]   capi-location-manager_0.4.0
+[Version]   capi-maps-service_0.4.0
 [Date]      14 July 2015
 [Title]    [ACR-309] [2.4][capi-maps-service][Modify] Visibility of some APIs of Maps was changed
 [Developer] Young-Ae Kang <youngae.kang@samsung.com>
 
-[Version]   capi-location-manager_0.3.2
+[Version]   capi-maps-service_0.3.2
 [Date]      27 May 2015
 [Title]     [ACR-248][2.4][capi-maps-service][Modify] The name of API was changed.
 [Developer] Young-Ae Kang <youngae.kang@samsung.com>
 
-[Version]   capi-location-manager_0.3.1
+[Version]   capi-maps-service_0.3.1
 [Date]      14 April 2015
 [Title]     Sources prepared for Prevent analysis
 [Developer] Alexey Shulga <a.shulga@samsung.com>
 
-[Version]   capi-location-manager_0.3.0
+[Version]   capi-maps-service_0.3.0
 [Date]      09 April 2015
 [Title]     Initial release
+[Developer] Alexey Shulga <a.shulga@samsung.com>
+
+[Version]   capi-maps-service_0.2.0
+[Date]      21 December 2014
+[Title]     First working version
+[Developer] Alexey Shulga <a.shulga@samsung.com>
+
+[Version]   capi-maps-service_0.1.0
+[Date]      17 August 2014
+[Title]     Started Implementation
 [Developer] Alexey Shulga <a.shulga@samsung.com>

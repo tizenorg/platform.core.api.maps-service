@@ -29,6 +29,7 @@ const gsize _MAPS_PLUGIN_INFO_NAME_MAX_LENGTH = 64;
 
 EXPORT_API int maps_plugin_info_create(maps_plugin_info_h *info)
 {
+	MAPS_LOG_API;
 	if (!info)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	*info = g_slice_new0(maps_plugin_info_s);
@@ -43,6 +44,7 @@ EXPORT_API int maps_plugin_info_create(maps_plugin_info_h *info)
 
 EXPORT_API int maps_plugin_info_destroy(maps_plugin_info_h info)
 {
+	MAPS_LOG_API;
 	if (!info)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	int error = MAPS_ERROR_NONE;
@@ -59,6 +61,7 @@ EXPORT_API int maps_plugin_info_destroy(maps_plugin_info_h info)
 EXPORT_API int maps_plugin_info_clone(const maps_plugin_info_h origin,
 				      maps_plugin_info_h *cloned)
 {
+	MAPS_LOG_API;
 	if (!cloned || !origin)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -92,6 +95,7 @@ EXPORT_API int maps_plugin_info_clone(const maps_plugin_info_h origin,
 EXPORT_API int maps_plugin_info_get_provider_name(const maps_plugin_info_h info,
 						  char **provider_name)
 {
+	MAPS_LOG_API;
 	if (!info || !provider_name)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_get_string(((maps_plugin_info_s *) info)->provider_name,
@@ -103,6 +107,7 @@ EXPORT_API int maps_plugin_info_get_provider_name(const maps_plugin_info_h info,
 EXPORT_API int maps_plugin_info_set_provider_name(maps_plugin_info_h info,
 						  const char *provider_name)
 {
+	MAPS_LOG_API;
 	if (!info || !provider_name)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_set_string(provider_name, _MAPS_PLUGIN_INFO_NAME_MAX_LENGTH,
