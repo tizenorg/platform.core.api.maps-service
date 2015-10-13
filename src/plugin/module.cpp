@@ -85,7 +85,6 @@ maps_plugin_h plugin::binary_extractor::init(const provider_info &info)
 	GMod *plugin = gmod_new(info.file, TRUE);
 	if (!plugin) {
 		MAPS_LOGE("Open Module Failed: %s", info.file.c_str());
-		gmod_free(plugin);
 		return NULL;
 	}
 
