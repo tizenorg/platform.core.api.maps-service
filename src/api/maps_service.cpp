@@ -28,19 +28,6 @@
 
 #ifdef _SIMPLE_PRIVILEGE_CHECK_AVAILABLE_
 	#include <privilege_checker.h>
-#else
-	#include <stdlib.h>
-	#include <sys/types.h>
-	#include <unistd.h>
-
-	#include <app_manager.h>
-	#include <package_manager.h>
-	#include <pkgmgr-info.h>
-	#include <privacy_checker_client.h>
-
-	#define CAPP    1
-	#define WEBAPP  2
-	#define CPPAPP  3
 #endif /*_SIMPLE_PRIVILEGE_CHECK_AVAILABLE_ */
 
 
@@ -80,167 +67,6 @@ static bool __maps_provider_supported(maps_service_h maps,
 	return supported;
 }
 
-#ifndef _SIMPLE_PRIVILEGE_CHECK_AVAILABLE_
-static bool __is_privacy_initialized = false;
-
-static int __maps_service_get_app_type(char *target_app_id)
-{
-	int ret = 0;
-	pid_t pid = 0;
-	char *app_id = NULL;
-	app_info_h app_info;
-	char *type = NULL;
-
-	if (target_app_id == NULL) {
-		pid = getpid();
-		ret = app_manager_get_app_id(pid, &app_id);
-		if (ret != APP_MANAGER_ERROR_NONE) {
-			MAPS_LOGE("Fail to get app_id. Err[%d]", ret);
-			return MAPS_ERROR_NONE;
-		}
-	} else {
-		app_id = g_strdup(target_app_id);
-	}
-
-	ret = app_info_create(app_id, &app_info);
-	if (ret != APP_MANAGER_ERROR_NONE) {
-		MAPS_LOGE("Fail to get app_id. Err[%d]", ret);
-		g_free(app_id);
-		return 0;
-	}
-
-	ret = app_info_get_type(app_info, &type);
-	if (ret != APP_MANAGER_ERROR_NONE) {
-		MAPS_LOGE("Fail to get type. Err[%d]", ret);
-		g_free(app_id);
-		app_info_destroy(app_info);
-		return 0;
-	}
-
-	if (strcmp(type, "c++app") == 0)
-		ret = CPPAPP;
-	else if (strcmp(type, "webapp") == 0)
-		ret = WEBAPP;
-	else
-		ret = CAPP;
-
-	g_free(type);
-	g_free(app_id);
-	app_info_destroy(app_info);
-
-	return ret;
-}
-
-static void __maps_service_privacy_initialize(void)
-{
-	int ret = 0;
-	pid_t pid = 0;
-	char *app_id = NULL;
-	char *package_id = NULL;
-	pkgmgrinfo_appinfo_h pkgmgrinfo_appinfo;
-
-	pid = getpid();
-	ret = app_manager_get_app_id(pid, &app_id);
-	if (ret != APP_MANAGER_ERROR_NONE) {
-		MAPS_LOGE("Fail to get app_id. Err[%d]", ret);
-		return;
-	}
-
-	ret = pkgmgrinfo_appinfo_get_appinfo(app_id, &pkgmgrinfo_appinfo);
-	if (ret != PACKAGE_MANAGER_ERROR_NONE) {
-		MAPS_LOGE("Fail to get appinfo for [%s]. Err[%d]", app_id, ret);
-		g_free(app_id);
-		return;
-	}
-	ret = pkgmgrinfo_appinfo_get_pkgname(pkgmgrinfo_appinfo, &package_id);
-	if (ret != PACKAGE_MANAGER_ERROR_NONE) {
-		MAPS_LOGE("Fail to get package_id for [%s]. Err[%d]",
-			  app_id, ret);
-		pkgmgrinfo_appinfo_destroy_appinfo(pkgmgrinfo_appinfo);
-		g_free(app_id);
-		return;
-	}
-
-	ret = privacy_checker_initialize(package_id);
-	if (ret != PRIV_MGR_ERROR_SUCCESS) {
-		MAPS_LOGE("Fail to initialize privacy checker. err[%d]", ret);
-		pkgmgrinfo_appinfo_destroy_appinfo(pkgmgrinfo_appinfo);
-		g_free(app_id);
-		return;
-	}
-
-	MAPS_LOGD("Success to initialize privacy checker");
-
-	g_free(app_id);
-	pkgmgrinfo_appinfo_destroy_appinfo(pkgmgrinfo_appinfo);
-}
-
-static void __maps_service_privacy_finalize(void)
-{
-	int ret = 0;
-	ret = privacy_checker_finalize();
-	if (ret != PRIV_MGR_ERROR_SUCCESS) {
-		MAPS_LOGE("Fail to finalize privacy_cehecker. Err[%d]", ret);
-		return;
-	}
-
-	MAPS_LOGD("Success to finalize privacy checker");
-}
-
-static int __maps_service_get_privacy(const char *privilege)
-{
-	int ret = 0;
-	pid_t pid = 0;
-	char *app_id = NULL;
-	char *package_id = NULL;
-	int app_type = 0;
-	pkgmgrinfo_appinfo_h pkgmgrinfo_appinfo;
-
-	pid = getpid();
-	ret = app_manager_get_app_id(pid, &app_id);
-	if (ret != APP_MANAGER_ERROR_NONE) {
-		MAPS_LOGE("Fail to get app_id. Err[%d]", ret);
-		return MAPS_ERROR_NONE;
-	}
-
-	app_type = __maps_service_get_app_type(app_id);
-	if (app_type == CPPAPP) {
-		MAPS_LOGE("CPPAPP use location");
-		g_free(app_id);
-		return MAPS_ERROR_NONE;
-	}
-
-	ret = pkgmgrinfo_appinfo_get_appinfo(app_id, &pkgmgrinfo_appinfo);
-	if (ret != PACKAGE_MANAGER_ERROR_NONE) {
-		MAPS_LOGE("Fail to get appinfo of [%s]. Err[%d]", app_id, ret);
-		g_free(app_id);
-		return MAPS_ERROR_PERMISSION_DENIED;
-	}
-
-	ret = pkgmgrinfo_appinfo_get_pkgname(pkgmgrinfo_appinfo, &package_id);
-	if (ret != PACKAGE_MANAGER_ERROR_NONE) {
-		MAPS_LOGE("Fail to get package_id of [%s]. Err[%d]",
-			  app_id, ret);
-		g_free(app_id);
-		pkgmgrinfo_appinfo_destroy_appinfo(pkgmgrinfo_appinfo);
-		return MAPS_ERROR_PERMISSION_DENIED;
-	}
-
-	ret = privacy_checker_check_package_by_privilege(package_id, privilege);
-	if (ret != PRIV_MGR_ERROR_SUCCESS) {
-		MAPS_LOGE("Fail to get privilege of [%s] package. Err[%d]",
-			  package_id, ret);
-		pkgmgrinfo_appinfo_destroy_appinfo(pkgmgrinfo_appinfo);
-		g_free(app_id);
-		return MAPS_ERROR_PERMISSION_DENIED;
-	}
-
-	pkgmgrinfo_appinfo_destroy_appinfo(pkgmgrinfo_appinfo);
-	g_free(app_id);
-
-	return MAPS_ERROR_NONE;
-}
-#endif /* _SIMPLE_PRIVILEGE_CHECK_AVAILABLE_ */
 
 static bool __has_maps_service_privilege()
 {
@@ -249,13 +75,7 @@ static bool __has_maps_service_privilege()
 		"http://tizen.org/privilege/mapservice")
 			== PRIVILEGE_CHECKER_ERR_NONE);
 #else
-	if(!__is_privacy_initialized) {
-		__maps_service_privacy_initialize();
-		__is_privacy_initialized = true;
-	}
-	return (__maps_service_get_privacy(
-		"http://tizen.org/privilege/mapservice")
-			== MAPS_ERROR_NONE);
+	return true;
 #endif /* _SIMPLE_PRIVILEGE_CHECK_AVAILABLE_ */
 }
 
@@ -303,6 +123,7 @@ EXPORT_API int maps_service_create(const char *maps_provider,
 
 	do {
 		/* 0. Find the plugin, requested by the user */
+
 		const plugin::provider_info info =
 			plugin::find_by_names(string(maps_provider));
 
@@ -333,6 +154,7 @@ EXPORT_API int maps_service_create(const char *maps_provider,
 		}
 
 		maps_service->plugin = plugin_h;
+		MAPS_LOGD("maps_service->plugin:(0x%08x)", maps_service->plugin);
 
 		/* 4. Initialize an output pointer to maps service */
 		*maps = maps_service;
@@ -360,15 +182,12 @@ EXPORT_API int maps_service_destroy(maps_service_h maps)
 
 	maps_service_s *maps_service = (maps_service_s *) maps;
 
-	if (maps_service->plugin)
+	if (maps_service->plugin) {
+		MAPS_LOGD("maps_service->plugin:(0x%08x)", maps_service->plugin);
 		plugin::binary_extractor().shutdown(maps_service->plugin);
+	}
 
 	g_slice_free(maps_service_s, maps);
-
-
-#ifndef _SIMPLE_PRIVILEGE_CHECK_AVAILABLE_
-	__maps_service_privacy_finalize();
-#endif /* _SIMPLE_PRIVILEGE_CHECK_AVAILABLE_ */
 
 	return MAPS_ERROR_NONE;
 }

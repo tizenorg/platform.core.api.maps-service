@@ -68,6 +68,7 @@ plugin::provider_info plugin::binary_extractor::get_plugin_info(const
 			g_free(provider_name);
 		}
 		maps_plugin_info_destroy(i);
+		i = NULL;
 	}
 
 	/* 3. shutdown plugin */
@@ -85,7 +86,6 @@ maps_plugin_h plugin::binary_extractor::init(const provider_info &info)
 	GMod *plugin = gmod_new(info.file, TRUE);
 	if (!plugin) {
 		MAPS_LOGE("Open Module Failed: %s", info.file.c_str());
-		gmod_free(plugin);
 		return NULL;
 	}
 
