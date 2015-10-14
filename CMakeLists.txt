@@ -16,7 +16,25 @@ SET(INTERNAL_INC_DIR
 INCLUDE_DIRECTORIES(${INC_DIR} ${INTERNAL_INC_DIR})
 
 #SET(dependents "glib-2.0 gmodule-2.0 dlog capi-base-common security-privilege-checker")
-SET(dependents "glib-2.0 gmodule-2.0 dlog capi-base-common capi-appfw-app-manager capi-appfw-package-manager pkgmgr-info privacy-manager-client capi-system-info")
+SET(dependents
+	glib-2.0
+	gmodule-2.0
+	dlog
+	capi-base-common
+	capi-appfw-app-manager
+	capi-appfw-package-manager
+	pkgmgr-info
+	privacy-manager-client
+	capi-system-info
+	elementary
+	ecore-imf
+	#ecore-x
+	eina
+	ecore-evas
+	ecore
+	ecore-input
+	#capi-appfw-application
+	appcore-efl)
 
 SET(pc_dependents "capi-base-common")
 

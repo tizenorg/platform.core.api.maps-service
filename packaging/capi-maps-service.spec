@@ -1,6 +1,6 @@
 Name:       capi-maps-service
 Summary:    Tizen Maps Service API
-Version:    0.4.6
+Version:    0.5.2
 Release:    1
 Group:      Location/API
 License:    Apache-2.0
@@ -18,7 +18,10 @@ BuildRequires:  pkgconfig(capi-appfw-package-manager)
 BuildRequires:  pkgconfig(pkgmgr-info)
 BuildRequires:  pkgconfig(privacy-manager-client)
 BuildRequires:  pkgconfig(capi-system-info)
-
+BuildRequires:  elementary-devel
+BuildRequires:  efl-extension-devel
+#BuildRequires:  pkgconfig(capi-appfw-application)
+BuildRequires:  app-core-efl-devel
 Requires(post):  /sbin/ldconfig
 Requires(postun):  /sbin/ldconfig
 Provides: capi-maps-service-plugin-devel
@@ -80,7 +83,7 @@ This provides the Tizen Maps Service Library to access and handle the map data. 
 
 %files devel
 %defattr(-,root,root,-)
-%{_includedir}/maps/maps_*.h
+%{_includedir}/maps/map*_*.h
 %{_libdir}/pkgconfig/capi-maps-service.pc
 %{_libdir}/libcapi-maps-service.so
 %exclude %{_includedir}/maps/maps_plugin*.h

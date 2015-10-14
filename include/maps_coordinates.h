@@ -175,6 +175,27 @@ int maps_coordinates_get_latitude(const maps_coordinates_h coordinates,
 int maps_coordinates_get_longitude(const maps_coordinates_h coordinates,
 				   double *longitude);
 
+/**
+ * @brief	Gets the latitude and longitude of the coordinates.
+ * @details This function gets the @a longitude and @a longitude value of the
+ * coordinates handle.
+ * @since_tizen 3.0
+ *
+ * @param[in]	coordinates	The coordinate handle
+ * @param[out]	latitude	The latitude of the coordinate handle
+ * @param[out]	longitude	The longitude of the coordinate handle
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ *
+ * @pre @a coordinates are created using maps_coordinates_create().
+ *
+ * @see maps_coordinates_create()
+ * @see maps_coordinates_set_latlon()
+ */
+int maps_coordinates_get_latlon(const maps_coordinates_h coordinates,
+				double *latitude,
+				double *longitude);
 /*----------------------------------------------------------------------------*/
 
 /**
@@ -214,6 +235,29 @@ int maps_coordinates_set_latitude(maps_coordinates_h coordinates,
  */
 int maps_coordinates_set_longitude(maps_coordinates_h coordinates,
 				   const double longitude);
+
+/**
+ * @brief	Sets the latitude and longitude of the coordinates.
+ * @details This function sets the @a latitude and @a latitude value of the
+ * coordinates handle.
+ * @since_tizen 3.0
+ *
+ * @param[in]	coordinates	The coordinate handle
+ * @param[in]	latitude	The latitude of the coordinate handle
+ * @param[in]	longitude	The longitude of the coordinate handle
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ *
+ * @pre @a coordinates are created using maps_coordinates_create().
+ *
+ * @see maps_coordinates_create()
+ * @see maps_coordinates_get_latlon()
+ */
+int maps_coordinates_set_latlon(maps_coordinates_h coordinates,
+				const double latitude,
+				const double longitude);
+
 
 #ifdef __cplusplus
 }
