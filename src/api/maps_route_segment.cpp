@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
+#include <glib.h>
 #include "maps_error.h"
 #include "maps_route_segment_plugin.h"
 #include "maps_route_maneuver_plugin.h"
 #include "maps_extra_types.h"
-#include <glib.h>
 #include "maps_util.h"
 #include "maps_route_segment_private.h"
 
