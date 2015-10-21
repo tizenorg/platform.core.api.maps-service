@@ -18,6 +18,7 @@
 #define __MAPS_SERVICE_API_EXTRA_TYPES_H__
 
 #include <tizen_type.h>
+#include <glib.h>
 
 /**
  * @ingroup	CAPI_MAPS_PLUGIN_AND_PROVIDERS_MODULE
@@ -47,6 +48,13 @@ extern "C" {
  * @{
  * @brief This provides API for using List of item pointers.
  */
+
+/**
+ * @brief	maps list handle.
+ * @details maps list handle is the wrapper of GList.
+ * @since_tizen 3.0
+ */
+typedef GList *maps_list_h;
 
 /**
  * @brief	Item List handle.

@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-#include "maps_error.h"
-#include "maps_route_maneuver_plugin.h"
-#include "maps_extra_types.h"
 #include <glib.h>
+#include "maps_error.h"
+#include "maps_extra_types.h"
+#include "maps_route_maneuver_plugin.h"
+#include "maps_coordinates.h"
 #include "maps_util.h"
 
 typedef struct _maps_route_maneuver_s

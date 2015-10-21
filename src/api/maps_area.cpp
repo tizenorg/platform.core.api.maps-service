@@ -16,8 +16,12 @@
 
 #include <glib.h>
 #include "maps_error.h"
+#include "maps_extra_types.h"
+#include "maps_coordinates.h"
 #include "maps_area.h"
 #include "maps_util.h"
+#include "maps_plugin_types.h"
+
 
 EXPORT_API int maps_area_create_rectangle(const maps_coordinates_h top_left,
 					  const maps_coordinates_h bottom_right,

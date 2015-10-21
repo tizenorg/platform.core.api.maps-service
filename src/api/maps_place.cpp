@@ -14,8 +14,8 @@
  */
 
 #include "maps_error.h"
-#include "maps_place_plugin.h"
 #include "maps_extra_types.h"
+#include "maps_place_plugin.h"
 #include "maps_util.h"
 #include "maps_address.h"
 #include "maps_place_private.h"
