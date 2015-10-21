@@ -17,9 +17,10 @@
 #ifndef __MAPS_PLUGIN_H__
 #define __MAPS_PLUGIN_H__
 
+#include <maps_extra_types.h>
 #include <maps_service.h>
 #include <maps_plugin_info.h>
-#include <maps_extra_types.h>
+#include <maps_plugin_types.h>
 
 /**
  *
