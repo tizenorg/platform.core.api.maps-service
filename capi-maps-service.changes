@@ -1,3 +1,8 @@
+[Version]   capi-maps-service_0.5.0
+[Date]      21 October 2015
+[Title]     Added coordinates address list API.
+[Developer] Young-Ae Kang <youngae.kang@samsung.com>
+
 [Version]   capi-maps-service_0.4.6
 [Date]      16 September 2015
 [Title]     Added -fvisibility=hidden to make EXPORT_API useful.
