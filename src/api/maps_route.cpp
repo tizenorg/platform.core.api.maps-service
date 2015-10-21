@@ -16,12 +16,15 @@
 
 #include <glib.h>
 #include "maps_util.h"
+#include "maps_extra_types.h"
 #include "maps_route_plugin.h"
 #include "maps_error.h"
 #include "maps_preference.h"
 #include "maps_route_segment_plugin.h"
 #include "maps_route_private.h"
 #include "maps_route_segment_private.h"
+#include "maps_coordinates.h"
+#include "maps_plugin_types.h"
 
 static bool __is_supported(const maps_route_h route, maps_service_data_e data)
 {

@@ -99,6 +99,7 @@ EXPORT_API int maps_item_list_remove_all(maps_item_list_h list,
 {
 	if (!list)
 		return MAPS_ERROR_INVALID_PARAMETER;
+
 	maps_item_list_s *l = (maps_item_list_s *) list;
 	if (l->l) {
 		GList *head = g_list_first(l->l);
@@ -111,6 +112,7 @@ EXPORT_API int maps_item_list_remove_all(maps_item_list_h list,
 		g_list_free(l->l);
 		l->l = NULL;
 	}
+
 	return MAPS_ERROR_NONE;
 }
 

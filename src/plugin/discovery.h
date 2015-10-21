@@ -17,7 +17,7 @@
 #ifndef __MAPS_SERVICE_PLUGIN_DISCOVERY_H__
 #define __MAPS_SERVICE_PLUGIN_DISCOVERY_H__
 
-#include "maps_service.h"
+//#include "maps_service.h"
 #include "maps_util.h"
 
 namespace plugin
