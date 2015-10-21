@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
+#include <glib/gstdio.h>
 #include "module.h"
 #include "maps_util.h"
-#include <glib/gstdio.h>
 #include "thread.h"
 #include "command.h"
 #include "command_queue.h"
@@ -24,7 +24,7 @@
 
 extern const char *MAPS_PLUGINS_PATH_PREFIX;
 
- plugin::scope_mutex::scope_mutex(GMutex *m) : mutex(m)
+plugin::scope_mutex::scope_mutex(GMutex *m) : mutex(m)
 {
 	g_mutex_lock(mutex);
 }

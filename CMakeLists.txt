@@ -90,8 +90,8 @@ INSTALL(FILES ${CMAKE_CURRENT_SOURCE_DIR}/${fw_name}.pc DESTINATION ${LIBDIR}/pk
 #Please don't release the below comment when you submit.
 #Please release the below comment, if you want to test code in local.
 #It is not good for security and increases binary size.
-#SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${EXTRA_CFLAGS} -fPIC -Wall -Werror -fvisibility=default")
-#ADD_SUBDIRECTORY(test)
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${EXTRA_CFLAGS} -fPIC -Wall -Werror -fvisibility=default")
+ADD_SUBDIRECTORY(test)
 
 IF(UNIX)
 
