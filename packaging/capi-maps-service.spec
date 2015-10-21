@@ -1,6 +1,6 @@
 Name:       capi-maps-service
 Summary:    Tizen Maps Service API
-Version:    0.4.6
+Version:    0.5.0
 Release:    1
 Group:      Location/API
 License:    Apache-2.0

@@ -56,10 +56,7 @@ typedef void *maps_area_h;
  * @brief	Enumeration of supported types of the Geographical Area.
  * @details This enumeration represents allowed geographical type of
  * Geographical Area: rectangular and circular.
- * \n This enumeration is used in #maps_area_s.
  * @since_tizen 2.4
- *
- * @see maps_area_s
  */
 typedef enum {
 	MAPS_AREA_NONE = 0, /**< Undefined geographical area type. */
@@ -73,8 +70,6 @@ typedef enum {
  * specified with left top and right bottom coordinates.
  * \n This structure is used in #maps_area_s.
  * @since_tizen 2.4
- *
- * @see maps_area_s
  */
 typedef struct _maps_area_rectangle_s {
 	maps_coordinates_s top_left;		/**< The top left position
@@ -89,8 +84,6 @@ typedef struct _maps_area_rectangle_s {
  * @details This structure represents a circular Geographical Area.
  * \n This structure is used in #maps_area_s.
  * @since_tizen 2.4
- *
- * @see maps_area_s
  */
 typedef struct _maps_area_circle_s {
 
@@ -103,10 +96,6 @@ typedef struct _maps_area_circle_s {
  * @details This structure represents a Geographical Area, specified with a
  * type, circular or rectangular, and appropriate coordinates and radius.
  * @since_tizen 2.4
- *
- * @see maps_area_type_e
- * @see maps_area_rectangle_s
- * @see maps_area_circle_s
  */
 typedef struct _maps_area_s {
 	maps_area_type_e type;	/**< The area type of this information. */
@@ -123,7 +112,7 @@ typedef struct _maps_area_s {
 /**
  * @brief	Creates a rectangular type of new Geographical Area with a
  * specified information.
- * @details This function creates a rectangular type of new #maps_area_s with a
+ * @details This function creates a rectangular type of new #maps_area_h with a
  * specified left top and right bottom coordinates.
  * @since_tizen 2.4
  * @remarks @a area must be released using maps_area_destroy().
@@ -145,7 +134,6 @@ typedef struct _maps_area_s {
  * @see maps_area_clone()
  * @see maps_area_destroy()
  * @see maps_area_create_circle()
- * @see maps_area_s
  * @see maps_coordinates_create()
  * @see maps_coordinates_destroy()
  */
@@ -156,7 +144,7 @@ int maps_area_create_rectangle(const maps_coordinates_h top_left,
 /**
  * @brief	Creates a circular type of new Geographical Area with a
  * specified information.
- * @details This function creates a circular type of new #maps_area_s
+ * @details This function creates a circular type of new #maps_area_h
  * Geographical Area with a specified center coordinates and a radius.
  * @since_tizen 2.4
  * @remarks @a area must be released using maps_area_destroy().
@@ -176,7 +164,6 @@ int maps_area_create_rectangle(const maps_coordinates_h top_left,
  * @see maps_area_clone()
  * @see maps_area_destroy()
  * @see maps_area_create_rectangle()
- * @see maps_area_s
  * @see maps_coordinates_create()
  * @see maps_coordinates_destroy()
  */
@@ -185,11 +172,11 @@ int maps_area_create_circle(const maps_coordinates_h center,
 
 /**
  * @brief	Destroys the Geographical Area and releases all its resources.
- * @details This function destroys the Geographical Area #maps_area_s and
+ * @details This function destroys the Geographical Area #maps_area_h and
  * releases all its resources.
  * @since_tizen 2.4
  *
- * @param[in]	area		The area #maps_area_s
+ * @param[in]	area		The area #maps_area_h
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
@@ -206,12 +193,12 @@ int maps_area_destroy(maps_area_h area);
 /**
  * @brief	Clones the Geographical Area.
  * @details This function makes a clone of the @a origin Geographical Area of
- * type #maps_area_s.
+ * type #maps_area_h.
  * @since_tizen 2.4
  * @remarks @a cloned must be released using maps_area_destroy().
  *
- * @param[in]	origin		The area #maps_area_s to be copied
- * @param[out]	cloned		The cloned area #maps_area_s handle
+ * @param[in]	origin		The area #maps_area_h to be copied
+ * @param[out]	cloned		The cloned area #maps_area_h handle
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
@@ -223,7 +210,6 @@ int maps_area_destroy(maps_area_h area);
  * @see maps_area_create_rectangle()
  * @see maps_area_create_circle()
  * @see maps_area_destroy()
- * @see maps_area_s
  */
 int maps_area_clone(const maps_area_h origin, maps_area_h *cloned);
 
