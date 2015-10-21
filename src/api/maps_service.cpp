@@ -15,6 +15,7 @@
  */
 
 #include <glib.h>
+#include "maps_extra_types.h"
 #include "maps_service.h"
 #include "maps_error.h"
 #include "maps_service.h"

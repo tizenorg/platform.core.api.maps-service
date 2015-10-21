@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
+#include <glib/gstdio.h>
 #include "module.h"
 #include "maps_util.h"
-#include <glib/gstdio.h>
 #include "thread.h"
 #include "command.h"
 #include "command_queue.h"
