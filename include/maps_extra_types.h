@@ -18,6 +18,7 @@
 #define __MAPS_SERVICE_API_EXTRA_TYPES_H__
 
 #include <tizen_type.h>
+#include <glib.h>
 
 /**
  * @ingroup	CAPI_MAPS_PLUGIN_AND_PROVIDERS_MODULE
