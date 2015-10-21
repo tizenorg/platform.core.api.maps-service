@@ -1,6 +1,6 @@
 Name:       capi-maps-service
 Summary:    Tizen Maps Service API
-Version:    0.4.6
+Version:    0.5.0
 Release:    1
 Group:      Location/API
 License:    Apache-2.0
@@ -108,7 +108,7 @@ This provides the Tizen Map Service APIs to access and handle map data for the M
 # WARNING! FOR TESTING PURPOSES ONLY
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 #if you want to tesst code, please change %if 0 to %if 1
-%if 0
+%if 1
 %package test
 Summary:    Tizen Maps Service Library Test (Internal Dev)
 Group:      Location/Testing
@@ -133,6 +133,9 @@ READ ME
 %manifest test/capi-maps-service-test.manifest
 /opt/usr/devel/capi-maps-service-test
 /usr/share/packages/capi-maps-service-test.xml
+
+%endif
+%if 0
 
 #################################################################################
 # Test plugin library
