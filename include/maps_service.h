@@ -57,25 +57,35 @@ extern "C" {
  * @since_tizen 2.4
  */
 typedef enum _maps_service_e {
-	MAPS_SERVICE_GEOCODE,				/** Indicates that
-				maps_service_geocode() service is allowed */
-	MAPS_SERVICE_GEOCODE_INSIDE_AREA,		/** Indicates that
-		maps_service_geocode_iside_area() service is allowed */
-	MAPS_SERVICE_GEOCODE_BY_STRUCTURED_ADDRESS,	/** Indicates that
-	maps_service_geocode_by_structured_address() service is allowed */
-	MAPS_SERVICE_REVERSE_GEOCODE,			/** Indicates that
-			maps_service_reverse_geocode() service is allowed */
-	MAPS_SERVICE_SEARCH_PLACE,			/** Indicates that
-				maps_service_place() service is allowed */
-	MAPS_SERVICE_SEARCH_PLACE_BY_AREA,		/** Indicates that
+
+	MAPS_SERVICE_GEOCODE, /**< Indicates that maps_service_geocode()
+		service is allowed */
+
+	MAPS_SERVICE_GEOCODE_INSIDE_AREA, /**< Indicates that
+		maps_service_geocode_inside_area() service is allowed */
+
+	MAPS_SERVICE_GEOCODE_BY_STRUCTURED_ADDRESS, /**< Indicates that
+		maps_service_geocode_by_structured_address() service is
+		allowed */
+
+	MAPS_SERVICE_REVERSE_GEOCODE, /**< Indicates that
+		maps_service_reverse_geocode() service is allowed */
+
+	MAPS_SERVICE_SEARCH_PLACE, /**< Indicates that
+		maps_service_search_place() service is allowed */
+
+	MAPS_SERVICE_SEARCH_PLACE_BY_AREA, /**< Indicates that
 		maps_service_search_place_by_area() service is allowed */
-	MAPS_SERVICE_SEARCH_PLACE_BY_ADDRESS,		/** Indicates that
+
+	MAPS_SERVICE_SEARCH_PLACE_BY_ADDRESS, /**< Indicates that
 		maps_service_search_place_by_address() service is allowed */
-	MAPS_SERVICE_SEARCH_ROUTE,			/** Indicates that
-			maps_service_search_route() service is allowed */
-	MAPS_SERVICE_SEARCH_ROUTE_WAYPOINTS,		/** Indicates that
+
+	MAPS_SERVICE_SEARCH_ROUTE, /**< Indicates that
+		maps_service_search_route() service is allowed */
+
+	MAPS_SERVICE_SEARCH_ROUTE_WAYPOINTS, /**< Indicates that
 		maps_service_search_route_waypoints() service is allowed */
-	MAPS_SERVICE_CANCEL_REQUEST			/** Indicates that
+	MAPS_SERVICE_CANCEL_REQUEST			/**< Indicates that
 			maps_service_cancel_request() service is allowed */
 } maps_service_e;
 
