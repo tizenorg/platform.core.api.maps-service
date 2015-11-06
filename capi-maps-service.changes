@@ -1,3 +1,8 @@
+[Version]   capi-maps-service_0.6.0
+[Date]      18 November 2015
+[Title]     Added Mapping API.
+[Developer] Alexey Shulga <a.shulga@samsung.com>
+
 [Version]   capi-maps-service_0.5.0
 [Date]      21 October 2015
 [Title]     Added coordinates address list API.
