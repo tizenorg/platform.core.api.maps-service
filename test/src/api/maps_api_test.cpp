@@ -1847,7 +1847,6 @@ void utc_maps_service_search_route_real_p(void)
 
 
 
-
 /*----------------------------------------------------------------------------*/
 /* Serial API test */
 

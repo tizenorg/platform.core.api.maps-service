@@ -17,6 +17,7 @@ INCLUDE_DIRECTORIES(
 	src/api
 	src/plugin
 	src/session
+	src/view
 	src/tutorial
 	)
 
@@ -41,6 +42,11 @@ SET (TEST_SRCS
 	src/session/command_queue_test.cpp
 	src/session/thread_test.cpp
 
+	src/view/poly_shape_hit_test_test.cpp
+	src/view/marker_constructor_test.cpp
+	src/view/polygon_constructor_test.cpp
+	src/view/polyline_constructor_test.cpp
+	src/view/route_constructor_test.cpp
 
 	src/api/maps_api_test.cpp
 	src/api/maps_area_test.cpp
@@ -69,6 +75,10 @@ SET (TEST_SRCS
 	src/api/maps_route_segment_test.cpp
 
 	src/api/maps_preference_test.cpp
+
+	src/api/map_view_test.cpp
+	src/api/map_object_test.cpp
+	src/api/map_event_data_test.cpp
 	)
 
 #aux_source_directory(src sources)

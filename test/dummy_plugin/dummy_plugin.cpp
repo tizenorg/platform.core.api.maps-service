@@ -136,7 +136,7 @@ EXPORT_API int maps_plugin_geocode(const char *address,
 	g_return_val_if_fail(address, MAPS_ERROR_INVALID_PARAMETER);
 	g_return_val_if_fail(callback, MAPS_ERROR_INVALID_PARAMETER);
 	g_return_val_if_fail(request_id, MAPS_ERROR_INVALID_PARAMETER);
-	g_return_val_if_fail(preference, MAPS_ERROR_INVALID_PARAMETER);
+	/*g_return_val_if_fail(preference, MAPS_ERROR_INVALID_PARAMETER);*/
 
 	*request_id = dummy_geocode_request_id++;
 
@@ -163,7 +163,7 @@ EXPORT_API int maps_plugin_geocode_inside_area(const char *address,
 	g_return_val_if_fail(bounds, MAPS_ERROR_INVALID_PARAMETER);
 	g_return_val_if_fail(callback, MAPS_ERROR_INVALID_PARAMETER);
 	g_return_val_if_fail(request_id, MAPS_ERROR_INVALID_PARAMETER);
-	g_return_val_if_fail(preference, MAPS_ERROR_INVALID_PARAMETER);
+	/*g_return_val_if_fail(preference, MAPS_ERROR_INVALID_PARAMETER);*/
 
 	*request_id = dummy_geocode_request_id++;
 

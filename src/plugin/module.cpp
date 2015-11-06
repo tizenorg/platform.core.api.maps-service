@@ -194,6 +194,40 @@ maps_plugin_h plugin::binary_extractor::init(const provider_info &info,
 			(maps_plugin_cancel_request_f) gmod_find_sym(plugin,
 			"maps_plugin_cancel_request");
 
+		/* Mapping */
+		new_plugin->interface.maps_plugin_set_map_view =
+			(maps_plugin_set_map_view_f) gmod_find_sym(plugin,
+			"maps_plugin_set_map_view");
+		new_plugin->interface.maps_plugin_render_map =
+			(maps_plugin_render_map_f) gmod_find_sym(plugin,
+			"maps_plugin_render_map");
+		new_plugin->interface.maps_plugin_move_center =
+			(maps_plugin_move_center_f) gmod_find_sym(plugin,
+			"maps_plugin_move_center");
+		new_plugin->interface.maps_plugin_draw_map =
+			(maps_plugin_draw_map_f) gmod_find_sym(plugin,
+			"maps_plugin_draw_map");
+		new_plugin->interface.maps_plugin_on_object =
+			(maps_plugin_on_object_f) gmod_find_sym(plugin,
+			"maps_plugin_on_object");
+		new_plugin->interface.maps_plugin_screen_to_geography =
+			(maps_plugin_screen_to_geography_f)
+			gmod_find_sym(plugin,
+			"maps_plugin_screen_to_geography");
+		new_plugin->interface.maps_plugin_geography_to_screen =
+			(maps_plugin_geography_to_screen_f)
+			gmod_find_sym(plugin,
+			"maps_plugin_geography_to_screen");
+		new_plugin->interface.maps_plugin_get_min_zoom_level =
+			(maps_plugin_get_min_zoom_level_f) gmod_find_sym(plugin,
+			"maps_plugin_get_min_zoom_level");
+		new_plugin->interface.maps_plugin_get_max_zoom_level =
+			(maps_plugin_get_max_zoom_level_f) gmod_find_sym(plugin,
+			"maps_plugin_get_max_zoom_level");
+		new_plugin->interface.maps_plugin_get_center =
+			(maps_plugin_get_center_f) gmod_find_sym(plugin,
+			"maps_plugin_get_center");
+
 		/* 2.3 Check whether the plugin init function is valid */
 		if (!new_plugin->interface.maps_plugin_init) {
 			MAPS_LOGE(
@@ -256,8 +290,11 @@ maps_plugin_h plugin::binary_extractor::init(const provider_info &info,
 		}
 
 		/* 2.7 Create a queue with asynchronous requests to plugin */
+#ifdef _MAPS_SERVICE_SUPPORTS_ASYNC_QUEUE_
 		if (session::command_queue::is_async())
+		/* We are going to use this queue for view commands */
 			new_plugin->request_queue = g_async_queue_new();
+#endif /*_MAPS_SERVICE_SUPPORTS_ASYNC_QUEUE_*/
 
 		/* 2.8 Initialize the mutex for the map of pending requests */
 		new_plugin->pending_request_maps =
@@ -301,8 +338,10 @@ void plugin::binary_extractor::shutdown(maps_plugin_h plugin_h)
 	session::thread().stop(plugin);
 
 	/* 2. Destroy the request queue */
+#ifdef _MAPS_SERVICE_SUPPORTS_ASYNC_QUEUE_
 	if (plugin->request_queue)
 		g_async_queue_unref(plugin->request_queue);
+#endif /* _MAPS_SERVICE_SUPPORTS_ASYNC_QUEUE_ */
 
 	/* 3. Destroy the map of pending requests */
 	if (plugin->pending_request_maps) {
@@ -428,6 +467,7 @@ void plugin::binary_extractor::trace_dbg(const plugin_s *plugin) const
 		MAPS_LOGD("module path:\t\t\t%s", mod->path);
 	}
 
+#ifdef _MAPS_SERVICE_SUPPORTS_ASYNC_QUEUE_
 	if (!plugin->request_queue) {
 		MAPS_LOGD("PLUGIN request queue is NULL");
 	}
@@ -435,6 +475,7 @@ void plugin::binary_extractor::trace_dbg(const plugin_s *plugin) const
 		MAPS_LOGD("plugin request queue:\t\t\t%p",
 			plugin->request_queue);
 	}
+#endif /*_MAPS_SERVICE_SUPPORTS_ASYNC_QUEUE_ */
 
 	const interface_s *itf = &plugin->interface;
 	MAPS_LOGD("maps_plugin_init:\t\t\t%p", itf->maps_plugin_init);

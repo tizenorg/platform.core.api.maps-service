@@ -39,7 +39,7 @@
 /* Number of iterations Test Cases to be run */
 /* It it is not a memory leak test, */
 /* the value of iterations will be automatically  reduced to 1 */
-static long long iterations = 250* 1000;	/* For load test */
+static long long iterations = 250 * 1000;	/* For load test */
 
 /* */
 #ifdef MAPS_SERVICE_LOAD_TEST

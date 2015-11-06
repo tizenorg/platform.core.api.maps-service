@@ -69,7 +69,7 @@ EXPORT_API int maps_item_list_append(maps_item_list_h list, const void *data,
 EXPORT_API int maps_item_list_foreach(maps_item_list_h list,
 				      maps_item_list_clone_cb clone_func,
 				      maps_item_list_foreach_cb callback,
-	void *user_data)
+				      void *user_data)
 {
 	if (!list || !clone_func || !callback)
 		return MAPS_ERROR_INVALID_PARAMETER;
@@ -91,6 +91,23 @@ EXPORT_API int maps_item_list_foreach(maps_item_list_h list,
 			break;
 	}
 
+	return MAPS_ERROR_NONE;
+}
+
+EXPORT_API int maps_item_list_remove(maps_item_list_h list,
+				     void *item,
+				     maps_item_list_free_cb free_func)
+{
+	MAPS_LOG_API;
+	if (!list)
+		return MAPS_ERROR_INVALID_PARAMETER;
+
+	maps_item_list_s *l = (maps_item_list_s *) list;
+	if (l->l) {
+		l->l = g_list_remove(l->l, item);
+		if (free_func)
+			free_func(item);
+	}
 	return MAPS_ERROR_NONE;
 }
 
@@ -638,5 +655,21 @@ EXPORT_API int maps_item_hashtable_contains(maps_item_hashtable_h table,
 	maps_item_hashtable_s *t = (maps_item_hashtable_s *) table;
 	if (t->t)
 		*contains = g_hash_table_contains(t->t, (gpointer) key);
+	return MAPS_ERROR_NONE;
+}
+
+/**
+ * This is the function, needed by maps_item_list_append.
+ * It allows not cloning the object while appending it to the list,
+ * but directly add the object pointer.
+ * We should use this function to reduce the memory consumption,
+ * caused by multyple clones
+ */
+EXPORT_API int maps_item_no_clone(void *origin, void **cloned)
+{
+	MAPS_LOG_API;
+	if(!cloned)
+		return MAPS_ERROR_INVALID_PARAMETER;
+	*cloned = origin;
 	return MAPS_ERROR_NONE;
 }

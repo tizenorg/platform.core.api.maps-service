@@ -22,6 +22,16 @@
 
 namespace session
 {
+	typedef enum _command_type_e {
+		MAPS_DATA_COMMAND,
+		MAP_VIEW_SET_CENTER_COMMAND,
+		MAP_VIEW_MOVE_CENTER_COMMAND,
+		MAP_VIEW_ZOOM_COMMAND,
+		MAP_VIEW_ROTATE_COMMAND,
+		MAP_VIEW_ZOOM_ROTATE_COMMAND,
+		MAP_VIEW_READY_COMMAND,
+		MAPS_UNDEF_COOMAND = -1
+	} command_type_e;
 
 /*----------------------------------------------------------------------------*/
 
@@ -33,13 +43,13 @@ namespace session
 		int my_req_id;
 	protected:
 		int error;
+		bool is_merged;
 	public:
 		static volatile int command_request_id;
 	public:
 		static command empty_instance;
 	private:
-		command()
-			: m(NULL), my_req_id(-1), error(0)
+		command() : m(NULL), my_req_id(-1), error(0)
 		{
 		}		/* Please, do not construct an empty object */
 	public:
@@ -60,6 +70,14 @@ namespace session
 		maps_plugin_h handle() const;
 	public:
 		plugin::plugin_s *plugin()const;
+	public:
+		virtual command_type_e get_type() const;
+		virtual int get_priority() const;
+		virtual void merge(const command *c);
+	public:
+		bool merged() const;
+	protected:
+		void set_merged();
 	};
 
 /*----------------------------------------------------------------------------*/
