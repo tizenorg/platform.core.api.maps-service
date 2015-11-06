@@ -585,7 +585,6 @@ int maps_address_list_foreach(maps_address_list_h address_list, maps_address_cb 
  * @since_tizen 3.0
  *
  * @param[in]	address_list	The address list handle
- * @param[in]	maps_address_h	The address handle
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
