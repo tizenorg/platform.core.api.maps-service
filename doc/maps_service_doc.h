@@ -111,6 +111,16 @@
  *  closings, disabled access.
  *  .
  * .
+ * Snapshots
+ * - The Maps Snapshot API allows to capture a snapshot of the map with
+ * specified parameters:
+ *  - geographical coordinates of central map location
+ *  - zoom level
+ *  - orientation (rotation angle)
+ *  - width and height in pixels
+ *  - etc
+ *  .
+ * .
  * The developer is allowed to choose one of map providers by manipulating map
  * plug-ins.
  *
