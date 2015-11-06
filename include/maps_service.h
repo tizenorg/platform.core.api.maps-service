@@ -25,6 +25,7 @@
 #include <maps_place.h>
 #include <maps_place_filter.h>
 #include <maps_route.h>
+#include <map_snapshot.h>
 
 /**
  *
@@ -87,8 +88,13 @@ typedef enum _maps_service_e {
 		maps_service_search_route_waypoints() service is allowed */
 	MAPS_SERVICE_CANCEL_REQUEST,			/**< Indicates that
 			maps_service_cancel_request() service is allowed */
-	MAPS_SERVICE_MULTI_REVERSE_GEOCODE	/**< Indicates that
+	MAPS_SERVICE_MULTI_REVERSE_GEOCODE,	/**< Indicates that
 	maps_service_multi_reverse_geocode() service is allowed (Since 3.0)*/
+
+	MAPS_SERVICE_CAPTURE_SNAPSHOT		/**< Indicates that
+			maps_service_capture_snapshot() and
+			map_view_capture_snapshot()
+			services are allowed (Since 3.0) */
 } maps_service_e;
 
 /**
@@ -482,12 +488,12 @@ int maps_service_cancel_request(const maps_service_h maps, int request_id);
  * @addtogroup CAPI_MAPS_GEOCODER_MODULE
  * @{
  * @brief This provides APIs for Geocoder Service
- * @details The Maps Geocoding API allows mapping an address to its geographical
- * location defined in terms of latitude and longitude; the input can be a
- * qualified, structured address or a free form single search text with full
- * or partial address information.
- * \n The Maps Reverse Geocoding API allows to inverse mapping a geographical
- * location (longitude, latitude) to an address;
+ * @details The Maps Geocoding API allows translating an address to its
+ * geographical location defined in terms of latitude and longitude;
+ * the input can be a qualified, structured address or a free form single search
+ * text with full or partial address information.
+ * \n The Maps Reverse Geocoding API allows to inverse translating a
+ * geographical location (longitude, latitude) to an address;
  * it can be used to answer the question "Where am I?".
  *
  */
@@ -1268,6 +1274,208 @@ int maps_service_search_route_waypoints(const maps_service_h maps,
 					maps_preference_h preference,
 					maps_service_search_route_cb callback,
 					void *user_data, int *request_id);
+
+/**
+ * @}
+ */
+
+
+/*----------------------------------------------------------------------------*/
+/*
+ * Snapshot Capture Service
+ */
+
+/**
+ * @ingroup	CAPI_MAPS_SERVICE_MODULE
+ * @defgroup	CAPI_MAP_SNAPSHOT_MODULE Snapshot
+ *
+ * @addtogroup CAPI_MAP_SNAPSHOT_MODULE
+ * @{
+ * @brief This provides APIs allowing to capture Map Snapshots.
+ *
+ */
+
+/**
+ * @brief	Called when snapshot requested with the
+ * maps_service_capture_snapshot().
+ * @details The Maps Service invokes this callback while retrieving a snapshot
+ * of the map, centered on  specified geographical coordinates with specified
+ * zoom level and orientation.
+ * \n If snapshot capturing is failed, the value of @a snapshot is NULL.
+ * @since_tizen 3.0
+ * @remarks The parameter @a snapshot must be released using
+ * map_snapshot_destroy().
+ *
+ * @param[in]	result		The result of request
+ * @param[in]	request_id	The id of request
+ * @param[in]	snapshot	The snapshot
+ * @param[in]	user_data	The pointer to user data passed from
+ * maps_service_capture_snapshot()
+ *
+ * @pre maps_service_capture_snapshot() will invoke this callback.
+ *
+ * @see maps_service_capture_snapshot()
+ * @see #map_snapshot_h
+ */
+typedef void (*maps_service_snapshot_cb) (maps_error_e result,
+					 int request_id,
+					 map_snapshot_h snapshot,
+					 void *user_data);
+
+/**
+ * @brief	Gets the snapshot of a Map.
+ * \n The request is asynchronous.
+ * @details This function retrieves a snapshot of a map, centered on a specified
+ * geographical coordinates with specified zoom level, orientation, expected
+ * snapshot size on the screen and other
+ * preferences.
+ * @since_tizen 3.0
+ * @privlevel public
+ * @privilege %http://tizen.org/privilege/mapservice \n
+ *            %http://tizen.org/privilege/internet \n
+ *            %http://tizen.org/privilege/network.get
+ * @remarks To check if Maps Provider is capable of capturing snapshots use
+ * maps_service_provider_is_service_supported() with
+ * #MAPS_SERVICE_CAPTURE_SNAPSHOT passed as @a service parameter.
+ *
+ * @param[in]	maps		The Maps Service handle
+ * @param[in]	center		The geographical coordinates of map center on
+ * the snapshot
+ * @param[in]	zoom_level	The zoom level of the map on the snapshot
+ * @param[in]	rotation_angle	The orientation of the map on the snapshot
+ * @param[in]	width		The width of the snapshot on the screen
+ * @param[in]	height		The height of the snapshot on the screen
+ * @param[in]	preference	The set of preferences for snapshot capturing
+ * @param[in]	callback	The callback which will receive the snapshot
+ * @param[in]	user_data	The pointer to user data to be passed to the
+ * callback function
+ * @param[out]	request_id	The id of request
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NETWORK_UNREACHABLE Network connection failed
+ * @retval	#MAPS_ERROR_SERVICE_NOT_AVAILABLE Service not available
+ * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
+ * @retval	#MAPS_ERROR_CONNECTION_TIME_OUT Timeout error, no answer
+ * @retval	#MAPS_ERROR_INVALID_OPERATION Operation is not valid
+ * @retval	#MAPS_ERROR_NOT_FOUND Result not found
+ * @retval	#MAPS_ERROR_KEY_NOT_AVAILABLE Invalid key
+ * @retval	#MAPS_ERROR_UNKNOWN Unknown error
+ *
+ * @pre Call maps_service_create() to create Maps Service and obtain its handle.
+ * @pre Optionally, call maps_preference_create() to create Map Preference
+ * holder and obtain its handle.
+ * @post It invokes maps_service_snapshot_cb() to deliver requested snapshot.
+ *
+ * @par Example
+ * @code
+#include <maps_service.h>
+
+static void _snapshot_cb(maps_error_e result, int request_id,
+			 map_snapshot_h snapshot, void *user_data)
+{
+	if (!snapshot || !user_data)
+		return false;
+
+	unsigned int *pixels = NULL;
+	Evas *canvas = (Evas *)user_data;
+	Evas_Object *map_snapshot = NULL;
+	int width = 0;
+	int height = 0;
+
+	// Get snapshot pixels
+	unsigned int *pixels = NULL;
+	int error = map_snapshot_get_data(snapshot, &pixels);
+	if (error == MAPS_ERROR_NONE) {
+
+		// Create an image on the canvas
+		map_snapshot = evas_object_image_add(canvas);
+		map_snapshot_get_size(snapshot, &width, &height);
+		evas_object_image_size_set (map_snapshot, width, height);
+
+		// Draw snapshot on the canvas
+		evas_object_image_data_set(map_snapshot, pixels);
+		evas_object_show(map_snapshot);
+	}
+
+	// Optionally it is possible to fetch also the snapshot
+	// - central coordinates and area
+	// - zoom level and factor
+	// - orientation
+	// - Evas color space
+	// - etc.
+
+	map_snapshot_destroy(snapshot);
+}
+
+int main(int argc, char *argv[])
+{
+	maps_service_h maps = NULL;
+	int error = MAPS_ERROR_NONE;
+	int request_id = 0;
+	Evas *canvas = NULL;
+
+	do {
+
+		// Create an instance of Maps Service
+		error = maps_service_create("MapsProvider", &maps);
+		if (error != MAPS_ERROR_NONE)
+			break;
+
+		// Set security key
+		maps_service_set_provider_key(maps, "your-security-key");
+
+		// Create a canvas
+		//canvas = ...
+
+		// Specify Snapshot center
+		maps_coordinates_h center = NULL;
+		maps_coordinates_create(center, 39.930661, 23.695172);
+
+		// Capture snapshot
+		error = maps_service_capture_snapshot(maps,
+			      center,
+			      12,	// zoom level
+			      0,	// rotation angle
+			      320,	// width on the screen
+			      240,	// height on the screen
+			      NULL,	// no extra preference
+			      _snapshot_cb,
+			      canvas,	// user_data,
+			      &request_id);
+
+		maps_coordinates_destroy(center);
+
+		if (error != MAPS_ERROR_NONE)
+			break;
+
+	} while(false);
+
+	// Release the Maps Service and used resources
+	maps_service_destroy(maps);
+	return error;
+}
+ * @endcode
+ *
+ * @see maps_service_snapshot_cb()
+ * @see map_view_capture_snapshot()
+ * @see #map_snapshot_h
+ * @see map_snapshot_destroy()
+ * @see maps_service_create()
+ * @see maps_preference_create()
+ */
+int maps_service_capture_snapshot(const maps_service_h maps,
+				  const maps_coordingates_h center,
+				  const int zoom_level,
+				  const double rotation_angle,
+				  const int width,
+				  const int height,
+				  const maps_preference_h preference,
+				  maps_service_snapshot_cb callback,
+				  void *user_data,
+				  int *request_id);
+
 
 /**
  * @}
