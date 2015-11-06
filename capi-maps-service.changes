@@ -1,3 +1,8 @@
+[Version]   capi-maps-service_0.5.2
+[Date]      06 November 2015
+[Title]     Added Mapping API.
+[Developer] Alexey Shulga <a.shulga@samsung.com>
+
 [Version]   capi-maps-service_0.4.6
 [Date]      16 September 2015
 [Title]     Added -fvisibility=hidden to make EXPORT_API useful.
