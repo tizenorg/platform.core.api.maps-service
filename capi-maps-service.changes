@@ -1,3 +1,13 @@
+[Version]   capi-maps-service_0.6.0
+[Date]      27 November 2015
+[Title]     Added Mapping API.
+[Developer] Alexey Shulga <a.shulga@samsung.com>
+
+[Version]   capi-maps-service_0.5.1
+[Date]      26 November 2015
+[Title]     Added Multi Reverse Geocode API.
+[Developer] Kyoungjun Sung <kj7.sung@samsung.com>
+
 [Version]   capi-maps-service_0.5.0
 [Date]      21 October 2015
 [Title]     Added coordinates address list API.
