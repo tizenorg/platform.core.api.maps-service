@@ -46,7 +46,7 @@
  * @section	CAPI_MAPS_SERVICE_MODULE_FEATURE Features
  *
  * Geocoding
- * - The Maps Geocoding API allows mapping an address to its geographical
+ * - The Maps Geocoding API allows translating an address to its geographical
  * location defined in terms of latitude and longitude; the input can be a
  * qualified and structured address or a free-formed search text with full or
  * partial address information.
@@ -61,7 +61,7 @@
  * .
  *
  * Reverse Geocoding
- * - The Maps Reverse Geocoding API allows to inverse mapping a geographical
+ * - The Maps Reverse Geocoding API allows to inverse translating a geographical
  * location (longitude, latitude) to an address; it can be used to answer the
  * question "Where am I?".
  * .
@@ -109,6 +109,16 @@
  *  icon path, image content, review content, and editorial content.
  *  - Extended Attribute refers to opening hours, payment methods, annual
  *  closings, disabled access.
+ *  .
+ * .
+ * Snapshots
+ * - The Maps Snapshot API allows to capture a snapshot of the map with
+ * specified parameters:
+ *  - geographical coordinates of central map location
+ *  - zoom level
+ *  - orientation (rotation angle)
+ *  - width and height in pixels
+ *  - etc
  *  .
  * .
  * The developer is allowed to choose one of map providers by manipulating map
