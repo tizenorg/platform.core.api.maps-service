@@ -347,7 +347,7 @@ int maps_place_get_location(const maps_place_h place,
  * @since_tizen 2.4
  *
  * @param[in]	place			The place handle
- * @param[out]	distance		The place distance
+ * @param[out]	distance		The place distance in meters
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter

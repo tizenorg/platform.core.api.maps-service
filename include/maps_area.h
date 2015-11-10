@@ -160,8 +160,10 @@ int maps_area_create_rectangle(const maps_coordinates_h top_left,
  * Geographical Area with a specified center coordinates and a radius.
  * @since_tizen 2.4
  * @remarks @a area must be released using maps_area_destroy().
- * \n @a top_left and @a bottom_right must be released using
- * maps_coordinates_destroy().
+ * \n @a center must be released using maps_coordinates_destroy().
+ * \n The @a radius is specified in units, listed in #maps_distance_unit_e.
+ * \n To get and set distance units use maps_preference_get_distance_unit() and
+ * maps_preference_set_distance_unit() respectively.
  *
  * @param[in]	center		The central position of the area
  * @param[in]	radius		The radius of the area
@@ -179,6 +181,8 @@ int maps_area_create_rectangle(const maps_coordinates_h top_left,
  * @see maps_area_s
  * @see maps_coordinates_create()
  * @see maps_coordinates_destroy()
+ * @see maps_preference_get_distance_unit()
+ * @see maps_preference_set_distance_unit()
  */
 int maps_area_create_circle(const maps_coordinates_h center,
 			    const double radius, maps_area_h *area);

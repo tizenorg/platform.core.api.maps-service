@@ -124,7 +124,7 @@ int maps_place_set_location(maps_place_h place,
  * @since_tizen 2.4
  *
  * @param[in]	place		The handle to place
- * @param[in]	distance	The place distance
+ * @param[in]	distance	The place distance in meters
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter

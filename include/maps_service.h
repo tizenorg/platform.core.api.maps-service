@@ -805,10 +805,14 @@ typedef bool(*maps_service_search_place_cb) (maps_error_e error,
  * \n To cancel the search request use maps_service_cancel_request().
  * \n To check if Maps Provider is capable of Place Search and which Place
  * preferences are supported, see the lists of capacities and preferences above.
+ * \n The distance unit for searching places supports metric
+ * but doesn't support imperial.
+ * Even though applications set #maps_distance_unit_e using maps_preference_set_distance_unit(),
+ * the unit of distance is meter.
  *
  * @param[in]	maps		The Maps Service handle
  * @param[in]	position	The interested position
- * @param[in]	distance	The search area distance
+ * @param[in]	distance	The search area distance in meters
  * @param[in]	filter		The filter handle
  * @param[in]	preference	The place preference handle
  * @param[in]	callback	The result callback
@@ -862,6 +866,9 @@ int maps_service_search_place(const maps_service_h maps,
  * \n To cancel the search request use maps_service_cancel_request().
  * \n To check if Maps Provider is capable of Place Search and which Place
  * preferences are supported, see the lists of capacities and preferences above.
+ * \n The distance unit for searching places doesn't support imperial but supports metric.
+ * Even though applications set maps_distance_unit_e using maps_preference_set_distance_unit(),
+ * the unit of radius of boundary is meter.
  *
  * @param[in]	maps		The Maps Service handle
  * @param[in]	boundary	The interested area
