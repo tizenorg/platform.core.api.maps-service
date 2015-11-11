@@ -57,26 +57,34 @@ extern "C" {
  * @since_tizen 2.4
  */
 typedef enum _maps_service_e {
-	MAPS_SERVICE_GEOCODE,				/** Indicates that
+	MAPS_SERVICE_GEOCODE,				/**< Indicates that
 				maps_service_geocode() service is allowed */
-	MAPS_SERVICE_GEOCODE_INSIDE_AREA,		/** Indicates that
-		maps_service_geocode_iside_area() service is allowed */
-	MAPS_SERVICE_GEOCODE_BY_STRUCTURED_ADDRESS,	/** Indicates that
+	MAPS_SERVICE_GEOCODE_INSIDE_AREA,		/**< Indicates that
+		maps_service_geocode_inside_area() service is allowed */
+	MAPS_SERVICE_GEOCODE_BY_STRUCTURED_ADDRESS,	/**< Indicates that
 	maps_service_geocode_by_structured_address() service is allowed */
-	MAPS_SERVICE_REVERSE_GEOCODE,			/** Indicates that
+	MAPS_SERVICE_REVERSE_GEOCODE,			/**< Indicates that
 			maps_service_reverse_geocode() service is allowed */
-	MAPS_SERVICE_SEARCH_PLACE,			/** Indicates that
-				maps_service_place() service is allowed */
-	MAPS_SERVICE_SEARCH_PLACE_BY_AREA,		/** Indicates that
+	MAPS_SERVICE_SEARCH_PLACE,			/**< Indicates that
+				maps_service_search_place() service is allowed */
+	MAPS_SERVICE_SEARCH_PLACE_BY_AREA,		/**< Indicates that
 		maps_service_search_place_by_area() service is allowed */
-	MAPS_SERVICE_SEARCH_PLACE_BY_ADDRESS,		/** Indicates that
+	MAPS_SERVICE_SEARCH_PLACE_BY_ADDRESS,		/**< Indicates that
 		maps_service_search_place_by_address() service is allowed */
-	MAPS_SERVICE_SEARCH_ROUTE,			/** Indicates that
+	MAPS_SERVICE_SEARCH_ROUTE,			/**< Indicates that
 			maps_service_search_route() service is allowed */
-	MAPS_SERVICE_SEARCH_ROUTE_WAYPOINTS,		/** Indicates that
+	MAPS_SERVICE_SEARCH_ROUTE_WAYPOINTS,		/**< Indicates that
 		maps_service_search_route_waypoints() service is allowed */
-	MAPS_SERVICE_CANCEL_REQUEST			/** Indicates that
+	MAPS_SERVICE_CANCEL_REQUEST,			/**< Indicates that
 			maps_service_cancel_request() service is allowed */
+	MAPS_SERVICE_SEARCH_PLACE_BRIEF,			/**< Indicates that
+	maps_service_search_place_brief() service is allowed (Since 3.0)*/
+	MAPS_SERVICE_SEARCH_PLACE_BY_AREA_BRIEF,		/**< Indicates that
+	maps_service_search_place_by_area_brief() service is allowed (Since 3.0)*/
+	MAPS_SERVICE_SEARCH_PLACE_BY_ADDRESS_BRIEF,		/**< Indicates that
+	maps_service_search_place_by_address_brief() service is allowed (Since 3.0)*/
+	MAPS_SERVICE_SEARCH_PLACE_DETAILS		/**< Indicates that
+	maps_service_search_place_details() service is allowed (Since 3.0)*/
 } maps_service_e;
 
 /**
@@ -805,6 +813,8 @@ typedef bool(*maps_service_search_place_cb) (maps_error_e error,
  * \n To cancel the search request use maps_service_cancel_request().
  * \n To check if Maps Provider is capable of Place Search and which Place
  * preferences are supported, see the lists of capacities and preferences above.
+ * \n The combination of maps_service_search_place_brief() and
+ * maps_service_search_place_details() is effective to reduce network traffic.
  *
  * @param[in]	maps		The Maps Service handle
  * @param[in]	position	The interested position
@@ -837,6 +847,8 @@ typedef bool(*maps_service_search_place_cb) (maps_error_e error,
  *
  * @see maps_service_search_place_by_area()
  * @see maps_service_search_place_by_address()
+ * @see maps_service_search_place_brief()
+ * @see maps_service_search_place_details()
  * @see maps_service_cancel_request()
  * @see maps_service_search_place_cb()
  */
@@ -862,6 +874,8 @@ int maps_service_search_place(const maps_service_h maps,
  * \n To cancel the search request use maps_service_cancel_request().
  * \n To check if Maps Provider is capable of Place Search and which Place
  * preferences are supported, see the lists of capacities and preferences above.
+ * \n The combination of maps_service_search_place_by_area_brief() and
+ * maps_service_search_place_details() is effective to reduce network traffic.
  *
  * @param[in]	maps		The Maps Service handle
  * @param[in]	boundary	The interested area
@@ -894,6 +908,8 @@ int maps_service_search_place(const maps_service_h maps,
  *
  * @see maps_service_search_place()
  * @see maps_service_search_place_by_address()
+ * @see maps_service_search_place_by_area_brief()
+ * @see maps_service_search_place_details()
  * @see maps_service_cancel_request()
  * @see maps_service_search_place_cb()
  */
@@ -919,6 +935,8 @@ int maps_service_search_place_by_area(const maps_service_h maps,
  * \n To cancel the search request use maps_service_cancel_request().
  * \n To check if Maps Provider is capable of Place Search and which Place
  * preferences are supported, see the lists of capacities and preferences above.
+ * \n The combination of maps_service_search_place_by_address_brief() and
+ * maps_service_search_place_details() is effective to reduce network traffic.
  *
  * @param[in]	maps		The Maps Service handle
  * @param[in]	address		The interested address
@@ -951,6 +969,8 @@ int maps_service_search_place_by_area(const maps_service_h maps,
  *
  * @see maps_service_search_place()
  * @see maps_service_search_place_by_area()
+ * @see maps_service_search_place_by_address_brief()
+ * @see maps_service_search_place_details()
  * @see maps_service_cancel_request()
  * @see maps_service_search_place_cb()
  */
@@ -962,6 +982,242 @@ int maps_service_search_place_by_address(const maps_service_h maps,
 					 maps_service_search_place_cb
 					 callback, void *user_data,
 					 int *request_id);
+
+/**
+ * @brief	Queries a brief place information by a coordinates position and a
+ * distance. The request is asynchronous.
+ * @details This function obtains the Place information for a specified distance
+ * around a given coordinates position.
+ * @since_tizen 3.0
+ * @privlevel public
+ * @privilege %http://tizen.org/privilege/mapservice \n
+ *            %http://tizen.org/privilege/internet \n
+ *            %http://tizen.org/privilege/network.get
+ * @remarks %http://tizen.org/privilege/internet is needed to access internet.
+ * \n To cancel the search request use maps_service_cancel_request().
+ * \n To check if Maps Provider is capable of Place Search and which Place
+ * preferences are supported, see the lists of capacities and preferences above.
+ * \n To get detail place information use maps_service_search_place_details().
+ *
+ * @param[in]	maps		The Maps Service handle
+ * @param[in]	position	The interested position
+ * @param[in]	distance	The search area distance
+ * @param[in]	filter		The filter handle
+ * @param[in]	preference	The place preference handle
+ * @param[in]	callback	The result callback
+ * @param[in]	user_data	The user data to be passed to the callback
+ * function
+ * @param[out]	request_id	A Request id, can be set to NULL if does not
+ * require operation cancel
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_SERVICE_NOT_AVAILABLE Service not available
+ * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
+ * @retval	#MAPS_ERROR_CONNECTION_TIME_OUT Timeout error, no answer
+ * @retval	#MAPS_ERROR_INVALID_OPERATION Operation is not valid
+ * @retval	#MAPS_ERROR_NOT_FOUND Result not found
+ * @retval	#MAPS_ERROR_KEY_NOT_AVAILABLE Invalid key
+ * @retval	#MAPS_ERROR_RESOURCE_BUSY Places service busy
+ * @retval	#MAPS_ERROR_CANCELED Places service aborted
+ * @retval	#MAPS_ERROR_UNKNOWN Unknown error
+ *
+ * @pre Call maps_service_create() to create Maps Service and obtain its handle.
+ * @post It invokes maps_service_search_place_cb() to deliver obtained Place
+ * information.
+ *
+ * @see maps_service_search_place_by_area_brief()
+ * @see maps_service_search_place_by_address_brief()
+ * @see maps_service_search_place_details()
+ * @see maps_service_cancel_request()
+ * @see maps_service_search_place_cb()
+ */
+int maps_service_search_place_brief(const maps_service_h maps,
+			      const maps_coordinates_h position, int distance,
+			      const maps_place_filter_h filter,
+			      maps_preference_h preference,
+			      maps_service_search_place_cb callback,
+			      void *user_data, int *request_id);
+
+/**
+ * @brief	Queries a brief place information by a coordinates boundary. The
+ * request is asynchronous.
+ * @details This function obtains the Place information for a specified
+ * coordinates boundary.
+ * @since_tizen 3.0
+ * @privlevel public
+ * @privilege %http://tizen.org/privilege/mapservice \n
+ *            %http://tizen.org/privilege/internet \n
+ *            %http://tizen.org/privilege/network.get
+ * @remarks %http://tizen.org/privilege/internet is needed to access internet.
+ * \n @a boundary is supporting only circle type bounds for search.
+ * \n To cancel the search request use maps_service_cancel_request().
+ * \n To check if Maps Provider is capable of Place Search and which Place
+ * preferences are supported, see the lists of capacities and preferences above.
+ * \n To get detail place information use maps_service_search_place_details().
+ *
+ * @param[in]	maps		The Maps Service handle
+ * @param[in]	boundary	The interested area
+ * @param[in]	filter		The filter handle
+ * @param[in]	preference	The place preference handle
+ * @param[in]	callback	The result callback
+ * @param[in]	user_data	The user data to be passed to the callback
+ * function
+ * @param[out]	request_id	A Request id, can be set to NULL if does not
+ * required operation cancel
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER	Invalid parameter
+ * @retval	#MAPS_ERROR_SERVICE_NOT_AVAILABLE Service not available
+ * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
+ * @retval	#MAPS_ERROR_CONNECTION_TIME_OUT Timeout error, no answer
+ * @retval	#MAPS_ERROR_INVALID_OPERATION Operation is not valid
+ * @retval	#MAPS_ERROR_NOT_FOUND Result not found
+ * @retval	#MAPS_ERROR_KEY_NOT_AVAILABLE Invalid key
+ * @retval	#MAPS_ERROR_RESOURCE_BUSY Places service busy
+ * @retval	#MAPS_ERROR_CANCELED Places service aborted
+ * @retval	#MAPS_ERROR_UNKNOWN Unknown error
+ *
+ * @pre Call maps_service_create() to create Maps Service and obtain its
+ * handle.
+ * @post It invokes maps_service_search_place_cb() to deliver obtained Place
+ * information.
+ *
+ * @see maps_service_search_place_brief()
+ * @see maps_service_search_place_by_address_brief()
+ * @see maps_service_search_place_details()
+ * @see maps_service_cancel_request()
+ * @see maps_service_search_place_cb()
+ */
+int maps_service_search_place_by_area_brief(const maps_service_h maps,
+				      const maps_area_h boundary,
+				      const maps_place_filter_h filter,
+				      maps_preference_h preference,
+				      maps_service_search_place_cb callback,
+				      void *user_data, int *request_id);
+
+/**
+ * @brief	Queries a brief place information by a free-formed address string.
+ * The request is asynchronous.
+ * @details This function obtains the Place information for a specified free-
+ * formed address string.
+ * @since_tizen 3.0
+ * @privlevel public
+ * @privilege %http://tizen.org/privilege/mapservice \n
+ *            %http://tizen.org/privilege/internet \n
+ *            %http://tizen.org/privilege/network.get
+ * @remarks %http://tizen.org/privilege/internet is needed to access internet.
+ * \n @a boundary is supporting only circle type bounds for search.
+ * \n To cancel the search request use maps_service_cancel_request().
+ * \n To check if Maps Provider is capable of Place Search and which Place
+ * preferences are supported, see the lists of capacities and preferences above.
+ * \n To get detail place information use maps_service_search_place_details().
+ *
+ * @param[in]	maps		The Maps Service handle
+ * @param[in]	address		The interested address
+ * @param[in]	boundary	The interested area
+ * @param[in]	filter		The filter handle
+ * @param[in]	preference	The place preference handle
+ * @param[in]	callback	The result callback
+ * @param[in]	user_data	The user data to be passed to the callback
+ * function
+ * @param[out]	request_id	A Request id, can be set to NULL if does not
+ * required operation cancel
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER	Invalid parameter
+ * @retval	#MAPS_ERROR_SERVICE_NOT_AVAILABLE Service not available
+ * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
+ * @retval	#MAPS_ERROR_CONNECTION_TIME_OUT Timeout error, no answer
+ * @retval	#MAPS_ERROR_INVALID_OPERATION Operation is not valid
+ * @retval	#MAPS_ERROR_NOT_FOUND Result not found
+ * @retval	#MAPS_ERROR_KEY_NOT_AVAILABLE Invalid key
+ * @retval	#MAPS_ERROR_RESOURCE_BUSY Places service busy
+ * @retval	#MAPS_ERROR_CANCELED Places service aborted
+ * @retval	#MAPS_ERROR_UNKNOWN Unknown error
+ *
+ * @pre Call maps_service_create() to create Maps Service and obtain its handle.
+ * @post It invokes maps_service_search_place_cb() to deliver obtained Place
+ * information.
+ *
+ * @see maps_service_search_place_brief()
+ * @see maps_service_search_place_by_area_brief()
+ * @see maps_service_search_place_details()
+ * @see maps_service_cancel_request()
+ * @see maps_service_search_place_cb()
+ */
+int maps_service_search_place_by_address_brief(const maps_service_h maps,
+					 const char *address,
+					 const maps_area_h boundary,
+					 const maps_place_filter_h filter,
+					 maps_preference_h preference,
+					 maps_service_search_place_cb
+					 callback, void *user_data,
+					 int *request_id);
+
+/**
+ * @brief	Queries a detail place information by a place uri.
+ * The request is asynchronous.
+ * @details This function obtains the Detail place information for a specified place uri
+ * @since_tizen 3.0
+ * @privlevel public
+ * @privilege %http://tizen.org/privilege/mapservice \n
+ *            %http://tizen.org/privilege/internet \n
+ *            %http://tizen.org/privilege/network.get
+ * @remarks %http://tizen.org/privilege/internet is needed to access internet.
+ * \n To cancel the search request use maps_service_cancel_request().
+ * \n To check if Maps Provider is capable of Place Search and which Place
+ * preferences are supported, see the lists of capacities and preferences above.
+ *
+ * @param[in]	maps		The Maps Service handle
+ * @param[in]	uri			The interested place uri
+ * @param[in]	preference	The place preference handle
+ * @param[in]	callback	The result callback
+ * @param[in]	user_data	The user data to be passed to the callback
+ * function
+ * @param[out]	request_id	A Request id, can be set to NULL if does not
+ * require operation cancel
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_SERVICE_NOT_AVAILABLE Service not available
+ * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
+ * @retval	#MAPS_ERROR_CONNECTION_TIME_OUT Timeout error, no answer
+ * @retval	#MAPS_ERROR_INVALID_OPERATION Operation is not valid
+ * @retval	#MAPS_ERROR_NOT_FOUND Result not found
+ * @retval	#MAPS_ERROR_KEY_NOT_AVAILABLE Invalid key
+ * @retval	#MAPS_ERROR_RESOURCE_BUSY Places service busy
+ * @retval	#MAPS_ERROR_CANCELED Places service aborted
+ * @retval	#MAPS_ERROR_UNKNOWN Unknown error
+ *
+ * @pre Call maps_service_create() to create Maps Service and obtain its handle.
+ * @pre @a uri is obtained from one of followings using maps_place_get_uri():
+ *  * maps_service_search_place_brief()
+ *  * maps_service_search_place_by_area_brief()
+ *  * maps_service_search_place_by_address_brief()
+ * @post It invokes maps_service_search_place_cb() to deliver obtained Place
+ * information.
+ *
+ * @see maps_service_search_place_brief()
+ * @see maps_service_search_place_by_area_brief()
+ * @see maps_service_search_place_by_address_brief()
+ * @see maps_service_cancel_request()
+ * @see maps_service_search_place_cb()
+ */
+
+int maps_service_search_place_details(const maps_service_h maps,
+			      const char *uri,
+			      maps_preference_h preference,
+			      maps_service_search_place_cb callback,
+			      void *user_data, int *request_id);
 
 /**
  * @}
