@@ -77,7 +77,11 @@ typedef enum _maps_service_e {
 		maps_service_search_route_waypoints() service is allowed */
 	MAPS_SERVICE_CANCEL_REQUEST			/** Indicates that
 			maps_service_cancel_request() service is allowed */
-} maps_service_e;
+	MAPS_SERVICE_CAPTURE_SNAPSHOT			/**< Indicates that
+			maps_service_capture_snapshot() and
+			map_view_capture_snapshot() services are allowed
+			\n @since_tizen 3.0 */
+  } maps_service_e;
 
 /**
  * @brief Enumerations of maps features available in the Maps Service
