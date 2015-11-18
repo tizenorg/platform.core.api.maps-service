@@ -39,10 +39,6 @@ extern "C" {
  * @since_tizen 2.4
  * @remarks To release the handle use maps_coordinates_destroy().
  * \n To clone the handle use maps_coordinates_clone().
- *
- * @see maps_coordinates_create()
- * @see maps_coordinates_destroy()
- * @see maps_coordinates_clone()
  */
 typedef void *maps_coordinates_h;
 
@@ -53,17 +49,23 @@ typedef void *maps_coordinates_h;
  * \n The @a latitude must be in range of [-90.0, 90.0].
  * \n The @a longitude must be in range of [-180.0, 180.0].
  * @since_tizen 2.4
- * @remarks #maps_coordinates_h is a void pointer to the #maps_coordinates_s.
+ * @remarks #maps_coordinates_h is a void pointer to the #maps_coordinates_h.
+ * @warning Do not use #maps_coordinates_s directly if you are an application developer.
+ * Using #maps_coordinates_h is recommanded.
  *
  * @see maps_coordinates_h
- * @see maps_coordinates_create
- * @see maps_coordinates_clone
- * @see maps_coordinates_destroy
  */
 typedef struct _maps_coordinates_s {
 	double latitude;	/**< The latitude [-90.0 ~ 90.0] (degrees) */
 	double longitude;	/**< The longitude [-180.0 ~ 180.0] (degrees) */
 } maps_coordinates_s;
+
+/**
+ * @brief	The coorinates list handle.
+ * @details The coorindates list handle can be obtained via calling of maps_coordinates_list_create().
+ * @since_tizen 3.0
+ */
+typedef void *maps_coordinates_list_h;
 
 /*----------------------------------------------------------------------------*/
 
@@ -71,16 +73,16 @@ typedef struct _maps_coordinates_s {
  * @brief	Creates a new instance of Geographical Coordinates and initiates
  * a handle with it.
  * @details This function creates @a coordinates, a new instance of Geographical
- * Coordinates of type #maps_coordinates_s
+ * Coordinates of type #maps_coordinates_h
  * with a specified @a latitude and @a longitude.
  * \n New handle is assigned with this instance.
  * @since_tizen 2.4
  * @remarks @a coordinates must be released using maps_coordinates_destroy().
  * \n @a coordinates may be cloned using maps_coordinates_clone().
  *
- * @param[in]	latitude	Latitude
- * @param[in]	longitude	Longitude
- * @param[out]	coordinates	The coordinate handle
+ * @param[in]	latitude	The latitude [-90.0 ~ 90.0] (degrees)
+ * @param[in]	longitude	The longitude [-180.0 ~ 180.0] (degrees)
+ * @param[out]	coordinates	The coordinates handle
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
@@ -88,7 +90,6 @@ typedef struct _maps_coordinates_s {
  *
  * @see maps_coordinates_clone()
  * @see maps_coordinates_destroy()
- * @see maps_coordinates_s
  */
 int maps_coordinates_create(const double latitude, const double longitude,
 			    maps_coordinates_h *coordinates);
@@ -97,7 +98,7 @@ int maps_coordinates_create(const double latitude, const double longitude,
  * @brief	Destroys the Geographical Coordinates and releases all its
  * resources.
  * @details This function destroys the Geographical Coordinates
- * #maps_coordinates_s and releases all its resources.
+ * #maps_coordinates_h and releases all its resources.
  * @since_tizen 2.4
  *
  * @param[in]	coordinates	The coordinate handle to destroy
@@ -115,7 +116,7 @@ int maps_coordinates_destroy(maps_coordinates_h coordinates);
 /**
  * @brief	Clones the Geographical Coordinates.
  * @details This function makes a clone of the @a origin Geographical
- * Coordinates of type #maps_coordinates_s.
+ * Coordinates of type #maps_coordinates_h.
  * @since_tizen 2.4
  * @remarks @a cloned must be released using maps_coordinates_destroy().
  *
@@ -130,7 +131,6 @@ int maps_coordinates_destroy(maps_coordinates_h coordinates);
  *
  * @see maps_coordinates_create()
  * @see maps_coordinates_destroy()
- * @see maps_coordinates_s
  */
 int maps_coordinates_clone(const maps_coordinates_h origin,
 			   maps_coordinates_h *cloned);
@@ -175,6 +175,27 @@ int maps_coordinates_get_latitude(const maps_coordinates_h coordinates,
 int maps_coordinates_get_longitude(const maps_coordinates_h coordinates,
 				   double *longitude);
 
+/**
+ * @brief	Gets the latitude and longitude of the coordinates.
+ * @details This function gets the @a longitude and @a longitude value of the
+ * coordinates handle.
+ * @since_tizen 3.0
+ *
+ * @param[in]	coordinates	The coordinate handle
+ * @param[out]	latitude	The latitude of the coordinate handle
+ * @param[out]	longitude	The longitude of the coordinate handle
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ *
+ * @pre @a coordinates are created using maps_coordinates_create().
+ *
+ * @see maps_coordinates_create()
+ * @see maps_coordinates_set_latitude_longitude()
+ */
+int maps_coordinates_get_latitude_longitude(const maps_coordinates_h coordinates,
+				double *latitude,
+				double *longitude);
 /*----------------------------------------------------------------------------*/
 
 /**
@@ -214,6 +235,131 @@ int maps_coordinates_set_latitude(maps_coordinates_h coordinates,
  */
 int maps_coordinates_set_longitude(maps_coordinates_h coordinates,
 				   const double longitude);
+
+/**
+ * @brief	Sets the latitude and longitude of the coordinates.
+ * @details This function sets the @a latitude and @a latitude value of the
+ * coordinates handle.
+ * @since_tizen 3.0
+ *
+ * @param[in]	coordinates	The coordinates handle
+ * @param[in]	latitude	The latitude [-90.0 ~ 90.0] (degrees)
+ * @param[in]	longitude	The longitude [-180.0 ~ 180.0] (degrees)
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ *
+ * @pre @a coordinates are created using maps_coordinates_create().
+ *
+ * @see maps_coordinates_create()
+ * @see maps_coordinates_get_latitude_longitude()
+ */
+int maps_coordinates_set_latitude_longitude(maps_coordinates_h coordinates,
+				const double latitude,
+				const double longitude);
+
+/**
+ * @brief	Creates a coordinates list having a set of coordinates.
+ * @since_tizen 3.0
+ *
+ * @param[out]	coordinates_list	The coordinates list handle
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
+ *
+ * @see maps_coordinates_list_destroy()
+ */
+int maps_coordinates_list_create(maps_coordinates_list_h *coordinates_list);
+
+/**
+ * @brief	Frees all of the memory used by a coordinates list.
+ * @since_tizen 3.0
+ *
+ * @param[in]	coordinates_list	coordinates list handle
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ *
+ * @see maps_coordinates_list_create()
+ */
+int maps_coordinates_list_destroy(maps_coordinates_list_h coordinates_list);
+
+/**
+ * @brief	Appends a coordinates to a coordinates list.
+ * @since_tizen 3.0
+ *
+ * @param[in]	coordinates_list	The coordinates list handle
+ * @param[in]	coordinates	The coordinates handle
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
+ *
+ * @see maps_coordinates_list_create()
+ * @see maps_coordinates_list_destroy()
+ */
+int maps_coordinates_list_append(maps_coordinates_list_h coordinates_list, maps_coordinates_h coordinates);
+
+/**
+ * @brief	Removes a coordinates from a coordinates list.
+ * @since_tizen 3.0
+ *
+ * @param[in]	coordinates_list	The coordinates list handle
+ * @param[in]	coordinates	The coordinates handle
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ *
+ * @see maps_coordinates_list_create()
+ * @see maps_coordinates_list_destroy()
+ */
+int maps_coordinates_list_remove(maps_coordinates_list_h coordinates_list, maps_coordinates_h coordinates);
+
+/**
+ * @brief	Gets the number of elements in an coordinates list.
+ * @since_tizen 3.0
+ *
+ * @param[in]	coordinates_list	The coordinates list handle
+ * @param[out]	length	The number of elements in the coordinates list
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ *
+ * @see maps_coordinates_list_create()
+ * @see maps_coordinates_list_destroy()
+ */
+int maps_coordinates_list_get_length(maps_coordinates_list_h coordinates_list, int *length);
+
+/**
+ * @brief	Called iteratively to get a coordinates information.
+ * @since_tizen 3.0
+ *
+ * @param[in]	index		The index of iteration
+ * @param[in]	coordinates	The handle of coordinates
+ * @param[in]	user_data	The user data passed from the foreach function
+ * @return @c true to continue with the next iteration of the loop, \n
+ *         @c false to break out of the loop
+ *
+ * @see batch_coordinates_foreach_coordinates()
+ */
+typedef bool (*maps_coordinates_cb) (int index, maps_coordinates_h coordinates, void *user_data);
+
+/**
+ * @brief Retrieves all coordinates by invoking a specific callback for each coordinates of coordinates list.
+ * @since_tizen 3.0
+ *
+ * @param[in]	coordinates_list	The coordinates list handle
+ * @param[in]	callback	The iteration callback
+ * @param[in]	user_data	The user data to be passed to the callback function
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ *
+ * @see maps_coordinates_list_create()
+ * @see maps_coordinates_list_destroy()
+ * @see maps_coordinates_list_get_length()
+ */
+int maps_coordinates_list_foreach(maps_coordinates_list_h coordinates_list, maps_coordinates_cb callback, void *user_data);
+
 
 #ifdef __cplusplus
 }
