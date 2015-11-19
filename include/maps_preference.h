@@ -34,10 +34,6 @@ extern "C" {
  * @{
  * @brief This provides enumerations of Maps API preferences
 
-* - - - - - - - - - - - - -
-*
-* Preference key names
-* --------------------
 *
 * The Preferences are organized as a key-value table where available Preference
 * keys are following strings:

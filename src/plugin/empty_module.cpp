@@ -107,6 +107,14 @@ int maps_plugin_reverse_geocode_empty(double latitude, double longitude,
 	return 0;
 }
 
+int maps_plugin_multi_reverse_geocode_empty(const maps_coordinates_list_h maps_list,
+						const maps_preference_h preference,
+						maps_service_multi_reverse_geocode_cb callback,
+						void *user_data, int *request_id)
+{
+	return 0;
+}
+
 /* Place */
 int maps_plugin_search_place_empty(const maps_coordinates_h position,
 				   int distance,
@@ -185,6 +193,7 @@ plugin::interface_s empty_interface = {
 	maps_plugin_geocode_inside_area_empty,
 	maps_plugin_geocode_by_structured_address_empty,
 	maps_plugin_reverse_geocode_empty,
+	maps_plugin_multi_reverse_geocode_empty,
 
 	/* Place */
 	maps_plugin_search_place_empty,

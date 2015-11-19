@@ -85,8 +85,10 @@ typedef enum _maps_service_e {
 
 	MAPS_SERVICE_SEARCH_ROUTE_WAYPOINTS, /**< Indicates that
 		maps_service_search_route_waypoints() service is allowed */
-	MAPS_SERVICE_CANCEL_REQUEST			/**< Indicates that
+	MAPS_SERVICE_CANCEL_REQUEST,			/**< Indicates that
 			maps_service_cancel_request() service is allowed */
+	MAPS_SERVICE_MULTI_REVERSE_GEOCODE	/**< Indicates that
+	maps_service_multi_reverse_geocode() service is allowed (Since 3.0)*/
 } maps_service_e;
 
 /**
@@ -775,6 +777,88 @@ int maps_service_reverse_geocode(const maps_service_h maps, double latitude,
 				 maps_service_reverse_geocode_cb callback,
 				 void *user_data, int *request_id);
 
+
+/**
+ * @brief	Called when responsed the request of multi reverse geocoding.
+ * @details The Maps Service invokes this callback once when gets the response
+ * from map service provider.
+ * \n The value of @a total is same with requested coordinates list size.
+ * Even though one of address is not provided address handle is created.
+ * @since_tizen 3.0
+ * @remarks	You can get the respective address information of @a address_list
+ * using maps_address_list_foreach().
+ *
+ * @param[in]	result			The result of request
+ * @param[in]	request_id		The id of request
+ * @param[in]	total			The total number of results
+ * @param[in]	address_list		The converted address list from the
+ * requested coordinates list
+ * @param[in]	user_data		The user data pointer passed from
+ * maps_service_multi_reverse_geocode()
+ * @return	@c true to continue with the next iteration of the loop, \n @c
+ * false to break out of the loop
+ *
+ * @pre maps_service_multi_reverse_geocode() will invoke this callback.
+ *
+ * @see maps_service_multi_reverse_geocode()
+ * @see maps_address_list_foreach()
+ * @see maps_service_cancel_request()
+ */
+typedef bool (*maps_service_multi_reverse_geocode_cb) (maps_error_e result,
+					int request_id,
+					int total,
+					maps_address_list_h address_list,
+					void *user_data);
+
+/**
+ * @brief	Gets the address list for a given position coordinates list.
+ * \n The request is asynchronous.
+ * @details This function obtains structured address information.
+ * @since_tizen 3.0
+ * @privlevel public
+ * @privilege %http://tizen.org/privilege/mapservice \n
+ *            %http://tizen.org/privilege/internet \n
+ *            %http://tizen.org/privilege/network.get
+ * @remarks %http://tizen.org/privilege/internet is needed to access internet.
+ * \n To cancel the request use maps_service_cancel_request().
+ * \n To check if Maps Provider is capable of Multi Reverse Geocoding use
+ * maps_service_provider_is_service_supported() with
+ * #MAPS_SERVICE_MULTI_REVERSE_GEOCODE passed as @a service parameter.
+ *
+ * @param[in]	maps		The Maps Service handle
+ * @param[in]	coordinates_list The coordinates list [2 ~ 100] (a set of coordinates)
+ * @param[in]	preference	The set of preferences for processing Reverse
+ * Geocode
+ * @param[in]	callback	The callback which will retrieve address list
+ * @param[in]	user_data	The user data pointer to be passed to the
+ * callback
+ * @param[out]	request_id	The id of request
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NETWORK_UNREACHABLE Network connection failed
+ * @retval	#MAPS_ERROR_SERVICE_NOT_AVAILABLE Service not available
+ * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
+ * @retval	#MAPS_ERROR_CONNECTION_TIME_OUT Timeout error, no answer
+ * @retval	#MAPS_ERROR_INVALID_OPERATION Operation is not valid
+ * @retval	#MAPS_ERROR_NOT_FOUND Result not found
+ * @retval	#MAPS_ERROR_KEY_NOT_AVAILABLE Invalid key
+ * @retval	#MAPS_ERROR_UNKNOWN Unknown error
+ *
+ * @pre Call maps_service_create() to create Maps Service and obtain its handle.
+ * @post This function invokes maps_service_multi_reverse_geocode_cb().
+ *
+ * @see maps_service_multi_reverse_geocode_cb()
+ * @see maps_service_cancel_request()
+ * @see maps_service_reverse_geocode()
+ * @see maps_service_provider_is_service_supported()
+ */
+int maps_service_multi_reverse_geocode(const maps_service_h maps,
+				maps_coordinates_list_h coordinates_list,
+				const maps_preference_h preference,
+				maps_service_multi_reverse_geocode_cb callback,
+				void *user_data, int *request_id);
 /**
  * @}
  */
