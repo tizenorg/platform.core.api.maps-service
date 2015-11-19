@@ -68,6 +68,10 @@ typedef int (*maps_plugin_reverse_geocode_f) (double latitude, double longitude,
 					      maps_service_reverse_geocode_cb
 					      callback,
 					      void *user_data, int *request_id);
+typedef int (*maps_plugin_multi_reverse_geocode_f) (const maps_coordinates_list_h maps_list,
+							const maps_preference_h preference,
+							maps_service_multi_reverse_geocode_cb callback,
+							void *user_data, int *request_id);
 
 /* Place */
 typedef int (*maps_plugin_search_place_f) (const maps_coordinates_h position,
@@ -144,6 +148,7 @@ namespace plugin {
 		 maps_plugin_geocode_by_structured_address_f
 			maps_plugin_geocode_by_structured_address;
 		maps_plugin_reverse_geocode_f maps_plugin_reverse_geocode;
+		maps_plugin_multi_reverse_geocode_f maps_plugin_multi_reverse_geocode;
 
 		/* Place */
 		maps_plugin_search_place_f maps_plugin_search_place;

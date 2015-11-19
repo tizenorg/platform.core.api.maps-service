@@ -154,6 +154,9 @@ maps_plugin_h plugin::binary_extractor::init(const provider_info &info)
 		new_plugin->interface.maps_plugin_reverse_geocode =
 			(maps_plugin_reverse_geocode_f) gmod_find_sym(plugin,
 			"maps_plugin_reverse_geocode");
+		new_plugin->interface.maps_plugin_multi_reverse_geocode =
+			(maps_plugin_multi_reverse_geocode_f)
+			gmod_find_sym(plugin, "maps_plugin_multi_reverse_geocode");
 
 		/* Place */
 		new_plugin->interface.maps_plugin_search_place =
@@ -446,6 +449,8 @@ void plugin::binary_extractor::trace_dbg(const plugin_s *plugin) const
 		itf->maps_plugin_geocode_by_structured_address);
 	MAPS_LOGD("maps_plugin_reverse_geocode:\t\t%p",
 		itf->maps_plugin_reverse_geocode);
+	MAPS_LOGD("maps_plugin_multi_reverse_geocode:\t%p",
+		itf->maps_plugin_multi_reverse_geocode);
 
 	MAPS_LOGD("maps_plugin_search_place:\t\t%p",
 		itf->maps_plugin_search_place);
