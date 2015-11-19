@@ -244,7 +244,7 @@ EXPORT_API int maps_service_provider_is_service_supported(const maps_service_h
 	if (!maps || !supported)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	if ((service < MAPS_SERVICE_GEOCODE)
-	    || (service > MAPS_SERVICE_CANCEL_REQUEST))
+	    || (service > MAPS_SERVICE_MULTI_REVERSE_GEOCODE))
 		return MAPS_ERROR_INVALID_PARAMETER;
 	const plugin::plugin_s *p = __extract_plugin(maps);
 	if (!p)
@@ -578,3 +578,28 @@ EXPORT_API int maps_service_cancel_request(const maps_service_h maps,
 
 	return q()->push(new session::command_cancel_request(maps, request_id));
 }
+
+/*----------------------------------------------------------------------------*/
+/* */
+/* Multi geocoder */
+
+EXPORT_API int maps_service_multi_reverse_geocode(const maps_service_h maps,
+				const maps_coordinates_list_h coordinates_list, const maps_preference_h preference,
+				maps_service_multi_reverse_geocode_cb callback, void *user_data, int *request_id)
+{
+	if (!maps)
+		return MAPS_ERROR_INVALID_PARAMETER;
+
+	if (!__maps_provider_supported(maps, MAPS_SERVICE_MULTI_REVERSE_GEOCODE))
+		return MAPS_ERROR_NOT_SUPPORTED;
+
+	if (!coordinates_list || !callback || !request_id)
+		return MAPS_ERROR_INVALID_PARAMETER;
+
+	if (!__has_maps_service_privilege())
+		return MAPS_ERROR_PERMISSION_DENIED;
+
+	return q()->push(new session::command_multi_reverse_geocode(maps,
+			coordinates_list, preference, callback, user_data, request_id));
+}
+

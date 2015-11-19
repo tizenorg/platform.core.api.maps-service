@@ -440,6 +440,117 @@ void session::command_reverse_geocode_handler::foreach_reverse_geocode_cb(
 }
 
 /*----------------------------------------------------------------------------*/
+/*typedef int (*maps_plugin_multi_reverse_geocode_f) (maps_service_h maps,
+* maps_coordinates_list_h maps_list, maps_preference_h preference,
+* maps_service_multi_reverse_geocode_cb callback, void * user_data, int *request_id) */
+session::command_multi_reverse_geocode::command_multi_reverse_geocode(
+			maps_service_h ms, const maps_coordinates_list_h list, const maps_item_hashtable_h pref,
+			maps_service_multi_reverse_geocode_cb cb, void *ud, int *request_id)
+ : command(ms)
+ , maps_list(NULL)
+ , preference(NULL)
+ , callback(cb)
+ , user_data(ud)
+ , error(0)
+{
+	*request_id = command::command_request_id++;
+	my_req_id = *request_id;
+
+	int list_size = 0;
+	maps_coordinates_list_get_length(list, &list_size);
+	if (list_size < 2 || list_size > 100)
+		error = MAPS_ERROR_INVALID_PARAMETER;
+
+	if (pref && (maps_item_hashtable_clone(pref, &preference) != MAPS_ERROR_NONE))
+		error = MAPS_ERROR_INVALID_PARAMETER;
+
+	maps_list = list;
+}
+
+session::command_multi_reverse_geocode::~command_multi_reverse_geocode()
+{
+	maps_item_hashtable_destroy(preference);
+}
+
+int session::command_multi_reverse_geocode::run()
+{
+	if (error != MAPS_ERROR_NONE)
+		return error;
+
+	pending_request pr(plugin());
+
+	/* Get the plugin interface function */
+	maps_plugin_multi_reverse_geocode_f func =
+		interface()->maps_plugin_multi_reverse_geocode;
+
+	command_multi_reverse_geocode_handler *handler = NULL;
+	if (func) {
+		/* No need to create the handler when the function is NULL */
+		pr.add(my_req_id);
+		handler = new command_multi_reverse_geocode_handler(plugin(), callback, user_data, my_req_id);
+
+		if (handler) {
+			/* Run the plugin interface function */
+			error = func(maps_list, preference,
+						command_multi_reverse_geocode_handler::foreach_multi_reverse_geocode_cb,
+						handler, &handler->plg_req_id);
+
+			pr.update(my_req_id, handler);
+
+			MAPS_LOGD("session::command_multi_reverse_geocode::run: %d", my_req_id);
+		}
+		else {
+			error = MAPS_ERROR_OUT_OF_MEMORY;
+		}
+	}
+	else {
+		/* Plugin Function is NULL: use default empty function */
+		/*
+		func = plugin::get_empty_interface().
+			maps_plugin_multi_reverse_geocode;
+		*/
+		MAPS_LOGE("MAPS_ERROR_NOT_SUPPORTED: Can't get any plugin");
+		error = MAPS_ERROR_NOT_SUPPORTED;
+	}
+
+	const int ret = error;
+	destroy();
+	return ret;
+}
+
+session::command_multi_reverse_geocode_handler::command_multi_reverse_geocode_handler(
+			plugin::plugin_s *p, maps_service_multi_reverse_geocode_cb cb, void *ud, int urid)
+ : command_handler(p, ud, urid)
+ , callback(cb)
+{
+}
+
+bool session::command_multi_reverse_geocode_handler::foreach_multi_reverse_geocode_cb(
+			maps_error_e error, int request_id, int total, maps_coordinates_list_h address_list, void *user_data)
+{
+	command_multi_reverse_geocode_handler *handler =
+		(command_multi_reverse_geocode_handler *) user_data;
+
+	if (request_id != handler->plg_req_id) {
+		MAPS_LOGE("\n\nERROR! Incorrect request id [%d] come from the plugin; expected [%d]\n\n",
+			request_id, handler->plg_req_id);
+	}
+
+	/* Make a user's copy of result data */
+	maps_coordinates_list_h cloned_result = NULL;
+	cloned_result = address_list;
+
+	/* Send data to user */
+	const bool b = handler->callback(error, handler->user_req_id, total, cloned_result, handler->user_data);
+	/*if(index>=(total-1)) */
+
+	pending_request pr(handler->plugin());
+	pr.remove(handler->user_req_id);
+
+	return b;
+}
+
+/*----------------------------------------------------------------------------*/
 /*typedef int (*maps_plugin_search_place_f)(maps_service_h maps,
 * maps_coordinates_h position, int distance, maps_item_hashtable_h preference,
 * maps_place_filter_h filter, maps_service_search_place_cb callback,

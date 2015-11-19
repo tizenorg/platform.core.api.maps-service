@@ -413,6 +413,47 @@ int maps_plugin_reverse_geocode(double latitude, double longitude,
 				maps_service_reverse_geocode_cb callback,
 				void *user_data, int *request_id);
 
+/**
+ * @brief	Gets the address list for a given position coordinates list.
+ * @details This function obtains structured address information for a given
+ * position coordinates.
+ * @since_tizen 3.0
+ * @privlevel public
+ * @privilege %http://tizen.org/privilege/mapservice
+ * @remarks This function requires network access.
+ * \n To cancel the request use maps_plugin_cancel_request().
+ * \n To check if Maps Provider is capable of Reverse Geocoding and which
+ * Reverse Geocode preferences are supported see the lists of capacities and
+ * preferences above.
+ *
+ * @param[in]	geocode_list	The position coordinates list
+ * @param[in]	preference		The set of preferences for processing Reverse Geocode
+ * @param[in]	callback		The callback which will receive address informations
+ * @param[in]	user_data		The user data to be passed to the callback function
+ * @param[out]	request_id		The id of request
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NETWORK_UNREACHABLE Network connection failed
+ * @retval	#MAPS_ERROR_SERVICE_NOT_AVAILABLE Service not available
+ * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
+ * @retval	#MAPS_ERROR_CONNECTION_TIME_OUT Timeout error, no answer
+ * @retval	#MAPS_ERROR_INVALID_OPERATION Operation is not valid
+ * @retval	#MAPS_ERROR_NOT_FOUND Result not found
+ * @retval	#MAPS_ERROR_KEY_NOT_AVAILABLE Invalid key
+ * @retval	#MAPS_ERROR_UNKNOWN Unknown error
+ *
+ * @post This function invokes maps_service_multi_reverse_geocode_cb().
+ *
+ * @see maps_service_multi_reverse_geocode_cb()
+ * @see maps_plugin_cancel_request()
+ */
+int maps_plugin_multi_reverse_geocode(const maps_coordinates_list_h geocode_list,
+		const maps_preference_h preference, maps_service_multi_reverse_geocode_cb callback,
+		void *user_data, int *request_id);
+
+
 /*----------------------------------------------------------------------------*/
 /*
  * Place
