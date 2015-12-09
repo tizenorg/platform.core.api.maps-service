@@ -414,7 +414,7 @@ EXPORT_API int maps_address_list_remove(maps_address_list_h address_list, maps_a
 
 EXPORT_API int maps_address_list_get_length(maps_address_list_h address_list, int *length)
 {
-	if (!address_list)
+	if (!address_list || !length)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
 	*length = g_list_length((GList *)address_list) - 1;

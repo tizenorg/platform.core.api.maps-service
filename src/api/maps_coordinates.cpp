@@ -244,7 +244,7 @@ EXPORT_API int maps_coordinates_list_remove(maps_coordinates_list_h coordinates_
 
 EXPORT_API int maps_coordinates_list_get_length(maps_coordinates_list_h coordinates_list, int *length)
 {
-	if (!coordinates_list)
+	if (!coordinates_list || !length)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
 	*length = g_list_length((GList *)coordinates_list) - 1;
