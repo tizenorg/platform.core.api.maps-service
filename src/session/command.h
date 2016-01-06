@@ -31,6 +31,8 @@ namespace session
 		maps_service_h m;
 	protected:
 		int my_req_id;
+	protected:
+		int error;
 	public:
 		static volatile int command_request_id;
 	public:

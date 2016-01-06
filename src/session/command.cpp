@@ -23,7 +23,8 @@ extern plugin::plugin_s *__extract_plugin(maps_service_h maps);
 volatile int session::command::command_request_id = 1;
 session::command session::command::empty_instance;
 
-session::command::command(maps_service_h ms) : m(ms), my_req_id(0)
+session::command::command(maps_service_h ms)
+	: m(ms), my_req_id(0), error(MAPS_ERROR_NONE)
 {
 }
 
@@ -41,6 +42,7 @@ session::command &session::command::operator =(const command &src)
 	if (this != (&src)) {
 		m = src.m;
 		my_req_id = src.my_req_id;
+		error = src.error;
 	}
 	return *this;
 }
@@ -116,8 +118,8 @@ bool session::pending_request::add(const int user_req_id)
 
 	if (contains(user_req_id))
 		return false;	/* Attempt to add another instance of the id */
-	g_hash_table_insert(plg->pending_request_maps, int_dup(user_req_id),
-		NULL);
+
+	g_hash_table_insert(plg->pending_request_maps, int_dup(user_req_id), NULL);
 	return true;
 }
 
@@ -128,8 +130,7 @@ void session::pending_request::update(int user_req_id,
 		return;
 	plugin::scope_mutex(&plg->pending_request_mutex);
 
-	MAPS_LOGD("session::pending_request::update: %d, %d", user_req_id,
-		handler->plg_req_id);
+	MAPS_LOGD("session::pending_request::update: %d, %d", user_req_id, handler->plg_req_id);
 
 	if (!contains(user_req_id)) {	/* Attempt to update not existing id */
 		MAPS_LOGD("\t not updated session::pending_request: %d, %d",
@@ -138,8 +139,7 @@ void session::pending_request::update(int user_req_id,
 		return;
 	}
 
-	g_hash_table_insert(plg->pending_request_maps, int_dup(user_req_id),
-		handler);
+	g_hash_table_insert(plg->pending_request_maps, int_dup(user_req_id), handler);
 }
 
 void session::pending_request::remove(int user_req_id)
@@ -152,6 +152,7 @@ void session::pending_request::remove(int user_req_id)
 
 	if (!contains(user_req_id))
 		return;		/* Attempt to remove not existing id */
+
 	g_hash_table_remove(plg->pending_request_maps, &user_req_id);
 }
 
@@ -166,8 +167,8 @@ session::command_handler *session::pending_request::look_up(const int
 
 	if (!contains(user_req_id))
 		return NULL;	/* Attempt to query not existing id */
-	return (command_handler*) g_hash_table_lookup(plg->
-		pending_request_maps, &user_req_id);
+
+	return (command_handler*) g_hash_table_lookup(plg->pending_request_maps, &user_req_id);
 }
 
 int session::pending_request::extract_plg_id(const int user_req_id)
@@ -176,7 +177,7 @@ int session::pending_request::extract_plg_id(const int user_req_id)
 		return -1;
 	plugin::scope_mutex(&plg->pending_request_mutex);
 
-	command_handler* ch = look_up(user_req_id);
+	command_handler *ch = look_up(user_req_id);
 	if (!ch)
 		return -1;
 	const int plg_req_id = ch->plg_req_id;
@@ -189,6 +190,14 @@ bool session::pending_request::contains(const int user_req_id)
 	if (!plg || !plg->pending_request_maps || (user_req_id < 0))
 		return false;
 	plugin::scope_mutex(&plg->pending_request_mutex);
+
+#if 0 	/* For debugging */
+	GList *keys = g_hash_table_get_keys(plg->pending_request_maps);
+	while(keys) {
+		MAPS_LOGD("key: %d", keys->data);
+		keys = keys->next;
+	}
+#endif
 
 	return g_hash_table_contains(plg->pending_request_maps, &user_req_id);
 }

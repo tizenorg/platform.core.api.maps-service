@@ -216,11 +216,11 @@ namespace plugin {
 		{
 		}
 	public:
-		 provider_info get_plugin_info(const string &file_name) const;
-		maps_plugin_h init(const provider_info &info);
+		provider_info get_plugin_info(const string &file_name) const;
+		maps_plugin_h init(const provider_info &info, int *init_error);
 		void shutdown(maps_plugin_h plugin_h);
 	private:
-		 GMod *gmod_new(const string &module_file,
+		GMod *gmod_new(const string &module_file,
 				gboolean is_resident) const;
 		void gmod_free(GMod *gmod) const;
 		gpointer gmod_find_sym(GMod *gmod,
