@@ -51,9 +51,10 @@ session::command_geocode::command_geocode(maps_service_h ms, const string a,
 	*request_id = command::command_request_id++;
 	my_req_id = *request_id;
 
-	if (pref &&
-	    (maps_item_hashtable_clone(pref, &preference) != MAPS_ERROR_NONE))
+	if (pref && (maps_item_hashtable_clone(pref, &preference) != MAPS_ERROR_NONE))
 		error = MAPS_ERROR_INVALID_PARAMETER;
+
+	if (!error) *request_id = -1;
 }
 
 session::command_geocode::~command_geocode()
@@ -63,7 +64,6 @@ session::command_geocode::~command_geocode()
 
 int session::command_geocode::run()
 {
-
 	if (error != MAPS_ERROR_NONE)
 		return error;
 
@@ -178,9 +178,10 @@ session::command_geocode_inside_bounds::command_geocode_inside_bounds(
 	if (maps_area_clone(b, &bounds) != MAPS_ERROR_NONE)
 		error = MAPS_ERROR_INVALID_PARAMETER;
 
-	if (pref &&
-	    (maps_item_hashtable_clone(pref, &preference) != MAPS_ERROR_NONE))
+	if (pref && (maps_item_hashtable_clone(pref, &preference) != MAPS_ERROR_NONE))
 		error = MAPS_ERROR_INVALID_PARAMETER;
+
+	if (!error) *request_id = -1;
 }
 
 session::command_geocode_inside_bounds::~command_geocode_inside_bounds()
@@ -260,9 +261,10 @@ session::command_geocode_by_structured_address::
 	if (maps_address_clone(a, &address) != MAPS_ERROR_NONE)
 		error = MAPS_ERROR_INVALID_PARAMETER;
 
-	if (pref &&
-	    (maps_item_hashtable_clone(pref, &preference) != MAPS_ERROR_NONE))
+	if (pref && (maps_item_hashtable_clone(pref, &preference) != MAPS_ERROR_NONE))
 		error = MAPS_ERROR_INVALID_PARAMETER;
+
+	if (!error) *request_id = -1;
 }
 
 session::command_geocode_by_structured_address::
@@ -338,9 +340,10 @@ session::command_reverse_geocode::command_reverse_geocode(maps_service_h ms,
 	*request_id = command::command_request_id++;
 	my_req_id = *request_id;
 
-	if (pref &&
-	    (maps_item_hashtable_clone(pref, &preference) != MAPS_ERROR_NONE))
+	if (pref && (maps_item_hashtable_clone(pref, &preference) != MAPS_ERROR_NONE))
 		error = MAPS_ERROR_INVALID_PARAMETER;
+
+	if (!error) *request_id = -1;
 }
 
 session::command_reverse_geocode::~command_reverse_geocode()
@@ -377,8 +380,7 @@ int session::command_reverse_geocode::run()
 			pr.update(my_req_id, handler);
 
 			MAPS_LOGD("session::command_reverse_geocode::run: %d", my_req_id);
-		}
-		else {
+		} else {
 			error = MAPS_ERROR_OUT_OF_MEMORY;
 		}
 	}
@@ -465,6 +467,8 @@ session::command_multi_reverse_geocode::command_multi_reverse_geocode(
 		error = MAPS_ERROR_INVALID_PARAMETER;
 
 	maps_list = list;
+
+	if (!error) *request_id = -1;
 }
 
 session::command_multi_reverse_geocode::~command_multi_reverse_geocode()
@@ -577,12 +581,13 @@ session::command_search_place::command_search_place(maps_service_h ms,
 	if (maps_coordinates_clone(pos, &position) != MAPS_ERROR_NONE)
 		error = MAPS_ERROR_INVALID_PARAMETER;
 
-	if (pref &&
-	    (maps_item_hashtable_clone(pref, &preference) != MAPS_ERROR_NONE))
+	if (pref && (maps_item_hashtable_clone(pref, &preference) != MAPS_ERROR_NONE))
 		error = MAPS_ERROR_INVALID_PARAMETER;
 
 	if (maps_place_filter_clone(flt, &filter) != MAPS_ERROR_NONE)
 		error = MAPS_ERROR_INVALID_PARAMETER;
+
+	if (!error) *request_id = -1;
 }
 
 session::command_search_place::~command_search_place()
@@ -594,7 +599,6 @@ session::command_search_place::~command_search_place()
 
 int session::command_search_place::run()
 {
-
 	if (error != MAPS_ERROR_NONE)
 		return error;
 
@@ -623,6 +627,8 @@ int session::command_search_place::run()
 		else {
 			error = MAPS_ERROR_OUT_OF_MEMORY;
 		}
+		//for test
+		error = MAPS_ERROR_OUT_OF_MEMORY;
 	}
 	else {
 		/* Plugin Function is NULL: use default empty function */
@@ -752,6 +758,8 @@ session::command_search_by_area_place::command_search_by_area_place(
 
 	if (maps_place_filter_clone(flt, &filter) != MAPS_ERROR_NONE)
 		error = MAPS_ERROR_INVALID_PARAMETER;
+
+	if (!error) *request_id = -1;
 }
 
 session::command_search_by_area_place::~command_search_by_area_place()
@@ -844,6 +852,8 @@ session::command_search_by_address_place::command_search_by_address_place(
 
 	if (maps_place_filter_clone(flt, &filter) != MAPS_ERROR_NONE)
 		error = MAPS_ERROR_INVALID_PARAMETER;
+
+	if (!error) *request_id = -1;
 }
 
 session::command_search_by_address_place::~command_search_by_address_place()
@@ -934,6 +944,7 @@ session::command_search_route::command_search_route(maps_service_h ms,
 	if (maps_coordinates_clone(dest, &destination) != MAPS_ERROR_NONE)
 		error = MAPS_ERROR_INVALID_PARAMETER;
 
+	if (!error) *request_id = -1;
 }
 
 session::command_search_route::~command_search_route()
@@ -1023,6 +1034,8 @@ session::command_search_route_waypoints::command_search_route_waypoints(
 				&waypoint_list[index]);
 		}
 	}
+
+	if (!error) *request_id = -1;
 }
 
 session::command_search_route_waypoints::~command_search_route_waypoints()
@@ -1144,8 +1157,7 @@ bool session::command_search_route_handler::foreach_route_cb(maps_error_e error,
 
 	/* Send data to user */
 	const bool b =
-		handler->callback(error, handler->user_req_id, index, length,
-		cloned_result, handler->user_data);
+	handler->callback(error, handler->user_req_id, index, length, cloned_result, handler->user_data);
 	if (!b || (index >= (length - 1))) {
 		pending_request pr(handler->plugin());
 		pr.remove(handler->user_req_id);
@@ -1160,12 +1172,9 @@ bool session::command_search_route_handler::foreach_route_cb(maps_error_e error,
 int session::command_cancel_request::run()
 {
 	pending_request pr(plugin());
-	MAPS_LOGD("session::command_cancel_request::run: %d, %d", request_id,
-		pr.look_up(request_id));
-	const int error =
-		(pr.contains(request_id)) ? interface()->
-		maps_plugin_cancel_request(pr.
-		extract_plg_id(request_id)) : MAPS_ERROR_NOT_FOUND;
+	MAPS_LOGD("session::command_cancel_request::run: %d, %d", request_id, pr.look_up(request_id));
+	const int error = (pr.contains(request_id)) ?
+		interface()->maps_plugin_cancel_request(pr.extract_plg_id(request_id)) : MAPS_ERROR_NOT_FOUND;
 
 	const int ret = error;
 	destroy();
