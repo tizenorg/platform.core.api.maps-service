@@ -1,3 +1,8 @@
+[Version]   capi-maps-service_0.5.2
+[Date]      6 January 2016
+[Title]     Supported MAPS_ERROR_SERVICE_NOT_AVAILABLE in maps_service_create().
+[Developer] Young-Ae Kang <youngae.kang@samsung.com>
+
 [Version]   capi-maps-service_0.5.0
 [Date]      21 October 2015
 [Title]     Added coordinates address list API.

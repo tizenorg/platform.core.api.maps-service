@@ -45,7 +45,7 @@ plugin::provider_info plugin::binary_extractor::get_plugin_info(const
 	if (file_name.empty())
 		return provider_info::empty_instance;
 
-	/* 1.Init plugin */
+	/* 1.Initialize plugin */
 	GMod *plugin = gmod_new(file_name, FALSE);
 	if (!plugin)
 		return provider_info::empty_instance;
@@ -76,11 +76,14 @@ plugin::provider_info plugin::binary_extractor::get_plugin_info(const
 	return info;
 }
 
-maps_plugin_h plugin::binary_extractor::init(const provider_info &info)
+maps_plugin_h plugin::binary_extractor::init(const provider_info &info,
+					     int *init_error)
 {
-	/* 1.Init plugin */
-	if (info.file.empty())
+	/* 1.Initialize plugin */
+	if (info.file.empty() || !init_error)
 		return NULL;
+
+	*init_error = MAPS_ERROR_NONE;
 
 	GMod *plugin = gmod_new(info.file, TRUE);
 	if (!plugin) {
@@ -187,8 +190,7 @@ maps_plugin_h plugin::binary_extractor::init(const provider_info &info)
 
 		/* 2.3 Check whether the plugin init function is valid */
 		if (!new_plugin->interface.maps_plugin_init) {
-			MAPS_LOGE(
-			"ERROR! Plugin initialization function is invalid");
+			MAPS_LOGE("ERROR! Plugin initialization function is invalid");
 			break;
 		}
 
@@ -198,51 +200,37 @@ maps_plugin_h plugin::binary_extractor::init(const provider_info &info)
 			new_plugin->interface.
 			maps_plugin_init((maps_plugin_h *) (&new_plugin));
 		if (ret != MAPS_ERROR_NONE) {
-			MAPS_LOGE(
-			"ERROR! Plugin initialization function ""failed: %d",
-				ret);
+			MAPS_LOGE("ERROR! Plugin initialization function ""failed: %d", ret);
 			break;
 		}
 
 		if (!new_plugin->interface.maps_plugin_set_provider_key) {
-			MAPS_LOGE(
-			"ERROR! Plugin set_provider_key function is NULL: %d",
-				ret);
+			MAPS_LOGE("ERROR! Plugin set_provider_key function is NULL: %d", ret);
 			break;
 		}
 
 		if (!new_plugin->interface.maps_plugin_get_provider_key) {
-			MAPS_LOGE(
-			"ERROR! Plugin set_provider_key function is NULL: %d",
-				ret);
+			MAPS_LOGE("ERROR! Plugin set_provider_key function is NULL: %d", ret);
 			break;
 		}
 
 		if (!new_plugin->interface.maps_plugin_set_preference) {
-			MAPS_LOGE(
-			"ERROR! Plugin set_preference function is NULL: %d",
-				ret);
+			MAPS_LOGE("ERROR! Plugin set_preference function is NULL: %d", ret);
 			break;
 		}
 
 		if (!new_plugin->interface.maps_plugin_get_preference) {
-			MAPS_LOGE(
-			"ERROR! Plugin get_preference function is NULL: %d",
-				ret);
+			MAPS_LOGE("ERROR! Plugin get_preference function is NULL: %d", ret);
 			break;
 		}
 
 		if (!new_plugin->interface.maps_plugin_is_data_supported) {
-			MAPS_LOGE(
-				"ERROR! Plugin support_is_data_supported function is NULL: %d",
-				ret);
+			MAPS_LOGE("ERROR! Plugin support_is_data_supported function is NULL: %d", ret);
 			break;
 		}
 
 		if (!new_plugin->interface.maps_plugin_is_service_supported) {
-			MAPS_LOGE(
-				"ERROR! Plugin support_is_service_supported function is NULL: %d",
-				ret);
+			MAPS_LOGE("ERROR! Plugin support_is_service_supported function is NULL: %d", ret);
 			break;
 		}
 
@@ -269,7 +257,7 @@ maps_plugin_h plugin::binary_extractor::init(const provider_info &info)
 
 	} while (FALSE);
 
-	MAPS_LOGE("Shut down the plugin becuause of error");
+	MAPS_LOGE("Shut down the plugin because of error");
 
 	/* 3. shutdown plugin in case of problem */
 	shutdown(new_plugin);
