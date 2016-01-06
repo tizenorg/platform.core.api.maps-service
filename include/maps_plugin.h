@@ -220,7 +220,7 @@ int maps_plugin_is_data_supported(maps_service_data_e data, bool *supported);
 
 /*----------------------------------------------------------------------------*/
 /*
- * Geocode
+ * Geocoder
  */
 
 /**
@@ -234,11 +234,10 @@ int maps_plugin_is_data_supported(maps_service_data_e data, bool *supported);
  * \n To cancel the request use maps_plugin_cancel_request().
  *
  * @param[in]	address		The free-formed address
- * @param[in]	preference	The set of preferences for processing Geocode
+ * @param[in]	preference	The set of preferences for processing geocoding
  * @param[in]	callback	The callback which will receive position
  * coordinates
- * @param[in]	user_data	The user data to be passed to the callback
- * function
+ * @param[in]	user_data	The user data to be passed to the callback function
  * @param[out]	request_id	The id of request
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
@@ -277,17 +276,16 @@ int maps_plugin_geocode(const char *address,
  * @privilege %http://tizen.org/privilege/mapservice
  * @remarks This function requires network access.
  * \n Polygonal bounding box is not supported.
- * \n To cancel the request use maps_plugin_cancel_request().
- * \n To check if Maps Provider is capable of Geocoding and which Geocode
- * preferences are supported see the lists of capacities and preferences above.
+ * \n To cancel the request, use maps_plugin_cancel_request().
+ * \n To check if Maps Provider is capable of geocoding and which preferences
+ * of geocoding are supported, see the lists of capacities and preferences above.
  *
  * @param[in]	address		The free-formed address
  * @param[in]	bounds		The bounding box
- * @param[in]	preference	The set of preferences for processing Geocode
+ * @param[in]	preference	The set of preferences for processing geocoding
  * @param[in]	callback	The callback which will receive position
  * coordinates
- * @param[in]	user_data	The user data to be passed to the callback
- * function
+ * @param[in]	user_data	The user data to be passed to the callback function
  * @param[out]	request_id	The id of request
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
@@ -328,15 +326,13 @@ int maps_plugin_geocode_inside_area(const char *address,
  * @privilege %http://tizen.org/privilege/mapservice
  * @remarks This function requires network access.
  * \n To cancel the request use maps_plugin_cancel_request().
- * \n To check if Maps Provider is capable of Geocoding and which Geocode
+ * \n To check if Maps Provider is capable of Geocoding and which geocoding
  * preferences are supported see the lists of capacities and preferences above.
  *
  * @param[in]	address		The structured address
- * @param[in]	preference	The set of preferences for processing Geocode
- * @param[in]	callback	The callback which will receive position
- * coordinates
- * @param[in]	user_data	The user data to be passed to the callback
- * function
+ * @param[in]	preference	The set of preferences for processing geocoding
+ * @param[in]	callback	The callback which will receive position coordinates
+ * @param[in]	user_data	The user data to be passed to the callback function
  * @param[out]	request_id	The id of request
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
@@ -376,18 +372,15 @@ int maps_plugin_geocode_by_structured_address(const maps_address_h address,
  * @privilege %http://tizen.org/privilege/mapservice
  * @remarks This function requires network access.
  * \n To cancel the request use maps_plugin_cancel_request().
- * \n To check if Maps Provider is capable of Reverse Geocoding and which
- * Reverse Geocode preferences are supported see the lists of capacities and
+ * \n To check if Maps Provider is capable of reverse geocoding and which
+ * reverse geocoding preferences are supported see the lists of capacities and
  * preferences above.
  *
  * @param[in]	latitude	The latitude [-90.0 ~ 90.0] (degrees)
  * @param[in]	longitude	The longitude [-180.0 ~ 180.0] (degrees)
- * @param[in]	preference	The set of preferences for processing Reverse
- * Geocode
- * @param[in]	callback	The callback which will receive address
- * information
- * @param[in]	user_data	The user data to be passed to the callback
- * function
+ * @param[in]	preference	The set of preferences for processing reverse geocoding
+ * @param[in]	callback	The callback which will receive address information
+ * @param[in]	user_data	The user data to be passed to the callback function
  * @param[out]	request_id	The id of request
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
@@ -477,10 +470,8 @@ int maps_plugin_multi_reverse_geocode(const maps_coordinates_list_h geocode_list
  * @param[in]	filter		The filter handle
  * @param[in]	preference	The place preference handle
  * @param[in]	callback	The result callback
- * @param[in]	user_data	The user data to be passed to the callback
- * function
- * @param[out]	request_id	A Request id, can be set to NULL if does not
- * require operation cancel
+ * @param[in]	user_data	The user data to be passed to the callback function
+ * @param[out]	request_id	The request id
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
@@ -527,10 +518,8 @@ int maps_plugin_search_place(const maps_coordinates_h position, int distance,
  * @param[in]	filter		The filter handle
  * @param[in]	preference	The place preference handle
  * @param[in]	callback	The result callback
- * @param[in]	user_data	The user data to be passed to the callback
- * function
- * @param[out]	request_id	A Request id, can be set to NULL if does not
- * required operation cancel
+ * @param[in]	user_data	The user data to be passed to the callback function
+ * @param[out]	request_id	The request id
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
@@ -578,10 +567,8 @@ int maps_plugin_search_place_by_area(const maps_area_h boundary,
  * @param[in]	filter		The filter handle
  * @param[in]	preference	The place preference handle
  * @param[in]	callback	The result callback
- * @param[in]	user_data	The user data to be passed to the callback
- * function
- * @param[out]	request_id	A Request id, can be set to NULL if does not
- * required operation cancel
+ * @param[in]	user_data	The user data to be passed to the callback function
+ * @param[out]	request_id	The request id
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
@@ -633,9 +620,8 @@ int maps_plugin_search_place_by_address(const char *address,
  * @param[in]	destination	The destination
  * @param[in]	preference	The Route preference handle
  * @param[in]	callback	The result callback
- * @param[in]	user_data	The user data to be passed to the callback
- * function
- * @param[out]	request_id	The request ID
+ * @param[in]	user_data	The user data to be passed to the callback function
+ * @param[out]	request_id	The request id
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
@@ -677,9 +663,8 @@ int maps_plugin_search_route(const maps_coordinates_h origin,
  * @param[in]	waypoint_num	The number of way points to go through
  * @param[in]	preference	The Route preference handle
  * @param[in]	callback	The result callback
- * @param[in]	user_data	The user data to be passed to the callback
- * function
- * @param[out]	request_id	The request ID
+ * @param[in]	user_data	The user data to be passed to the callback function
+ * @param[out]	request_id	The request id
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
@@ -719,7 +704,7 @@ int maps_plugin_search_route_waypoints(const maps_coordinates_h *waypoint_list,
  * @privilege %http://tizen.org/privilege/mapservice
  * @remarks This function requires network access.
  *
- * @param[in]	request_id	The id of request
+ * @param[in]	request_id	The request id
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
