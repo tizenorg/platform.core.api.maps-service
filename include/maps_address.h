@@ -594,7 +594,6 @@ int maps_address_list_foreach(maps_address_list_h address_list, maps_address_cb 
  */
 int maps_address_list_destroy(maps_address_list_h address_list);
 
-
 #ifdef __cplusplus
 }
 #endif
