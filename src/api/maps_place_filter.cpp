@@ -73,7 +73,6 @@ EXPORT_API int maps_place_filter_clone(const maps_place_filter_h origin,
 		maps_place_filter_s *f = (maps_place_filter_s *) origin;
 
 		if (f->table) {
-
 			maps_place_filter_s *f_cloned =
 				(maps_place_filter_s *) (*cloned);
 			if (f_cloned->table)

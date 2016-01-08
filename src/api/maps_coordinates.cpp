@@ -262,8 +262,7 @@ EXPORT_API int maps_coordinates_list_foreach(maps_coordinates_list_h coordinates
 
 	GList *list = (GList *)coordinates_list;
 	list = g_list_first(list);
-	while (list != NULL)
-	{
+	while (list != NULL) {
 		GList *next = list->next;
 		maps_coordinates_s *coordinates = (maps_coordinates_s *)list->data;
 		if (coordinates) {
@@ -280,4 +279,19 @@ EXPORT_API int maps_coordinates_list_foreach(maps_coordinates_list_h coordinates
 	}
 
 	return MAPS_ERROR_NONE;
+}
+
+bool maps_coordinates_is_valid(const maps_coordinates_h coordinates)
+{
+	if (!coordinates)
+		return false;
+
+	maps_coordinates_s *coord = (maps_coordinates_s *)coordinates;
+
+	MAPS_CHECK_CONDITION(coord->latitude >= -90 && coord->latitude <= 90, MAPS_ERROR_INVALID_PARAMETER,
+		"MAPS_ERROR_INVALID_PARAMETER");
+	MAPS_CHECK_CONDITION(coord->longitude >= -180 && coord->longitude <= 180, MAPS_ERROR_INVALID_PARAMETER,
+		"MAPS_ERROR_INVALID_PARAMETER");
+
+	return true;
 }
