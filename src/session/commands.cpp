@@ -18,6 +18,9 @@
 #include "maps_util.h"
 #include "maps_place_private.h"
 #include "maps_route_private.h"
+#include "maps_coordinates_private.h"
+#include "maps_area_private.h"
+#include "maps_address_private.h"
 #include "empty_module.h"
 
 static int __put_to_hashtable(session::command_handler *ch,
@@ -51,9 +54,10 @@ session::command_geocode::command_geocode(maps_service_h ms, const string a,
 	*request_id = command::command_request_id++;
 	my_req_id = *request_id;
 
-	if (pref &&
-	    (maps_item_hashtable_clone(pref, &preference) != MAPS_ERROR_NONE))
+	if (pref && (maps_item_hashtable_clone(pref, &preference) != MAPS_ERROR_NONE))
 		error = MAPS_ERROR_INVALID_PARAMETER;
+
+	if (!error) *request_id = -1;
 }
 
 session::command_geocode::~command_geocode()
@@ -63,7 +67,6 @@ session::command_geocode::~command_geocode()
 
 int session::command_geocode::run()
 {
-
 	if (error != MAPS_ERROR_NONE)
 		return error;
 
@@ -129,8 +132,7 @@ bool session::command_geocode_handler::foreach_geocode_cb(maps_error_e error,
 		(command_geocode_handler *) user_data;
 
 	if (request_id != handler->plg_req_id) {
-		MAPS_LOGE(
-"\n\nERROR! Incorrect request id [%d] come from the plugin; expected [%d]\n\n",
+		MAPS_LOGE("\nERROR! Incorrect request id [%d] come from the plugin; expected [%d]\n",
 			request_id, handler->plg_req_id);
 	}
 
@@ -178,9 +180,10 @@ session::command_geocode_inside_bounds::command_geocode_inside_bounds(
 	if (maps_area_clone(b, &bounds) != MAPS_ERROR_NONE)
 		error = MAPS_ERROR_INVALID_PARAMETER;
 
-	if (pref &&
-	    (maps_item_hashtable_clone(pref, &preference) != MAPS_ERROR_NONE))
+	if (pref && (maps_item_hashtable_clone(pref, &preference) != MAPS_ERROR_NONE))
 		error = MAPS_ERROR_INVALID_PARAMETER;
+
+	if (!error) *request_id = -1;
 }
 
 session::command_geocode_inside_bounds::~command_geocode_inside_bounds()
@@ -260,9 +263,10 @@ session::command_geocode_by_structured_address::
 	if (maps_address_clone(a, &address) != MAPS_ERROR_NONE)
 		error = MAPS_ERROR_INVALID_PARAMETER;
 
-	if (pref &&
-	    (maps_item_hashtable_clone(pref, &preference) != MAPS_ERROR_NONE))
+	if (pref && (maps_item_hashtable_clone(pref, &preference) != MAPS_ERROR_NONE))
 		error = MAPS_ERROR_INVALID_PARAMETER;
+
+	if (!error) *request_id = -1;
 }
 
 session::command_geocode_by_structured_address::
@@ -338,9 +342,10 @@ session::command_reverse_geocode::command_reverse_geocode(maps_service_h ms,
 	*request_id = command::command_request_id++;
 	my_req_id = *request_id;
 
-	if (pref &&
-	    (maps_item_hashtable_clone(pref, &preference) != MAPS_ERROR_NONE))
+	if (pref && (maps_item_hashtable_clone(pref, &preference) != MAPS_ERROR_NONE))
 		error = MAPS_ERROR_INVALID_PARAMETER;
+
+	if (!error) *request_id = -1;
 }
 
 session::command_reverse_geocode::~command_reverse_geocode()
@@ -465,6 +470,8 @@ session::command_multi_reverse_geocode::command_multi_reverse_geocode(
 		error = MAPS_ERROR_INVALID_PARAMETER;
 
 	maps_list = list;
+
+	if (!error) *request_id = -1;
 }
 
 session::command_multi_reverse_geocode::~command_multi_reverse_geocode()
@@ -562,11 +569,34 @@ session::command_search_place::command_search_place(maps_service_h ms,
 					const maps_place_filter_h flt,
 					maps_service_search_place_cb cb,
 					void *ud, int *request_id)
+#if 0 /* This code spends memories without any effect. */
+  : command(ms)
+  , position(NULL)
+  , distance(dst)
+  , preference(NULL)
+  , filter(NULL)
+  , callback(cb)
+  , user_data(ud)
+ {
+		 *request_id = command::command_request_id++;
+		 my_req_id = *request_id;
+
+		 if (maps_coordinates_clone(pos, &position) != MAPS_ERROR_NONE)
+				 error = MAPS_ERROR_INVALID_PARAMETER;
+
+		 if (pref &&
+			 (maps_item_hashtable_clone(pref, &preference) != MAPS_ERROR_NONE))
+				 error = MAPS_ERROR_INVALID_PARAMETER;
+
+		 if (maps_place_filter_clone(flt, &filter) != MAPS_ERROR_NONE)
+				 error = MAPS_ERROR_INVALID_PARAMETER;
+ }
+#endif
  : command(ms)
  , position(NULL)
  , distance(dst)
- , preference(NULL)
- , filter(NULL)
+ , preference(pref)
+ , filter(flt)
  , callback(cb)
  , user_data(ud)
  , error(MAPS_ERROR_NONE)
@@ -574,27 +604,27 @@ session::command_search_place::command_search_place(maps_service_h ms,
 	*request_id = command::command_request_id++;
 	my_req_id = *request_id;
 
-	if (maps_coordinates_clone(pos, &position) != MAPS_ERROR_NONE)
+	if (maps_coordinates_is_valid(pos)) {
+		position = pos;
+	}
+	else {
 		error = MAPS_ERROR_INVALID_PARAMETER;
-
-	if (pref &&
-	    (maps_item_hashtable_clone(pref, &preference) != MAPS_ERROR_NONE))
-		error = MAPS_ERROR_INVALID_PARAMETER;
-
-	if (maps_place_filter_clone(flt, &filter) != MAPS_ERROR_NONE)
-		error = MAPS_ERROR_INVALID_PARAMETER;
+		*request_id = -1;
+		MAPS_LOGD("Invalid parameter");
+	}
 }
 
 session::command_search_place::~command_search_place()
 {
+#if 0
 	maps_coordinates_destroy(position);
 	maps_item_hashtable_destroy(preference);
 	maps_place_filter_destroy(filter);
+#endif
 }
 
 int session::command_search_place::run()
 {
-
 	if (error != MAPS_ERROR_NONE)
 		return error;
 
@@ -657,26 +687,16 @@ void session::command_search_place_handler::set_supported_data(maps_place_h
 	if (maps_string_hashtable_create(&data_supported) != MAPS_ERROR_NONE)
 		return;
 
-	__put_to_hashtable(this, MAPS_PLACE_ADDRESS, _S(MAPS_PLACE_ADDRESS),
-		data_supported);
-	__put_to_hashtable(this, MAPS_PLACE_RATING, _S(MAPS_PLACE_RATING),
-		data_supported);
-	__put_to_hashtable(this, MAPS_PLACE_CATEGORIES,
-		_S(MAPS_PLACE_CATEGORIES), data_supported);
-	__put_to_hashtable(this, MAPS_PLACE_ATTRIBUTES,
-		_S(MAPS_PLACE_ATTRIBUTES), data_supported);
-	__put_to_hashtable(this, MAPS_PLACE_CONTACTS, _S(MAPS_PLACE_CONTACTS),
-		data_supported);
-	__put_to_hashtable(this, MAPS_PLACE_EDITORIALS,
-		_S(MAPS_PLACE_EDITORIALS), data_supported);
-	__put_to_hashtable(this, MAPS_PLACE_REVIEWS, _S(MAPS_PLACE_REVIEWS),
-		data_supported);
-	__put_to_hashtable(this, MAPS_PLACE_IMAGE, _S(MAPS_PLACE_IMAGE),
-		data_supported);
-	__put_to_hashtable(this, MAPS_PLACE_SUPPLIER, _S(MAPS_PLACE_SUPPLIER),
-		data_supported);
-	__put_to_hashtable(this, MAPS_PLACE_RELATED, _S(MAPS_PLACE_RELATED),
-		data_supported);
+	__put_to_hashtable(this, MAPS_PLACE_ADDRESS, _S(MAPS_PLACE_ADDRESS), data_supported);
+	__put_to_hashtable(this, MAPS_PLACE_RATING, _S(MAPS_PLACE_RATING), data_supported);
+	__put_to_hashtable(this, MAPS_PLACE_CATEGORIES, _S(MAPS_PLACE_CATEGORIES), data_supported);
+	__put_to_hashtable(this, MAPS_PLACE_ATTRIBUTES, _S(MAPS_PLACE_ATTRIBUTES), data_supported);
+	__put_to_hashtable(this, MAPS_PLACE_CONTACTS, _S(MAPS_PLACE_CONTACTS), data_supported);
+	__put_to_hashtable(this, MAPS_PLACE_EDITORIALS, _S(MAPS_PLACE_EDITORIALS), data_supported);
+	__put_to_hashtable(this, MAPS_PLACE_REVIEWS, _S(MAPS_PLACE_REVIEWS), data_supported);
+	__put_to_hashtable(this, MAPS_PLACE_IMAGE, _S(MAPS_PLACE_IMAGE), data_supported);
+	__put_to_hashtable(this, MAPS_PLACE_SUPPLIER, _S(MAPS_PLACE_SUPPLIER), data_supported);
+	__put_to_hashtable(this, MAPS_PLACE_RELATED, _S(MAPS_PLACE_RELATED), data_supported);
 
 	_maps_place_set_supported_data(place, data_supported);
 	maps_string_hashtable_destroy(data_supported);
@@ -694,8 +714,7 @@ bool session::command_search_place_handler::foreach_place_cb(maps_error_e error,
 		(command_search_place_handler *) user_data;
 
 	if (request_id != handler->plg_req_id) {
-		MAPS_LOGE(
-"\n\nERROR! Incorrect request id [%d] come from the plugin; expected [%d]\n\n",
+		MAPS_LOGE("\nERROR! Incorrect request id [%d] come from the plugin; expected [%d]\n",
 			request_id, handler->plg_req_id);
 	}
 
@@ -710,8 +729,7 @@ bool session::command_search_place_handler::foreach_place_cb(maps_error_e error,
 		handler->set_supported_data(cloned_result);
 
 	/* Send data to user */
-	const bool b =
-		handler->callback(error, handler->user_req_id, index, length,
+	const bool b = handler->callback(error, handler->user_req_id, index, length,
 		cloned_result, handler->user_data);
 	if (!b || (index >= (length - 1))) {
 		pending_request pr(handler->plugin());
@@ -732,6 +750,7 @@ session::command_search_by_area_place::command_search_by_area_place(
 					const maps_place_filter_h flt,
 					maps_service_search_place_cb cb,
 					void *ud, int *request_id)
+#if 0 /* This code spends memories without any effect. */
  : command(ms)
  , boundary(NULL)
  , preference(NULL)
@@ -752,13 +771,37 @@ session::command_search_by_area_place::command_search_by_area_place(
 
 	if (maps_place_filter_clone(flt, &filter) != MAPS_ERROR_NONE)
 		error = MAPS_ERROR_INVALID_PARAMETER;
+
+	if (!error) *request_id = -1;
+}
+#endif
+ : command(ms)
+ , boundary(NULL)
+ , preference(pref)
+ , filter(flt)
+ , callback(cb)
+ , user_data(ud)
+ , error(MAPS_ERROR_NONE)
+{
+	*request_id = command::command_request_id++;
+	my_req_id = *request_id;
+
+	if (maps_area_is_valid(b)) {
+		boundary = b;
+	}
+	else {
+		error = MAPS_ERROR_INVALID_PARAMETER;
+		*request_id = -1;
+	}
 }
 
 session::command_search_by_area_place::~command_search_by_area_place()
 {
+#if 0
 	maps_area_destroy(boundary);
 	maps_item_hashtable_destroy(preference);
 	maps_place_filter_destroy(filter);
+#endif
 }
 
 int session::command_search_by_area_place::run()
@@ -823,6 +866,7 @@ session::command_search_by_address_place::command_search_by_address_place(
 					const maps_place_filter_h flt,
 					maps_service_search_place_cb cb,
 					void *ud, int *request_id)
+#if 0 /* This code spends memories without any effect. */
  : command(ms)
  , address(a)
  , boundary(NULL)
@@ -844,13 +888,38 @@ session::command_search_by_address_place::command_search_by_address_place(
 
 	if (maps_place_filter_clone(flt, &filter) != MAPS_ERROR_NONE)
 		error = MAPS_ERROR_INVALID_PARAMETER;
+
+	if (!error) *request_id = -1;
+}
+#endif
+: command(ms)
+, address(a)
+, boundary(b)
+, preference(pref)
+, filter(flt)
+, callback(cb)
+, user_data(ud)
+, error(MAPS_ERROR_NONE)
+{
+	*request_id = command::command_request_id++;
+	my_req_id = *request_id;
+
+	if (maps_area_is_valid(b)) {
+		boundary = b;
+	} else {
+		error = MAPS_ERROR_INVALID_PARAMETER;
+		*request_id = -1;
+		MAPS_LOGD("Invalid parameter");
+	}
 }
 
 session::command_search_by_address_place::~command_search_by_address_place()
 {
+#if 0
 	maps_area_destroy(boundary);
 	maps_item_hashtable_destroy(preference);
 	maps_place_filter_destroy(filter);
+#endif
 }
 
 int session::command_search_by_address_place::run()
@@ -879,8 +948,7 @@ int session::command_search_by_address_place::run()
 
 			pr.update(my_req_id, handler);
 
-			MAPS_LOGD("session::command_search_by_address_place::run: %d",
-				my_req_id);
+			MAPS_LOGD("session::command_search_by_address_place::run: %d", my_req_id);
 
 		}
 		else {
@@ -1095,8 +1163,7 @@ session::command_search_route_handler::command_search_route_handler(
 {
 }
 
-void session::command_search_route_handler::set_supported_data(maps_route_h
-							       route)
+void session::command_search_route_handler::set_supported_data(maps_route_h route)
 {
 	if (!route || !plugin())
 		return;
@@ -1105,12 +1172,9 @@ void session::command_search_route_handler::set_supported_data(maps_route_h
 	if (maps_string_hashtable_create(&data_supported) != MAPS_ERROR_NONE)
 		return;
 
-	__put_to_hashtable(this, MAPS_ROUTE_PATH, _S(MAPS_ROUTE_PATH),
-		data_supported);
-	__put_to_hashtable(this, MAPS_ROUTE_SEGMENTS_PATH,
-		_S(MAPS_ROUTE_SEGMENTS_PATH), data_supported);
-	__put_to_hashtable(this, MAPS_ROUTE_SEGMENTS_MANEUVERS,
-		_S(MAPS_ROUTE_SEGMENTS_MANEUVERS), data_supported);
+	__put_to_hashtable(this, MAPS_ROUTE_PATH, _S(MAPS_ROUTE_PATH), data_supported);
+	__put_to_hashtable(this, MAPS_ROUTE_SEGMENTS_PATH,_S(MAPS_ROUTE_SEGMENTS_PATH), data_supported);
+	__put_to_hashtable(this, MAPS_ROUTE_SEGMENTS_MANEUVERS,_S(MAPS_ROUTE_SEGMENTS_MANEUVERS), data_supported);
 
 	_maps_route_set_supported_data(route, data_supported);
 	maps_string_hashtable_destroy(data_supported);
@@ -1144,8 +1208,7 @@ bool session::command_search_route_handler::foreach_route_cb(maps_error_e error,
 
 	/* Send data to user */
 	const bool b =
-		handler->callback(error, handler->user_req_id, index, length,
-		cloned_result, handler->user_data);
+	handler->callback(error, handler->user_req_id, index, length, cloned_result, handler->user_data);
 	if (!b || (index >= (length - 1))) {
 		pending_request pr(handler->plugin());
 		pr.remove(handler->user_req_id);
@@ -1160,12 +1223,9 @@ bool session::command_search_route_handler::foreach_route_cb(maps_error_e error,
 int session::command_cancel_request::run()
 {
 	pending_request pr(plugin());
-	MAPS_LOGD("session::command_cancel_request::run: %d, %d", request_id,
-		pr.look_up(request_id));
-	const int error =
-		(pr.contains(request_id)) ? interface()->
-		maps_plugin_cancel_request(pr.
-		extract_plg_id(request_id)) : MAPS_ERROR_NOT_FOUND;
+	MAPS_LOGD("session::command_cancel_request::run: %d, %d", request_id, pr.look_up(request_id));
+	const int error = (pr.contains(request_id)) ?
+		interface()->maps_plugin_cancel_request(pr.extract_plg_id(request_id)) : MAPS_ERROR_NOT_FOUND;
 
 	const int ret = error;
 	destroy();
