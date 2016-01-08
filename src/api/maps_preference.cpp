@@ -348,7 +348,6 @@ EXPORT_API int maps_preference_append_route_feature(maps_preference_h
 	preference, maps_item_list_h feature_list,
 	maps_route_feature_weight_e feature)
 {
-
 	if (!preference || max_result_count <= 0)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -373,7 +372,6 @@ EXPORT_API int maps_preference_remove_route_feature(maps_preference_h
 	preference, maps_item_list_h feature_list,
 	maps_route_feature_weight_e feature)
 {
-
 	if (!preference || !feature_list)
 		return MAPS_ERROR_INVALID_PARAMETER;
 

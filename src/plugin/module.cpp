@@ -45,7 +45,7 @@ plugin::provider_info plugin::binary_extractor::get_plugin_info(const
 	if (file_name.empty())
 		return provider_info::empty_instance;
 
-	/* 1.Initialize plugin */
+	/* 1.Init plugin */
 	GMod *plugin = gmod_new(file_name, FALSE);
 	if (!plugin)
 		return provider_info::empty_instance;
