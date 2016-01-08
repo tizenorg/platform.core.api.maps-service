@@ -31,12 +31,15 @@ namespace session
 		maps_service_h m;
 	protected:
 		int my_req_id;
+	protected:
+		int error;
 	public:
 		static volatile int command_request_id;
 	public:
 		static command empty_instance;
 	private:
 		command()
+			: m(NULL), my_req_id(-1), error(0)
 		{
 		}		/* Please, do not construct an empty object */
 	public:
