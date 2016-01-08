@@ -522,5 +522,4 @@ int _maps_route_set_supported_data(maps_route_h route,
 	return maps_item_list_foreach(p->segments,
 		__maps_route_set_supported_data_clone_cb,
 		__maps_route_set_supported_data_foreach_cb, supported_data);
-
 }

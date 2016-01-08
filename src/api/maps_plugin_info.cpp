@@ -79,7 +79,6 @@ EXPORT_API int maps_plugin_info_clone(const maps_plugin_info_h origin,
 		}
 
 		return MAPS_ERROR_NONE;
-
 	} while (false);
 
 	maps_plugin_info_destroy(*cloned);

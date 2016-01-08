@@ -41,10 +41,12 @@ typedef struct _maps_service_s
 
 const gsize _MAPS_PROVIDER_KEY_MAX_LENGTH = 1024;
 
+#ifdef _USE_QUEUE_
 static session::command_queue *q()
 {
 	return session::command_queue::interface();
 }
+#endif
 
 /* This function is used in command class */
 plugin::plugin_s *__extract_plugin(maps_service_h maps)
@@ -55,14 +57,12 @@ plugin::plugin_s *__extract_plugin(maps_service_h maps)
 	return (plugin::plugin_s *) maps_service->plugin;
 }
 
-static bool __maps_provider_supported(maps_service_h maps,
-				      maps_service_e service)
+static bool __maps_provider_supported(maps_service_h maps, maps_service_e service)
 {
 	if (!maps)
 		return false;
 	bool supported = false;
-	if (maps_service_provider_is_service_supported(maps, service,
-			&supported) != MAPS_ERROR_NONE)
+	if (maps_service_provider_is_service_supported(maps, service, &supported) != MAPS_ERROR_NONE)
 		return false;
 	return supported;
 }
@@ -71,8 +71,7 @@ static bool __maps_provider_supported(maps_service_h maps,
 static bool __has_maps_service_privilege()
 {
 #ifdef _SIMPLE_PRIVILEGE_CHECK_AVAILABLE_
-	return (privilege_checker_check_privilege(
-		"http://tizen.org/privilege/mapservice")
+	return (privilege_checker_check_privilege("http://tizen.org/privilege/mapservice")
 			== PRIVILEGE_CHECKER_ERR_NONE);
 #else
 	return true;
@@ -90,10 +89,9 @@ EXPORT_API int maps_service_foreach_provider(maps_service_provider_info_cb
 	if (!callback)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
-	/* The list of map provider info, obtained by enumerating available
-	 *  plugins */
+	/* The list of map provider info, obtained by enumerating available plugins */
 	plugin::discovery pd;
-	vector < plugin::provider_info > v = pd.get_available_list();
+	vector <plugin::provider_info> v = pd.get_available_list();
 
 	/* Send obtained provider info to the user */
 	const int total = int(v.size());
@@ -123,13 +121,11 @@ EXPORT_API int maps_service_create(const char *maps_provider,
 
 	do {
 		/* 0. Find the plugin, requested by the user */
-		const plugin::provider_info info =
-			plugin::find_by_names(string(maps_provider));
+		const plugin::provider_info info = plugin::find_by_names(string(maps_provider));
 
 		/* 1. Check whether provider info is valid */
 		if (info.empty()) {
-			MAPS_LOGE("ERROR! Provider info not found for name: %s",
-				maps_provider);
+			MAPS_LOGE("ERROR! Provider info not found for name: %s", maps_provider);
 			error = MAPS_ERROR_NOT_SUPPORTED;
 			break;
 		}
@@ -138,13 +134,13 @@ EXPORT_API int maps_service_create(const char *maps_provider,
 		maps_service_s *maps_service = g_slice_new0(maps_service_s);
 
 		if (maps_service == NULL) {
-			MAPS_LOGE("OUT_OF_MEMORY(0x%08x)",
-				MAPS_ERROR_OUT_OF_MEMORY);
+			MAPS_LOGE("OUT_OF_MEMORY(0x%08x)", MAPS_ERROR_OUT_OF_MEMORY);
 			error = MAPS_ERROR_OUT_OF_MEMORY;
 			break;
 		}
 
 		/* 3. Initialize the requested plugin */
+
 		int init_error = MAPS_ERROR_NONE; /* Storage for init error code */
 
 		maps_plugin_h plugin_h = plugin::binary_extractor().init(info, &init_error);
@@ -249,8 +245,7 @@ EXPORT_API int maps_service_provider_is_service_supported(const maps_service_h
 	const plugin::plugin_s *p = __extract_plugin(maps);
 	if (!p)
 		return MAPS_ERROR_NOT_SUPPORTED;
-	return p->interface.maps_plugin_is_service_supported(service,
-		supported);
+	return p->interface.maps_plugin_is_service_supported(service, supported);
 }
 
 EXPORT_API int maps_service_provider_is_data_supported(const maps_service_h
@@ -297,8 +292,18 @@ EXPORT_API int maps_service_geocode(const maps_service_h maps,
 	if (!__has_maps_service_privilege())
 		return MAPS_ERROR_PERMISSION_DENIED;
 
+#ifdef _USE_QUEUE_
 	return q()->push(new session::command_geocode(maps, address, preference,
 			callback, user_data, request_id));
+#else
+	session::command *cmd = new session::command_geocode(maps, address, preference,
+			callback, user_data, request_id);
+
+	int ret = (cmd || cmd->plugin()) ? cmd->run() : MAPS_ERROR_INVALID_PARAMETER;
+	if (ret) MAPS_LOGE("Failed to run command.(%d)", ret);
+	return ret;
+
+#endif
 }
 
 EXPORT_API int maps_service_geocode_inside_area(const maps_service_h maps,
@@ -325,9 +330,18 @@ EXPORT_API int maps_service_geocode_inside_area(const maps_service_h maps,
 	if (!__has_maps_service_privilege())
 		return MAPS_ERROR_PERMISSION_DENIED;
 
+#ifdef _USE_QUEUE_
 	return q()->push(new session::command_geocode_inside_bounds(maps,
 			address, bounds, preference, callback, user_data,
 			request_id));
+#else
+	session::command *cmd = new session::command_geocode_inside_bounds(maps,
+			address, bounds, preference, callback, user_data, request_id);
+
+	int ret = (cmd || cmd->plugin()) ? cmd->run() : MAPS_ERROR_INVALID_PARAMETER;
+	if (ret) MAPS_LOGE("Failed to run command.(%d)", ret);
+	return ret;
+#endif
 }
 
 EXPORT_API int maps_service_geocode_by_structured_address(const maps_service_h
@@ -354,9 +368,18 @@ EXPORT_API int maps_service_geocode_by_structured_address(const maps_service_h
 	if (!__has_maps_service_privilege())
 		return MAPS_ERROR_PERMISSION_DENIED;
 
+#ifdef _USE_QUEUE_
 	return q()->
 		push(new session::command_geocode_by_structured_address(maps,
 			address, preference, callback, user_data, request_id));
+#else
+	session::command *cmd = new session::command_geocode_by_structured_address(maps,
+			address, preference, callback, user_data, request_id);
+
+	int ret = (cmd || cmd->plugin()) ? cmd->run() : MAPS_ERROR_INVALID_PARAMETER;
+	if (ret) MAPS_LOGE("Failed to run command.(%d)", ret);
+	return ret;
+#endif
 }
 
 EXPORT_API int maps_service_reverse_geocode(const maps_service_h maps,
@@ -386,9 +409,18 @@ EXPORT_API int maps_service_reverse_geocode(const maps_service_h maps,
 	if (!__has_maps_service_privilege())
 		return MAPS_ERROR_PERMISSION_DENIED;
 
+#ifdef _USE_QUEUE_
 	return q()->push(new session::command_reverse_geocode(maps, latitude,
 			longitude, preference, callback, user_data,
 			request_id));
+#else
+	session::command *cmd = new session::command_reverse_geocode(maps, latitude,
+			longitude, preference, callback, user_data, request_id);
+
+	int ret = (cmd || cmd->plugin()) ? cmd->run() : MAPS_ERROR_INVALID_PARAMETER;
+	if (ret) MAPS_LOGE("Failed to run command.(%d)", ret);
+	return ret;
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -419,9 +451,18 @@ EXPORT_API int maps_service_search_place(const maps_service_h maps,
 	if (!__has_maps_service_privilege())
 		return MAPS_ERROR_PERMISSION_DENIED;
 
+#ifdef _USE_QUEUE_
 	return q()->push(new session::command_search_place(maps, position,
 			distance, preference, filter, callback, user_data,
 			request_id));
+#else
+	session::command *cmd = new session::command_search_place(maps, position,
+			distance, preference, filter, callback, user_data, request_id);
+
+	int ret = (cmd && cmd->plugin()) ? cmd->run() : MAPS_ERROR_INVALID_PARAMETER;
+	if (ret) MAPS_LOGE("Failed to run command.(%d)", ret);
+	return ret;
+#endif
 }
 
 EXPORT_API int maps_service_search_place_by_area(const maps_service_h maps,
@@ -451,20 +492,26 @@ EXPORT_API int maps_service_search_place_by_area(const maps_service_h maps,
 	if (!__has_maps_service_privilege())
 		return MAPS_ERROR_PERMISSION_DENIED;
 
+#ifdef _USE_QUEUE_
 	return q()->push(new session::command_search_by_area_place(maps,
 			boundary, preference, filter, callback, user_data,
 			request_id));
+#else
+	session::command *cmd = new session::command_search_by_area_place(maps,
+			boundary, preference, filter, callback, user_data, request_id);
+
+	int ret = (cmd && cmd->plugin()) ? cmd->run() : MAPS_ERROR_INVALID_PARAMETER;
+	if (ret) MAPS_LOGE("Failed to run command.(%d)", ret);
+	return ret;
+#endif
 }
 
 EXPORT_API int maps_service_search_place_by_address(const maps_service_h maps,
-						    const char *address,
-						    const maps_area_h boundary,
-						    const maps_place_filter_h
-						    filter,
-						    maps_preference_h
-						    preference,
-						maps_service_search_place_cb
-						callback,
+						const char *address,
+						const maps_area_h boundary,
+						const maps_place_filter_h filter,
+						maps_preference_h preference,
+						maps_service_search_place_cb callback,
 						void *user_data,
 						int *request_id)
 {
@@ -485,9 +532,18 @@ EXPORT_API int maps_service_search_place_by_address(const maps_service_h maps,
 	if (!__has_maps_service_privilege())
 		return MAPS_ERROR_PERMISSION_DENIED;
 
+#ifdef _USE_QUEUE_
 	return q()->push(new session::command_search_by_address_place(maps,
 			address, boundary, preference, filter, callback,
 			user_data, request_id));
+#else
+	session::command *cmd = new session::command_search_by_address_place(maps,
+			address, boundary, preference, filter, callback, user_data, request_id);
+
+	int ret = (cmd && cmd->plugin()) ? cmd->run() : MAPS_ERROR_INVALID_PARAMETER;
+	if (ret) MAPS_LOGE("Failed to run command.(%d)", ret);
+	return ret;
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -517,8 +573,17 @@ EXPORT_API int maps_service_search_route(const maps_service_h maps,
 	if (!__has_maps_service_privilege())
 		return MAPS_ERROR_PERMISSION_DENIED;
 
+#ifdef _USE_QUEUE_
 	return q()->push(new session::command_search_route(maps, preference,
 			origin, destination, callback, user_data, request_id));
+#else
+	session::command *cmd = new session::command_search_route(maps, preference,
+			origin, destination, callback, user_data, request_id);
+
+	int ret = (cmd && cmd->plugin()) ? cmd->run() : MAPS_ERROR_INVALID_PARAMETER;
+	if (ret) MAPS_LOGE("Failed to run command.(%d)", ret);
+	return ret;
+#endif
 }
 
 EXPORT_API int maps_service_search_route_waypoints(const maps_service_h maps,
@@ -548,9 +613,18 @@ EXPORT_API int maps_service_search_route_waypoints(const maps_service_h maps,
 	if (!__has_maps_service_privilege())
 		return MAPS_ERROR_PERMISSION_DENIED;
 
+#ifdef _USE_QUEUE_
 	return q()->push(new session::command_search_route_waypoints(maps,
 			preference, waypoint_list, waypoint_num, callback,
 			user_data, request_id));
+#else
+	session::command *cmd = new session::command_search_route_waypoints(maps,
+			preference, waypoint_list, waypoint_num, callback, user_data, request_id);
+
+	int ret = (cmd && cmd->plugin()) ? cmd->run() : MAPS_ERROR_INVALID_PARAMETER;
+	if (ret) MAPS_LOGE("Failed to run command.(%d)", ret);
+	return ret;
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -576,7 +650,17 @@ EXPORT_API int maps_service_cancel_request(const maps_service_h maps,
 	if (!__has_maps_service_privilege())
 		return MAPS_ERROR_PERMISSION_DENIED;
 
+#ifdef _USE_QUEUE_
 	return q()->push(new session::command_cancel_request(maps, request_id));
+#else
+	MAPS_LOGD("request id: %d", request_id);
+
+	session::command *cmd = new session::command_cancel_request(maps, request_id);
+
+	int ret = (cmd && cmd->plugin()) ? cmd->run() : MAPS_ERROR_INVALID_PARAMETER;
+	if (ret) MAPS_LOGE("Failed to run command.(%d)", ret);
+	return ret;
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -599,7 +683,15 @@ EXPORT_API int maps_service_multi_reverse_geocode(const maps_service_h maps,
 	if (!__has_maps_service_privilege())
 		return MAPS_ERROR_PERMISSION_DENIED;
 
+#ifdef _USE_QUEUE_
 	return q()->push(new session::command_multi_reverse_geocode(maps,
 			coordinates_list, preference, callback, user_data, request_id));
-}
+#else
+	session::command *cmd = new session::command_multi_reverse_geocode(maps,
+			coordinates_list, preference, callback, user_data, request_id);
 
+	int ret = (cmd && cmd->plugin()) ? cmd->run() : MAPS_ERROR_INVALID_PARAMETER;
+	if (ret) MAPS_LOGE("Failed to run command.(%d)", ret);
+	return ret;
+#endif
+}
