@@ -32,7 +32,6 @@ static bool __is_supported(const maps_place_h place, maps_service_data_e data)
 
 typedef struct _maps_place_s
 {
-
 	char *id;
 	char *name;
 	char *uri;
@@ -86,7 +85,6 @@ typedef struct _maps_place_s
 	/* The table of available data features */
 	maps_string_hashtable_h supported_data;
 	/* TODO: implement hashtable<int, int> */
-
 } maps_place_s;
 
 /* TODO: extract all such constants to the dedcated header file */
@@ -609,8 +607,7 @@ int _maps_place_is_data_supported(const maps_place_h place,
 	default:
 		return MAPS_ERROR_NOT_SUPPORTED;
 	}
-	return maps_string_hashtable_contains(((maps_place_s *) place)->
-		supported_data, data_feature.c_str(), supported);
+	return maps_string_hashtable_contains(((maps_place_s *) place)->supported_data, data_feature.c_str(), supported);
 }
 
 /*----------------------------------------------------------------------------*/
