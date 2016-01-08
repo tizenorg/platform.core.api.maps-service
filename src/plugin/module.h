@@ -216,8 +216,8 @@ namespace plugin {
 		{
 		}
 	public:
-		 provider_info get_plugin_info(const string &file_name) const;
-		maps_plugin_h init(const provider_info &info);
+		provider_info get_plugin_info(const string &file_name) const;
+		maps_plugin_h init(const provider_info &info, int *init_error);
 		void shutdown(maps_plugin_h plugin_h);
 	private:
 		 GMod *gmod_new(const string &module_file,

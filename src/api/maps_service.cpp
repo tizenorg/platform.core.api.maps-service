@@ -119,11 +119,10 @@ EXPORT_API int maps_service_create(const char *maps_provider,
 	if (!__has_maps_service_privilege())
 		return MAPS_ERROR_PERMISSION_DENIED;
 
-	maps_error_e error = MAPS_ERROR_NOT_SUPPORTED;
+	int error = MAPS_ERROR_NOT_SUPPORTED;
 
 	do {
 		/* 0. Find the plugin, requested by the user */
-
 		const plugin::provider_info info =
 			plugin::find_by_names(string(maps_provider));
 
@@ -146,9 +145,11 @@ EXPORT_API int maps_service_create(const char *maps_provider,
 		}
 
 		/* 3. Initialize the requested plugin */
-		maps_plugin_h plugin_h = plugin::binary_extractor().init(info);
+		int init_error = MAPS_ERROR_NONE; /* Storage for init error code */
+
+		maps_plugin_h plugin_h = plugin::binary_extractor().init(info, &init_error);
 		if (!plugin_h) {
-			error = MAPS_ERROR_NOT_SUPPORTED;
+			error = init_error;
 			MAPS_LOGE("ERROR! Plugin init failed");
 			break;
 		}
@@ -161,8 +162,7 @@ EXPORT_API int maps_service_create(const char *maps_provider,
 
 		/* 5. Set status of completely correct plugin initialization */
 		error = MAPS_ERROR_NONE;
-
-	} while(false);
+	} while (false);
 
 	if (error != MAPS_ERROR_NONE)
 		maps_service_destroy(*maps);
