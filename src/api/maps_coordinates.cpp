@@ -19,6 +19,7 @@
 #include "maps_plugin_types.h"
 #include "maps_coordinates.h"
 #include "maps_util.h"
+#include "maps_coordinates_private.h"
 
 EXPORT_API int maps_coordinates_create(const double latitude,
 				       const double longitude,
@@ -280,4 +281,19 @@ EXPORT_API int maps_coordinates_list_foreach(maps_coordinates_list_h coordinates
 	}
 
 	return MAPS_ERROR_NONE;
+}
+
+bool maps_coordinates_is_valid(const maps_coordinates_h coordinates)
+{
+	if (!coordinates)
+		return false;
+
+	maps_coordinates_s *coord = (maps_coordinates_s *)coordinates;
+
+	MAPS_CHECK_CONDITION(coord->latitude >= -90 && coord->latitude <= 90, MAPS_ERROR_INVALID_PARAMETER,
+		"MAPS_ERROR_INVALID_PARAMETER");
+	MAPS_CHECK_CONDITION(coord->longitude >= -180 && coord->longitude <= 180, MAPS_ERROR_INVALID_PARAMETER,
+		"MAPS_ERROR_INVALID_PARAMETER");
+
+	return true;
 }

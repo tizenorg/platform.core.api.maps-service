@@ -21,13 +21,10 @@
 #include <maps_extra_types.h>
 
 /**
- * @ingroup	CAPI_MAPS_PLACE_MODULE
- * @defgroup	CAPI_MAPS_PLACE_DATA_MODULE Place
+ * @file maps_route.h
+ * @brief This file contains the functions related to Route information.
  *
- * @file maps_route_private.h
- * @brief This file contains the functions related to Place information.
- *
- * @addtogroup CAPI_MAPS_PLACE_DATA_MODULE
+ * @addtogroup CAPI_MAPS_ROUTE_DATA_MODULE
  * @{
  * @brief This provides APIs related to Place information, used in Place
  * Discovery and Search.

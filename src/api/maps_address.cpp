@@ -19,7 +19,7 @@
 #include "maps_plugin_types.h"
 #include "maps_address.h"
 #include "maps_util.h"
-
+#include "maps_address_private.h"
 /*
  * This represents address information such as building number,
  * street name, etc.
@@ -489,5 +489,69 @@ EXPORT_API int maps_address_list_destroy(maps_address_list_h address_list)
 	address_list = NULL;
 
 	return MAPS_ERROR_NONE;
+}
+
+bool maps_address_is_valid(const maps_address_h address)
+{
+	if (!address) return false;
+
+	int error = false;
+	maps_address_s *a = (maps_address_s *) address;
+
+	do {
+		if (a->building_number && strlen(a->building_number) > _MAPS_ADDRESS_BUILDING_NUMBER_MAX_LENGTH) {
+			error = false;
+			break;
+		}
+		if (a->street && strlen(a->street) > _MAPS_ADDRESS_STREET_MAX_LENGTH) {
+			error = false;
+			break;
+		}
+
+		if (a->district && strlen(a->district) > _MAPS_ADDRESS_DISTRICT_MAX_LENGTH) {
+			error = false;
+			break;
+		}
+
+		if (a->city && strlen(a->city) > _MAPS_ADDRESS_CITY_MAX_LENGTH) {
+			if (error != MAPS_ERROR_NONE)
+				break;
+		}
+
+		if (a->state && strlen(a->state) > _MAPS_ADDRESS_STATE_MAX_LENGTH) {
+			if (error != MAPS_ERROR_NONE)
+				break;
+		}
+
+		if (a->country_code && strlen(a->country_code) > _MAPS_ADDRESS_COUNTRY_CODE_MAX_LENGTH) {
+			if (error != MAPS_ERROR_NONE)
+				break;
+		}
+
+		if (a->postal_code && strlen(a->postal_code) > _MAPS_ADDRESS_POSTAL_CODE_MAX_LENGTH) {
+			if (error != MAPS_ERROR_NONE)
+				break;
+		}
+
+		if (a->freetext && strlen(a->freetext) > _MAPS_ADDRESS_FREE_TEXT_MAX_LENGTH) {
+			if (error != MAPS_ERROR_NONE)
+				break;
+		}
+
+		if (a->country && strlen(a->country) > _MAPS_ADDRESS_COUNTRY_MAX_LENGTH) {
+			if (error != MAPS_ERROR_NONE)
+				break;
+		}
+
+		if (a->county && strlen(a->county) > _MAPS_ADDRESS_COUNTY_MAX_LENGTH) {
+			if (error != MAPS_ERROR_NONE)
+				break;
+		}
+
+		return MAPS_ERROR_NONE;
+	} while (false);
+
+
+	return error;
 }
 
