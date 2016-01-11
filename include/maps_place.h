@@ -58,6 +58,15 @@ extern "C" {
  */
 typedef void *maps_place_h;
 
+/**
+ * @brief	The Place list handle
+ * @details The handle of Place list instance.
+ * @since_tizen 3.0
+ *
+ * @see maps_place_list_foreach()
+ */
+typedef void *maps_place_list_h;
+
 /*----------------------------------------------------------------------------*/
 
 /**
@@ -245,6 +254,27 @@ typedef bool(*maps_place_images_cb) (int index, int total,
 typedef bool(*maps_place_reviews_cb) (int index, int total,
 				      maps_place_review_h review,
 				      void *user_data);
+
+/**
+ * @brief	Called when requesting the list of Place.
+ * @details This callback is invoked while iterating through the list of Place.
+ * @since_tizen 3.0
+ * @remarks @a place is valid only in this function and must be released using
+ * maps_place_destroy().
+ *
+ * @param[in]	index		The current index of review
+ * @param[in]	total		The total amount of reviews
+ * @param[in]	place		The place handle
+ * @param[in]	uesr_data	The user data passed from the maps_place_list_foreach()
+ * @return	@c true to continue with the next iteration of the loop,
+ * \n @c false to break out of the loop
+ *
+ * @pre maps_place_list_foreach() will invoke this callback.
+ *
+ * @see maps_place_list_foreach()
+ * @see #maps_place_h
+ */
+typedef bool(*maps_place_cb) (int index, int total, maps_place_h place, void *user_data);
 
 /*----------------------------------------------------------------------------*/
 
@@ -590,6 +620,28 @@ int maps_place_get_supplier_link(const maps_place_image_h place,
  */
 int maps_place_get_related_link(const maps_place_image_h place,
 				maps_place_link_object_h *related);
+
+/**
+ * @brief	Retrieves all places.
+ * @details This function retrieves all places.
+ * @since_tizen 3.0
+ * @remarks The places will be delivered via maps_place_cb().
+ *
+ * @param[in]	place_list	The place list handle
+ * @param[in]	callback	The callback function to invoke
+ * @param[in]	user_data	The user data to be passed to the callback function
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_FOUND Result not found
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
+ *
+ * @post This function invokes maps_place_cb() repeatedly to retrieve each place.
+ *
+ * @see maps_place_cb()
+ */
+int maps_place_list_foreach(const maps_place_list_h place_list,
+				maps_place_cb callback, void *user_data);
 
 #ifdef __cplusplus
 }
