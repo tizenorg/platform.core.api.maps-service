@@ -599,6 +599,93 @@ int maps_plugin_search_place_by_address(const char *address,
 					maps_service_search_place_cb callback,
 					void *user_data, int *request_id);
 
+/**
+ * @brief	Queries a brief Place information by a coordinates boundary.
+ * @details This function obtains the brief Place information for a specified coordinates boundary.
+ * @since_tizen 3.0
+ * @privlevel public
+ * @privilege %http://tizen.org/privilege/mapservice
+ * @remarks This function requires network access.
+ * \n To cancel the search request use maps_plugin_cancel_request().
+ * \n To check if Maps Provider is capable of Place Search and which Place
+ * preferences are supported, see the lists of capacities and preferences above.
+ *
+ * @param[in]	maps		The Maps Service handle
+ * @param[in]	boundary	The interested area
+ * @param[in]	filter		The filter handle
+ * @param[in]	preference	The place preference handle
+ * @param[in]	callback	The result callback
+ * @param[in]	user_data	The user data to be passed to the callback function
+ * @param[out]	request_id	The request id
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_SERVICE_NOT_AVAILABLE Service not available
+ * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
+ * @retval	#MAPS_ERROR_CONNECTION_TIME_OUT Timeout error, no answer
+ * @retval	#MAPS_ERROR_INVALID_OPERATION Operation is not valid
+ * @retval	#MAPS_ERROR_NOT_FOUND Result not found
+ * @retval	#MAPS_ERROR_KEY_NOT_AVAILABLE Invalid key
+ * @retval	#MAPS_ERROR_RESOURCE_BUSY Places service busy
+ * @retval	#MAPS_ERROR_CANCELED Places service aborted
+ * @retval	#MAPS_ERROR_UNKNOWN Unknown error
+ *
+ * @post It invokes maps_service_search_place_list_cb() to deliver obtained Place information.
+ *
+ * @see maps_plugin_cancel_request()
+ * @see maps_service_search_place_list_cb()
+ */
+int maps_plugin_search_place_list(const maps_area_h boundary,
+				const maps_place_filter_h filter,
+				maps_preference_h preference,
+				maps_service_search_place_list_cb callback,
+				void *user_data, int *request_id);
+
+/**
+ * @brief	Queries a Detail place information by a place uri.
+ * @details This function obtains the Detail place information for a specified place uri
+ * @since_tizen 3.0
+ * @privlevel public
+ * @privilege %http://tizen.org/privilege/mapservice
+ * @remarks This function requires network access.
+ * \n To cancel the search request use maps_plugin_cancel_request().
+ * \n To check if Maps Provider is capable of Place Search and which Place
+ * preferences are supported, see the lists of capacities and preferences above.
+ *
+ * @param[in]	maps		The Maps Service handle
+ * @param[in]	uri			The interested place uri
+ * @param[in]	preference	The place preference handle
+ * @param[in]	callback	The result callback
+ * @param[in]	user_data	The user data to be passed to the callback function
+ * @param[out]	request_id	The request id
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_SERVICE_NOT_AVAILABLE Service not available
+ * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
+ * @retval	#MAPS_ERROR_CONNECTION_TIME_OUT Timeout error, no answer
+ * @retval	#MAPS_ERROR_INVALID_OPERATION Operation is not valid
+ * @retval	#MAPS_ERROR_NOT_FOUND Result not found
+ * @retval	#MAPS_ERROR_KEY_NOT_AVAILABLE Invalid key
+ * @retval	#MAPS_ERROR_RESOURCE_BUSY Places service busy
+ * @retval	#MAPS_ERROR_CANCELED Places service aborted
+ * @retval	#MAPS_ERROR_UNKNOWN Unknown error
+ *
+ * @pre @a uri is obtained from maps_plugin_search_place_list()
+ * @post It invokes maps_service_get_place_details_cb() to deliver obtained Place information.
+ *
+ * @see maps_plugin_search_place_list()
+ * @see maps_plugin_cancel_request()
+ * @see maps_service_get_place_details_cb()
+ */
+int maps_plugin_get_place_details(const char *url,
+					maps_service_get_place_details_cb callback,
+					void *user_data, int *request_id);
+
 /*----------------------------------------------------------------------------*/
 /*
  * Route

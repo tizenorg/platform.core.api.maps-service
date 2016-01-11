@@ -903,6 +903,218 @@ int session::command_search_by_address_place::run()
 }
 
 /*----------------------------------------------------------------------------*/
+/*typedef int (*maps_plugin_search_place_list_f)(maps_service_h maps,
+* maps_item_hashtable_h preference, maps_place_filter_h filter,
+* maps_service_search_place_list_cb callback, void* user_data, int* request_id); */
+session::command_search_place_list::command_search_place_list(maps_service_h ms,
+					const maps_area_h b,
+					const maps_item_hashtable_h pref,
+					const maps_place_filter_h flt,
+					maps_service_search_place_list_cb cb,
+					void *ud, int *request_id)
+ : command(ms)
+ , boundary(NULL)
+ , preference(NULL)
+ , filter(NULL)
+ , callback(cb)
+ , user_data(ud)
+ , error(MAPS_ERROR_NONE)
+{
+	*request_id = command::command_request_id++;
+	my_req_id = *request_id;
+
+	if (maps_area_clone(b, &boundary) != MAPS_ERROR_NONE)
+		error = MAPS_ERROR_INVALID_PARAMETER;
+
+	if (pref && (maps_item_hashtable_clone(pref, &preference) != MAPS_ERROR_NONE))
+		error = MAPS_ERROR_INVALID_PARAMETER;
+
+	if (maps_place_filter_clone(flt, &filter) != MAPS_ERROR_NONE)
+		error = MAPS_ERROR_INVALID_PARAMETER;
+}
+
+session::command_search_place_list::~command_search_place_list()
+{
+	maps_area_destroy(boundary);
+	maps_item_hashtable_destroy(preference);
+	maps_place_filter_destroy(filter);
+}
+
+int session::command_search_place_list::run()
+{
+	if (error != MAPS_ERROR_NONE)
+		return error;
+
+	pending_request pr(plugin());
+
+	/* Get the plugin interface function */
+	maps_plugin_search_place_list_f func = interface()->maps_plugin_search_place_list;
+	command_search_place_list_handler *handler = NULL;
+	if (func) {
+		/* No need to create the handler when the function is NULL */
+		pr.add(my_req_id);
+		handler = new command_search_place_list_handler(plugin(),
+							   callback,
+							   user_data,
+							   my_req_id);
+		if (handler) {
+			/* Run the plugin interface function */
+			error = func(boundary, filter, preference,
+					 command_search_place_list_handler::foreach_place_around_cb, handler,
+					 &handler->plg_req_id);
+
+			pr.update(my_req_id, handler);
+
+			MAPS_LOGD("session::command_search_place_list::run: %d", my_req_id);
+		}
+		else {
+			error = MAPS_ERROR_OUT_OF_MEMORY;
+		}
+	}
+	else {
+		/* Plugin Function is NULL: use default empty function */
+		/*
+		func = plugin::get_empty_interface().maps_plugin_search_place_list;
+		*/
+		MAPS_LOGE("MAPS_ERROR_NOT_SUPPORTED: Can't get any plugin");
+		error = MAPS_ERROR_NOT_SUPPORTED;
+	}
+
+	const int ret = error;
+	destroy();
+	return ret;
+}
+
+session::command_search_place_list_handler::command_search_place_list_handler(
+						plugin::plugin_s* p,
+						maps_service_search_place_list_cb cb,
+						void *ud, int urid)
+ : command_handler(p, ud, urid)
+ , callback(cb)
+{
+}
+
+void session::command_search_place_list_handler::foreach_place_around_cb(maps_error_e error,
+							     int request_id,
+							     maps_place_list_h place_list,
+							     void *user_data)
+{
+	command_search_place_list_handler *handler =
+		(command_search_place_list_handler *) user_data;
+
+	if (request_id != handler->plg_req_id) {
+		MAPS_LOGE("\n\nERROR! Incorrect request id [%d] come from the plugin; expected [%d]\n\n",
+			request_id, handler->plg_req_id);
+	}
+
+	/* Send data to user */
+	handler->callback(error, handler->user_req_id, place_list, handler->user_data);
+
+	pending_request pr(handler->plugin());
+	pr.remove(handler->user_req_id);
+}
+
+/*----------------------------------------------------------------------------*/
+/*typedef int (*maps_plugin_get_place_details_f) */
+session::command_get_place_details::command_get_place_details(
+					maps_service_h ms, const char *a,
+					maps_service_get_place_details_cb cb,
+					void *ud, int *request_id)
+ : command(ms)
+ , url(a)
+ , callback(cb)
+ , user_data(ud)
+ , error(MAPS_ERROR_NONE)
+{
+	*request_id = command::command_request_id++;
+	my_req_id = *request_id;
+}
+
+session::command_get_place_details::~command_get_place_details()
+{
+}
+
+int session::command_get_place_details::run()
+{
+	if (error != MAPS_ERROR_NONE)
+		return error;
+
+	pending_request pr(plugin());
+
+	/* Get the plugin interface function */
+	maps_plugin_get_place_details_f func =
+		interface()->maps_plugin_get_place_details;
+	command_get_place_details_handler *handler = NULL;
+	if (func) {
+		/* No need to create the handler when the function is NULL */
+		pr.add(my_req_id);
+		handler = new command_get_place_details_handler(plugin(),
+							   callback, user_data, my_req_id);
+		if (handler) {
+			/* Run the plugin interface function */
+			error = func(url.c_str(),
+					 command_get_place_details_handler::foreach_place_details_cb,
+					 handler, &handler->plg_req_id);
+
+			pr.update(my_req_id, handler);
+
+			MAPS_LOGD("session::command_get_place_details::run: %d",
+				my_req_id);
+		}
+		else {
+			error = MAPS_ERROR_OUT_OF_MEMORY;
+		}
+	}
+	else {
+		/* Plugin Function is NULL: use default empty function */
+		/*
+		func = plugin::get_empty_interface().
+			maps_plugin_get_place_details;
+		*/
+		MAPS_LOGE("MAPS_ERROR_NOT_SUPPORTED: Can't get any plugin");
+		error = MAPS_ERROR_NOT_SUPPORTED;
+	}
+
+	const int ret = error;
+	destroy();
+	return ret;
+}
+
+session::command_get_place_details_handler::command_get_place_details_handler(
+						plugin::plugin_s* p,
+						maps_service_get_place_details_cb cb,
+						void *ud, int urid)
+ : command_handler(p, ud, urid)
+ , callback(cb)
+{
+}
+
+void session::command_get_place_details_handler::foreach_place_details_cb(maps_error_e error,
+							     int request_id, maps_place_h place, void *user_data)
+{
+
+	command_get_place_details_handler *handler =
+		(command_get_place_details_handler *) user_data;
+
+	if (request_id != handler->plg_req_id) {
+		MAPS_LOGE("\n\nERROR! Incorrect request id [%d] come from the plugin; expected [%d]\n\n",
+			request_id, handler->plg_req_id);
+	}
+
+	/* Make a user's copy of result data */
+	maps_place_h cloned_result = NULL;
+	if (error == MAPS_ERROR_NONE)
+		error = (maps_error_e) maps_place_clone(place, &cloned_result);
+	maps_place_destroy(place);
+
+	/* Send data to user */
+	handler->callback(error, handler->user_req_id, cloned_result, handler->user_data);
+
+	pending_request pr(handler->plugin());
+	pr.remove(handler->user_req_id);
+}
+
+/*----------------------------------------------------------------------------*/
 /*typedef int (*maps_plugin_search_route_f)(maps_service_h maps,
 * maps_item_hashtable_h preference, maps_coordinates_h origin,
 * maps_coordinates_h destination, maps_service_search_route_cb callback,
