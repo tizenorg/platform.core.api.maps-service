@@ -1,3 +1,8 @@
+[Version]   capi-maps-service_0.5.3
+[Date]      22 January 2016
+[Title]     Added place list API.
+[Developer]	Kyoungjun Sung <kj7.sung@samsung.com>
+
 [Version]   capi-maps-service_0.5.0
 [Date]      21 October 2015
 [Title]     Added coordinates address list API.

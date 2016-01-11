@@ -147,6 +147,22 @@ int maps_plugin_search_place_by_address_empty(const char *address,
 	return 0;
 }
 
+int maps_plugin_search_place_list_empty(const maps_area_h boundary,
+				   const maps_place_filter_h filter,
+				   maps_preference_h preference,
+				   maps_service_search_place_list_cb callback,
+				   void *user_data, int *request_id)
+{
+	return 0;
+}
+
+int maps_plugin_get_place_details_empty(const char *url,
+						maps_service_get_place_details_cb callback,
+						void *user_data, int *request_id)
+{
+	return 0;
+}
+
 /* Route */
 int maps_plugin_search_route_empty(const maps_coordinates_h origin,
 				   const maps_coordinates_h destination,
@@ -199,6 +215,8 @@ plugin::interface_s empty_interface = {
 	maps_plugin_search_place_empty,
 	maps_plugin_search_place_by_area_empty,
 	maps_plugin_search_place_by_address_empty,
+	maps_plugin_search_place_list_empty,
+	maps_plugin_get_place_details_empty,
 
 	/* Route */
 	maps_plugin_search_route_empty,
