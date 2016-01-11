@@ -251,6 +251,26 @@ int maps_place_filter_foreach_property(const maps_place_filter_h filter,
 				       maps_place_filter_properties_cb
 				       callback, void *user_data);
 
+/**
+ * @brief	Gets the place address.
+ * @details This function gets the place address.
+ * @since_tizen 3.0
+ * @remarks @a place_address must be released using free().
+ *
+ * @param[in]	filter			The handle of the place filter
+ * @param[out]	place_address	The place address
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ *
+ * @pre @a filter is created using maps_place_filter_create().
+ *
+ * @see maps_place_filter_set_place_address()
+ * @see maps_place_filter_create()
+ */
+int maps_place_filter_get_place_address(const maps_place_filter_h filter,
+				     char **place_address);
+
 /*----------------------------------------------------------------------------*/
 
 /**
@@ -331,6 +351,25 @@ int maps_place_filter_set_place_name(maps_place_filter_h filter,
  */
 int maps_place_filter_set_category(maps_place_filter_h filter,
 				   const maps_place_category_h category);
+
+/**
+ * @brief	Sets the place address.
+ * @details This function sets the place address.
+ * @since_tizen 3.0
+ *
+ * @param[in]	filter			The handle of the place filter
+ * @param[in]	place_address	The place address
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ *
+ * @pre @a filter is created using maps_place_filter_create().
+ *
+ * @see maps_place_filter_get_place_address()
+ * @see maps_place_filter_create()
+ */
+int maps_place_filter_set_place_address(maps_place_filter_h filter,
+				     const char *place_address);
 
 #ifdef __cplusplus
 }

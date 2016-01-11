@@ -492,6 +492,138 @@ namespace session
 	};
 
 /*----------------------------------------------------------------------------*/
+	/*typedef int (*maps_plugin_search_place_list_f)(maps_service_h maps,
+	* maps_area_h boundary, maps_item_hashtable_h preference, maps_place_filter_h filter,
+	* maps_service_search_place_list_cb callback, void *user_data,
+	* int *request_id); */
+	class command_search_place_list : public command
+	{
+	public:
+		maps_area_h boundary;
+		maps_item_hashtable_h preference;
+		maps_place_filter_h filter;
+		maps_service_search_place_list_cb callback;
+		void *user_data;
+
+		int error;
+	public:
+		command_search_place_list(maps_service_h ms,
+					const maps_area_h boundary,
+					const maps_item_hashtable_h preference,
+					const maps_place_filter_h filter,
+					maps_service_search_place_list_cb callback,
+					void *user_data, int *request_id);
+		virtual ~command_search_place_list();
+	private:
+		command_search_place_list() : command(NULL)
+		{
+		}
+		command_search_place_list(const command_search_place_list &src)
+			 : command(NULL)
+		{
+		}
+		command_search_place_list &operator=(
+			const command_search_place_list &src)
+		{
+			return *this;
+		}
+	private:
+		virtual int run();
+	};
+
+	class command_search_place_list_handler : public command_handler
+	{
+		maps_service_search_place_list_cb callback;
+	public:
+		command_search_place_list_handler(plugin::plugin_s *plugin,
+						maps_service_search_place_list_cb callback,
+						void *user_data, int user_req_id);
+		virtual ~command_search_place_list_handler()
+		{
+		};
+	private:
+		command_search_place_list_handler()
+			 : command_handler(NULL, NULL, 0)
+		{
+		}
+		command_search_place_list_handler(
+			const command_search_place_list_handler &src)
+			 : command_handler(NULL, NULL, 0)
+		{
+		}
+		command_search_place_list_handler &operator=(
+			const command_search_place_list_handler &src)
+		{ return *this;
+		}
+	private:
+		static void foreach_place_around_cb(maps_error_e error, int request_id,
+						maps_place_list_h place, void *user_data);
+		friend class command_search_place_list;
+	};
+
+/*----------------------------------------------------------------------------*/
+	/*typedef int (*maps_plugin_get_place_details_f) */
+	class command_get_place_details : public command
+	{
+	public:
+		const string url;
+		maps_service_get_place_details_cb callback;
+		void *user_data;
+
+		int error;
+	public:
+		 command_get_place_details(maps_service_h ms, const char *url,
+			maps_service_get_place_details_cb callback, void *user_data, int *request_id);
+		 virtual ~command_get_place_details();
+	private:
+		command_get_place_details() : command(NULL)
+		{
+		}
+		command_get_place_details(
+			const command_get_place_details &src)
+			 : command(NULL)
+		{
+		}
+		command_get_place_details &operator=(
+			const command_get_place_details &src)
+		{
+			return *this;
+		}
+	private:
+		virtual int run();
+	};
+
+	class command_get_place_details_handler : public command_handler
+	{
+		maps_service_get_place_details_cb callback;
+	public:
+		command_get_place_details_handler(plugin::plugin_s *plugin,
+							maps_service_get_place_details_cb callback,
+							void *user_data, int user_req_id);
+		virtual ~command_get_place_details_handler()
+		{
+		};
+	private:
+		command_get_place_details_handler()
+			 : command_handler(NULL, NULL, 0)
+		{
+		}
+		command_get_place_details_handler(
+			const command_get_place_details_handler &src)
+			 : command_handler(NULL, NULL, 0)
+		{
+		}
+		command_get_place_details_handler &operator=(
+			const command_get_place_details_handler &src)
+		{ return *this;
+		}
+	private:
+		static void foreach_place_details_cb(maps_error_e error, int request_id,
+							maps_place_h place, void *user_data);
+		friend class command_get_place_details;
+	};
+
+/*----------------------------------------------------------------------------*/
 	/*typedef int (*maps_plugin_search_route_f)(
 	* maps_service_h maps, maps_item_hashtable_h preference,
 	* maps_coordinates_h origin, maps_coordinates_h destination,

@@ -144,6 +144,15 @@ EXPORT_API int maps_place_filter_get_category(const maps_place_filter_h filter,
 		"MAPS_PLACE_FILTER_CATEGORY", (void **) category);
 }
 
+EXPORT_API int maps_place_filter_get_place_address(const maps_place_filter_h filter,
+						char **place_address)
+{
+	if (!filter || !place_address)
+		return MAPS_ERROR_INVALID_PARAMETER;
+	return maps_item_hashtable_get_string(((maps_place_filter_s *) filter)->
+		table, "MAPS_PLACE_FILTER_PLACE_ADDRESS", place_address);
+}
+
 /*----------------------------------------------------------------------------*/
 
 EXPORT_API int maps_place_filter_set(maps_place_filter_h filter,
@@ -181,4 +190,13 @@ EXPORT_API int maps_place_filter_set_category(maps_place_filter_h filter,
 	return maps_item_hashtable_set(((maps_place_filter_s *) filter)->table,
 		"MAPS_PLACE_FILTER_CATEGORY", (void **) category,
 		maps_place_category_clone, maps_place_category_destroy);
+}
+
+EXPORT_API int maps_place_filter_set_place_address(maps_place_filter_h filter,
+					const char *place_address)
+{
+	if (!filter || !place_address)
+		return MAPS_ERROR_INVALID_PARAMETER;
+	return maps_item_hashtable_set_string(((maps_place_filter_s *) filter)->
+		table, "MAPS_PLACE_FILTER_PLACE_ADDRESS", place_address);
 }
