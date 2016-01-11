@@ -93,6 +93,7 @@ EXPORT_API int maps_plugin_is_service_supported(maps_service_e service,
 	case MAPS_SERVICE_SEARCH_ROUTE_WAYPOINTS:
 	case MAPS_SERVICE_CANCEL_REQUEST:
 	case MAPS_SERVICE_MULTI_REVERSE_GEOCODE:
+	case MAPS_SERVICE_SEARCH_PLACE_LIST:
 		*supported = true;
 		return MAPS_ERROR_NONE;
 	default:

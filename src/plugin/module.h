@@ -100,6 +100,14 @@ typedef int (*maps_plugin_search_place_by_address_f) (const char *address,
 						callback,
 						void *user_data,
 						int *request_id);
+typedef int (*maps_plugin_search_place_list_f) (const maps_area_h boundary,
+					   const maps_place_filter_h filter,
+					   maps_preference_h preference,
+					   maps_service_search_place_list_cb callback,
+					   void *user_data, int *request_id);
+typedef int (*maps_plugin_get_place_details_f) (const char *url,
+						maps_service_get_place_details_cb callback,
+						void *user_data, int *request_id);
 
 /* Route */
 typedef int (*maps_plugin_search_route_f) (const maps_coordinates_h origin,
@@ -156,6 +164,8 @@ namespace plugin {
 			maps_plugin_search_place_by_area;
 		maps_plugin_search_place_by_address_f
 			maps_plugin_search_place_by_address;
+		maps_plugin_search_place_list_f maps_plugin_search_place_list;
+		maps_plugin_get_place_details_f maps_plugin_get_place_details;
 
 		/* Route */
 		maps_plugin_search_route_f maps_plugin_search_route;
@@ -216,8 +226,8 @@ namespace plugin {
 		{
 		}
 	public:
-		 provider_info get_plugin_info(const string &file_name) const;
-		maps_plugin_h init(const provider_info &info);
+		provider_info get_plugin_info(const string &file_name) const;
+		maps_plugin_h init(const provider_info &info, int *init_error);
 		void shutdown(maps_plugin_h plugin_h);
 	private:
 		 GMod *gmod_new(const string &module_file,

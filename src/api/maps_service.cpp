@@ -119,11 +119,10 @@ EXPORT_API int maps_service_create(const char *maps_provider,
 	if (!__has_maps_service_privilege())
 		return MAPS_ERROR_PERMISSION_DENIED;
 
-	maps_error_e error = MAPS_ERROR_NOT_SUPPORTED;
+	int error = MAPS_ERROR_NOT_SUPPORTED;
 
 	do {
 		/* 0. Find the plugin, requested by the user */
-
 		const plugin::provider_info info =
 			plugin::find_by_names(string(maps_provider));
 
@@ -146,9 +145,11 @@ EXPORT_API int maps_service_create(const char *maps_provider,
 		}
 
 		/* 3. Initialize the requested plugin */
-		maps_plugin_h plugin_h = plugin::binary_extractor().init(info);
+		int init_error = MAPS_ERROR_NONE; /* Storage for init error code */
+
+		maps_plugin_h plugin_h = plugin::binary_extractor().init(info, &init_error);
 		if (!plugin_h) {
-			error = MAPS_ERROR_NOT_SUPPORTED;
+			error = init_error;
 			MAPS_LOGE("ERROR! Plugin init failed");
 			break;
 		}
@@ -161,8 +162,7 @@ EXPORT_API int maps_service_create(const char *maps_provider,
 
 		/* 5. Set status of completely correct plugin initialization */
 		error = MAPS_ERROR_NONE;
-
-	} while(false);
+	} while (false);
 
 	if (error != MAPS_ERROR_NONE)
 		maps_service_destroy(*maps);
@@ -488,6 +488,49 @@ EXPORT_API int maps_service_search_place_by_address(const maps_service_h maps,
 	return q()->push(new session::command_search_by_address_place(maps,
 			address, boundary, preference, filter, callback,
 			user_data, request_id));
+}
+
+EXPORT_API int maps_service_search_place_list(const maps_service_h maps,
+					const maps_area_h boundary,
+					const maps_place_filter_h filter,
+					maps_preference_h preference,
+					maps_service_search_place_list_cb callback,
+					void *user_data, int *request_id)
+{
+	if (!maps)
+		return MAPS_ERROR_INVALID_PARAMETER;
+
+	if (!__maps_provider_supported(maps, MAPS_SERVICE_SEARCH_PLACE_LIST))
+		return MAPS_ERROR_NOT_SUPPORTED;
+
+	if (!boundary || !filter || !callback || !request_id)
+		return MAPS_ERROR_INVALID_PARAMETER;
+
+	if (!__has_maps_service_privilege())
+		return MAPS_ERROR_PERMISSION_DENIED;
+
+	return q()->push(new session::command_search_place_list(maps,
+			boundary, preference, filter, callback, user_data, request_id));
+}
+
+EXPORT_API int maps_service_get_place_details(const maps_service_h maps,
+			const char *url, maps_service_get_place_details_cb callback,
+			void *user_data, int *request_id)
+{
+	if (!maps)
+		return MAPS_ERROR_INVALID_PARAMETER;
+
+	if (!__maps_provider_supported(maps, MAPS_SERVICE_SEARCH_PLACE_LIST))
+		return MAPS_ERROR_NOT_SUPPORTED;
+
+	if (!url || !callback || !request_id)
+		return MAPS_ERROR_INVALID_PARAMETER;
+
+	if (!__has_maps_service_privilege())
+		return MAPS_ERROR_PERMISSION_DENIED;
+
+	return q()->push(new session::command_get_place_details(maps,
+			url, callback, user_data, request_id));
 }
 
 /*----------------------------------------------------------------------------*/

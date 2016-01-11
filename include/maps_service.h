@@ -89,6 +89,8 @@ typedef enum _maps_service_e {
 			maps_service_cancel_request() service is allowed */
 	MAPS_SERVICE_MULTI_REVERSE_GEOCODE	/**< Indicates that
 	maps_service_multi_reverse_geocode() service is allowed (Since 3.0)*/
+	MAPS_SERVICE_SEARCH_PLACE_LIST			/** Indicates that
+	maps_service_search_place_list() service is allowed (Since 3.0) */
 } maps_service_e;
 
 /**
@@ -180,8 +182,7 @@ typedef bool(*maps_service_provider_info_cb) (char *maps_provider,
  *
  * @param[in]	callback	The callback function to receive available Maps Providers
  * information
- * @param[out]	user_data	The user data to be passed to the callback
- * function
+ * @param[out]	user_data	The user data to be passed to the callback function
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
@@ -207,12 +208,10 @@ int maps_service_foreach_provider(maps_service_provider_info_cb callback,
  * @privilege %http://tizen.org/privilege/mapservice \n
  *            %http://tizen.org/privilege/network.get
  *
- * @remarks @a maps service handle must be released using
- * maps_service_destroy().
+ * @remarks @a maps service handle must be released using maps_service_destroy().
  * \n use maps_service_foreach_provider() to choose one of available Providers.
  * \n use maps_service_set_provider_key() to set provider's key.
- * \n use use maps_service_set_preference() to set various options of Maps
- * Provider.
+ * \n use use maps_service_set_preference() to set various options of Maps Provider.
  * \n use maps_service_provider_is_service_supported() and
  * maps_service_provider_is_data_supported() to check the Maps Provider's
  * capabilities
@@ -226,7 +225,7 @@ int maps_service_foreach_provider(maps_service_provider_info_cb callback,
  * @retval	#MAPS_ERROR_SERVICE_NOT_AVAILABLE Service not available
  * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
-*
+ *
  * @pre Call maps_service_foreach_provider() to get a available Maps Providers.
  *
  * @see maps_service_foreach_provider()
@@ -267,8 +266,8 @@ int maps_service_destroy(maps_service_h maps);
 
 /**
  * @brief	Sets the Maps Key to be used in the requests of Maps Service.
- * @details This function sets the Maps Provider's Key which will be used in
- * each Maps Service request to Maps Provider.
+ * @details This function sets the Maps Provider's Key which will be used in each Maps
+ * Service request to Maps Provider.
  * \n Maps key can be obtained with maps_service_get_provider_key().
  * @since_tizen 2.4
  * @remarks To get the @a provider_key, refer to corresponding Maps Provider
@@ -366,8 +365,7 @@ int maps_service_get_preference(maps_service_h maps,
 
 /**
  * @brief	Checks if the Maps Service supports a request.
- * @details This function checks if the Maps Service supports a specified
- * request.
+ * @details This function checks if the Maps Service supports a specified request.
  * @since_tizen 2.4
  * @remarks @a maps_service_provider_is_service_supported is always synchronous
  * function.
@@ -419,8 +417,9 @@ int maps_service_provider_is_data_supported(const maps_service_h maps,
 
 /**
  * @brief	Cancels the service request.
- * @details This function cancels the service request initiated by geocoder,
- * route or place search.
+ * @details This function cancels the service request initiated by geocoding
+ * and searching places and routes.
+
  * @since_tizen 2.4
  * @privlevel public
  * @privilege %http://tizen.org/privilege/mapservice
@@ -450,7 +449,7 @@ int maps_service_provider_is_data_supported(const maps_service_h maps,
  *  * maps_service_search_place_by_address()
  *  * maps_service_search_route()
  *  * maps_service_search_route_waypoints()
-  * .
+ * .
  * @pre Call maps_service_create() to create Maps Service and get its handle.
  *
  * @see maps_service_geocode()
@@ -501,6 +500,11 @@ int maps_service_cancel_request(const maps_service_h maps, int request_id);
  * @since_tizen 2.4
  * @remarks The parameter @a coordinates must be released using
  * maps_coordinates_destroy().
+ * \n This error code will be reported. \n
+ *			#MAPS_ERROR_NONE \n
+ *			#MAPS_ERROR_OUT_OF_MEMORY \n
+ *			#MAPS_ERROR_INVALID_PARAMETER \n
+ *			#MAPS_ERROR_NOT_FOUND.
  *
  * @param[in]	result		The result of request
  * @param[in]	request_id	The id of request
@@ -533,6 +537,11 @@ typedef bool(*maps_service_geocode_cb) (maps_error_e result, int request_id,
  * \n If search is failed, the value of @a total is 0 and @a address is NULL
  * @remarks The parameter @a address must be released using
  * maps_address_destroy().
+ * \n This error code will be reported. \n
+ *			#MAPS_ERROR_NONE \n
+ *			#MAPS_ERROR_OUT_OF_MEMORY \n
+ *			#MAPS_ERROR_INVALID_PARAMETER \n
+ *			#MAPS_ERROR_NOT_FOUND.
  * @since_tizen 2.4
  *
  * @param[in]	result		The result of request
@@ -566,18 +575,17 @@ typedef void (*maps_service_reverse_geocode_cb) (maps_error_e result,
  *            %http://tizen.org/privilege/internet \n
  *            %http://tizen.org/privilege/network.get
  * @remarks %http://tizen.org/privilege/internet is needed to access internet.
- * \n To cancel the request use maps_service_cancel_request().
- * \n To check if Maps Provider is capable of Geocoding use
- * maps_service_provider_is_service_supported() with
+ * \n To cancel the request, use maps_service_cancel_request().
+ * \n To check if Maps Provider is capable of geocoding,
+ * use maps_service_provider_is_service_supported() with
  * #MAPS_SERVICE_GEOCODE passed as @a service parameter.
  *
  * @param[in]	maps		The Maps Service handle
  * @param[in]	address		The free-formed address
- * @param[in]	preference	The set of preferences for processing Geocode
+ * @param[in]	preference	The set of preferences for processing geocoding
  * @param[in]	callback	The callback which will receive position
  * coordinates
- * @param[in]	user_data	The user data to be passed to the callback
- * function
+ * @param[in]	user_data	The user data to be passed to the callback function
  * @param[out]	request_id	The id of request
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
@@ -620,19 +628,18 @@ int maps_service_geocode(const maps_service_h maps, const char *address,
  *            %http://tizen.org/privilege/network.get
  * @remarks %http://tizen.org/privilege/internet is needed to access internet.
  * \n Polygonal bounding box is not supported.
- * \n To cancel the request use maps_service_cancel_request().
- * \n To check if Maps Provider is capable of Geocoding Inside Area use
- * maps_service_provider_is_service_supported() with
+ * \n To cancel the request, use maps_service_cancel_request().
+ * \n To check if Maps Provider is capable of geocoding inside area,
+ * use maps_service_provider_is_service_supported() with
  * #MAPS_SERVICE_GEOCODE_INSIDE_AREA passed as @a service parameter.
  *
  * @param[in]	maps		The Maps Service handle
  * @param[in]	address		The free-formed address
  * @param[in]	bounds		The bounding box
- * @param[in]	preference	The set of preferences for processing Geocode
+ * @param[in]	preference	The set of preferences for processing geocoding
  * @param[in]	callback	The callback which will receive position
  * coordinates
- * @param[in]	user_data	The user data to be passed to the callback
- * function
+ * @param[in]	user_data	The user data to be passed to the callback function
  * @param[out]	request_id	The id of request
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
@@ -648,8 +655,7 @@ int maps_service_geocode(const maps_service_h maps, const char *address,
  * @retval	#MAPS_ERROR_KEY_NOT_AVAILABLE Invalid key
  * @retval	#MAPS_ERROR_UNKNOWN Unknown error
  *
- * @pre Call maps_service_create() to create Maps Service and obtain its
- * handle.
+ * @pre Call maps_service_create() to create Maps Service and obtain its handle.
  * @post It invokes maps_service_geocode_cb() to deliver obtained position
  * coordinates.
  *
@@ -679,18 +685,17 @@ int maps_service_geocode_inside_area(const maps_service_h maps,
  *            %http://tizen.org/privilege/internet \n
  *            %http://tizen.org/privilege/network.get
  * @remarks %http://tizen.org/privilege/internet is needed to access internet.
- * \n To cancel the request use maps_service_cancel_request().
- * \n To check if Maps Provider is capable of Geocoding by Structured Address use
- * maps_service_provider_is_service_supported() with
+ * \n To cancel the request, use maps_service_cancel_request().
+ * \n To check if Maps Provider is capable of geocoding by structured address,
+ * use maps_service_provider_is_service_supported() with
  * #MAPS_SERVICE_GEOCODE_BY_STRUCTURED_ADDRESS passed as @a service parameter.
  *
  * @param[in]	maps		The Maps Service handle
  * @param[in]	address		The structured address
- * @param[in]	preference	The set of preferences for processing Geocode
+ * @param[in]	preference	The set of preferences for processing geocoding
  * @param[in]	callback	The callback which will receive position
  * coordinates
- * @param[in]	user_data	The user data to be passed to the callback
- * function
+ * @param[in]	user_data	The user data to be passed to the callback function
  * @param[out]	request_id	The id of request
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
@@ -735,20 +740,17 @@ int maps_service_geocode_by_structured_address(const maps_service_h maps,
  *            %http://tizen.org/privilege/internet \n
  *            %http://tizen.org/privilege/network.get
  * @remarks %http://tizen.org/privilege/internet is needed to access internet.
- * \n To cancel the request use maps_service_cancel_request().
- * \n To check if Maps Provider is capable of Reverse Geocoding use
- * maps_service_provider_is_service_supported() with
+ * \n To cancel the request, use maps_service_cancel_request().
+ * \n To check if Maps Provider is capable of reverse geocoding,
+ * use maps_service_provider_is_service_supported() with
  * #MAPS_SERVICE_REVERSE_GEOCODE passed as @a service parameter.
  *
  * @param[in]	maps		The Maps Service handle
  * @param[in]	latitude	The latitude [-90.0 ~ 90.0] (degrees)
  * @param[in]	longitude	The longitude [-180.0 ~ 180.0] (degrees)
- * @param[in]	preference	The set of preferences for processing Reverse
- * Geocode
- * @param[in]	callback	The callback which will receive address
- * information
- * @param[in]	user_data	The user data to be passed to the callback
- * function
+ * @param[in]	preference	The set of preferences for processing reverse geocoding
+ * @param[in]	callback	The callback which will receive address information
+ * @param[in]	user_data	The user data to be passed to the callback function
  * @param[out]	request_id	The id of request
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
@@ -787,6 +789,11 @@ int maps_service_reverse_geocode(const maps_service_h maps, double latitude,
  * @since_tizen 3.0
  * @remarks	You can get the respective address information of @a address_list
  * using maps_address_list_foreach().
+ * \n This error code will be reported. \n
+ *			#MAPS_ERROR_NONE \n
+ *			#MAPS_ERROR_OUT_OF_MEMORY \n
+ *			#MAPS_ERROR_INVALID_PARAMETER \n
+ *			#MAPS_ERROR_NOT_FOUND.
  *
  * @param[in]	result			The result of request
  * @param[in]	request_id		The id of request
@@ -820,9 +827,9 @@ typedef bool (*maps_service_multi_reverse_geocode_cb) (maps_error_e result,
  *            %http://tizen.org/privilege/internet \n
  *            %http://tizen.org/privilege/network.get
  * @remarks %http://tizen.org/privilege/internet is needed to access internet.
- * \n To cancel the request use maps_service_cancel_request().
- * \n To check if Maps Provider is capable of Multi Reverse Geocoding use
- * maps_service_provider_is_service_supported() with
+ * \n To cancel the request, use maps_service_cancel_request().
+ * \n To check if Maps Provider is capable of multi reverse geocoding,
+ * use maps_service_provider_is_service_supported() with
  * #MAPS_SERVICE_MULTI_REVERSE_GEOCODE passed as @a service parameter.
  *
  * @param[in]	maps		The Maps Service handle
@@ -887,6 +894,11 @@ int maps_service_multi_reverse_geocode(const maps_service_h maps,
  * \n If search is failed, the value of @a total is 0 and @a place is NULL
  * @since_tizen 2.4
  * @remarks The parameter @a place must be released using maps_place_destroy().
+ * \n This error code will be reported. \n
+ *			#MAPS_ERROR_NONE \n
+ *			#MAPS_ERROR_OUT_OF_MEMORY \n
+ *			#MAPS_ERROR_INVALID_PARAMETER \n
+ *			#MAPS_ERROR_NOT_FOUND.
  *
  * @param[in]	error		The result of request
  * @param[in]	request_id	The request id
@@ -913,6 +925,55 @@ typedef bool(*maps_service_search_place_cb) (maps_error_e error,
 					     void *user_data);
 
 /**
+ * @brief	Called for Place list of Place Search request
+ * @details The Maps Service invokes this callback when the Place data obtained
+ * from the specified coordinates.
+ * \n If search is failed, the value of @a total is 0 and @a place_list is NULL
+ * @since_tizen 3.0
+ * @remarks	This error code will be reported. \n
+ *			#MAPS_ERROR_NONE \n
+ *			#MAPS_ERROR_OUT_OF_MEMORY \n
+ *			#MAPS_ERROR_INVALID_PARAMETER \n
+ *			#MAPS_ERROR_NOT_FOUND.
+ *
+ * @param[in]	error		The result of request
+ * @param[in]	request_id	The request id
+ * @param[in]	place_list	The resulting Place list data
+ * @param[in]	uesr_data	The user data passed from maps_service_search_place_list()
+ *
+ * @pre maps_service_search_place_list() will invoke this callback.
+ *
+ * @see maps_service_search_place_list()
+ * @see maps_place_list_foreach()
+ */
+typedef void(*maps_service_search_place_list_cb) (maps_error_e error,
+					     int request_id, maps_place_list_h place_list, void *user_data);
+
+/**
+ * @brief	Called for Place datail information of Place Search request
+ * @details The Maps Service invokes this callback when the Place detail data
+ * obtained from the specified uri.
+ * \n If search is failed, @a place is NULL
+ * @since_tizen 3.0
+ * @remarks	This error code will be reported. \n
+ *			#MAPS_ERROR_NONE \n
+ *			#MAPS_ERROR_OUT_OF_MEMORY \n
+ *			#MAPS_ERROR_INVALID_PARAMETER \n
+ *			#MAPS_ERROR_NOT_FOUND.
+ *
+ * @param[in]	error		The result of request
+ * @param[in]	request_id	The request id
+ * @param[in]	place		The resulting Place data
+ * @param[in]	uesr_data	The user data passed from maps_service_get_place_details()
+ *
+ * @pre maps_service_get_place_details() will invoke this callback.
+ *
+ * @see maps_service_get_place_details()
+ */
+typedef void(*maps_service_get_place_details_cb) (maps_error_e error,
+					     int request_id, maps_place_h place, void *user_data);
+
+/**
  * @brief	Queries a Place information by a coordinates position and a
  * distance.
  * \n The request is asynchronous.
@@ -924,8 +985,8 @@ typedef bool(*maps_service_search_place_cb) (maps_error_e error,
  *            %http://tizen.org/privilege/internet \n
  *            %http://tizen.org/privilege/network.get
  * @remarks %http://tizen.org/privilege/internet is needed to access internet.
- * \n To cancel the search request use maps_service_cancel_request().
- * \n To check if Maps Provider is capable of Place Search use
+ * \n To cancel the search request, use maps_service_cancel_request().
+ * \n To check if Maps Provider is capable of searching places, use
  * maps_service_provider_is_service_supported() with
  * #MAPS_SERVICE_SEARCH_PLACE passed as @a service parameter.
  * \n Check available data features in the search result using
@@ -938,10 +999,8 @@ typedef bool(*maps_service_search_place_cb) (maps_error_e error,
  * @param[in]	filter		The filter handle
  * @param[in]	preference	The place preference handle
  * @param[in]	callback	The result callback
- * @param[in]	user_data	The user data to be passed to the callback
- * function
- * @param[out]	request_id	A Request id, can be set to NULL if does not
- * require operation cancel
+ * @param[in]	user_data	The user data to be passed to the callback function
+ * @param[out]	request_id	The request id
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
@@ -987,8 +1046,8 @@ int maps_service_search_place(const maps_service_h maps,
  *            %http://tizen.org/privilege/network.get
  * @remarks %http://tizen.org/privilege/internet is needed to access internet.
  * \n @a boundary is supporting only circle type bounds for search.
- * \n To cancel the search request use maps_service_cancel_request().
- * \n To check if Maps Provider is capable of Place Search by coordinates
+ * \n To cancel the search request, use maps_service_cancel_request().
+ * \n To check if Maps Provider is capable of searching places by coordinates
  * boundaries, use maps_service_provider_is_service_supported() with
  * #MAPS_SERVICE_SEARCH_PLACE_BY_AREA  passed as @a service parameter.
  * \n Check available data features in the search result using
@@ -1000,10 +1059,8 @@ int maps_service_search_place(const maps_service_h maps,
  * @param[in]	filter		The filter handle
  * @param[in]	preference	The place preference handle
  * @param[in]	callback	The result callback
- * @param[in]	user_data	The user data to be passed to the callback
- * function
- * @param[out]	request_id	A Request id, can be set to NULL if does not
- * required operation cancel
+ * @param[in]	user_data	The user data to be passed to the callback function
+ * @param[out]	request_id	The request id
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
@@ -1050,9 +1107,9 @@ int maps_service_search_place_by_area(const maps_service_h maps,
  *            %http://tizen.org/privilege/network.get
  * @remarks %http://tizen.org/privilege/internet is needed to access internet.
  * \n @a boundary is supporting only circle type bounds for search.
- * \n To cancel the search request use maps_service_cancel_request().
- * \n To check if Maps Provider is capable of Place Search by free-formed
- * address use maps_service_provider_is_service_supported() with
+ * \n To cancel the search request, use maps_service_cancel_request().
+ * \n To check if Maps Provider is capable of searching places by free-formed
+ * address, use maps_service_provider_is_service_supported() with
  * #MAPS_SERVICE_SEARCH_PLACE_BY_ADDRESS passed as @a service parameter.
  * \n Check available data features in the search result using
  * maps_service_provider_is_data_supported() with values, listed in
@@ -1064,10 +1121,8 @@ int maps_service_search_place_by_area(const maps_service_h maps,
  * @param[in]	filter		The filter handle
  * @param[in]	preference	The place preference handle
  * @param[in]	callback	The result callback
- * @param[in]	user_data	The user data to be passed to the callback
- * function
- * @param[out]	request_id	A Request id, can be set to NULL if does not
- * required operation cancel
+ * @param[in]	user_data	The user data to be passed to the callback function
+ * @param[out]	request_id	The request id
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
@@ -1104,6 +1159,102 @@ int maps_service_search_place_by_address(const maps_service_h maps,
 					 int *request_id);
 
 /**
+ * @brief	Queries a brief Place information by a coordinates boundary.
+ * /n The request is asynchronous.
+ * @details This function obtains the brief Place information for a specified coordinates boundary.
+ * @since_tizen 3.0
+ * @privlevel public
+ * @privilege %http://tizen.org/privilege/mapservice \n
+ *            %http://tizen.org/privilege/internet \n
+ *            %http://tizen.org/privilege/network.get
+ * @remarks To cancel the search request use maps_service_cancel_request().
+ * \n To check if Maps Provider is capable of Place Search and which Place preferences are supported,
+ * see the lists of capacities and preferences above.
+ *
+ * @param[in]	maps		The Maps Service handle
+ * @param[in]	boundary	The interested area
+ * @param[in]	filter		The filter handle
+ * @param[in]	preference	The place preference handle
+ * @param[in]	callback	The result callback
+ * @param[in]	user_data	The user data to be passed to the callback function
+ * @param[out]	request_id	The request id
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_SERVICE_NOT_AVAILABLE Service not available
+ * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
+ * @retval	#MAPS_ERROR_CONNECTION_TIME_OUT Timeout error, no answer
+ * @retval	#MAPS_ERROR_INVALID_OPERATION Operation is not valid
+ * @retval	#MAPS_ERROR_NOT_FOUND Result not found
+ * @retval	#MAPS_ERROR_KEY_NOT_AVAILABLE Invalid key
+ * @retval	#MAPS_ERROR_RESOURCE_BUSY Places service busy
+ * @retval	#MAPS_ERROR_CANCELED Places service aborted
+ * @retval	#MAPS_ERROR_UNKNOWN Unknown error
+ *
+ * @pre Call maps_service_create() to create Maps Service and obtain its handle.
+ * @post It invokes maps_service_search_place_list_cb() to deliver obtained Place information.
+ *
+ * @see maps_service_get_place_details()
+ * @see maps_service_search_place_list_cb()
+ * @see maps_service_cancel_request()
+ * @see maps_service_provider_is_service_supported()
+ */
+int maps_service_search_place_list(const maps_service_h maps,
+			      const maps_area_h boundary,
+			      const maps_place_filter_h filter,
+			      maps_preference_h preference,
+			      maps_service_search_place_list_cb callback,
+			      void *user_data, int *request_id);
+
+/**
+ * @brief	Queries a Detail place information by a place uri.
+ * \n The request is asynchronous.
+ * @details This function obtains the Detail place information for a specified place uri
+ * @since_tizen 3.0
+ * @privlevel public
+ * @privilege %http://tizen.org/privilege/mapservice \n
+ *            %http://tizen.org/privilege/internet \n
+ *            %http://tizen.org/privilege/network.get
+ * @remarks To cancel the search request use maps_service_cancel_request().
+ * \n To check if Maps Provider is capable of Place Search and which Place preferences are supported,
+ * see the lists of capacities and preferences above.
+ *
+ * @param[in]	maps		The Maps Service handle
+ * @param[in]	uri			The interested place uri
+ * @param[in]	callback	The result callback
+ * @param[in]	user_data	The user data to be passed to the callback function
+ * @param[out]	request_id	The request id
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_SERVICE_NOT_AVAILABLE Service not available
+ * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
+ * @retval	#MAPS_ERROR_CONNECTION_TIME_OUT Timeout error, no answer
+ * @retval	#MAPS_ERROR_INVALID_OPERATION Operation is not valid
+ * @retval	#MAPS_ERROR_NOT_FOUND Result not found
+ * @retval	#MAPS_ERROR_KEY_NOT_AVAILABLE Invalid key
+ * @retval	#MAPS_ERROR_RESOURCE_BUSY Places service busy
+ * @retval	#MAPS_ERROR_CANCELED Places service aborted
+ * @retval	#MAPS_ERROR_UNKNOWN Unknown error
+ *
+ * @pre Call maps_service_create() to create Maps Service and obtain its handle.
+ * @pre @a uri is obtained from maps_service_search_place_list()
+ * @post It invokes maps_service_get_place_details_cb() to deliver obtained Place information.
+ *
+ * @see maps_service_search_place_list()
+ * @see maps_service_get_place_details_cb()
+ * @see maps_service_cancel_request()
+ * @see maps_service_provider_is_service_supported()
+ */
+int maps_service_get_place_details(const maps_service_h maps,
+			      const char *uri, maps_service_get_place_details_cb callback,
+			      void *user_data, int *request_id);
+
+/**
  * @}
  */
 
@@ -1120,18 +1271,23 @@ int maps_service_search_place_by_address(const maps_service_h maps,
  * @{
  * @brief This provides APIs for Route Service
  * @details The Maps Route API provides functions to calculate a route that
- * defines a path between a start and a destination and may, optionally, pass
+ * defines a path between a origin and a destination and may, optionally, pass
  * through specific intermediate locations.
  *
  */
 
 /**
- * @brief	Called when the requested Routes are found.
+ * @brief	Called when the requested routes are found.
  * @details The Maps Service invokes this callback while iterating through the
  * set of obtained Routes.
  * \n If search is failed, the value of @a total is 0 and @a route is NULL.
  * @since_tizen 2.4
  * @remarks The parameter @a route must be released using maps_route_destroy().
+ * \n This error code will be reported. \n
+ *			#MAPS_ERROR_NONE \n
+ *			#MAPS_ERROR_OUT_OF_MEMORY \n
+ *			#MAPS_ERROR_INVALID_PARAMETER \n
+ *			#MAPS_ERROR_NOT_FOUND.
  *
  * @param[in]	error		The result of request
  * @param[in]	request_id	The id of request
@@ -1167,8 +1323,8 @@ typedef bool(*maps_service_search_route_cb) (maps_error_e error,
  *            %http://tizen.org/privilege/internet \n
  *            %http://tizen.org/privilege/network.get
  * @remarks %http://tizen.org/privilege/internet is needed to access internet.
- * \n To cancel the search request use maps_service_cancel_request().
- * \n To check if Maps Provider is capable of Route Search use
+ * \n To cancel the search request, use maps_service_cancel_request().
+ * \n To check if Maps Provider is capable of searching routes, use
  * maps_service_provider_is_service_supported() with
  * #MAPS_SERVICE_SEARCH_ROUTE passed as @a service parameter.
  * \n Check available data features in the search result using
@@ -1180,9 +1336,8 @@ typedef bool(*maps_service_search_route_cb) (maps_error_e error,
  * @param[in]	destination	The destination
  * @param[in]	preference	The Route preference handle
  * @param[in]	callback	The result callback
- * @param[in]	user_data	The user data to be passed to the callback
- * function
- * @param[out]	request_id	The request ID
+ * @param[in]	user_data	The user data to be passed to the callback function
+ * @param[out]	request_id	The request id
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
@@ -1223,8 +1378,8 @@ int maps_service_search_route(const maps_service_h maps,
  *            %http://tizen.org/privilege/internet \n
  *            %http://tizen.org/privilege/network.get
  * @remarks %http://tizen.org/privilege/internet is needed to access internet.
- * \n To cancel the search request use maps_service_cancel_request().
- * \n To check if Maps Provider is capable of searching the route, passing
+ * \n To cancel the search request, use maps_service_cancel_request().
+ * \n To check if Maps Provider is capable of searching the route passing
  * through the specified way points, use
  * maps_service_provider_is_service_supported() with
  * #MAPS_SERVICE_SEARCH_ROUTE_WAYPOINTS passed as @a service parameter.
@@ -1237,9 +1392,8 @@ int maps_service_search_route(const maps_service_h maps,
  * @param[in]	waypoint_num	The number of way points to go through
  * @param[in]	preference	The Route preference handle
  * @param[in]	callback	The result callback
- * @param[in]	user_data	The user data to be passed to the callback
- * function
- * @param[out]	request_id	The request ID
+ * @param[in]	user_data	The user data to be passed to the callback function
+ * @param[out]	request_id	The request id
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory

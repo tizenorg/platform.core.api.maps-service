@@ -45,7 +45,7 @@ plugin::provider_info plugin::binary_extractor::get_plugin_info(const
 	if (file_name.empty())
 		return provider_info::empty_instance;
 
-	/* 1.Init plugin */
+	/* 1.Initialize plugin */
 	GMod *plugin = gmod_new(file_name, FALSE);
 	if (!plugin)
 		return provider_info::empty_instance;
@@ -76,11 +76,14 @@ plugin::provider_info plugin::binary_extractor::get_plugin_info(const
 	return info;
 }
 
-maps_plugin_h plugin::binary_extractor::init(const provider_info &info)
+maps_plugin_h plugin::binary_extractor::init(const provider_info &info,
+					     int *init_error)
 {
-	/* 1.Init plugin */
-	if (info.file.empty())
+	/* 1.Initialize plugin */
+	if (info.file.empty() || !init_error)
 		return NULL;
+
+	*init_error = MAPS_ERROR_NONE;
 
 	GMod *plugin = gmod_new(info.file, TRUE);
 	if (!plugin) {
@@ -170,6 +173,12 @@ maps_plugin_h plugin::binary_extractor::init(const provider_info &info)
 			(maps_plugin_search_place_by_address_f)
 			gmod_find_sym(plugin,
 			"maps_plugin_search_place_by_address");
+		new_plugin->interface.maps_plugin_search_place_list =
+			(maps_plugin_search_place_list_f) gmod_find_sym(plugin,
+			"maps_plugin_search_place_list");
+		new_plugin->interface.maps_plugin_get_place_details =
+			(maps_plugin_get_place_details_f) gmod_find_sym(plugin,
+			"maps_plugin_get_place_details");
 
 		/* Route */
 		new_plugin->interface.maps_plugin_search_route =
@@ -458,6 +467,10 @@ void plugin::binary_extractor::trace_dbg(const plugin_s *plugin) const
 		itf->maps_plugin_search_place_by_area);
 	MAPS_LOGD("maps_plugin_search_place_by_address:\t%p",
 		itf->maps_plugin_search_place_by_address);
+	MAPS_LOGD("maps_plugin_search_place_list:\t\t%p",
+		itf->maps_plugin_search_place_list);
+	MAPS_LOGD("maps_plugin_get_place_details:\t%p",
+		itf->maps_plugin_get_place_details);
 
 	MAPS_LOGD("maps_plugin_search_route:\t\t%p",
 		itf->maps_plugin_search_route);
