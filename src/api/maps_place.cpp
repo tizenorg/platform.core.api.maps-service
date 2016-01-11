@@ -92,7 +92,7 @@ typedef struct _maps_place_s
 /* TODO: extract all such constants to the dedcated header file */
 const gsize _MAPS_PLACE_ID_MAX_LENGTH = 32;
 const gsize _MAPS_PLACE_NAME_MAX_LENGTH = 64;
-const gsize _MAPS_PLACE_URI_MAX_LENGTH = 128;
+const gsize _MAPS_PLACE_URI_MAX_LENGTH = 256;
 
 /*----------------------------------------------------------------------------*/
 
@@ -813,4 +813,13 @@ int _maps_place_set_supported_data(maps_place_h place,
 	if (p->supported_data)
 		maps_string_hashtable_destroy(p->supported_data);
 	return maps_string_hashtable_clone(supported_data, &p->supported_data);
+}
+
+EXPORT_API int maps_place_list_foreach(const maps_place_list_h place_list,
+				maps_place_cb callback, void *user_data)
+{
+	if (!place_list || !callback)
+		return MAPS_ERROR_INVALID_PARAMETER;
+
+	return maps_item_list_foreach((maps_item_list_h) place_list, maps_place_clone, callback, user_data);
 }

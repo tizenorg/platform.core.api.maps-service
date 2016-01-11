@@ -244,7 +244,7 @@ EXPORT_API int maps_service_provider_is_service_supported(const maps_service_h
 	if (!maps || !supported)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	if ((service < MAPS_SERVICE_GEOCODE)
-	    || (service > MAPS_SERVICE_MULTI_REVERSE_GEOCODE))
+	    || (service > MAPS_SERVICE_SEARCH_PLACE_LIST))
 		return MAPS_ERROR_INVALID_PARAMETER;
 	const plugin::plugin_s *p = __extract_plugin(maps);
 	if (!p)
@@ -426,11 +426,9 @@ EXPORT_API int maps_service_search_place(const maps_service_h maps,
 
 EXPORT_API int maps_service_search_place_by_area(const maps_service_h maps,
 						 const maps_area_h boundary,
-						 const maps_place_filter_h
-						 filter,
+						 const maps_place_filter_h filter,
 						 maps_preference_h preference,
-						 maps_service_search_place_cb
-						 callback,
+						 maps_service_search_place_cb callback,
 						 void *user_data,
 						 int *request_id)
 {
@@ -457,16 +455,13 @@ EXPORT_API int maps_service_search_place_by_area(const maps_service_h maps,
 }
 
 EXPORT_API int maps_service_search_place_by_address(const maps_service_h maps,
-						    const char *address,
-						    const maps_area_h boundary,
-						    const maps_place_filter_h
-						    filter,
-						    maps_preference_h
-						    preference,
-						maps_service_search_place_cb
-						callback,
-						void *user_data,
-						int *request_id)
+							const char *address,
+							const maps_area_h boundary,
+							const maps_place_filter_h filter,
+							maps_preference_h preference,
+							maps_service_search_place_cb callback,
+							void *user_data,
+							int *request_id)
 {
 	/* Check if the handle of the Maps Service is valid */
 	if (!maps)
@@ -488,6 +483,49 @@ EXPORT_API int maps_service_search_place_by_address(const maps_service_h maps,
 	return q()->push(new session::command_search_by_address_place(maps,
 			address, boundary, preference, filter, callback,
 			user_data, request_id));
+}
+
+EXPORT_API int maps_service_search_place_list(const maps_service_h maps,
+					const maps_area_h boundary,
+					const maps_place_filter_h filter,
+					maps_preference_h preference,
+					maps_service_search_place_list_cb callback,
+					void *user_data, int *request_id)
+{
+	if (!maps)
+		return MAPS_ERROR_INVALID_PARAMETER;
+
+	if (!__maps_provider_supported(maps, MAPS_SERVICE_SEARCH_PLACE_LIST))
+		return MAPS_ERROR_NOT_SUPPORTED;
+
+	if (!boundary || !filter || !callback || !request_id)
+		return MAPS_ERROR_INVALID_PARAMETER;
+
+	if (!__has_maps_service_privilege())
+		return MAPS_ERROR_PERMISSION_DENIED;
+
+	return q()->push(new session::command_search_place_list(maps,
+			boundary, preference, filter, callback, user_data, request_id));
+}
+
+EXPORT_API int maps_service_get_place_details(const maps_service_h maps,
+			const char *url, maps_service_get_place_details_cb callback,
+			void *user_data, int *request_id)
+{
+	if (!maps)
+		return MAPS_ERROR_INVALID_PARAMETER;
+
+	if (!__maps_provider_supported(maps, MAPS_SERVICE_SEARCH_PLACE_LIST))
+		return MAPS_ERROR_NOT_SUPPORTED;
+
+	if (!url || !callback || !request_id)
+		return MAPS_ERROR_INVALID_PARAMETER;
+
+	if (!__has_maps_service_privilege())
+		return MAPS_ERROR_PERMISSION_DENIED;
+
+	return q()->push(new session::command_get_place_details(maps,
+			url, callback, user_data, request_id));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -522,12 +560,10 @@ EXPORT_API int maps_service_search_route(const maps_service_h maps,
 }
 
 EXPORT_API int maps_service_search_route_waypoints(const maps_service_h maps,
-						   const maps_coordinates_h *
-						   waypoint_list,
+						   const maps_coordinates_h *waypoint_list,
 						   int waypoint_num,
 						   maps_preference_h preference,
-						   maps_service_search_route_cb
-						   callback,
+						   maps_service_search_route_cb callback,
 						   void *user_data,
 						   int *request_id)
 {
