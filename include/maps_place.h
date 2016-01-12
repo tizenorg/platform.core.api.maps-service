@@ -58,6 +58,27 @@ extern "C" {
  */
 typedef void *maps_place_h;
 
+/**
+ * @brief	The Place brief handle
+ * @details The handle of Place brief instance.
+ * @remarks To release the handle use maps_place_brief_destroy().
+ * \n To clone the handle use maps_place_brief_clone().
+ * @since_tizen 3.0
+ *
+ * @see maps_place_brief_destroy()
+ * @see maps_place_brief_clone()
+ */
+typedef void *maps_place_brief_h;
+
+/**
+ * @brief	The Place list handle
+ * @details The handle of Place list instance.
+ * @since_tizen 3.0
+ *
+ * @see maps_place_list_foreach()
+ */
+typedef void *maps_place_list_h;
+
 /*----------------------------------------------------------------------------*/
 
 /**
@@ -245,6 +266,27 @@ typedef bool(*maps_place_images_cb) (int index, int total,
 typedef bool(*maps_place_reviews_cb) (int index, int total,
 				      maps_place_review_h review,
 				      void *user_data);
+
+/**
+ * @brief	Called when requesting the list of Place.
+ * @details This callback is invoked while iterating through the list of Place.
+ * @since_tizen 3.0
+ * @remarks @a place is valid only in this function and must be released using
+ * maps_place_brief_destroy().
+ *
+ * @param[in]	index		The current index of review
+ * @param[in]	total		The total amount of reviews
+ * @param[in]	place		The place handle
+ * @param[in]	uesr_data	The user data passed from the maps_place_list_foreach()
+ * @return	@c true to continue with the next iteration of the loop,
+ * \n @c false to break out of the loop
+ *
+ * @pre maps_place_list_foreach() will invoke this callback.
+ *
+ * @see maps_place_list_foreach()
+ * @see #maps_place_brief_h
+ */
+typedef bool(*maps_place_cb) (int index, int total, maps_place_brief_h place, void *user_data);
 
 /*----------------------------------------------------------------------------*/
 
@@ -590,6 +632,168 @@ int maps_place_get_supplier_link(const maps_place_image_h place,
  */
 int maps_place_get_related_link(const maps_place_image_h place,
 				maps_place_link_object_h *related);
+
+
+/*----------------------------------------------------------------------------*/
+
+/**
+ * @brief	Destroys the place brief handle and releases all its resources.
+ * @details This function destroys the place brief  handle and releases all its resources.
+ * @since_tizen 3.0
+ *
+ * @param[in]	place		The place brief handle to destroy
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ *
+ * @see maps_place_brief_clone()
+ */
+int maps_place_brief_destroy(maps_place_brief_h place);
+
+/**
+ * @brief	Clones the place brief handle.
+ * @details This function clones the place brief handle @a origin and all its resources.
+ * @since_tizen 3.0
+ * @remarks @a cloned must be released using maps_place_brief_destroy().
+ *
+ * @param[in]	origin	The original place brief handle
+ * @param[out]	cloned	A cloned place brief handle
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ *
+ * @see maps_place_brief_destroy()
+ */
+int maps_place_brief_clone(const maps_place_brief_h origin, maps_place_brief_h *cloned);
+
+/**
+ * @brief	Gets the place id.
+ * @details This function gets the place id.
+ * @since_tizen 3.0
+ * @remarks @a id must be released using free().
+ *
+ * @param[in]	place		The place brief handle
+ * @param[out]	id		The place id
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ */
+int maps_place_brief_get_id(const maps_place_brief_h place, char **id);
+
+/**
+ * @brief	Gets the place name.
+ * @details This function gets the place name.
+ * @since_tizen 3.0
+ * @remarks @a name must be released using free().
+ *
+ * @param[in]	place		The place brief handle
+ * @param[out]	name		The place name
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ */
+int maps_place_brief_get_name(const maps_place_brief_h place, char **name);
+
+/**
+ * @brief	Gets the place view URI.
+ * @details This function gets the place view URI.
+ * @since_tizen 3.0
+ * @remarks @a uri must be released using free().
+ *
+ * @param[in]	place		The place brief handle
+ * @param[out]	uri		The place view URI
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ */
+int maps_place_brief_get_uri(const maps_place_brief_h place, char **uri);
+
+/**
+ * @brief	Gets the place distance from the center of the location.
+ * @details This function gets the place distance from the center of the location.
+ * @since_tizen 3.0
+ *
+ * @param[in]	place			The place brief handle
+ * @param[out]	distance		The place distance
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ */
+int maps_place_brief_get_distance(const maps_place_brief_h place, int *distance);
+
+/**
+ * @brief	Gets the place location.
+ * @details This function gets the place location.
+ * @since_tizen 3.0
+ * @remarks @a location must be released using maps_coordinates_destroy().
+ *
+ * @param[in]	place			The place brief handle
+ * @param[out]	location		The place location
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ */
+int maps_place_brief_get_location(const maps_place_brief_h place, maps_coordinates_h *location);
+
+/**
+ * @brief	Gets the place rating.
+ * @details This function gets the place rating.
+ * @since_tizen 3.0
+ * @remarks @a rating must be released using maps_place_rating_destroy().
+ *
+ * @param[in]	place		The place brief handle
+ * @param[out]	rating		The place rating handle
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
+ */
+int maps_place_brief_get_rating(const maps_place_brief_h place, maps_place_rating_h *rating);
+
+/**
+ * @brief	Retrieves all categories
+ * @details This function retrieves all place categories.
+ * @since_tizen 3.0
+ * @remarks The categories will be delivered via maps_place_categories_cb().
+ *
+ * @param[in]	place		The place brief handle
+ * @param[in]	callback	The callback function to invoke
+ * @param[in]	user_data	The user data to be passed to the callback function
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_FOUND Result not found
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
+ *
+ * @post This function invokes maps_place_categories_cb() repeatedly to retrieve each category.
+ *
+ * @see maps_place_categories_cb()
+ */
+int maps_place_brief_foreach_category(const maps_place_brief_h place,
+				maps_place_categories_cb callback, void *user_data);
+
+/**
+ * @brief	Retrieves all places.
+ * @details This function retrieves all places.
+ * @since_tizen 3.0
+ * @remarks The places will be delivered via maps_place_cb().
+ *
+ * @param[in]	place_list	The place list handle
+ * @param[in]	callback	The callback function to invoke
+ * @param[in]	user_data	The user data to be passed to the callback function
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_FOUND Result not found
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
+ *
+ * @post This function invokes maps_place_cb() repeatedly to retrieve each place.
+ *
+ * @see maps_place_cb()
+ */
+int maps_place_list_foreach(const maps_place_list_h place_list,
+				maps_place_cb callback, void *user_data);
 
 #ifdef __cplusplus
 }

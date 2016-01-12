@@ -361,6 +361,152 @@ int maps_place_set_supplier_link(maps_place_h place,
 int maps_place_set_related_link(maps_place_h place,
 				const maps_place_link_object_h related);
 
+/*----------------------------------------------------------------------------*/
+
+/**
+ * @brief	Creates a new place brief handle.
+ * @details This function creates a new place brief handle and allocates all needed resources.
+ * @since_tizen 3.0
+ * @remarks @a place must be released using maps_place_brief_destroy().
+ * \n @a place may be cloned using maps_place_brief_clone().
+ *
+ * @param[in]	place		A handle of a new place on success
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ *
+ * @see maps_place_brief_destroy()
+ * @see maps_place_brief_clone()
+ */
+int maps_place_brief_create(maps_place_brief_h *place);
+
+/**
+ * @brief	Sets the place id.
+ * @details This function sets the place id.
+ * @since_tizen 3.0
+ *
+ * @param[in]	place		The handle to place
+ * @param[in]	id		The place id
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ *
+ * @pre @a place is created using maps_place_brief_create().
+ *
+ * @see maps_place_brief_create()
+ */
+int maps_place_brief_set_id(maps_place_brief_h place, const char *id);
+
+/**
+ * @brief	Sets the place name.
+ * @details This function sets the place name.
+ * @since_tizen 3.0
+ *
+ * @param[in]	place		The handle to place
+ * @param[in]	name		The place name
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ *
+ * @pre @a place is created using maps_place_brief_create().
+ *
+ * @see maps_place_brief_create()
+ * @see maps_place_brief_get_name()
+ */
+int maps_place_brief_set_name(maps_place_brief_h place, const char *name);
+
+/**
+ * @brief	Sets the place view URI.
+ * @details This function sets the place URI.
+ * @since_tizen 3.0
+ *
+ * @param[in]	place		The handle to place
+ * @param[in]	uri		The place view uri
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ *
+ * @pre @a place is created using maps_place_brief_create().
+ *
+ * @see maps_place_brief_create()
+ * @see maps_place_brief_get_uri()
+ */
+int maps_place_brief_set_uri(maps_place_brief_h place, const char *uri);
+
+/**
+ * @brief	Sets the place distance from the center of the location.
+ * @details This function sets the place distance from the center of the location.
+ * @since_tizen 3.0
+ *
+ * @param[in]	place		The handle to place
+ * @param[in]	distance	The place distance
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ *
+ * @pre @a place is created using maps_place_brief_create().
+ *
+ * @see maps_place_brief_create()
+ * @see maps_place_brief_get_distance()
+ */
+int maps_place_brief_set_distance(maps_place_brief_h place, const int distance);
+
+/**
+ * @brief	Sets the place location.
+ * @details This function sets the place location.
+ * @since_tizen 3.0
+ *
+ * @param[in]	place		The handle to place
+ * @param[in]	location	The place location
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ *
+ * @pre @a place is created using maps_place_brief_create().
+ *
+ * @see maps_place_brief_create()
+ * @see maps_place_brief_get_location()
+ */
+int maps_place_brief_set_location(maps_place_brief_h place, const maps_coordinates_h location);
+
+/**
+ * @brief	Sets the place rating.
+ * @details This function sets the place rating.
+ * @since_tizen 3.0
+ *
+ * @param[in]	place		The handle to place
+ * @param[in]	rating		The place rating
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ *
+ * @pre @a place is created using maps_place_brief_create().
+ *
+ * @see maps_place_brief_create()
+ * @see maps_place_brief_get_rating()
+ */
+int maps_place_brief_set_rating(maps_place_brief_h place, const maps_place_rating_h rating);
+
+/**
+ * @brief	Sets the place categories.
+ * @details This function sets the place categories.
+ * @since_tizen 3.0
+ *
+ * @param[in]	place		The handle to place
+ * @param[in]	categories	The place category list
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ *
+ * @pre @a place is created using maps_place_brief_create().
+ *
+ * @see maps_place_brief_create()
+ * @see maps_place_brief_foreach_category()
+ */
+int maps_place_brief_set_categories(maps_place_brief_h place, const maps_item_list_h categories);
+
+
 #ifdef __cplusplus
 }
 #endif
