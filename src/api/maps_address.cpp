@@ -454,9 +454,18 @@ EXPORT_API int maps_address_list_foreach(maps_address_list_h address_list, maps_
 
 static void _free_address(gpointer data, gpointer user_data)
 {
+	if (!data) return;
+
 	maps_address_h address = (maps_address_h) data;
 	maps_address_h address_list = (maps_address_list_h) user_data;
 	int ret;
+
+	if (address_list) {
+		ret = maps_address_list_remove(address_list, address);
+		if (ret) {
+			MAPS_LOGI("Failed to maps_address_list_remove!!!");
+		}
+	}
 
 	if (address) {
 		MAPS_LOGD("%p", address);
@@ -465,14 +474,6 @@ static void _free_address(gpointer data, gpointer user_data)
 			MAPS_LOGI("Failed to maps_address_destroy!!!");
 		}
 	}
-
-	if (address_list) {
-		ret = maps_address_list_remove(address_list, address);
-		if (ret) {
-			MAPS_LOGI("Failed to maps_address_list_remove!!!");
-		}
-	}
-	address = NULL;
 }
 
 EXPORT_API int maps_address_list_destroy(maps_address_list_h address_list)

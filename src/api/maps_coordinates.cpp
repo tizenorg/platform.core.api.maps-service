@@ -194,16 +194,11 @@ EXPORT_API int maps_coordinates_list_append(maps_coordinates_list_h coordinates_
 
 static void _free_coordinates(gpointer data, gpointer user_data)
 {
+	if (!data) return;
+
 	maps_coordinates_h coordinates = (maps_coordinates_h) data;
 	maps_coordinates_list_h coordinates_list = (maps_coordinates_list_h) user_data;
 	int ret = 0;
-
-	if (coordinates) {
-		ret = maps_coordinates_destroy(coordinates);
-		if (ret) {
-			MAPS_LOGI("Failed to maps_coordinates_destroy!!!");
-		}
-	}
 
 	if (coordinates_list) {
 		ret = maps_coordinates_list_remove(coordinates_list, coordinates);
@@ -211,7 +206,13 @@ static void _free_coordinates(gpointer data, gpointer user_data)
 			MAPS_LOGI("Failed to maps_coordinates_list_remove!!!");
 		}
 	}
-	coordinates = NULL;
+
+	if (coordinates) {
+		ret = maps_coordinates_destroy(coordinates);
+		if (ret) {
+			MAPS_LOGI("Failed to maps_coordinates_destroy!!!");
+		}
+	}
 }
 
 EXPORT_API int maps_coordinates_list_destroy(maps_coordinates_list_h coordinates_list)
