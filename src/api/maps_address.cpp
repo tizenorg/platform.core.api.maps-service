@@ -452,11 +452,21 @@ EXPORT_API int maps_address_list_foreach(maps_address_list_h address_list, maps_
 	return MAPS_ERROR_NONE;
 }
 
+#if 0
 static void _free_address(gpointer data, gpointer user_data)
 {
+	if (!data) return;
+
 	maps_address_h address = (maps_address_h) data;
 	maps_address_h address_list = (maps_address_list_h) user_data;
 	int ret;
+
+	if (address_list) {
+		ret = maps_address_list_remove(address_list, address);
+		if (ret) {
+			MAPS_LOGI("Failed to maps_address_list_remove!!!");
+		}
+	}
 
 	if (address) {
 		MAPS_LOGD("%p", address);
@@ -465,15 +475,8 @@ static void _free_address(gpointer data, gpointer user_data)
 			MAPS_LOGI("Failed to maps_address_destroy!!!");
 		}
 	}
-
-	if (address_list) {
-		ret = maps_address_list_remove(address_list, address);
-		if (ret) {
-			MAPS_LOGI("Failed to maps_address_list_remove!!!");
-		}
-	}
-	address = NULL;
 }
+#endif
 
 EXPORT_API int maps_address_list_destroy(maps_address_list_h address_list)
 {
@@ -483,9 +486,12 @@ EXPORT_API int maps_address_list_destroy(maps_address_list_h address_list)
 	GList *list = (GList *) address_list;
 	MAPS_LOGD("address_list:%p, length = %d", list, g_list_length(list));
 
+#if 0
 	list = g_list_first(list);
 	g_list_foreach(list, _free_address, list);
 	g_list_free(list);
+#endif
+	g_list_free_full(list, (GDestroyNotify) maps_address_destroy);
 	address_list = NULL;
 
 	return MAPS_ERROR_NONE;
