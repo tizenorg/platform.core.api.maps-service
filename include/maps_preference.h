@@ -498,6 +498,19 @@ int maps_preference_get_route_feature(const maps_preference_h preference,
 				      maps_route_feature_e *feature);
 
 /**
+ * @brief	Gets the enable status of alternative routes.
+ * @details This function retrieves the enable status of alternative route.
+ * @since_tizen 3.0
+ *
+ * @param[in]	preference	The preference handle
+ * @param[out]	enable		The enable status
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ */
+int maps_preference_get_route_alternatives_enabled(const maps_preference_h preference, bool *enable);
+
+/**
  * @brief	Gets the maps preference value by key.
  * @details This function gets the maps preference value by key.
  * @since_tizen 2.4
@@ -694,6 +707,24 @@ int maps_preference_set_route_feature_weight(maps_preference_h preference,
  */
 int maps_preference_set_route_feature(maps_preference_h preference,
 				      const maps_route_feature_e feature);
+
+/**
+ * @brief	Sets the enable status of alternative routes.
+ * @details This function sets the alternative routes status.
+ * @since_tizen 3.0
+ *
+ * @param[in]	preference	The preference handle
+ * @param[in]	enable		The value to set
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ *
+ * @pre @a preference is created using maps_preference_create().
+ *
+ * @see maps_preference_create()
+ * @see maps_preference_get_route_alternatives_enabled()
+ */
+int maps_preference_set_route_alternatives_enabled(maps_preference_h preference, bool enable);
 
 /**
  * @brief	Sets the preference value by key.

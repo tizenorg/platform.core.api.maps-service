@@ -64,6 +64,7 @@ typedef void *maps_place_h;
  * @since_tizen 3.0
  *
  * @see maps_place_list_foreach()
+ * @see maps_place_list_destroy()
  */
 typedef void *maps_place_list_h;
 
@@ -259,11 +260,8 @@ typedef bool(*maps_place_reviews_cb) (int index, int total,
  * @brief	Called when requesting the list of Place.
  * @details This callback is invoked while iterating through the list of Place.
  * @since_tizen 3.0
- * @remarks @a place is valid only in this function and must be released using
- * maps_place_destroy().
  *
  * @param[in]	index		The current index of review
- * @param[in]	total		The total amount of reviews
  * @param[in]	place		The place handle
  * @param[in]	uesr_data	The user data passed from the maps_place_list_foreach()
  * @return	@c true to continue with the next iteration of the loop,
@@ -280,7 +278,7 @@ typedef bool(*maps_place_reviews_cb) (int index, int total,
  * @see maps_place_get_rating()
  * @see maps_place_foreach_category()
  */
-typedef bool(*maps_place_cb) (int index, int total, maps_place_h place, void *user_data);
+typedef bool(*maps_place_cb) (int index, maps_place_h place, void *user_data);
 
 /*----------------------------------------------------------------------------*/
 
@@ -632,6 +630,7 @@ int maps_place_get_related_link(const maps_place_image_h place,
  * @details This function retrieves all places.
  * @since_tizen 3.0
  * @remarks The places will be delivered via maps_place_cb().
+ * \n @a place_list must be released using maps_place_list_destroy().
  *
  * @param[in]	place_list	The place list handle
  * @param[in]	callback	The callback function to invoke
@@ -645,9 +644,22 @@ int maps_place_get_related_link(const maps_place_image_h place,
  * @post This function invokes maps_place_cb() repeatedly to retrieve each place.
  *
  * @see maps_place_cb()
+ * @see maps_place_list_destroy()
  */
-int maps_place_list_foreach(const maps_place_list_h place_list,
-				maps_place_cb callback, void *user_data);
+int maps_place_list_foreach(const maps_place_list_h place_list, maps_place_cb callback, void *user_data);
+
+/**
+ * @brief	Frees all of the memory used by a place list.
+ * @since_tizen 3.0
+ *
+ * @param[in]	place_list	The place list handle
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ *
+ * @see maps_place_list_foreach()
+ */
+int maps_place_list_destroy(maps_place_list_h place_list);
 
 #ifdef __cplusplus
 }
