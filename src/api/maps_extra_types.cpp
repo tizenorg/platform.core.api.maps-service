@@ -94,6 +94,33 @@ EXPORT_API int maps_item_list_foreach(maps_item_list_h list,
 	return MAPS_ERROR_NONE;
 }
 
+int maps_item_place_list_foreach(maps_item_list_h list,
+				      maps_item_list_clone_cb clone_func,
+				      maps_item_place_list_foreach_cb callback,
+	void *user_data)
+{
+	if (!list || !clone_func || !callback)
+		return MAPS_ERROR_INVALID_PARAMETER;
+	maps_item_list_s *l = (maps_item_list_s *) list;
+
+	if (!l->l)
+		return MAPS_ERROR_NOT_FOUND;
+
+	GList *head = g_list_first(l->l);
+	int index = 0;
+	while (head) {
+		void *data = head->data;
+		head = head->next;
+		void *clone = NULL;
+		if (clone_func(data, &clone) != MAPS_ERROR_NONE)
+			continue;
+		if (!callback(index++, clone, user_data))
+			break;
+	}
+
+	return MAPS_ERROR_NONE;
+}
+
 EXPORT_API int maps_item_list_remove_all(maps_item_list_h list,
 					 maps_item_list_free_cb free_func)
 {

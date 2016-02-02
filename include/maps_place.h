@@ -263,7 +263,6 @@ typedef bool(*maps_place_reviews_cb) (int index, int total,
  * maps_place_destroy().
  *
  * @param[in]	index		The current index of review
- * @param[in]	total		The total amount of reviews
  * @param[in]	place		The place handle
  * @param[in]	uesr_data	The user data passed from the maps_place_list_foreach()
  * @return	@c true to continue with the next iteration of the loop,
@@ -280,7 +279,7 @@ typedef bool(*maps_place_reviews_cb) (int index, int total,
  * @see maps_place_get_rating()
  * @see maps_place_foreach_category()
  */
-typedef bool(*maps_place_cb) (int index, int total, maps_place_h place, void *user_data);
+typedef bool(*maps_place_cb) (int index, maps_place_h place, void *user_data);
 
 /*----------------------------------------------------------------------------*/
 
@@ -645,9 +644,37 @@ int maps_place_get_related_link(const maps_place_image_h place,
  * @post This function invokes maps_place_cb() repeatedly to retrieve each place.
  *
  * @see maps_place_cb()
+ * @see maps_place_list_destroy()
  */
-int maps_place_list_foreach(const maps_place_list_h place_list,
-				maps_place_cb callback, void *user_data);
+int maps_place_list_foreach(const maps_place_list_h place_list, maps_place_cb callback, void *user_data);
+
+/**
+ * @brief	Creates a place list having a set of places.
+ * @since_tizen 3.0
+ *
+ * @param[out]	place_list	The place list handle
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
+ *
+ * @see maps_place_list_destroy()
+ */
+int maps_place_list_create(maps_place_list_h *place_list);
+
+/**
+ * @brief	Frees all of the memory used by a place list.
+ * @since_tizen 3.0
+ *
+ * @param[in]	place_list	The place list handle
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ *
+ * @see maps_place_list_create()
+ * @see maps_place_list_foreach()
+ */
+int maps_place_list_destroy(maps_place_list_h place_list);
 
 #ifdef __cplusplus
 }
