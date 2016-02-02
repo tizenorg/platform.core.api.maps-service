@@ -361,6 +361,20 @@ int maps_place_set_supplier_link(maps_place_h place,
 int maps_place_set_related_link(maps_place_h place,
 				const maps_place_link_object_h related);
 
+/**
+ * @brief	Creates a place list having a set of places.
+ * @since_tizen 3.0
+ *
+ * @param[out]	place_list	The place list handle
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
+ *
+ * @see maps_place_list_destroy()
+ */
+int maps_place_list_create(maps_place_list_h *place_list);
+
 #ifdef __cplusplus
 }
 #endif
