@@ -960,7 +960,7 @@ int session::command_search_place_list::run()
 		if (handler) {
 			/* Run the plugin interface function */
 			error = func(boundary, filter, preference,
-					 command_search_place_list_handler::foreach_place_around_cb, handler,
+					 command_search_place_list_handler::foreach_place_list_cb, handler,
 					 &handler->plg_req_id);
 
 			pr.update(my_req_id, handler);
@@ -994,8 +994,9 @@ session::command_search_place_list_handler::command_search_place_list_handler(
 {
 }
 
-void session::command_search_place_list_handler::foreach_place_around_cb(maps_error_e error,
+void session::command_search_place_list_handler::foreach_place_list_cb(maps_error_e error,
 							     int request_id,
+								 int total,
 							     maps_place_list_h place_list,
 							     void *user_data)
 {
@@ -1008,7 +1009,7 @@ void session::command_search_place_list_handler::foreach_place_around_cb(maps_er
 	}
 
 	/* Send data to user */
-	handler->callback(error, handler->user_req_id, place_list, handler->user_data);
+	handler->callback(error, handler->user_req_id, total, place_list, handler->user_data);
 
 	pending_request pr(handler->plugin());
 	pr.remove(handler->user_req_id);
