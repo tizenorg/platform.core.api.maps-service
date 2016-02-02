@@ -271,6 +271,50 @@ int maps_item_list_remove_all(maps_item_list_h list,
 			      maps_item_list_free_cb free_func);
 
 /**
+ * @brief	Called once for each item while iterating through the given list.
+ * @details This function is called once for each item of the given list while
+ * the list is being iterated during the maps_item_place_list_foreach() procedure.
+ * @since_tizen 3.0
+ * @remarks The @a data must be released by you.
+ *
+ * @param[in]	index		The current index of item
+ * @param[in]	data		The pointer to the list item
+ * @param[in]	user_data	The user data passed from maps_item_place_list_foreach()
+ * @return	@c true to continue with the next iteration of the loop, \n @c false to break out of the loop
+ *
+ * @pre maps_item_place_list_foreach() will invoke this callback.
+ *
+ * @see maps_item_place_list_foreach()
+ */
+typedef bool(*maps_item_place_list_foreach_cb) (int index, void *data, void *user_data);
+
+/**
+ * @brief	Gets the items of the specified list.
+ * @details This function delivers items of a specified list via maps_item_plac_list_foreach_cb() callback.
+ * @since_tizen 3.0
+ *
+ * @param[in]	list		The handle of list
+ * @param[in]	clone_func	The function for cloning the list values
+ * @param[in]	callback	The callback to be invoked for delivering each list item
+ * @param[in]	user_data	The user data to be passed to the callback function
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_FOUND Result not found
+ *
+ * @pre @a list is created using maps_item_list_create().
+ * @post This function invokes maps_item_place_list_foreach_cb() to deliver list items.
+ *
+ * @see maps_item_place_list_foreach_cb()
+ * @see maps_item_list_append()
+ * @see maps_service_create()
+ */
+int maps_item_place_list_foreach(maps_item_list_h list,
+			   maps_item_list_clone_cb clone_func,
+			   maps_item_place_list_foreach_cb callback,
+			   void *user_data);
+
+/**
  * @}
  */
 

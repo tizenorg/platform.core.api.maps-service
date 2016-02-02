@@ -821,5 +821,28 @@ EXPORT_API int maps_place_list_foreach(const maps_place_list_h place_list,
 	if (!place_list || !callback)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
-	return maps_item_list_foreach((maps_item_list_h) place_list, maps_place_clone, callback, user_data);
+	return maps_item_place_list_foreach((maps_item_list_h) place_list, maps_place_clone, callback, user_data);
 }
+
+EXPORT_API int maps_place_list_create(maps_place_list_h *place_list)
+{
+	if (!place_list)
+		return MAPS_ERROR_INVALID_PARAMETER;
+
+	return maps_item_list_create(place_list);
+}
+
+EXPORT_API int maps_place_list_destroy(maps_place_list_h place_list)
+{
+	if (!place_list)
+		return MAPS_ERROR_INVALID_PARAMETER;
+
+	int error = MAPS_ERROR_NONE;
+
+	error = maps_item_list_remove_all(place_list, maps_place_destroy);
+	if (error != MAPS_ERROR_NONE)
+		return error;
+
+	return maps_item_list_destroy(place_list);
+}
+
