@@ -1,6 +1,6 @@
 Name:       capi-maps-service
 Summary:    Tizen Maps Service API
-Version:    0.5.3
+Version:    0.5.4
 Release:    1
 Group:      Location/API
 License:    Apache-2.0
@@ -107,7 +107,7 @@ This provides the Tizen Map Service APIs to access and handle map data for the M
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 # WARNING! FOR TESTING PURPOSES ONLY
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-#if you want to tesst code, please change %if 0 to %if 1
+#if you want to test code, please change %if 0 to %if 1
 %if 0
 %package test
 Summary:    Tizen Maps Service Library Test (Internal Dev)
@@ -127,7 +127,6 @@ READ ME
 2. How to install
    # pkgcmd -i -t rpm -p capi-maps-service-test-%{version}-%{release}.rpm
 ==================================================================================
-
 %files test
 %defattr(-,root,root,-)
 %manifest test/capi-maps-service-test.manifest

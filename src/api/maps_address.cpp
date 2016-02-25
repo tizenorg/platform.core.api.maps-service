@@ -58,7 +58,7 @@ EXPORT_API int maps_address_create(maps_address_h *address)
 	if (!address)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
-	maps_address_s *a = g_slice_new0(maps_address_s);
+	maps_address_s *a = g_new0(maps_address_s, 1);
 	if (!a) {
 		MAPS_LOGE("OUT_OF_MEMORY(0x%08x)", MAPS_ERROR_OUT_OF_MEMORY);
 		return MAPS_ERROR_OUT_OF_MEMORY;
@@ -96,7 +96,7 @@ EXPORT_API int maps_address_destroy(maps_address_h address)
 	if (a->county)
 		g_free(a->county);
 
-	g_slice_free(maps_address_s, a);
+	g_free(a);
 	address = NULL;
 
 	return MAPS_ERROR_NONE;
@@ -432,8 +432,7 @@ EXPORT_API int maps_address_list_foreach(maps_address_list_h address_list, maps_
 
 	GList *l = (GList *)address_list;
 	l = g_list_first(l);
-	while (l != NULL)
-	{
+	while (l != NULL) {
 		GList *next = l->next;
 		maps_address_s *address = (maps_address_s *)l->data;
 		if (address) {
@@ -497,3 +496,63 @@ EXPORT_API int maps_address_list_destroy(maps_address_list_h address_list)
 	return MAPS_ERROR_NONE;
 }
 
+bool maps_address_is_valid(const maps_address_h address)
+{
+	if (!address) return false;
+
+	bool ret = true;
+	maps_address_s *a = (maps_address_s *) address;
+
+	do {
+		if (a->building_number && strlen(a->building_number) > _MAPS_ADDRESS_BUILDING_NUMBER_MAX_LENGTH) {
+			ret = false;
+			break;
+		}
+		if (a->street && strlen(a->street) > _MAPS_ADDRESS_STREET_MAX_LENGTH) {
+			ret = false;
+			break;
+		}
+
+		if (a->district && strlen(a->district) > _MAPS_ADDRESS_DISTRICT_MAX_LENGTH) {
+			ret = false;
+			break;
+		}
+
+		if (a->city && strlen(a->city) > _MAPS_ADDRESS_CITY_MAX_LENGTH) {
+			ret = false;
+			break;
+		}
+
+		if (a->state && strlen(a->state) > _MAPS_ADDRESS_STATE_MAX_LENGTH) {
+			ret = false;
+			break;
+		}
+
+		if (a->country_code && strlen(a->country_code) > _MAPS_ADDRESS_COUNTRY_CODE_MAX_LENGTH) {
+			ret = false;
+			break;
+		}
+
+		if (a->postal_code && strlen(a->postal_code) > _MAPS_ADDRESS_POSTAL_CODE_MAX_LENGTH) {
+			ret = false;
+			break;
+		}
+
+		if (a->freetext && strlen(a->freetext) > _MAPS_ADDRESS_FREE_TEXT_MAX_LENGTH) {
+			ret = false;
+			break;
+		}
+
+		if (a->country && strlen(a->country) > _MAPS_ADDRESS_COUNTRY_MAX_LENGTH) {
+			ret = false;
+			break;
+		}
+
+		if (a->county && strlen(a->county) > _MAPS_ADDRESS_COUNTY_MAX_LENGTH) {
+			ret = false;
+			break;
+		}
+	} while (false);
+
+	return ret;
+}
