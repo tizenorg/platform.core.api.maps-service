@@ -19,6 +19,8 @@
 #include "maps_area.h"
 #include "maps_util.h"
 
+extern bool maps_coordinates_is_valid(const maps_coordinates_h coordinates);
+
 EXPORT_API int maps_area_create_rectangle(const maps_coordinates_h top_left,
 					  const maps_coordinates_h bottom_right,
 					  maps_area_h *area)
@@ -47,7 +49,7 @@ EXPORT_API int maps_area_create_rectangle(const maps_coordinates_h top_left,
 			return MAPS_ERROR_INVALID_PARAMETER;
 	}
 
-	maps_area_s *bound = g_slice_new0(maps_area_s);
+	maps_area_s *bound = g_new0(maps_area_s, 1);
 
 	if (bound == NULL) {
 		MAPS_LOGE("OUT_OF_MEMORY(0x%08x)", MAPS_ERROR_OUT_OF_MEMORY);
@@ -72,9 +74,7 @@ EXPORT_API int maps_area_create_circle(const maps_coordinates_h center,
 	if (radius < 0)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
-	/* MAPS_CHECK_CONDITION(radius > 0, MAPS_ERROR_INVALID_PARAMETER,
-	* "MAPS_ERROR_INVALID_PARAMETER"); */
-	maps_area_s *bound = g_slice_new0(maps_area_s);
+	maps_area_s *bound = g_new0(maps_area_s, 1);
 
 	if (bound == NULL) {
 		MAPS_LOGE("OUT_OF_MEMORY(0x%08x)", MAPS_ERROR_OUT_OF_MEMORY);
@@ -96,7 +96,7 @@ EXPORT_API int maps_area_destroy(maps_area_h area)
 
 	maps_area_s *handle = (maps_area_s *) area;
 
-	g_slice_free(maps_area_s, handle);
+	g_free(handle);
 	return MAPS_ERROR_NONE;
 }
 
@@ -115,10 +115,9 @@ EXPORT_API int maps_area_clone(const maps_area_h origin, maps_area_h *cloned)
 			(maps_coordinates_h) & rec_br, &new_rect);
 		if (new_rect) {
 			*cloned = new_rect;
-		}
-		else
+		} else {
 			return MAPS_ERROR_INVALID_PARAMETER;
-
+		}
 	}
 	else if (origin_handle->type == MAPS_AREA_CIRCLE) {
 		maps_area_h new_circle = NULL;
@@ -129,10 +128,83 @@ EXPORT_API int maps_area_clone(const maps_area_h origin, maps_area_h *cloned)
 			&new_circle);
 		if (new_circle) {
 			*cloned = new_circle;
-		}
-		else
+		} else {
 			return MAPS_ERROR_INVALID_PARAMETER;
+		}
 	}
 
 	return MAPS_ERROR_NONE;
+}
+
+bool __is_valid_rect(maps_coordinates_h top_left, maps_coordinates_h bottom_right)
+{
+	bool ret = true;
+
+	do {
+		if (!maps_coordinates_is_valid(top_left) ||
+			!maps_coordinates_is_valid(bottom_right)) {
+			ret = false;
+			break;
+		}
+
+		double tf_lat = .0;
+		double tf_lon = .0;
+		double rb_lat = .0;
+		double rb_lon = .0;
+
+		maps_coordinates_get_latitude(top_left, &tf_lat);
+		maps_coordinates_get_latitude(bottom_right, &rb_lat);
+		maps_coordinates_get_longitude(top_left, &tf_lon);
+		maps_coordinates_get_longitude(bottom_right, &rb_lon);
+
+		double lon_interval = rb_lon - tf_lat;
+
+		if (lon_interval < 180 && lon_interval > -180) {
+			if (rb_lon <= tf_lon || rb_lat >= tf_lat)
+				ret = false;
+		}
+		else {
+			if (rb_lon >= tf_lon || rb_lat >= tf_lat)
+				ret = false;
+		}
+	} while (false);
+
+	return ret;
+}
+
+bool maps_area_is_valid(const maps_area_h area)
+{
+	if (!area) return false;
+
+	bool ret = true;
+	maps_area_s *handle = (maps_area_s *) area;
+
+	do {
+		if (handle->type == MAPS_AREA_RECTANGLE) {
+			maps_area_rectangle_s rect = handle->rect;
+
+			if (!__is_valid_rect(&rect.top_left, &rect.bottom_right)) {
+				ret = false;
+				break;
+			}
+		}
+		else if (handle->type == MAPS_AREA_CIRCLE) {
+			maps_area_circle_s cir = handle->circle;
+			maps_coordinates_s center = cir.center;
+
+			if (cir.radius <= 0) {
+				ret = false;
+				break;
+			}
+			if (!maps_coordinates_is_valid(&center)) {
+				ret = false;
+				break;
+			}
+		}
+		else {
+			ret = false;
+		}
+	} while (false);
+
+	return ret;
 }

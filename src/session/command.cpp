@@ -18,7 +18,7 @@
 #include "empty_module.h"
 #include "maps_util.h"
 
-extern plugin::plugin_s *__extract_plugin(maps_service_h maps);
+extern plugin::plugin_s *__get_plugin_instance(maps_service_h maps);
 
 volatile int session::command::command_request_id = 1;
 session::command session::command::empty_instance;
@@ -64,7 +64,7 @@ plugin::interface_s *session::command::interface() const
 		return plugin::get_empty_interface_ptr(); /* PROBLEM!!! Why have
 			no maps service!! Returning default empty interface */
 
-	plugin::plugin_s *p = __extract_plugin(m);
+	plugin::plugin_s *p = __get_plugin_instance(m);
 	if (!p)
 		return plugin::get_empty_interface_ptr(); /* PROBLEM!!! Why have
 				no plugin!! Returning default empty interface */
@@ -79,7 +79,7 @@ maps_plugin_h session::command::handle() const
 
 plugin::plugin_s *session::command::plugin() const
 {
-	return __extract_plugin(m);
+	return __get_plugin_instance(m);
 }
 
 /*----------------------------------------------------------------------------*/

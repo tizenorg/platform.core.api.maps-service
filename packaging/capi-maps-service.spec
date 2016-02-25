@@ -107,7 +107,7 @@ This provides the Tizen Map Service APIs to access and handle map data for the M
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 # WARNING! FOR TESTING PURPOSES ONLY
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-#if you want to tesst code, please change %if 0 to %if 1
+#if you want to test code, please change %if 0 to %if 1
 %if 0
 %package test
 Summary:    Tizen Maps Service Library Test (Internal Dev)

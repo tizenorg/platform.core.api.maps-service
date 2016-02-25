@@ -60,12 +60,16 @@ namespace session
 		maps_plugin_h handle() const;
 	public:
 		plugin::plugin_s *plugin()const;
+	public:
+		bool merged() const;
+	protected:
+		void set_merged();
 	};
 
 /*----------------------------------------------------------------------------*/
 
-	class command_handler
-	{
+class command_handler
+{
 		plugin::plugin_s *plg;
 	public:
 		void *user_data;
@@ -95,12 +99,12 @@ namespace session
 		}
 	public:
 		static void destroy(void *p);
-	};
+};
 
 /*----------------------------------------------------------------------------*/
 
-	class pending_request
-	{
+class pending_request
+{
 	private:
 		plugin::plugin_s *plg;
 	public:
@@ -127,7 +131,7 @@ namespace session
 		bool contains(const int user_req_id);
 	private:
 		int *int_dup(const int n);
-	};
+};
 }
 
 #endif				/* __MAPS_SERVICE_SESSION_COMMAND_H__ */
