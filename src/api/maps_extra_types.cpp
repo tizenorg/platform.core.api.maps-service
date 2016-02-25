@@ -123,7 +123,6 @@ EXPORT_API int maps_item_list_clone(const maps_item_list_h origin,
 
 	int error = MAPS_ERROR_NONE;
 	do {
-
 		error = maps_item_list_create(cloned);
 		if (!(*cloned) || (error != MAPS_ERROR_NONE))
 			break;
@@ -148,7 +147,6 @@ EXPORT_API int maps_item_list_clone(const maps_item_list_h origin,
 			head = head->next;
 		}
 		return MAPS_ERROR_NONE;
-
 	} while (false);
 
 	maps_item_list_destroy(*cloned);
@@ -244,8 +242,8 @@ EXPORT_API int maps_string_hashtable_foreach(maps_string_hashtable_h table,
 	const int total = g_hash_table_size(t->t);
 	int index = 0;
 	g_hash_table_iter_init(&iter, t->t);
-	while (g_hash_table_iter_next(&iter, &key, &value)) {
 
+	while (g_hash_table_iter_next(&iter, &key, &value)) {
 		char *key_clone = NULL;
 		if (maps_item_hashtable_clone_string(key,
 				(void **) &key_clone) != MAPS_ERROR_NONE)
@@ -258,7 +256,6 @@ EXPORT_API int maps_string_hashtable_foreach(maps_string_hashtable_h table,
 		if (!callback(index++, total, key_clone, value_clone,
 				user_data))
 			break;
-
 	}
 	return MAPS_ERROR_NONE;
 }
@@ -271,7 +268,6 @@ EXPORT_API int maps_string_hashtable_clone(const maps_string_hashtable_h origin,
 
 	int error = MAPS_ERROR_NONE;
 	do {
-
 		error = maps_string_hashtable_create(cloned);
 		if (!(*cloned) || (error != MAPS_ERROR_NONE))
 			break;
@@ -294,7 +290,6 @@ EXPORT_API int maps_string_hashtable_clone(const maps_string_hashtable_h origin,
 		}
 
 		return MAPS_ERROR_NONE;
-
 	} while (false);
 
 	maps_string_hashtable_destroy(*cloned);
@@ -598,7 +593,6 @@ EXPORT_API int maps_item_hashtable_clone(const maps_item_hashtable_h origin,
 
 	int error = MAPS_ERROR_NONE;
 	do {
-
 		error = maps_item_hashtable_create(cloned);
 		if (!(*cloned) || (error != MAPS_ERROR_NONE))
 			break;
@@ -622,7 +616,6 @@ EXPORT_API int maps_item_hashtable_clone(const maps_item_hashtable_h origin,
 		}
 
 		return MAPS_ERROR_NONE;
-
 	} while (false);
 
 	maps_item_hashtable_destroy(*cloned);
