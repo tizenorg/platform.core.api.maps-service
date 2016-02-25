@@ -47,7 +47,7 @@ static session::command_queue *q()
 }
 
 /* This function is used in command class */
-plugin::plugin_s *__extract_plugin(maps_service_h maps)
+plugin::plugin_s *__get_plugin_instance(maps_service_h maps)
 {
 	if (!maps)
 		return NULL;
@@ -55,14 +55,12 @@ plugin::plugin_s *__extract_plugin(maps_service_h maps)
 	return (plugin::plugin_s *) maps_service->plugin;
 }
 
-static bool __maps_provider_supported(maps_service_h maps,
-				      maps_service_e service)
+static bool __maps_provider_supported(maps_service_h maps, maps_service_e service)
 {
 	if (!maps)
 		return false;
 	bool supported = false;
-	if (maps_service_provider_is_service_supported(maps, service,
-			&supported) != MAPS_ERROR_NONE)
+	if (maps_service_provider_is_service_supported(maps, service, &supported) != MAPS_ERROR_NONE)
 		return false;
 	return supported;
 }
@@ -71,8 +69,7 @@ static bool __maps_provider_supported(maps_service_h maps,
 static bool __has_maps_service_privilege()
 {
 #ifdef _SIMPLE_PRIVILEGE_CHECK_AVAILABLE_
-	return (privilege_checker_check_privilege(
-		"http://tizen.org/privilege/mapservice")
+	return (privilege_checker_check_privilege("http://tizen.org/privilege/mapservice")
 			== PRIVILEGE_CHECKER_ERR_NONE);
 #else
 	return true;
@@ -90,10 +87,9 @@ EXPORT_API int maps_service_foreach_provider(maps_service_provider_info_cb
 	if (!callback)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
-	/* The list of map provider info, obtained by enumerating available
-	 *  plugins */
+	/* The list of map provider info, obtained by enumerating available plugins */
 	plugin::discovery pd;
-	vector < plugin::provider_info > v = pd.get_available_list();
+	vector <plugin::provider_info> v = pd.get_available_list();
 
 	/* Send obtained provider info to the user */
 	const int total = int(v.size());
@@ -123,13 +119,11 @@ EXPORT_API int maps_service_create(const char *maps_provider,
 
 	do {
 		/* 0. Find the plugin, requested by the user */
-		const plugin::provider_info info =
-			plugin::find_by_names(string(maps_provider));
+		const plugin::provider_info info = plugin::find_by_names(string(maps_provider));
 
 		/* 1. Check whether provider info is valid */
 		if (info.empty()) {
-			MAPS_LOGE("ERROR! Provider info not found for name: %s",
-				maps_provider);
+			MAPS_LOGE("ERROR! Provider info not found for name: %s", maps_provider);
 			error = MAPS_ERROR_NOT_SUPPORTED;
 			break;
 		}
@@ -138,8 +132,7 @@ EXPORT_API int maps_service_create(const char *maps_provider,
 		maps_service_s *maps_service = g_slice_new0(maps_service_s);
 
 		if (maps_service == NULL) {
-			MAPS_LOGE("OUT_OF_MEMORY(0x%08x)",
-				MAPS_ERROR_OUT_OF_MEMORY);
+			MAPS_LOGE("OUT_OF_MEMORY(0x%08x)", MAPS_ERROR_OUT_OF_MEMORY);
 			error = MAPS_ERROR_OUT_OF_MEMORY;
 			break;
 		}
@@ -197,7 +190,7 @@ EXPORT_API int maps_service_set_provider_key(maps_service_h maps,
 {
 	if (!maps || !provider_key)
 		return MAPS_ERROR_INVALID_PARAMETER;
-	const plugin::plugin_s *p = __extract_plugin(maps);
+	const plugin::plugin_s *p = __get_plugin_instance(maps);
 	if (!p)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return p->interface.maps_plugin_set_provider_key(provider_key);
@@ -208,7 +201,7 @@ EXPORT_API int maps_service_get_provider_key(const maps_service_h maps,
 {
 	if (!maps || !provider_key)
 		return MAPS_ERROR_INVALID_PARAMETER;
-	const plugin::plugin_s *p = __extract_plugin(maps);
+	const plugin::plugin_s *p = __get_plugin_instance(maps);
 	if (!p)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return p->interface.maps_plugin_get_provider_key(provider_key);
@@ -219,7 +212,7 @@ EXPORT_API int maps_service_set_preference(maps_service_h maps,
 {
 	if (!maps || !preference)
 		return MAPS_ERROR_INVALID_PARAMETER;
-	const plugin::plugin_s *p = __extract_plugin(maps);
+	const plugin::plugin_s *p = __get_plugin_instance(maps);
 	if (!p)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return p->interface.maps_plugin_set_preference(preference);
@@ -230,7 +223,7 @@ EXPORT_API int maps_service_get_preference(maps_service_h maps,
 {
 	if (!maps || !preference)
 		return MAPS_ERROR_INVALID_PARAMETER;
-	const plugin::plugin_s *p = __extract_plugin(maps);
+	const plugin::plugin_s *p = __get_plugin_instance(maps);
 	if (!p)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return p->interface.maps_plugin_get_preference(preference);
@@ -246,11 +239,10 @@ EXPORT_API int maps_service_provider_is_service_supported(const maps_service_h
 	if ((service < MAPS_SERVICE_GEOCODE)
 	    || (service > MAPS_SERVICE_SEARCH_PLACE_LIST))
 		return MAPS_ERROR_INVALID_PARAMETER;
-	const plugin::plugin_s *p = __extract_plugin(maps);
+	const plugin::plugin_s *p = __get_plugin_instance(maps);
 	if (!p)
 		return MAPS_ERROR_NOT_SUPPORTED;
-	return p->interface.maps_plugin_is_service_supported(service,
-		supported);
+	return p->interface.maps_plugin_is_service_supported(service, supported);
 }
 
 EXPORT_API int maps_service_provider_is_data_supported(const maps_service_h
@@ -264,7 +256,7 @@ EXPORT_API int maps_service_provider_is_data_supported(const maps_service_h
 	    || (data > MAPS_ROUTE_SEGMENTS_MANEUVERS))
 		return MAPS_ERROR_INVALID_PARAMETER;
 
-	const plugin::plugin_s *p = __extract_plugin(maps);
+	const plugin::plugin_s *p = __get_plugin_instance(maps);
 	if (!p)
 		return MAPS_ERROR_NOT_SUPPORTED;
 	return p->interface.maps_plugin_is_data_supported(data, supported);

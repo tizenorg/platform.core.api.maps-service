@@ -313,7 +313,6 @@ EXPORT_API int maps_route_segment_set_destination(maps_route_segment_h segment,
 	if (p->destination)
 		maps_coordinates_destroy(p->destination);
 	return maps_coordinates_clone(destination, &p->destination);
-
 }
 
 EXPORT_API int maps_route_segment_set_bounding_box(maps_route_segment_h segment,
