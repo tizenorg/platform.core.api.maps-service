@@ -36,6 +36,7 @@
  *  - Geocoding and reverse geocoding
  *  - Discovering Place information
  *  - Calculating Route
+ *  - View
  *  .
  *
  * Maps API allows a Developer to choose one of Map Providers which are being
@@ -46,7 +47,7 @@
  * @section	CAPI_MAPS_SERVICE_MODULE_FEATURE Features
  *
  * Geocoding
- * - The Maps Geocoding API allows mapping an address to its geographical
+ * - The Maps Geocoding API allows translating an address to its geographical
  * location defined in terms of latitude and longitude; the input can be a
  * qualified and structured address or a free-formed search text with full or
  * partial address information.
@@ -61,7 +62,7 @@
  * .
  *
  * Reverse Geocoding
- * - The Maps Reverse Geocoding API allows to inverse mapping a geographical
+ * - The Maps Reverse Geocoding API allows to inverse translating a geographical
  * location (longitude, latitude) to an address; it can be used to answer the
  * question "Where am I?".
  * .
@@ -89,7 +90,7 @@
  *  - Depending on the location context, the number of relevant places might
  *  be large. Therefore this query may not only return places, but also
  *  suggestions for additional filter criteria that allow users to interactively
-*  refine the classes of places they are interested in.
+ *  refine the classes of places they are interested in.
  *
  *  - Nearby Search: search for places within a specified area.
  *    You can refine your search request by supplying keywords, Name of Points
@@ -102,13 +103,36 @@
  *
  * - Result item type of searching
  *  - id, name, location, distance, URI, rating, category.
- *  .
+ *
  * - Place information allows to fetch details about a place. The following
  * place content is supported:
  *  - Base Attribute includes name, location, categories, contacts, id, ratings,
  *  icon path, image content, review content, and editorial content.
  *  - Extended Attribute refers to opening hours, payment methods, annual
  *  closings, disabled access.
+ *  .
+ * .
+ * View
+ * - The Maps View API provides a developer with a set of functions, bringing
+ * basic interactive visual user interface in maps applications.
+ *
+ * - View widget : Drawing a map image on the map port, the specified rectangular
+ * area of the maps application GUI.
+ *
+ * - Zoom and rotation : Changing zoom and orientation of the view in response
+ * on user gestures, such as scrolling, tapping, zooming, rotating, etc.
+ *
+ * - Conversion of screen coordinates to geographical and vise versa.
+ *
+ * - User's gesture support.
+ *  - Receive the event of the user gesture.
+ *  - Enable or disable the specified gesture.
+ *  - Re-assign the action, which should be taken in response on the user's gesture.
+ *
+ * - Various Properties.
+ *  - Visibility and size on the screen.
+ *  - Theme : Day, satellite or terrain.
+ *  - Language : English, Russian, Chinese, Italian, German, Spanish, etc.
  *  .
  * .
  * The developer is allowed to choose one of map providers by manipulating map
