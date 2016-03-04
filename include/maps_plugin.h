@@ -18,9 +18,11 @@
 #define __MAPS_PLUGIN_H__
 
 #include <maps_service.h>
+#include <maps_view.h>
 #include <maps_plugin_info.h>
 #include <maps_extra_types.h>
 #include <maps_plugin_types.h>
+#include <maps_view_object_plugin.h>
 
 /**
  *
@@ -228,8 +230,6 @@ int maps_plugin_is_data_supported(maps_service_data_e data, bool *supported);
  * @details This function obtains position coordinates for a given free-formed
  * address string.
  * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
- * @privlevel public
- * @privilege %http://tizen.org/privilege/mapservice
  * @remarks This function requires network access.
  * \n To cancel the request use maps_plugin_cancel_request().
  *
@@ -272,8 +272,6 @@ int maps_plugin_geocode(const char *address,
  * @details This function obtains position coordinates for a given free-formed
  * address string within the specified bounding box.
  * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
- * @privlevel public
- * @privilege %http://tizen.org/privilege/mapservice
  * @remarks This function requires network access.
  * \n Polygonal bounding box is not supported.
  * \n To cancel the request, use maps_plugin_cancel_request().
@@ -322,8 +320,6 @@ int maps_plugin_geocode_inside_area(const char *address,
  * @details This function obtains position coordinates for a given structured
  * address.
  * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
- * @privlevel public
- * @privilege %http://tizen.org/privilege/mapservice
  * @remarks This function requires network access.
  * \n To cancel the request use maps_plugin_cancel_request().
  * \n To check if Maps Provider is capable of Geocoding and which geocoding
@@ -368,8 +364,6 @@ int maps_plugin_geocode_by_structured_address(const maps_address_h address,
  * @details This function obtains structured address information for a given
  * position coordinates.
  * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
- * @privlevel public
- * @privilege %http://tizen.org/privilege/mapservice
  * @remarks This function requires network access.
  * \n To cancel the request use maps_plugin_cancel_request().
  * \n To check if Maps Provider is capable of reverse geocoding and which
@@ -411,8 +405,6 @@ int maps_plugin_reverse_geocode(double latitude, double longitude,
  * @details This function obtains structured address information for a given
  * position coordinates.
  * @since_tizen 3.0
- * @privlevel public
- * @privilege %http://tizen.org/privilege/mapservice
  * @remarks This function requires network access.
  * \n To cancel the request use maps_plugin_cancel_request().
  * \n To check if Maps Provider is capable of Reverse Geocoding and which
@@ -458,8 +450,6 @@ int maps_plugin_multi_reverse_geocode(const maps_coordinates_list_h geocode_list
  * @details This function obtains the Place information for a specified distance
  * around a given coordinates position.
  * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
- * @privlevel public
- * @privilege %http://tizen.org/privilege/mapservice
  * @remarks This function requires network access.
  * \n To cancel the search request use maps_plugin_cancel_request().
  * \n To check if Maps Provider is capable of Place Search and which Place
@@ -506,8 +496,6 @@ int maps_plugin_search_place(const maps_coordinates_h position, int distance,
  * @details This function obtains the Place information for a specified
  * coordinates boundary.
  * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
- * @privlevel public
- * @privilege %http://tizen.org/privilege/mapservice
  * @remarks This function requires network access.
  * \n @a boundary is supporting only circle type bounds for search.
  * \n To cancel the search request use maps_plugin_cancel_request().
@@ -554,8 +542,6 @@ int maps_plugin_search_place_by_area(const maps_area_h boundary,
  * @details This function obtains the Place information for a specified free-
  * formed address string.
  * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
- * @privlevel public
- * @privilege %http://tizen.org/privilege/mapservice
  * @remarks This function requires network access.
  * \n @a boundary is supporting only circle type bounds for search.
  * \n To cancel the search request use maps_plugin_cancel_request().
@@ -603,8 +589,6 @@ int maps_plugin_search_place_by_address(const char *address,
  * @brief	Queries a brief Place information by a coordinates boundary.
  * @details This function obtains the brief Place information for a specified coordinates boundary.
  * @since_tizen 3.0
- * @privlevel public
- * @privilege %http://tizen.org/privilege/mapservice
  * @remarks This function requires network access.
  * \n To cancel the search request use maps_plugin_cancel_request().
  * \n To check if Maps Provider is capable of Place Search and which Place
@@ -647,8 +631,6 @@ int maps_plugin_search_place_list(const maps_area_h boundary,
  * @brief	Queries a Detail place information by a place uri.
  * @details This function obtains the Detail place information for a specified place uri
  * @since_tizen 3.0
- * @privlevel public
- * @privilege %http://tizen.org/privilege/mapservice
  * @remarks This function requires network access.
  * \n To cancel the search request use maps_plugin_cancel_request().
  * \n To check if Maps Provider is capable of Place Search and which Place
@@ -696,8 +678,6 @@ int maps_plugin_get_place_details(const char *url,
  * @details This function obtains the Route information for a specified origin
  * and destination coordinates.
  * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
- * @privlevel public
- * @privilege %http://tizen.org/privilege/mapservice
  * @remarks This function requires network access.
  * \n To cancel the search request use maps_plugin_cancel_request().
  * \n To check if Maps Provider is capable of Route Search and which Route
@@ -739,8 +719,6 @@ int maps_plugin_search_route(const maps_coordinates_h origin,
  * @details This function obtains the Route information for the Route, passing
  * through a specified set of way points.
  * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
- * @privlevel public
- * @privilege %http://tizen.org/privilege/mapservice
  * @remarks This function requires network access.
  * \n To cancel the search request use maps_plugin_cancel_request().
  * \n To check if Maps Provider is capable of Route Search and which Route
@@ -787,8 +765,6 @@ int maps_plugin_search_route_waypoints(const maps_coordinates_h *waypoint_list,
  * @details This function cancels the service request initiated by geocode,
  * route or place search.
  * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
- * @privlevel public
- * @privilege %http://tizen.org/privilege/mapservice
  * @remarks This function requires network access.
  *
  * @param[in]	request_id	The request id
@@ -828,6 +804,288 @@ int maps_plugin_search_route_waypoints(const maps_coordinates_h *waypoint_list,
  * @see maps_plugin_search_route_waypoints()
  */
 int maps_plugin_cancel_request(int request_id);
+
+
+/*----------------------------------------------------------------------------*/
+
+/**
+ * @brief	Called when the map initialzing is finished.
+ * @details The Plugin invokes this callback when the initialzing of map is finished.
+ * @since_tizen 3.0
+ *
+ * @param[in]	view		The maps view
+ *
+ * @pre maps_plugin_render_map() will invoke this callback.
+ *
+ * @see maps_plugin_render_map()
+ */
+typedef void(*maps_plugin_map_view_ready_cb) (const maps_view_h view);
+
+/**
+ * @brief	Set a maps view.
+ * @details This function sets a maps view to the plugin.
+ * @since_tizen 3.0
+ * @remarks When the Maps View is being destroying, the parameter @a view is set to NULL.
+ *
+ * @param[in]	view		The maps view
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ *
+ * @see #maps_view_h
+ */
+int maps_plugin_set_map_view(const maps_view_h view, maps_plugin_map_view_ready_cb callback);
+
+/**
+ * @brief	Called when the map rendering is finished.
+ * @details The Plugin invokes this callback when the rendering of the requested
+ * part of map is finished.
+ * @since_tizen 3.0
+ * @remarks The parameter @a center must be released using
+ * maps_coordinates_destroy().
+ * \n To use the @a center outside of this function, copy the handle using
+ * maps_coordinates_clone() function.
+ * \n The parameter @a area must be released using maps_area_destroy()
+ * \n To use the @a area outside of this function, copy the handle using
+ * maps_area_clone() function.
+ *
+ * @param[in]	result		The result of request
+ * @param[in]	request_id	The id of request, start from 0
+ * @param[in]	centes		The coordinates of the center of requested map
+ * area
+ * @param[in]	area		The requested map area
+ * @param[in]	user_data	The user data passed from
+ * maps_plugin_render_map()
+ *
+ * @pre maps_plugin_render_map() will invoke this callback.
+ *
+ * @see maps_plugin_render_map()
+ */
+typedef void(*maps_plugin_render_map_cb) (maps_error_e result, int request_id,
+					  maps_coordinates_h center,
+					  maps_area_h area,
+					  void* user_data);
+
+/**
+ * @brief	Request a map rendering.
+ * @details This function request a draw routine of the map location with a
+ * specified zoom factor and rotation angle.
+ * @since_tizen 3.0
+ *
+ * @param[in]	coordinates	The coordinates of location to draw
+ * @param[in]	zoom_factor	The zoom factor
+ * @param[in]	rotation_angle	The rotation factor
+ * @param[in]	callback	The callback to notify that the rendering is finished
+ * @param[in]	user_data	The user data to be passed to the callback
+ * @param[out]	request_id	The id of request
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ *
+ * @pre the maps view is set with maps_plugin_set_map_view().
+ * @post It invokes maps_plugin_render_map_cb() to notify that the rendering is
+ * finished
+ *
+ * @see maps_plugin_set_view()
+ * @see maps_plugin_render_map_cb()
+ * @see maps_plugin_draw_map()
+ */
+int maps_plugin_render_map(const maps_coordinates_h coordinates,
+			   const double zoom_factor,
+			   const double rotation_angle,
+			   maps_plugin_render_map_cb callback,
+			   void* user_data,
+			   int* request_id);
+
+/**
+ * @brief	Request the Plugin to move a map on a given delta.
+ * @details This function request the Plugin to move a map on a given delta
+ * screen coordinates. The current values of zoom or orientation are
+ * remaining same.
+ * @since_tizen 3.0
+ *
+ * @param[in]	delta_x		The delta x
+ * @param[in]	delta_y		The delta y
+ * @param[in]	callback	The callback to notify that the rendering is finished
+ * @param[in]	user_data	The user data to be passed to the callback
+ * @param[out]	request_id	The id of request
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ *
+ * @pre the maps view is set with maps_plugin_set_map_view().
+ * @post It invokes maps_plugin_render_map_cb() to notify that the rendering is
+ * finished
+ *
+ * @see maps_plugin_set_view()
+ * @see maps_plugin_render_map_cb()
+ * @see maps_plugin_render_map()
+ * @see maps_plugin_draw_map()
+ */
+int maps_plugin_move_center(const int delta_x,
+			    const int delta_y,
+			    maps_plugin_render_map_cb callback,
+			    void* user_data,
+			    int* request_id);
+
+/**
+ * @brief	Draw a map on the maps view panel.
+ * @details This function draws the map, requested previously on the maps view
+ * panel in accordance with the current maps settings.
+ * @since_tizen 3.0
+ *
+ * @param[in]	canvas		The canvas to draw on
+ * @param[in]	x		The x coordinate on the canvas top left
+ * @param[in]	y		The y coordinate on the canvas top left
+ * @param[in]	width		The width of the cancas
+ * @param[in]	height		The height of the cancas
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ *
+ * @pre the draing routine is requested with preliminary call of
+ * maps_plugin_render_map().
+ *
+ * @see maps_plugin_set_view()
+ * @see maps_plugin_render_map()
+ */
+int maps_plugin_draw_map(Evas* canvas,
+			 const int x,
+			 const int y,
+			 const int width,
+			 const int height);
+
+/**
+ * @brief	Notifyes that the visual object is changed.
+ * @details This function notifyes the Plugin that the visual object is
+ * changed. The possible causes of changes are enumerated in
+ * #maps_view_object_operation_e ind nclude object adding, moving, removing,
+ * visibility modificating or editing object specific properties.
+ * @since_tizen 3.0
+ *
+ * @param[in]	object		The object handle
+ * @param[in]	operation	The operation over the object
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ *
+ * @see maps_plugin_create()
+ */
+int maps_plugin_on_object(const maps_view_object_h object,
+			  const maps_view_object_operation_e operation);
+
+/**
+ * @brief	Converts screen coordinates to the geographical coordinates.
+ * @details This function converts screen coordinates to the geographical
+ * coordinates accordingly to the current maps settings.
+ * @since_tizen 3.0
+ *
+ * @param[in]	x		The x coordinate on the screen
+ * @param[in]	y		The y coordinate on the screen
+ * @param[out]	coordinates	The corresponding geographical coordinates
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ *
+ * @see maps_plugin_create()
+ * @see maps_plugin_geography_to_screen()
+ * @see #maps_coordinates_h
+ */
+int maps_plugin_screen_to_geography(const int x, const int y,
+				    maps_coordinates_h* coordinates);
+
+/**
+ * @brief	Converts geographical coordinates to the screen coordinates.
+ * @details This function converts geographical coordinates to the screen
+ * coordinates accordingly to the current maps settings.
+ * @since_tizen 3.0
+ *
+ * @param[in]	coordinates	The geographical coordinates
+ * @param[out]	x		The corresponding x coordinate on the screen
+ * @param[out]	y		The corresponding y coordinate on the screen
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ *
+ * @see maps_plugin_create()
+ * @see maps_plugin_screen_to_geography()
+ * @see #maps_coordinates_h
+ */
+int maps_plugin_geography_to_screen(const maps_coordinates_h coordinates,
+				    int* x, int* y);
+
+/**
+ * @brief	Gets the minimal zooms level of the Map.
+ * @details This function gets the minimally available zoom level of the Map.
+ * @since_tizen 3.0
+ *
+ * @param[out]	min_zoom_level	The minimally available zoom level
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ */
+int maps_plugin_get_min_zoom_level(int *min_zoom_level);
+
+/**
+ * @brief	Gets the maximal zooms level of the Map.
+ * @details This function gets the maximally available zoom level of the Map.
+ * @since_tizen 3.0
+ *
+ * @param[out]	max_zoom_level	The maximally available zoom level
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ */
+int maps_plugin_get_max_zoom_level(int *max_zoom_level);
+
+/**
+ * @brief	Get the central coordinates of a Map.
+ * @details This function gets the central coordinates of a Map.
+ * @since_tizen 3.0
+ * @remarks @a coordinates must be released using maps_coordinates_destroy().
+ *
+ * @param[out]	coordinates	The pointer to #maps_coordinates_h in which to
+ * store the geographical coordinates of the central position of the Map
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ *
+ * @see maps_plugin_get_min_zoom_level()
+ * @see maps_plugin_get_max_zoom_level
+ */
+int maps_plugin_get_center(maps_coordinates_h *coordinates);
+
+/**
+ * @brief	Enables or disables the scalebar.
+ * @details This function enables or disables the scalebar.
+ * @since_tizen 3.0
+ * @remarks This function requires network access.
+ *
+ * @param[in]	view		The view handle
+ * @param[in]	enabled		The enable status
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
+ *
+ * @see maps_plugin_get_scalebar()
+ */
+int maps_plugin_set_scalebar(bool enable);
+
+/**
+ * @brief	Checks whether the scalebar is enabled or not.
+ * @details This function checks whether the scalebar is enabled or not.
+ * @since_tizen 3.0
+ *
+ * @param[in]	view		The view handle
+ * @param[out]	enabled		The pointer to a boolean in which to store the enable status
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ *
+ * @see maps_plugin_set_scalebar()
+ */
+int maps_plugin_get_scalebar(bool *enabled);
 
 #ifdef __cplusplus
 }

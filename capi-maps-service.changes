@@ -1,3 +1,8 @@
+[Version]   capi-maps-service_0.6.0
+[Date]      18 April 2016
+[Title]     ACR about Maps-View APIs
+[Developer]	Jongmun Woo <jongmun.woo@samsung.com>
+
 [Version]   capi-maps-service_0.5.3
 [Date]      22 January 2016
 [Title]     Added place list API.

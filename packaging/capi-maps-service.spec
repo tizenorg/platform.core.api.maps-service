@@ -1,18 +1,24 @@
 Name:       capi-maps-service
 Summary:    Tizen Maps Service API
-Version:    0.5.3
+Version:    0.6.0
 Release:    1
 Group:      Location/API
 License:    Apache-2.0
 Source0:    %{name}-%{version}.tar.gz
 
 BuildRequires:  cmake
+
+# Maps API dependencies
 BuildRequires:  pkgconfig(glib-2.0)
 BuildRequires:  pkgconfig(gmodule-2.0)
 BuildRequires:  pkgconfig(capi-base-common)
 BuildRequires:  pkgconfig(dlog)
 
-#BuildRequires:  pkgconfig(security-privilege-checker)
+# Mapping API dependencies
+BuildRequires:  pkgconfig(eina)
+BuildRequires:  pkgconfig(evas)
+BuildRequires:  pkgconfig(ecore)
+BuildRequires:  pkgconfig(evas)
 
 Requires(post):  /sbin/ldconfig
 Requires(postun):  /sbin/ldconfig
@@ -108,51 +114,3 @@ This provides the Tizen Map Service APIs to access and handle map data for the M
 %{_includedir}/maps/maps_plugin*.h
 %{_includedir}/maps/maps_*_plugin.h
 %{_includedir}/maps/maps_extra_types.h
-
-
-# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-# WARNING! FOR TESTING PURPOSES ONLY
-# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-#if you want to tesst code, please change %if 0 to %if 1
-%if 0
-%package test
-Summary:    Tizen Maps Service Library Test (Internal Dev)
-Group:      Location/Testing
-Requires:   capi-maps-service = %{version}-%{release}
-
-%description test
-This is a program to test the Tizen Maps Service Library internally.
-
-==================================================================================
-READ ME
--------
-1. How to build
-   1) Change %if 0 to %if 1
-   2) Release SET(CMAKE_CXX_FLAGS, ~) and ADD_SUBDIRECTORY(test) in CMakeLists.txt
-
-2. How to install
-   # pkgcmd -i -t rpm -p capi-maps-service-test-%{version}-%{release}.rpm
-==================================================================================
-
-%files test
-%defattr(-,root,root,-)
-%manifest test/capi-maps-service-test.manifest
-/opt/usr/devel/capi-maps-service-test
-/usr/share/packages/capi-maps-service-test.xml
-
-#################################################################################
-# Test plugin library
-
-%package -n maps-plugin-test
-Summary:    Tizen Maps Service Plug-in Test (Internal Dev)
-Group:      Location/Testing
-Requires:   %{name} = %{version}-%{release}
-
-%description -n maps-plugin-test
-This is a program to test the Tizen Maps Service for Plug-in internally.
-
-%files -n maps-plugin-test
-%manifest test/dummy_plugin/maps-plugin-test.manifest
-%defattr(-,root,root,-)
-%{_libdir}/maps/plugins/libmaps-plugin-test.so*
-%endif

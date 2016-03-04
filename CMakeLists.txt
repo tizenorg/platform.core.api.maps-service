@@ -12,6 +12,7 @@ SET(INTERNAL_INC_DIR
 	src/api
 	src/plugin
 	src/session
+	src/view
 	)
 INCLUDE_DIRECTORIES(${INC_DIR} ${INTERNAL_INC_DIR})
 
@@ -22,6 +23,10 @@ SET(dependents
 	capi-base-common
 	dlog
 
+	# Mapping API dependencies
+	eina
+	evas
+	ecore
 	)
 SET(pc_dependents "capi-base-common")
 
@@ -53,6 +58,7 @@ aux_source_directory(src SOURCES)
 aux_source_directory(src/api SOURCES_API)
 aux_source_directory(src/plugin SOURCES_PLUGIN)
 aux_source_directory(src/session SOURCES_SESSION)
+aux_source_directory(src/view SOURCES_SESSION)
 ADD_LIBRARY(${fw_name} SHARED ${SOURCES} ${SOURCES_API} ${SOURCES_PLUGIN} ${SOURCES_SESSION})
 
 TARGET_LINK_LIBRARIES(${fw_name} ${${fw_name}_LDFLAGS})
@@ -85,47 +91,3 @@ CONFIGURE_FILE(
 	@ONLY
 	)
 INSTALL(FILES ${CMAKE_CURRENT_SOURCE_DIR}/${fw_name}.pc DESTINATION ${LIBDIR}/pkgconfig)
-
-
-
-# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-# WARNING! FOR TESTING PURPOSES ONLY
-# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-#Please don't release the below comment when you submit.
-#Please release the below comment, if you want to test code in local.
-#It is not good for security and increases binary size.
-#SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${EXTRA_CFLAGS} -fPIC -Wall -Werror -fvisibility=default")
-#ADD_SUBDIRECTORY(test)
-
-IF(UNIX)
-
-	ADD_CUSTOM_TARGET (distclean @echo cleaning for source distribution)
-	ADD_CUSTOM_COMMAND(
-		DEPENDS clean
-		COMMENT "distribution clean"
-		COMMAND find
-		ARGS    .
-		-not -name config.cmake -and \(
-		-name tester.c -or
-		-name Testing -or
-		-name CMakeFiles -or
-		-name cmake.depends -or
-		-name cmake.check_depends -or
-		-name CMakeCache.txt -or
-		-name cmake.check_cache -or
-		-name *.cmake -or
-		-name Makefile -or
-		-name core -or
-		-name core.* -or
-		-name gmon.out -or
-		-name install_manifest.txt -or
-		-name *.pc -or
-		-name *~ \)
-		| grep -v TC | xargs rm -rf
-		TARGET  distclean
-		VERBATIM
-		)
-
-ENDIF(UNIX)
-

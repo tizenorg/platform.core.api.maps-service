@@ -56,6 +56,7 @@ namespace plugin
 	};
 
 	provider_info find_by_names(const string &provider);
+	void split_provider_name(const char *original, char **provider, char **module);
 }
 
 #endif				/* __MAPS_SERVICE_PLUGIN_DISCOVERY_H__ */

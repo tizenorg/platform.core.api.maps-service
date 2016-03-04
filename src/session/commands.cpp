@@ -16,9 +16,16 @@
 
 #include "commands.h"
 #include "maps_util.h"
+#include "maps_view_plugin.h"
 #include "maps_place_private.h"
 #include "maps_route_private.h"
 #include "empty_module.h"
+
+extern int _maps_view_move_center(maps_view_h view, const int delta_x, const int delta_y);
+
+extern int _maps_view_set_zoom_rotate(maps_view_h view,
+				     const bool zoom_changed, const double zoom_factor,
+				     const bool rotation_changed, const double rotation_angle);
 
 extern bool maps_address_is_valid(const maps_address_h address);
 extern bool maps_area_is_valid(const maps_area_h area);
@@ -1311,3 +1318,244 @@ int session::command_cancel_request::run()
 	destroy();
 	return error;
 }
+
+
+/*----------------------------------------------------------------------------*/
+/*
+ *		Mapping API commands
+ */
+/*----------------------------------------------------------------------------*/
+
+session::command_view_set_center::command_view_set_center(maps_service_h ms,
+							   maps_view_h view,
+						const maps_coordinates_h coords)
+	: command(ms)
+	, v(view)
+	, c(NULL)
+{
+	maps_coordinates_clone(coords, &c);
+}
+
+session::command_view_set_center::~command_view_set_center()
+{
+	maps_coordinates_destroy(c);
+}
+
+int session::command_view_set_center::run()
+{
+	{ /* TODO: remove it in release */
+		double lat = 0, lon = 0;
+		maps_coordinates_get_latitude_longitude(c, &lat, &lon);
+		MAPS_LOGD("session::command_view_set_center::run lat,lon=%f,%f",
+			  lat, lon);
+	}
+
+	if(!v)
+		return MAPS_ERROR_INVALID_PARAMETER;
+
+	int error = MAPS_ERROR_NONE;
+	do {
+		error = maps_view_set_center(v, c);
+		if(error != MAPS_ERROR_NONE)
+			break;
+	} while(false);
+
+	const int ret = error;
+	destroy();
+	return ret;
+}
+
+session::command_type_e session::command_view_set_center::get_type() const
+{
+	return MAP_VIEW_SET_CENTER_COMMAND;
+}
+
+int session::command_view_set_center::get_priority() const
+{
+	return 3;
+}
+
+void session::command_view_set_center::merge(const command *c)
+{
+	if (!c || (get_type() != c->get_type())) return;
+	command_view_set_center *cmd = (command_view_set_center *)c;
+	if (v == cmd->v) {
+		double lat = .0;
+		double lon = .0;
+		maps_coordinates_get_latitude_longitude(cmd->c, &lat, &lon);
+		maps_coordinates_set_latitude_longitude(this->c, lat, lon);
+		cmd->set_merged();
+	}
+}
+
+
+/*----------------------------------------------------------------------------*/
+
+
+session::command_view_move_center::command_view_move_center(maps_service_h ms,
+							   maps_view_h view,
+							   const int delta_x,
+							   const int delta_y)
+	: command(ms)
+	, v(view)
+	, _delta_x(delta_x)
+	, _delta_y(delta_y)
+{
+}
+
+session::command_view_move_center::~command_view_move_center()
+{
+}
+
+int session::command_view_move_center::run()
+{
+	MAPS_LOGD("session::command_view_move_center::run "
+		  "delta_x = %d, delta_y = %d",
+		  _delta_x, _delta_y);
+
+	if(!v)
+		return MAPS_ERROR_INVALID_PARAMETER;
+
+	int error = MAPS_ERROR_NONE;
+	do {
+		error = _maps_view_move_center(v, _delta_x, _delta_y);
+		if(error != MAPS_ERROR_NONE)
+			break;
+	} while(false);
+
+	const int ret = error;
+	destroy();
+	return ret;
+}
+
+session::command_type_e session::command_view_move_center::get_type() const
+{
+	return MAP_VIEW_MOVE_CENTER_COMMAND;
+}
+
+int session::command_view_move_center::get_priority() const
+{
+	return 3;
+}
+
+void session::command_view_move_center::merge(const command *c)
+{
+	if (!c || (get_type() != c->get_type())) return;
+	command_view_move_center *cmd = (command_view_move_center *)c;
+	if (v == cmd->v) {
+		_delta_x += cmd->_delta_x;
+		_delta_y += cmd->_delta_y;
+		cmd->set_merged();
+	}
+}
+
+/*----------------------------------------------------------------------------*/
+
+int session::command_view_zoom::run()
+{
+	MAPS_LOGD ("session::command_view_zoom::run factor = %f", zoom_factor);
+
+	if (!v)
+		return MAPS_ERROR_INVALID_PARAMETER;
+
+	const int ret = maps_view_set_zoom_factor (v, zoom_factor);
+
+	destroy ();
+	return ret;
+}
+
+session::command_type_e session::command_view_zoom::get_type() const
+{
+	return MAP_VIEW_ZOOM_COMMAND;
+}
+
+int session::command_view_zoom::get_priority() const
+{
+	return 2;
+}
+
+void session::command_view_zoom::merge(const command *c)
+{
+	if (!c || (get_type() != c->get_type())) return;
+	command_view_zoom *cmd = (command_view_zoom *)c;
+	if (v == cmd->v) {
+		zoom_factor = cmd->zoom_factor;
+		cmd->set_merged ();
+	}
+}
+
+/*----------------------------------------------------------------------------*/
+int session::command_view_rotate::run()
+{
+	MAPS_LOGD ("session::command_view_rotate::run angle = %f",
+		  rotation_angle);
+
+	if (!v)
+		return MAPS_ERROR_INVALID_PARAMETER;
+
+	const int ret = maps_view_set_orientation(v, rotation_angle);
+
+	destroy ();
+	return ret;
+}
+
+session::command_type_e session::command_view_rotate::get_type() const
+{
+	return MAP_VIEW_ROTATE_COMMAND;
+}
+
+int session::command_view_rotate::get_priority() const
+{
+	return 2;
+}
+
+void session::command_view_rotate::merge(const command *c)
+{
+	if (!c || (get_type() != c->get_type())) return;
+	command_view_rotate *cmd = (command_view_rotate *)c;
+	if (v == cmd->v) {
+		rotation_angle += cmd->rotation_angle;
+		cmd->set_merged();
+	}
+}
+
+/*----------------------------------------------------------------------------*/
+
+int session::command_view_zoom_rotate::run()
+{
+	MAPS_LOGD ("session::command_view_zoom_rotate::run "
+		   "factor = %f, angle = %f",
+		   zoom_factor, rotation_angle);
+
+	if (!v)
+		return MAPS_ERROR_INVALID_PARAMETER;
+
+	const int ret = _maps_view_set_zoom_rotate(v,
+						  true, zoom_factor,
+						  true, rotation_angle);
+
+	destroy ();
+	return ret;
+}
+
+session::command_type_e session::command_view_zoom_rotate::get_type() const
+{
+	return MAP_VIEW_ZOOM_ROTATE_COMMAND;
+}
+
+int session::command_view_zoom_rotate::get_priority() const
+{
+	return 2;
+}
+
+void session::command_view_zoom_rotate::merge(const command *c)
+{
+	if (!c || (get_type() != c->get_type())) return;
+	command_view_zoom_rotate *cmd = (command_view_zoom_rotate *)c;
+	if (v == cmd->v) {
+		zoom_factor = cmd->zoom_factor;
+		rotation_angle += cmd->rotation_angle;
+		cmd->set_merged();
+	}
+}
+

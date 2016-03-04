@@ -98,15 +98,18 @@ EXPORT_API int maps_service_create(const char *maps_provider, maps_service_h *ma
 		return MAPS_ERROR_INVALID_PARAMETER;
 
 	/* Check if privileges enough */
-	if (!__has_maps_service_privilege())
+	if (!__has_maps_service_privilege()) {
+		MAPS_LOGD("ERROR: privilege is not included");
 		return MAPS_ERROR_PERMISSION_DENIED;
+	}
 
 	int error = MAPS_ERROR_NOT_SUPPORTED;
+	char *provider = NULL, *module = NULL;
 
 	do {
 		/* 0. Find the plugin, requested by the user */
-		const plugin::provider_info info =
-			plugin::find_by_names(string(maps_provider));
+		plugin::split_provider_name(maps_provider, &provider, &module);
+		const plugin::provider_info info = plugin::find_by_names(provider);
 
 		/* 1. Check whether provider info is valid */
 		if (info.empty()) {
@@ -126,7 +129,7 @@ EXPORT_API int maps_service_create(const char *maps_provider, maps_service_h *ma
 
 		/* 3. Initialize the requested plugin */
 		int init_error = MAPS_ERROR_NONE; /* Storage for init error code */
-		maps_plugin_h plugin_h = plugin::binary_extractor().init(info, &init_error);
+		maps_plugin_h plugin_h = plugin::binary_extractor().init(info, module, &init_error);
 		if (!plugin_h) {
 			error = init_error;
 			MAPS_LOGE("ERROR! Plugin init failed");
@@ -145,6 +148,8 @@ EXPORT_API int maps_service_create(const char *maps_provider, maps_service_h *ma
 	if (error != MAPS_ERROR_NONE)
 		maps_service_destroy(*maps);
 
+	g_free(provider);
+	g_free(module);
 	return error;
 }
 
@@ -310,8 +315,11 @@ EXPORT_API int maps_service_geocode_inside_area(const maps_service_h maps,
 	return ret;
 }
 
-EXPORT_API int maps_service_geocode_by_structured_address(const maps_service_h maps, const maps_address_h address,
-	const maps_preference_h preference, maps_service_geocode_cb callback, void *user_data, int *request_id)
+EXPORT_API int maps_service_geocode_by_structured_address(const maps_service_h maps,
+					const maps_address_h address,
+					const maps_preference_h preference,
+					maps_service_geocode_cb callback,
+					void *user_data, int *request_id)
 {
 	/* Check if the handle of the Maps Service is valid */
 	if (!maps)

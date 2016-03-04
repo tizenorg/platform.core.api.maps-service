@@ -77,7 +77,7 @@ plugin::provider_info plugin::binary_extractor::get_plugin_info(const
 }
 
 maps_plugin_h plugin::binary_extractor::init(const provider_info &info,
-					     int *init_error)
+					     const char *module, int *init_error)
 {
 	/* 1.Initialize plugin */
 	if (info.file.empty() || !init_error)
@@ -113,6 +113,9 @@ maps_plugin_h plugin::binary_extractor::init(const provider_info &info,
 		new_plugin->interface.maps_plugin_init =
 			(maps_plugin_init_f) gmod_find_sym(plugin,
 			"maps_plugin_init");
+		new_plugin->interface.maps_plugin_init_module =
+			(maps_plugin_init_module_f) gmod_find_sym(plugin,
+			"maps_plugin_init_module");
 		new_plugin->interface.maps_plugin_shutdown =
 			(maps_plugin_shutdown_f) gmod_find_sym(plugin,
 			"maps_plugin_shutdown");
@@ -194,6 +197,46 @@ maps_plugin_h plugin::binary_extractor::init(const provider_info &info,
 			(maps_plugin_cancel_request_f) gmod_find_sym(plugin,
 			"maps_plugin_cancel_request");
 
+		/* Mapping */
+		new_plugin->interface.maps_plugin_set_map_view =
+			(maps_plugin_set_map_view_f) gmod_find_sym(plugin,
+			"maps_plugin_set_map_view");
+		new_plugin->interface.maps_plugin_render_map =
+			(maps_plugin_render_map_f) gmod_find_sym(plugin,
+			"maps_plugin_render_map");
+		new_plugin->interface.maps_plugin_move_center =
+			(maps_plugin_move_center_f) gmod_find_sym(plugin,
+			"maps_plugin_move_center");
+		new_plugin->interface.maps_plugin_set_scalebar =
+			(maps_plugin_set_scalebar_f) gmod_find_sym(plugin,
+			"maps_plugin_set_scalebar");
+		new_plugin->interface.maps_plugin_get_scalebar =
+			(maps_plugin_get_scalebar_f) gmod_find_sym(plugin,
+			"maps_plugin_get_scalebar");
+		new_plugin->interface.maps_plugin_draw_map =
+			(maps_plugin_draw_map_f) gmod_find_sym(plugin,
+			"maps_plugin_draw_map");
+		new_plugin->interface.maps_plugin_on_object =
+			(maps_plugin_on_object_f) gmod_find_sym(plugin,
+			"maps_plugin_on_object");
+		new_plugin->interface.maps_plugin_screen_to_geography =
+			(maps_plugin_screen_to_geography_f)
+			gmod_find_sym(plugin,
+			"maps_plugin_screen_to_geography");
+		new_plugin->interface.maps_plugin_geography_to_screen =
+			(maps_plugin_geography_to_screen_f)
+			gmod_find_sym(plugin,
+			"maps_plugin_geography_to_screen");
+		new_plugin->interface.maps_plugin_get_min_zoom_level =
+			(maps_plugin_get_min_zoom_level_f) gmod_find_sym(plugin,
+			"maps_plugin_get_min_zoom_level");
+		new_plugin->interface.maps_plugin_get_max_zoom_level =
+			(maps_plugin_get_max_zoom_level_f) gmod_find_sym(plugin,
+			"maps_plugin_get_max_zoom_level");
+		new_plugin->interface.maps_plugin_get_center =
+			(maps_plugin_get_center_f) gmod_find_sym(plugin,
+			"maps_plugin_get_center");
+
 		/* 2.3 Check whether the plugin init function is valid */
 		if (!new_plugin->interface.maps_plugin_init) {
 			MAPS_LOGE(
@@ -203,9 +246,12 @@ maps_plugin_h plugin::binary_extractor::init(const provider_info &info,
 
 		/* 2.4 Call a plugin to initialize itself, send to the plugin
 		*  its pointer */
-		int ret =
-			new_plugin->interface.
-			maps_plugin_init((maps_plugin_h *) (&new_plugin));
+		int ret;
+		if (!module || !new_plugin->interface.maps_plugin_init_module)
+			ret = new_plugin->interface.maps_plugin_init((maps_plugin_h *) (&new_plugin));
+		else
+			ret = new_plugin->interface.maps_plugin_init_module((maps_plugin_h *) (&new_plugin), module);
+
 		if (ret != MAPS_ERROR_NONE) {
 			MAPS_LOGE(
 			"ERROR! Plugin initialization function ""failed: %d",

@@ -24,7 +24,7 @@ volatile int session::command::command_request_id = 1;
 session::command session::command::empty_instance;
 
 session::command::command(maps_service_h ms)
-	: m(ms), my_req_id(0), error(MAPS_ERROR_NONE)
+	: m(ms), my_req_id(0), error(MAPS_ERROR_NONE), is_merged(false)
 {
 }
 
@@ -43,6 +43,7 @@ session::command &session::command::operator =(const command &src)
 		m = src.m;
 		my_req_id = src.my_req_id;
 		error = src.error;
+		is_merged = src.is_merged;
 	}
 	return *this;
 }
@@ -82,6 +83,33 @@ plugin::plugin_s *session::command::plugin() const
 	return __extract_plugin(m);
 }
 
+session::command_type_e session::command::get_type() const
+{
+	/* Default command type */
+	return MAPS_DATA_COMMAND;
+}
+
+int session::command::get_priority() const
+{
+	/* Default command priority */
+	return 1;
+}
+
+void session::command::merge(const command *c)
+{
+	/* empty */
+}
+
+bool session::command::merged() const
+{
+	return is_merged;
+}
+
+
+void session::command::set_merged()
+{
+	is_merged = true;
+}
 /*----------------------------------------------------------------------------*/
 
 session::command_handler::command_handler(plugin::plugin_s *p, void *ud,

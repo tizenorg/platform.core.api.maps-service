@@ -27,6 +27,7 @@
 *  Plugin dedicated functions
 */
 typedef int (*maps_plugin_init_f) (maps_plugin_h *plugin);
+typedef int (*maps_plugin_init_module_f) (maps_plugin_h *plugin, const char *module);
 typedef int (*maps_plugin_shutdown_f) (maps_plugin_h plugin);
 typedef int (*maps_plugin_get_info_f) (maps_plugin_info_h *info);
 
@@ -108,6 +109,33 @@ typedef int (*maps_plugin_search_route_waypoints_f) (const maps_coordinates_h * 
 /* Cancel Request */
 typedef int (*maps_plugin_cancel_request_f) (int request_id);
 
+/* Mapping */
+typedef int (*maps_plugin_set_map_view_f) (const maps_view_h view,
+						maps_plugin_map_view_ready_cb callback);
+typedef int (*maps_plugin_render_map_f) (const maps_coordinates_h coordinates,
+						const double zoom_factor,
+						const double rotation_angle,
+						maps_plugin_render_map_cb callback,
+						void* user_data,
+						int* request_id);
+typedef int (*maps_plugin_move_center_f) (const int delta_x,
+						const int delta_y,
+						maps_plugin_render_map_cb callback,
+						void* user_data,
+						int* request_id);
+typedef int (*maps_plugin_set_scalebar_f) (bool enable);
+typedef int (*maps_plugin_get_scalebar_f) (bool *enabled);
+typedef int (*maps_plugin_draw_map_f) (Evas* canvas, const int x, const int y,
+						const int width, const int height);
+typedef int (*maps_plugin_on_object_f) (const maps_view_object_h object,
+						const maps_view_object_operation_e operation);
+typedef int (*maps_plugin_screen_to_geography_f) (const int x, const int y,
+						maps_coordinates_h* coordinates);
+typedef int (*maps_plugin_geography_to_screen_f) (const maps_coordinates_h coordinates,
+						int* x, int* y);
+typedef int (*maps_plugin_get_min_zoom_level_f) (int *min_zoom_level);
+typedef int (*maps_plugin_get_max_zoom_level_f) (int *max_zoom_level);
+typedef int (*maps_plugin_get_center_f) (maps_coordinates_h *coordinates);
 
 namespace plugin {
 
@@ -118,6 +146,7 @@ typedef struct _interface_s {
 	maps_plugin_init_f maps_plugin_init;
 	maps_plugin_shutdown_f maps_plugin_shutdown;
 	maps_plugin_get_info_f maps_plugin_get_info;
+	maps_plugin_init_module_f maps_plugin_init_module;
 
 	/* Maps Provider access key, preference and capabilities */
 	maps_plugin_set_provider_key_f maps_plugin_set_provider_key;
@@ -148,6 +177,19 @@ typedef struct _interface_s {
 	/* Cancel Request */
 	maps_plugin_cancel_request_f maps_plugin_cancel_request;
 
+	/* Mapping */
+	maps_plugin_set_map_view_f maps_plugin_set_map_view;
+	maps_plugin_render_map_f maps_plugin_render_map;
+	maps_plugin_move_center_f maps_plugin_move_center;
+	maps_plugin_set_scalebar_f maps_plugin_set_scalebar;
+	maps_plugin_get_scalebar_f maps_plugin_get_scalebar;
+	maps_plugin_draw_map_f maps_plugin_draw_map;
+	maps_plugin_on_object_f maps_plugin_on_object;
+	maps_plugin_screen_to_geography_f maps_plugin_screen_to_geography;
+	maps_plugin_geography_to_screen_f maps_plugin_geography_to_screen;
+	maps_plugin_get_min_zoom_level_f maps_plugin_get_min_zoom_level;
+	maps_plugin_get_max_zoom_level_f maps_plugin_get_max_zoom_level;
+	maps_plugin_get_center_f maps_plugin_get_center;
 } interface_s;
 
 /* Plugin structure */
@@ -193,7 +235,7 @@ public:
 	virtual ~binary_extractor() {}
 public:
 	provider_info get_plugin_info(const string &file_name) const;
-	maps_plugin_h init(const provider_info &info, int *init_error);
+	maps_plugin_h init(const provider_info &info, const char *module, int *init_error);
 	void shutdown(maps_plugin_h plugin_h);
 private:
 	GMod *gmod_new(const string &module_file, gboolean is_resident) const;
