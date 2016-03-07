@@ -33,7 +33,6 @@ const gsize _MAPS_PLACE_EDITORIAL_LANGUAGE_MAX_LENGTH = 32;
 
 EXPORT_API int maps_place_editorial_create(maps_place_editorial_h *place)
 {
-	MAPS_LOG_API;
 	if (!place)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	*place = (maps_place_editorial_h) g_slice_new0(maps_place_editorial_s);
@@ -48,7 +47,6 @@ EXPORT_API int maps_place_editorial_create(maps_place_editorial_h *place)
 
 EXPORT_API int maps_place_editorial_destroy(maps_place_editorial_h place)
 {
-	MAPS_LOG_API;
 	if (!place)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -69,7 +67,6 @@ EXPORT_API int maps_place_editorial_destroy(maps_place_editorial_h place)
 EXPORT_API int maps_place_editorial_clone(const maps_place_editorial_h origin,
 					  maps_place_editorial_h *cloned)
 {
-	MAPS_LOG_API;
 	if (!cloned || !origin)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -118,7 +115,6 @@ EXPORT_API int maps_place_editorial_get_description(const maps_place_editorial_h
 						    place,
 						    char **description)
 {
-	MAPS_LOG_API;
 	if (!place || !description)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_get_string(((maps_place_editorial_s *) place)->description,
@@ -129,7 +125,6 @@ EXPORT_API int maps_place_editorial_get_language(const maps_place_editorial_h
 						 place,
 						 char **language)
 {
-	MAPS_LOG_API;
 	if (!place || !language)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_get_string(((maps_place_editorial_s *) place)->language,
@@ -140,7 +135,6 @@ EXPORT_API int maps_place_editorial_get_media(const maps_place_editorial_h
 					      place,
 					      maps_place_media_h *media)
 {
-	MAPS_LOG_API;
 	if (!place || !media)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_place_media_clone(((maps_place_editorial_s *) place)->media,
@@ -153,7 +147,6 @@ EXPORT_API int maps_place_editorial_set_description(maps_place_editorial_h
 						    place,
 						    const char *description)
 {
-	MAPS_LOG_API;
 	if (!place || !description)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_set_string(description,
@@ -164,7 +157,6 @@ EXPORT_API int maps_place_editorial_set_description(maps_place_editorial_h
 EXPORT_API int maps_place_editorial_set_language(maps_place_editorial_h place,
 						 const char *language)
 {
-	MAPS_LOG_API;
 	if (!place || !language)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_set_string(language,
@@ -175,7 +167,6 @@ EXPORT_API int maps_place_editorial_set_language(maps_place_editorial_h place,
 EXPORT_API int maps_place_editorial_set_media(maps_place_editorial_h place,
 	const maps_place_media_h media)
 {
-	MAPS_LOG_API;
 	if (!place || !media)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_place_editorial_s *e = (maps_place_editorial_s *) place;

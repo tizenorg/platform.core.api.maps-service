@@ -40,7 +40,7 @@ extern "C" {
  * @details The handle of Place Attribute instance.
  * @remarks To release the handle use maps_place_attribute_destroy().
  * \n To clone the handle use maps_place_attribute_clone().
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @see maps_place_attribute_destroy()
  * @see maps_place_attribute_clone()
@@ -54,7 +54,7 @@ typedef void *maps_place_attribute_h;
  * resources.
  * @details This function destroys the place attribute handle and releases all
  * its resources.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	attribute	The place attribute handle to destroy
  * @return	0 on success, otherwise a negative error value
@@ -69,7 +69,7 @@ int maps_place_attribute_destroy(maps_place_attribute_h attribute);
  * @brief	Clones the place attribute handle.
  * @details This function clones the place attribute handle @a origin and all
  * its resources.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks @a cloned must be released using maps_place_attribute_destroy().
  *
  * @param[in]	origin		The original place attribute handle
@@ -89,7 +89,7 @@ int maps_place_attribute_clone(const maps_place_attribute_h origin,
 /**
  * @brief	Gets the place attribute id.
  * @details This function gets the place attribute id.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks @a id must be released using free().
  *
  * @param[in]	attribute	The handle to place attribute
@@ -104,7 +104,7 @@ int maps_place_attribute_get_id(const maps_place_attribute_h attribute,
 /**
  * @brief	Gets the place link object label.
  * @details This function gets the place link object label.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks @a label must be released using free().
  *
  * @param[in]	attribute	The handle to place attribute
@@ -119,7 +119,7 @@ int maps_place_attribute_get_label(const maps_place_attribute_h attribute,
 /**
  * @brief	Gets the place attribute text.
  * @details This function gets the place attribute text.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks @a text must be released using free().
  *
  * @param[in]	attribute	The handle to place attribute

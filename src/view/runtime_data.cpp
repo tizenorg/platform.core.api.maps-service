@@ -17,6 +17,7 @@
 
 #include "runtime_data.h"
 #include "maps_util.h"
+#include "map_view_plugin.h"
 #include <glib.h>
 
 

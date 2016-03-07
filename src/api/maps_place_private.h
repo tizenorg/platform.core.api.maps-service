@@ -18,7 +18,7 @@
 #define __MAPS_PLACE_PRIVATE_H__
 
 #include <maps_service.h>
-#include "maps_extra_types_private.h"
+#include <maps_extra_types.h>
 
 /**
  * @ingroup	CAPI_MAPS_PLACE_MODULE
@@ -41,7 +41,7 @@ extern "C" {
  * @internal
  * @brief	Checks if a place data feature is supported.
  * @details This function checks if a place data feature is supported.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	place		The handle to place
  * @param[in]	data		The feature to be checked
@@ -61,7 +61,7 @@ int _maps_place_is_data_supported(const maps_place_h place,
  * @internal
  * @brief	Sets the supported place data features.
  * @details This function sets the supported place data features.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	place		The handle to place
  * @param[in]	supported_data	The supported place data features

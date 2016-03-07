@@ -19,8 +19,6 @@
 
 #include <Evas.h>
 #include <maps_service.h>
-#include <map_gesture.h>
-#include <map_snapshot.h>
 #include <map_object.h>
 #include <map_event_data.h>
 
@@ -38,10 +36,9 @@
  * @details Supported map view API features include:
  *  * Creating and destroying the map view port, moving and resizing it
  *  * Changing map zoom, and orientation
- *  * Changing map properties: theme (day, satellite ,terrain),
+ *  * Changing map properties: theme (day, satellite, terrain),
  *  language (English, Russian, Chinese, Italian, German, Spanish, etc.)
  *  * Converting screen coordinates to geographical and vise versa
- *  * Capturing snapshot with current map view image
  *  * Managing user's gestures: receiving user's gesture events, enabling or
  *  disabling specified user gestures, assigning map view actions, which must be
  *  taken in response on user gestures
@@ -65,368 +62,67 @@ extern "C" {
  */
 typedef void *map_view_h;
 
-
 /**
  * @brief	Enumeration of map view types (themes)
  * @since_tizen 3.0
  */
-typedef enum _map_view_type_e {
-
-	MAP_VIEW_TYPE_DAY, /**< Indicates the day theme */
-
-	MAP_VIEW_TYPE_SATELLITE, /**< Indicates the satellite theme */
-
-	MAP_VIEW_TYPE_TRANSIT, /**< Indicates the public transport scheme in
-				 daylight mode */
-
-	MAP_VIEW_TYPE_TRAFFIC, /**< Indicates the traffic scheme in
-				 daylight mode */
-
-	MAP_VIEW_TYPE_HYBRID_DAY, /**< Indicates the hybrid theme which
-				    composes satellite and roads themes */
-
-	MAP_VIEW_TYPE_HYBRID_TRANSIT, /**< Indicates the satellite map view with
-				public transport scheme in daylight mode */
-
-	MAP_VIEW_TYPE_HYBRID_TRAFFIC, /**< Indicates the satellite map view with
-				streets scheme designed for traffic */
-
-
-	MAP_VIEW_TYPE_TERRAIN,	/**< Indicates the terrain theme */
-
-} map_view_type_e;
+typedef enum _map_type_e {
+	MAP_TYPE_NORMAL,    /** Indicates the normal street map */
+	MAP_TYPE_SATELLITE, /** Indicates the satellite map */
+	MAP_TYPE_TERRAIN,   /** Indicates the terrain map */
+	MAP_TYPE_HYBRID,    /** Indicates the hybrid theme which is the satellite and normal street map */
+} map_type_e;
 
 /**
- * @brief	Called when requesting the list of visual objects of the Map
- * View.
+ * @brief	Called when requesting the list of visual objects of the Map View.
  * @details This callback is invoked while iterating through the list of
  * visual objects, added to the Map View.
  * @since_tizen 3.0
- * @remarks @a object must be released using maps_visual_object_destroy().
- * \n To use @a object outside this function, clone it with
- * maps_visual_object_clone().
  *
- * @param[in]	index		The current index of path point
- * @param[in]	total		The total amount of path points
+ * @param[in]	index		The current index of the visual object, start from 0
+ * @param[in]	total		The total amount of visual objects
  * @param[in]	object		The visual object
- * @param[in]	user_data	The user data pointer passed from
- * map_view_foreach_object()
+ * @param[in]	user_data	The user data pointer passed from map_view_foreach_object()
  * @return	@c true to continue with the next iteration of the loop, \n @c
  * false to break out of the loop
  *
  * @pre map_view_foreach_object() will invoke this callback.
  *
- * @par Example
- * @code
-#include <map_view.h>
-
-// map_view_h view is created ahead
-
-static bool draw_map_object_cb(int index, int total,
-			     map_object_h object,
-			     void *user_data)
-{
-	if (!object)
-		return false;
-
-	bool visible = false;
-	map_object_type_e type = MAP_OBJECT_UNKNOWN;
-	int error = MAPS_ERROR_NONE;
-
-	error = map_object_get_visible(object, &visible);
-	if (error != MAPS_ERROR_NONE)
-		return false;
-
-	if (!visible)
-		return true; // This object should not be drawn
-
-	// Extract the type of the object
-	error = map_object_get_type(object, &type);
-	if (error != MAPS_ERROR_NONE)
-		return false;
-
-	// Dispatch the drawing routines
-	switch(type) {
-	case MAP_OBJECT_MARKER:
-		__draw_marker(object);
-		break;
-	case MAP_OBJECT_POLYLINE:
-		__draw_polyline(object);
-		break;
-	case MAP_OBJECT_POLYGON:
-		__draw_polygon(object);
-		break;
-	case MAP_OBJECT_GROUP:
-		__draw_group(object);
-		break;
-	case MAP_OBJECT_UNKNOWN:
-	default:
-		// Handle the error of unsupported Map View Object type
-		break;
-	}
-	return true;
-}
- * @endcode
- *
  * @see #map_object_h
  * @see map_view_foreach_object()
  */
-typedef bool(*map_object_cb) (int index, int total,
-			      map_object_h object,
-			      void *user_data);
-
-/**
- * @brief	Called when user's gesture occurs.
- * @details The map view invokes this callback when one of user's gestures,
- * listed in #map_gesture_e, occurs.
- * @since_tizen 3.0
- * @remarks The @a gesture handle must be released using map_gesture_destroy().
- * \n To use @a gesture outside this function, clone it with
- * map_gesture_clone().
- *
- * @param[in]	gesture		The gesture data handle
- * @param[in]	user_data	The user data pointer registered in
- * map_view_set_gesture_cb()
- *
- * @pre map_view_set_gesture_cb() sets this callback.
- * @pre User's gestures, such as tap, double tap, map rotate or long press
- * invoke the callback.
- *
- * @par Example
- * @code
-#include <map_view.h>
-
-static void map_view_gesture_cb(map_gesture_h gesture, void *user_data)
-{
-	map_gesture_e gesture_type = MAP_GESTURE_NONE;
-	map_gesture_get_type(gesture, &gesture_type);
-	switch (gesture_type) {
-		case MAP_GESTURE_SCROLL:
-			LOG("MAP_GESTURE_SCROLL");
-			break;
-		case MAP_GESTURE_TAP:
-			LOG("MAP_GESTURE_TAP");
-			break;
-		case MAP_GESTURE_DOUBLE_TAP:
-			LOG("MAP_GESTURE_SCROLL");
-			break;
-		case MAP_GESTURE_2_FINGER_TAP:
-			LOG("MAP_GESTURE_2_FINGER_TAP");
-			break;
-		case MAP_GESTURE_PRESS:
-			LOG("MAP_GESTURE_PRESS");
-			break;
-		case MAP_GESTURE_NONE:
-		default:
-			LOG("default gesture type");
-			break;
-	}
-	map_gesture_destroy(gesture);
-}
- * @endcode
- *
- * @see map_view_set_gesture_cb()
- * @see map_view_unset_gesture_cb()
- * @see #map_gesture_h
- */
-typedef void(*map_view_on_gesture_cb) (map_gesture_h gesture, void *user_data);
-
-/**
- * @brief	Called when requesting the list of visual objects of the Map
- * View.
- * @details This callback is invoked while iterating through the list of
- * visual objects, added to the Map View.
- * @since_tizen 3.0
- * @remarks @a object must be released using maps_visual_object_destroy().
- * \n To use @a object outside this function, clone it with
- * maps_visual_object_clone().
- *
- * @param[in]	index		The current index of path point
- * @param[in]	total		The total amount of path points
- * @param[in]	object		The visual object
- * @param[in]	user_data	The user data pointer passed from
- * map_view_foreach_object()
- * @return	@c true to continue with the next iteration of the loop, \n @c
- * false to break out of the loop
- *
- * @pre map_view_foreach_object() will invoke this callback.
- *
- * @par Example
- * @code
-#include <map_view.h>
-
-// map_view_h view is created ahead
-
-static bool draw_map_object_cb(int index, int total,
-			     map_object_h object,
-			     void *user_data)
-{
-	if (!object)
-		return false;
-
-	bool visible = false;
-	map_object_type_e type = MAP_OBJECT_UNKNOWN;
-	int error = MAPS_ERROR_NONE;
-
-	error = map_object_get_visible(object, &visible);
-	if (error != MAPS_ERROR_NONE)
-		return false;
-
-	if (!visible)
-		return true; // This object should not be drawn
-
-	// Extract the type of the object
-	error = map_object_get_type(object, &type);
-	if (error != MAPS_ERROR_NONE)
-		return false;
-
-	// Dispatch the drawing routines
-	switch(type) {
-	case MAP_OBJECT_MARKER:
-		__draw_marker(object);
-		break;
-	case MAP_OBJECT_POLYLINE:
-		__draw_polyline(object);
-		break;
-	case MAP_OBJECT_POLYGON:
-		__draw_polygon(object);
-		break;
-	case MAP_OBJECT_GROUP:
-		__draw_group(object);
-		break;
-	case MAP_OBJECT_UNKNOWN:
-	default:
-		// Handle the error of unsupported Map View Object type
-		break;
-	}
-	return true;
-}
- * @endcode
- *
- * @see #map_object_h
- * @see map_view_foreach_object()
- */
-typedef bool(*map_object_cb) (int index, int total,
-			      map_object_h object,
-			      void *user_data);
+typedef bool(*map_object_cb) (int index, int total, map_object_h object, void *user_data);
 
 /**
  * @brief	Called when the map event occurs.
  * @details The Map View Panel invokes this callback when the map event occurs.
  * @since_tizen 3.0
- * @remarks @a event_data must be released using map_event_data_destroy().
- * \n To use @a event_data outside this function, clone it with
- * map_event_data_clone().
+ * @remarks @a event_data will be released automatically after this callback is terminated.
+ * \n To use @a event_data outside this function, clone it with map_event_data_clone().
  *
- * @param[in]	result		The result of request
- * @param[in]	type		The new type of callback, listed
- * in #map_event_type_e
- * @param[in]	cb_data		The event data
- * @param[in]	user_data	The user data pointer registered in
- * map_view_set_event_callback()
+ * @param[in]	type		The new type of callback, listed in #map_event_type_e
+ * @param[in]	event_data	The event data
+ * @param[in]	user_data	The user data pointer registered in map_view_set_event_cb()
  *
- * @pre map_view_set_event_callback() sets the callback.
+ * @pre map_view_set_event_cb() sets the callback.
  * @pre map_view_set_center(),
  * map_view_set_zoom_level(),
- * map_view_set_zoom_factor(),
  * map_view_set_orientation(),
  * invoke the callback with the type #MAP_EVENT_ACTION.
- * @pre map_view_redraw() invoke the callback with the type #MAP_EVENT_READY.
  *
- * @par Example
- * @code
-#include <map_view.h>
-
-static void map_view_event_cb(maps_error_e result,
-			      const map_event_type_e type,
-			      map_event_data_h event_data,
-			      void *user_data)
-{
-	LOG("map_view_event_cb enter");
-
-	map_gesture_e gesture_type = MAP_GESTURE_NONE;
-	map_action_e action_type = MAP_ACTION_NONE;
-
-	switch (type) {
-		case MAP_EVENT_GESTURE:
-		case MAP_EVENT_OBJECT:
-			LOG("MAP_EVENT_GESTURE or MAP_EVENT_OBJECT");
-			map_event_data_get_gesture_type(event_data,
-							&gesture_type);
-			switch (gesture_type) {
-				case MAP_GESTURE_SCROLL:
-					LOG("MAP_GESTURE_SCROLL");
-					break;
-				case MAP_GESTURE_TAP:
-					LOG("MAP_GESTURE_TAP");
-					break;
-				case MAP_GESTURE_DOUBLE_TAP:
-					LOG("MAP_GESTURE_SCROLL");
-					break;
-				case MAP_GESTURE_2_FINGER_TAP:
-					LOG("MAP_GESTURE_2_FINGER_TAP");
-					break;
-				case MAP_GESTURE_PRESS:
-					LOG("MAP_GESTURE_PRESS");
-					break;
-				case MAP_GESTURE_NONE:
-				default:
-					LOG("default gesture_type");
-					break;
-			}
-			break;
-		case MAP_EVENT_ACTION:
-			LOG("MAP_EVENT_ACTION");
-			map_event_data_get_action_type(event_data,
-						       &action_type);
-			switch (action_type) {
-				case MAP_ACTION_SCROLL:
-					LOG("MAP_ACTION_SCROLL");
-					break;
-				case MAP_ACTION_MOVE_CENTER:
-					LOG("MAP_ACTION_MOVE_CENTER");
-					break;
-				case MAP_ACTION_ZOOM:
-					LOG("MAP_ACTION_ZOOM");
-					break;
-				case MAP_ACTION_ROTATE:
-					LOG("MAP_ACTION_ROTATE");
-					break;
-				case MAP_ACTION_NONE:
-				default:
-					LOG("default action_type");
-					break;
-			}
-			break;
-		case MAP_EVENT_READY:
-			LOG("MAP_EVENT_READY");
-			break;
-		default:
-			LOG("default type");
-			break;
-	}
-	map_event_data_destroy(event_data);
-}
- * @endcode
- *
- * @see map_view_set_event_callback()
+ * @see map_view_set_event_cb()
  * @see map_view_set_center()
  * @see map_view_set_zoom_level()
- * @see map_view_set_zoom_factor()
  * @see map_view_set_orientation()
- * @see map_view_redraw()
  */
-typedef void(*map_view_on_event_cb) (maps_error_e result,
-				     const map_event_type_e type,
-				     map_event_data_h event_data,
-				     void *user_data);
+typedef void(*map_view_on_event_cb) (map_event_type_e type, map_event_data_h event_data, void *user_data);
 
 /* ----------------------CREATE AND DESTROY-----------------------------------*/
 
 /**
  * @brief	Creates the map view and link it to the instance of
  * maps service.
- * @details This function creates a new map view widget, allocate all needed
+ * @details This function creates a new map view widget, allocates all needed
  * resources and issues its handle.
  * \n The newly created map view is linked to the specified maps service.
  * \n The view by default is resized to fill whole parent area.
@@ -434,7 +130,8 @@ typedef void(*map_view_on_event_cb) (maps_error_e result,
  * zoom level and rotation angle use map_view_set_center(),
  * map_view_set_zoom_level() and map_view_set_orientation() respectively.
  * \n To change map theme, size and visibility properties use
- * map_view_set_type() and map_view_set_visibility() respectively.
+ * map_view_set_map_type() and map_view_set_visibility()
+ * respectively.
  * @since_tizen 3.0
  * @privlevel public
  * @privilege %http://tizen.org/privilege/mapservice
@@ -452,58 +149,15 @@ typedef void(*map_view_on_event_cb) (maps_error_e result,
  *
  * @pre @a maps is created using maps_service_create().
  *
- * @par Example
- * @code
-#include <maps_service.h>
-#include <map_view.h>
-
-int main (int argc, char *argv[])
-{
-	maps_service_h maps = NULL;
-	map_view_h view = NULL;
-	Evas_Image *map_view_place_holder = NULL;
-	int error = MAPS_ERROR_NONE;
-	do {
-		// Create App UI ...
-		// map_view_place_holder = ...
-
-		// Create an instance of maps service
-		error = maps_service_create("Maps Provider", &maps);
-		if(error != MAPS_ERROR_NONE)
-			break;
-
-		// Set the provider security key
-		error = maps_service_set_provider_key(maps, "provider_key");
-		if(error != MAPS_ERROR_NONE)
-			break;
-
-		// Create a map view
-		error = map_view_create(maps, map_view_place_holder, &view);
-		if(error != MAPS_ERROR_NONE)
-			break;
-
-		// Work with map view ...
-
-	} while(false);
-
-	// Release the map view, maps service and all used resources
-	map_view_destroy(view);
-	maps_service_destroy(maps);
-	return error;
-}
- * @endcode
- *
  * @see map_view_destroy()
  * @see maps_service_create()
  * @see map_view_set_center()
  * @see map_view_set_zoom_level()
  * @see map_view_set_orientation()
- * @see map_view_set_type()
+ * @see map_view_set_map_type()
  * @see map_view_set_visibility()
  */
-int map_view_create(const maps_service_h maps,
-		    Evas_Image *obj,
-		    map_view_h *view);
+int map_view_create(maps_service_h maps, Evas_Image *obj, map_view_h *view);
 
 /**
  * @brief	Destroys the map view.
@@ -529,7 +183,6 @@ int map_view_destroy(map_view_h view);
 
 /*----------------------MAP ZOOM, ROTATE, SET CENTER--------------------------*/
 
-
 /**
  * @brief	Centers the map on a given geographical coordinates.
  * @details This function centers the map on a given geographical coordinates
@@ -553,96 +206,40 @@ int map_view_destroy(map_view_h view);
  * @pre @a view is created using map_view_create().
  * @pre @a coordinates are created using maps_coordinates_create().
  *
- * @par Example
- * @code
-#include <map_view.h>
-
-// map_view_h view is created ahead
-
-int error = MAPS_ERROR_NONE;
-maps_coordinates_h coordinates = NULL;
-
-// Obtain a geographical location to be focused
-error = maps_coordinates_create(39.929386, 23.696087, &coordinates);
-if(error != MAPS_ERROR_NONE) {
-	// Handle the error
-}
-
-// Center a map view on specified coordinates
-error = map_view_set_center(view, coordinates);
-if(error != MAPS_ERROR_NONE) {
-	// Handle the error
-}
-
-// Release coordinates handle
-maps_coordinates_destroy(coordinates);
- * @endcode
- *
  * @see map_view_get_center()
  * @see map_view_set_zoom_level()
- * @see map_view_set_zoom_factor()
  * @see map_view_set_orientation()
  * @see maps_coordinates_create()
  * @see map_view_create()
  */
-int map_view_set_center(const map_view_h view,
-			const maps_coordinates_h coordinates);
+int map_view_set_center(map_view_h view, maps_coordinates_h coordinates);
 
 /**
  * @brief	Gets the central coordinates of a map.
  * @details This function gets the current central coordinates of a map.
  * @since_tizen 3.0
- * @remarks The @a coordinates must be released using
- * maps_coordinates_destroy().
+ * @remarks The @a coordinates must be released using maps_coordinates_destroy().
  *
  * @param[in]	view		The view handle
  * @param[out]	coordinates	The pointer to #maps_coordinates_h in which to
  * store the geographical coordinates of the central position of the map
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
  *
  * @pre @a view is created using map_view_create().
  *
- * @par Example
- * @code
-#include <map_view.h>
-
-// map_view_h view is created ahead
-
-int error = MAPS_ERROR_NONE;
-maps_coordinates_h coordinates = NULL;
-
-// Get the central coordinates of the map
-error = map_view_get_center(view, &coordinates);
-if(error != MAPS_ERROR_NONE) {
-	// Handle the error
-}
-
-// Do something with obtained coordinates...
-double latitude = .0;
-double longitude = .0;
-error = maps_coordinates_get_latitude_longitude(coordinates, &latitude, &longitude);
-if(error != MAPS_ERROR_NONE) {
-	// Handle the error
-}
-
-// Release coordinates handle
-maps_coordinates_destroy(coordinates);
- * @endcode
- *
  * @see map_view_set_center()
  * @see map_view_get_zoom_level()
- * @see map_view_get_zoom_factor()
  * @see map_view_get_orientation()
  * @see maps_coordinates_destroy()
  * @see map_view_create()
  */
-int map_view_get_center(const map_view_h view,
-			maps_coordinates_h *coordinates);
+int map_view_get_center(const map_view_h view, maps_coordinates_h *coordinates);
 
 /**
- * @brief	Sets zooms level of the map.
+ * @brief	Sets zoom level of the map.
  * @details This function sets the integer zoom level of the map.
  * \n If the specified zoom level exceeds the maps Provider allowed zoom range,
  * the function returns #MAPS_ERROR_INVALID_PARAMETER error.
@@ -665,32 +262,16 @@ int map_view_get_center(const map_view_h view,
  *
  * @pre @a view is created using map_view_create().
  *
- * @par Example
- * @code
-#include <map_view.h>
-
-// map_view_h view is created ahead
-
-int error = MAPS_ERROR_NONE;
-
-// Set a specified zoom level for the map view
-error = map_view_set_zoom_level(view, 8);
-if(error != MAPS_ERROR_NONE) {
-	// Handle the error
-}
- * @endcode
- *
  * @see map_view_get_zoom_level()
  * @see map_view_set_orientation()
  * @see map_view_get_min_zoom_level()
  * @see map_view_get_max_zoom_level()
- * @see map_view_set_zoom_factor()
  * @see map_view_create()
  */
-int map_view_set_zoom_level(map_view_h view, const int level);
+int map_view_set_zoom_level(map_view_h view, int level);
 
 /**
- * @brief	Gets zooms level of the map.
+ * @brief	Gets zoom level of the map.
  * @details This function gets the current integer zoom level of the map.
  * @since_tizen 3.0
  *
@@ -703,35 +284,17 @@ int map_view_set_zoom_level(map_view_h view, const int level);
  *
  * @pre @a view is created using map_view_create().
  *
- * @par Example
- * @code
-#include <map_view.h>
-
-// map_view_h view is created ahead
-
-int error = MAPS_ERROR_NONE;
-int current_zoom_level = 0;
-
-// Get the current zoom level of the map
-error = map_view_get_zoom_level(view, &zoom_level);
-if(error != MAPS_ERROR_NONE) {
-	// Handle the error
-}
- * @endcode
- *
  * @see map_view_set_zoom_level()
  * @see map_view_get_min_zoom_level()
  * @see map_view_get_max_zoom_level()
- * @see map_view_get_zoom_factor()
  * @see map_view_create()
  */
 int map_view_get_zoom_level(const map_view_h view, int *level);
 
 /**
- * @brief	Gets the minimal zooms level of the map.
+ * @brief	Gets the minimal zoom level of the map.
  * @details This function gets the minimally allowed zoom level of the map.
  * @since_tizen 3.0
- * @privlevel public
  *
  * @param[in]	view		The view handle
  * @param[out]	min_zoom_level	The pointer to an integer in which to store the
@@ -739,41 +302,21 @@ int map_view_get_zoom_level(const map_view_h view, int *level);
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
- * @retval	#MAPS_ERROR_CONNECTION_TIME_OUT Timeout error, no answer
- * @retval	#MAPS_ERROR_NETWORK_UNREACHABLE Network unavailable
+ * @retval	#MAPS_ERROR_INVALID_OPERATION Operation is not valid
  *
  * @pre @a view is created using map_view_create().
  *
- * @par Example
- * @code
-#include <map_view.h>
-
-// map_view_h view is created ahead
-
-int error = MAPS_ERROR_NONE;
-int min_zoom_level = 0;
-
-// Get the minimally allowed zoom level of the map
-error = map_view_get_min_zoom_level(view, &min_zoom_level);
-if(error != MAPS_ERROR_NONE) {
-	// Handle the error
-}
- * @endcode
- *
  * @see map_view_get_max_zoom_level()
  * @see map_view_get_zoom_level()
- * @see map_view_get_zoom_factor()
  * @see map_view_set_zoom_level()
  * @see map_view_create()
  */
 int map_view_get_min_zoom_level(const map_view_h view, int *min_zoom_level);
 
 /**
- * @brief	Gets the maximal zooms level of the map.
+ * @brief	Gets the maximal zoom level of the map.
  * @details This function gets the maximally allowed zoom level of the map.
  * @since_tizen 3.0
- * @privlevel public
  *
  * @param[in]	view		The view handle
  * @param[out]	max_zoom_level	The pointer to an integer in which to store the
@@ -781,121 +324,16 @@ int map_view_get_min_zoom_level(const map_view_h view, int *min_zoom_level);
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
- * @retval	#MAPS_ERROR_CONNECTION_TIME_OUT Timeout error, no answer
- * @retval	#MAPS_ERROR_NETWORK_UNREACHABLE Network unavailable
+ * @retval	#MAPS_ERROR_INVALID_OPERATION Operation is not valid
  *
  * @pre @a view is created using map_view_create().
  *
- * @par Example
- * @code
-#include <map_view.h>
-
-// map_view_h view is created ahead
-
-int error = MAPS_ERROR_NONE;
-int max_zoom_level = 0;
-
-// Get the maximally allowed zoom level of the map
-error = map_view_get_max_zoom_level(view, &max_zoom_level);
-if(error != MAPS_ERROR_NONE) {
-	// Handle the error
-}
- * @endcode
- *
  * @see map_view_get_min_zoom_level()
  * @see map_view_get_zoom_level()
- * @see map_view_get_zoom_factor()
  * @see map_view_set_zoom_level()
  * @see map_view_create()
  */
 int map_view_get_max_zoom_level(const map_view_h view, int *max_zoom_level);
-
-/**
- * @brief	Zooms the map on the view.
- * @details This function zooms the map on the Map View with real value of zoom
- * factor.
- * @since_tizen 3.0
- * @privlevel public
- *
- * @param[in]	view		The view handle
- * @param[out]	zoom_factor	The new zoom factor
- * @return	0 on success, otherwise a negative error value
- * @retval	#MAPS_ERROR_NONE Successful
- * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
- *
- * @pre @a view is created using map_view_create().
- * @post This function invokes map_view_on_event_cb() with the event type
- * #MAP_EVENT_ACTION and action type #MAP_ACTION_ZOOM.
- * \n The value of new zoom factor will be accessible via
- * map_event_data_get_zoom_factor().
- *
- * @par Example
- * @code
-#include <map_view.h>
-
-// map_view_h view is created ahead
-
-int error = MAPS_ERROR_NONE;
-
-// Set a specified zoom factor for the Map View
-error = map_view_set_zoom_factor(view, 8.5);
-if(error != MAPS_ERROR_NONE) {
-	// Handle the error
-}
- * @endcode
- *
- * @see map_view_get_zoom_factor()
- * @see map_view_set_zoom_level()
- * @see map_view_get_min_zoom_level()
- * @see map_view_get_max_zoom_level()
- * @see map_view_on_event_cb()
- * @see map_view_set_event_callback()
- * @see map_view_create()
-*/
-int map_view_set_zoom_factor(const map_view_h view, const double zoom_factor);
-
-/**
- * @brief	Gets the map zoom factor.
- * @details This function gets the current zoom factor of the Map on the Map
- * View.
- * @since_tizen 3.0
- * @remarks zoom @a factor can be obtained also in map_view_on_event_cb()
- * callback, assigned using map_view_set_event_callback() with the event
- * type #MAP_EVENT_ACTION specified.
- *
- * @param[in]	view		The view handle
- * @param[out]	zoom_factor	The pointer to a double in which to store the
- * current zoom factor
- * @return	0 on success, otherwise a negative error value
- * @retval	#MAPS_ERROR_NONE Successful
- * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- *
- * @pre @a view is created using map_view_create().
- *
- * @par Example
- * @code
-#include <map_view.h>
-
-// map_view_h view is created ahead
-
-int error = MAPS_ERROR_NONE;
-double current_zoom_factor = .0;
-
-// Fetch the current zoom factor of the Map View
-error = map_view_get_zoom_factor(view, &zoom_factor);
-if(error != MAPS_ERROR_NONE) {
-	// Handle the error
-}
- * @endcode
- *
- * @see map_view_set_zoom_factor()
- * @see map_view_set_event_callback()
- * @see map_view_on_zoom_cb()
- * @see map_view_create()
- */
-int map_view_get_zoom_factor(const map_view_h view, double *zoom_factor);
 
 /**
  * @brief	Sets the map orientation on the map view.
@@ -919,27 +357,11 @@ int map_view_get_zoom_factor(const map_view_h view, double *zoom_factor);
  *
  * @pre @a view is created using map_view_create().
  *
- * @par Example
- * @code
-#include <map_view.h>
-
-// map_view_h view is created ahead
-
-int error = MAPS_ERROR_NONE;
-
-// Set a specified orientation of the map
-error = map_view_set_orientation(view, 60.);
-if(error != MAPS_ERROR_NONE) {
-	// Handle the error
-}
- * @endcode
-*
  * @see map_view_get_orientation()
  * @see map_view_set_zoom_level()
- * @see map_view_set_zoom_factor()
  * @see map_view_create()
  */
-int map_view_set_orientation(const map_view_h view, const double angle);
+int map_view_set_orientation(map_view_h view, double angle);
 
 /**
  * @brief	Gets the map orientation.
@@ -955,22 +377,6 @@ int map_view_set_orientation(const map_view_h view, const double angle);
  *
  * @pre @a view is created using map_view_create().
  *
- * @par Example
- * @code
-#include <map_view.h>
-
-// map_view_h view is created ahead
-
-int error = MAPS_ERROR_NONE;
-double current_orientation = .0;
-
-// Get the current orientation of the map
-error = map_view_get_orientation(view, &orientation);
-if(error != MAPS_ERROR_NONE) {
-	// Handle the error
-}
- * @endcode
- *
  * @see map_view_set_orientation()
  * @see map_view_get_zoom_level()
  * @see map_view_create()
@@ -985,8 +391,7 @@ int map_view_get_orientation(const map_view_h view, double *rotation_angle);
  * @details This function converts screen coordinates to the geographical
  * coordinates accordingly to the current map zoom and orientation.
  * @since_tizen 3.0
- * @remarks The @a coordinates must be released using
- * maps_coordinates_destroy().
+ * @remarks The @a coordinates must be released using maps_coordinates_destroy().
  *
  * @param[in]	view		The view handle
  * @param[in]	x		The x coordinate on the screen
@@ -996,41 +401,18 @@ int map_view_get_orientation(const map_view_h view, double *rotation_angle);
  * coordinates
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
  *
  * @pre @a view is created using map_view_create().
  *
- * @par Example
- * @code
-#include <map_view.h>
-
-// map_view_h view is created ahead
-
-int error = MAPS_ERROR_NONE;
-maps_coordinates_h coordinates = NULL;
-
-// Convert screen coordinates to geographical
-error = map_view_screen_to_geography(view, 100, 150, &coordinates);
-if(error != MAPS_ERROR_NONE) {
-	// Handle the error
-}
-
-// Do something with obtained geographical coordinates...
-
-// Release the coordinates
-maps_coordinates_destroy(coordinates);
- * @endcode
- *
- * @see map_view_geography_to_screen()
+ * @see map_view_geolocation_to_screen()
  * @see #maps_coordinates_h
  * @see maps_coordinates_destroy()
  * @see map_view_create()
  */
-int map_view_screen_to_geography(const map_view_h view,
-				 const int x,
-				 const int y,
-				 maps_coordinates_h *coordinates);
+int map_view_screen_to_geolocation(map_view_h view,
+	int x, int y, maps_coordinates_h *coordinates);
 
 /**
  * @brief	Converts geographical coordinates to the screen coordinates.
@@ -1047,49 +429,17 @@ int map_view_screen_to_geography(const map_view_h view,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
  *
  * @pre @a view is created using map_view_create().
- * @pre @a coordinates are created using maps_coordinates_create().
+ * @pre @a coordinates is created using maps_coordinates_create().
  *
- * @par Example
- * @code
-#include <map_view.h>
-
-// map_view_h view is created ahead
-
-int error = MAPS_ERROR_NONE;
-maps_coordinates_h coordinates = NULL;
-int x = 0;
-int y = 0;
-
-// Prepare a geographical coordinates
-error = maps_coordinates_create(39.929386, 23.696087, &coordinates);
-if(error != MAPS_ERROR_NONE) {
-	// Handle the error
-}
-
-// Convert screen coordinates to geographical
-error = map_view_geography_to_screen(view, coordinates, &x, &y);
-if(error != MAPS_ERROR_NONE) {
-	// Handle the error
-}
-
-// Do something with obtained screen coordinates x,y...
-
-// Release the coordinates
-maps_coordinates_destroy(coordinates);
- * @endcode
- *
- * @see map_view_screen_to_geography()
+ * @see map_view_screen_to_geolocation()
  * @see #maps_coordinates_h
  * @see maps_coordinates_create()
  * @see map_view_create()
  */
-int map_view_geography_to_screen(const map_view_h view,
-				 const maps_coordinates_h coordinates,
-				 int *x,
-				 int *y);
+int map_view_geolocation_to_screen(map_view_h view,
+	const maps_coordinates_h coordinates, int *x, int *y);
 
 
 /* --------------------MAPS VIEW PREFERENCES----------------------------------*/
@@ -1098,7 +448,7 @@ int map_view_geography_to_screen(const map_view_h view,
 /**
  * @brief	Sets map view type.
  * @details This function switches the map view to a specified type, one of
- * listed in #map_view_type_e enumeration.
+ * listed in #map_type_e enumeration.
  * @since_tizen 3.0
  * @privlevel public
  * @privilege %http://tizen.org/privilege/mapservice \n
@@ -1106,48 +456,31 @@ int map_view_geography_to_screen(const map_view_h view,
  *            %http://tizen.org/privilege/network.get
  *
  * @param[in]	view		The view handle
- * @param[in]	type		The view type, one of listed in #map_view_type_e
+ * @param[in]	type		The view type, one of listed in #map_type_e
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
  * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
  * @retval	#MAPS_ERROR_CONNECTION_TIME_OUT Timeout error, no answer
  * @retval	#MAPS_ERROR_NETWORK_UNREACHABLE Network unavailable
- * @retval	#MAPS_ERROR_CONNECTION_TIME_OUT Timeout error, no answer
- * @retval	#MAPS_ERROR_NETWORK_UNREACHABLE Network unavailable
  *
  * @pre @a view is created using map_view_create().
  *
- * @par Example
- * @code
-#include <map_view.h>
-
-// map_view_h view is created ahead
-
-int error = MAPS_ERROR_NONE;
-
-// Set Satellite map view theme
-error = map_view_set_type(view, MAP_VIEW_TYPE_SATELLITE);
-if(error != MAPS_ERROR_NONE) {
-	// Handle the error
-}
- * @endcode
- *
- * @see #map_view_type_e
- * @see map_view_get_type()
+ * @see #map_type_e
+ * @see map_view_get_map_type()
  * @see map_view_set_language()
  * @see map_view_create()
  */
-int map_view_set_type(map_view_h view, const map_view_type_e type);
+int map_view_set_map_type(map_view_h view, map_type_e type);
 
 /**
  * @brief	Gets map view type.
  * @details This function gets the type of the given map view.
- * \n The type options are defined in the #map_view_type_e enumeration.
+ * \n The type options are defined in the #map_type_e enumeration.
  * @since_tizen 3.0
  *
  * @param[in]	view		The view handle
- * @param[out]	type		The pointer to a #map_view_type_e in which to
+ * @param[out]	type		The pointer to a #map_type_e in which to
  * store current view type
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
@@ -1155,27 +488,143 @@ int map_view_set_type(map_view_h view, const map_view_type_e type);
  *
  * @pre @a view is created using map_view_create().
  *
- * @par Example
- * @code
-#include <map_view.h>
-
-// map_view_h view is created ahead
-
-int error = MAPS_ERROR_NONE;
-map_view_type_e type = MAP_VIEW_TYPE_DAY;
-
-// Obtain current map view theme
-error = map_view_get_type(view, &type);
-if(error != MAPS_ERROR_NONE) {
-	// Handle the error
-}
- * @endcode
- * @see #map_view_type_e
- * @see map_view_set_type()
+ * @see #map_type_e
+ * @see map_view_set_map_type()
  * @see map_view_get_language()
  * @see map_view_create()
  */
-int map_view_get_type(const map_view_h view, map_view_type_e *type);
+int map_view_get_map_type(const map_view_h view, map_type_e *type);
+
+/**
+ * @brief	Enables or disables 3D buildings.
+ * @details This function enables or disables 3D buildings on the maps view.
+ * @since_tizen 3.0
+ * @privlevel public
+ * @privilege %http://tizen.org/privilege/mapservice \n
+ *            %http://tizen.org/privilege/internet \n
+ *            %http://tizen.org/privilege/network.get
+ *
+ * @param[in]	view		The view handle
+ * @param[in]	enable		The enable status
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
+ * @retval	#MAPS_ERROR_CONNECTION_TIME_OUT Timeout error, no answer
+ * @retval	#MAPS_ERROR_NETWORK_UNREACHABLE Network unavailable
+ * @retval  #MAPS_ERROR_NOT_SUPPORTED Not supported
+ *
+ * @pre @a view is created using map_view_create().
+ *
+ * @see map_view_create()
+ * @see map_view_get_buildings_enabled()
+ */
+int map_view_set_buildings_enabled(map_view_h view, bool enable);
+
+/**
+ * @brief	Gets whether 3D buildings are enabled or not.
+ * @details This function gets whether 3D buildings are enabled or not.
+ * @since_tizen 3.0
+ *
+ * @param[in]	view	The view handle
+ * @param[out]	enable	The pointer to a boolean in which to store the enable status
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ *
+ * @pre @a view is created using map_view_create().
+ *
+ * @see map_view_set_view_mode()
+ * @see map_view_create()
+ * @see map_view_set_buildings_enabled()
+ */
+int map_view_get_buildings_enabled(const map_view_h view, bool *enable);
+
+/**
+ * @brief	Turns the traffic layer on or off.
+ * @details This function turns the traffic layer on or off.
+ * @since_tizen 3.0
+ * @privlevel public
+ * @privilege %http://tizen.org/privilege/mapservice \n
+ *            %http://tizen.org/privilege/internet \n
+ *            %http://tizen.org/privilege/network.get
+ *
+ * @param[in]	view		The view handle
+ * @param[in]	enable		The enable status
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
+ * @retval	#MAPS_ERROR_CONNECTION_TIME_OUT Timeout error, no answer
+ * @retval	#MAPS_ERROR_NETWORK_UNREACHABLE Network unavailable
+ * @retval  #MAPS_ERROR_NOT_SUPPORTED Not supported
+ *
+ * @pre @a view is created using map_view_create().
+ *
+ * @see map_view_create()
+ */
+int map_view_set_traffic_enabled(map_view_h view, bool enable);
+
+/**
+ * @brief	Gets whether the map is drawing traffic data.
+ * @details This function gets whether the map is drawing traffic data or not.
+ * @since_tizen 3.0
+ *
+ * @param[in]	view	The view handle
+ * @param[out]	enable	The pointer to a boolean in which to store the enable status
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ *
+ * @pre @a view is created using map_view_create().
+ *
+ * @see map_view_set_view_mode()
+ * @see map_view_create()
+ */
+int map_view_get_traffic_enabled(const map_view_h view, bool *enable);
+
+/**
+ * @brief	Turns the public transit layer on or off.
+ * @details This function turns the public transit layer on or off.
+ * @since_tizen 3.0
+ * @privlevel public
+ * @privilege %http://tizen.org/privilege/mapservice \n
+ *            %http://tizen.org/privilege/internet \n
+ *            %http://tizen.org/privilege/network.get
+ *
+ * @param[in]	view		The view handle
+ * @param[in]	enable		The enable status
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
+ * @retval	#MAPS_ERROR_CONNECTION_TIME_OUT Timeout error, no answer
+ * @retval	#MAPS_ERROR_NETWORK_UNREACHABLE Network unavailable
+ * @retval  #MAPS_ERROR_NOT_SUPPORTED Not supported
+ *
+ * @pre @a view is created using map_view_create().
+ *
+ * @see map_view_create()
+ */
+int map_view_set_public_transit_enabled(map_view_h view, bool enable);
+
+/**
+ * @brief	Gets whether the map is drawing public transit.
+ * @details This function gets whether the map is drawing public transit.
+ * @since_tizen 3.0
+ *
+ * @param[in]	view	The view handle
+ * @param[out]	enable	The pointer to a boolean in which to store the enable status
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ *
+ * @pre @a view is created using map_view_create().
+ *
+ * @see map_view_set_view_mode()
+ * @see map_view_create()
+ */
+int map_view_get_public_transit_enabled(const map_view_h view, bool *enable);
 
 /**
  * @brief	Sets map view language.
@@ -1187,6 +636,7 @@ int map_view_get_type(const map_view_h view, map_view_type_e *type);
  * @privilege %http://tizen.org/privilege/mapservice \n
  *            %http://tizen.org/privilege/internet \n
  *            %http://tizen.org/privilege/network.get
+ *
  * @remarks If specific language wasn't set explicitly or map tile doesn't
  * support the requested language, the default language of your Maps Provider
  * is used.
@@ -1194,10 +644,10 @@ int map_view_get_type(const map_view_h view, map_view_type_e *type);
  * default language as the mother tongue of the country or English.
  *
  * @param[in]	view		The view handle
- * @param[in]	language	The language string value indicates the current
- * language setting in the \<LANGUAGE\>_\<REGION\> syntax. \n The \<LANGUAGE\>
- * setting is in the ISO 639-1 alfa-2 format and the \<REGION\> setting is in
- * the ISO 3166-1 alpha-2 format.
+ * @param[in]	language	The display language in the <LANGUAGE>_<COUNTRY CODE> syntax.
+ * The <LANGUAGE> is the ISO 639-1 format and the <COUNTRY CODE> is the ISO 3166-1 alpha-2 format.
+ * ISO 639 is a standardized nomenclature used to classify all known languages. Each language is assigned a two-letter (639-1).
+ * ISO 3166-1 alpha-2 codes are two-letter country codes defined in ISO 3166-1.
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
@@ -1206,21 +656,6 @@ int map_view_get_type(const map_view_h view, map_view_type_e *type);
  * @retval	#MAPS_ERROR_NETWORK_UNREACHABLE Network unavailable
  *
  * @pre @a view is created using map_view_create().
- *
- * @par Example
- * @code
-#include <map_view.h>
-
-// map_view_h view is created ahead
-
-int error = MAPS_ERROR_NONE;
-
-// Set Russian as map view language
-error = map_view_set_language(view, "ru-RU");
-if(error != MAPS_ERROR_NONE) {
-	// Handle the error
-}
- * @endcode
  *
  * @see map_view_get_language()
  * @see map_view_set_type()
@@ -1231,9 +666,8 @@ int map_view_set_language(map_view_h view, const char *language);
 /**
  * @brief	Gets map view language.
  * @details This function gets the language set to the map view.
- * \n Note that map display language is different from places and route
- * language.
- * @remarks The @a language must be released using free().
+ * \n Note that map display language is different from places and route language.
+ * @remarks The @a language should be freed using free().
  * @since_tizen 3.0
  *
  * @param[in]	view		The view handle
@@ -1241,117 +675,71 @@ int map_view_set_language(map_view_h view, const char *language);
  * language string value
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
  *
  * @pre @a view is created using map_view_create().
  *
- * @par Example
- * @code
-#include <map_view.h>
-
-// map_view_h view is created ahead
-
-int error = MAPS_ERROR_NONE;
-char *language = NULL;
-
-// Get map view language
-error = map_view_get_language(view, &language);
-if(error != MAPS_ERROR_NONE) {
-	// Handle the error
-}
-
-// Do something with obtained language value
-
-free(language);
- * @endcode
- *
  * @see map_view_set_language()
- * @see map_view_get_type()
+ * @see map_view_get_map_type()
  * @see map_view_create()
  */
 int map_view_get_language(const map_view_h view, char **language);
 
 /**
- * @brief	Turns on or off the inertia of the map.
- * @details This function turns on or off the inertia of map view operations,
- * such as panning and zooming.
+ * @brief	Enables or disables scalebar.
+ * @details This function enables or disables scalebar.
  * @since_tizen 3.0
+ * @privlevel public
+ * @privilege %http://tizen.org/privilege/mapservice \n
+ *            %http://tizen.org/privilege/internet \n
+ *            %http://tizen.org/privilege/network.get
  *
  * @param[in]	view		The view handle
- * @param[in]	enabled		The flag indicating if the inertia is enabled
+ * @param[in]	enable		The enable status
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
+ * @retval	#MAPS_ERROR_CONNECTION_TIME_OUT Timeout error, no answer
+ * @retval	#MAPS_ERROR_NETWORK_UNREACHABLE Network unavailable
  *
  * @pre @a view is created using map_view_create().
  *
- * @par Example
- * @code
-#include <map_view.h>
-
-// map_view_h view is created ahead
-
-int error = MAPS_ERROR_NONE;
-
-// Turn map view inertia on
-error = map_view_set_inertia_enable(view, true);
-if(error != MAPS_ERROR_NONE) {
-	// Handle the error
-}
- * @endcode
- *
- * @see map_view_get_inertia_enabled()
- * @see map_view_get_visibility()
  * @see map_view_create()
+ * @see map_view_get_scalebar_enabled()
  */
-int map_view_set_inertia_enabled(map_view_h view, bool enabled);
+int map_view_set_scalebar_enabled(map_view_h view, bool enable);
 
 /**
- * @brief	Checks if the map inertia is enable.
- * @details This function checks if the map view inertia is enabled.
+ * @brief	Gets whether the scalebar is enabled or not.
+ * @details This function gets whether the scale bar is enabled or not.
  * @since_tizen 3.0
  *
- * @param[in]	view		The view handle
- * @param[out]	enabled		The pointer to a boolean in which to store the
- * flag indicating if the inertia of the map view is turned on
+ * @param[in]	view	The view handle
+ * @param[out]	enabled	The pointer to a boolean in which to store the enable status
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
  *
  * @pre @a view is created using map_view_create().
  *
- * @par Example
- * @code
-#include <map_view.h>
-
-// map_view_h view is created ahead
-
-int error = MAPS_ERROR_NONE;
-bool enabled = false;
-
-// Check if map view inertia is turned on
-error = map_view_get_visibility(view, &enabled);
-if(error != MAPS_ERROR_NONE) {
-	// Handle the error
-}
- * @endcode
- *
- * @see map_view_get_inertia_enabled()
- * @see map_view_set_visibility()
  * @see map_view_create()
+ * @see map_view_set_scalebar_enabled()
  */
-int map_view_get_inertia_enabled(map_view_h view, bool *enabled);
+int map_view_get_scalebar_enabled(const map_view_h view, bool *enabled);
+
 
 /* --------------------MAPS PANEL MANIPULATIONS-------------------------------*/
 
 
 /**
  * @brief	Gets the map view port.
- * @details This function gets the map view port as a pointer on Evas_Object.
+ * @details This function gets the map view port as a pointer on Evas_Image.
  * @since_tizen 3.0
  *
  * @param[in]	view		The view handle
- * @param[out]	viewport	The pointer to Evas_Object in which to store
+ * @param[out]	viewport	The pointer to Evas_Image in which to store
  * the map view port
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
@@ -1362,61 +750,88 @@ int map_view_get_inertia_enabled(map_view_h view, bool *enabled);
  * @see map_view_create()
  * @see Evas_Object
  */
-int map_view_get_port(const map_view_h view, Evas_Object **viewport);
+int map_view_get_viewport(const map_view_h view, Evas_Image **viewport);
+
+/**
+ * @brief	Sets geometry of map view port.
+ * @details This function set the position and (rectangular) size of the given
+ * map view.
+ * \n The position, naturally, will be relative to the top left corner of the
+ * parent window.
+ * @since_tizen 3.0
+ * @privlevel public
+ * @privilege %http://tizen.org/privilege/mapservice \n
+ *            %http://tizen.org/privilege/internet \n
+ *            %http://tizen.org/privilege/network.get
+ *
+ * @param[in]	view	The view handle
+ * @param[in]	x	X screen coordinate for the top left corner of map view
+ * @param[in]	y	Y screen coordinate for the top left corner of map view
+ * @param[in]	width	The new width of map view, in screen units
+ * @param[in]	height	The new height of map view, in screen units
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
+ * @retval	#MAPS_ERROR_CONNECTION_TIME_OUT Timeout error, no answer
+ * @retval	#MAPS_ERROR_NETWORK_UNREACHABLE Network unavailable
+ *
+ * @pre @a view is created using map_view_create().
+ *
+ * @see map_view_get_screen_location()
+ * @see map_view_resize()
+ * @see map_view_set_visibility()
+ * @see map_view_create()
+ */
+int map_view_set_screen_location(map_view_h view, int x, int y, int width, int height);
 
 /**
  * @brief	Gets geometry of map view port.
- * @details This function retrieves the position and (rectangular) size of the
- * given map view.
- * \n The position, naturally, will be relative to the top left corner of the
- * parent window.
+ * @details This function retrieves the position and (rectangular) size of the given map view.
+ * \n The position, naturally, will be relative to the top left corner of the parent window.
  * @remarks Use NULL pointers on the geometry components you're not
  * interested in.
  * @since_tizen 3.0
  *
- * @param[in]	view		The view handle
- * @param[out]	x		The pointer to an integer in which to store the X
- * coordinate of the view
- * @param[out]	y		The pointer to an integer in which to store the Y
- * coordinate of the view
- * @param[out]	width		The pointer to an integer in which to store the
- * width of the view
- * @param[out]	height		The pointer to an integer in which to store the
- * height of the view
+ * @param[in]	view	The view handle
+ * @param[out]	x	X screen coordinate for the top left corner of map view
+ * @param[out]	y	Y screen coordinate for the left top corner of map view
+ * @param[out]	width	The pointer to an integer in which to store the width of the view
+ * @param[out]	height	The pointer to an integer in which to store the height of the view
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
  *
  * @pre @a view is created using map_view_create().
  *
- * @par Example
- * @code
-#include <map_view.h>
-
-// map_view_h view is created ahead
-
-int error = MAPS_ERROR_NONE;
-int x = 0;
-int y = 0;
-int width = 0;
-int height = 0;
-
-// Obtain map view geometry
-error = map_view_get_geometry(view, &x, &y, &width, &height);
-if(error != MAPS_ERROR_NONE) {
-	// Handle the error
-}
- * @endcode
- *
+ * @see map_view_set_screen_location()
  * @see map_view_resize()
  * @see map_view_get_visibility()
  * @see map_view_create()
  */
-int map_view_get_geometry(const map_view_h view,
-			  int *x,
-			  int *y,
-			  int *width,
-			  int *height);
+int map_view_get_screen_location(const map_view_h view, int *x, int *y, int *width, int *height);
+
+/**
+ * @brief	Moves the map view.
+ * @details This function moves map view.
+ * @remarks Newly created map viewport has the size of its parent.
+ * @since_tizen 3.0
+ *
+ * @param[in]	view		The view handle
+ * @param[in]	width		The new new width, in screen units
+ * @param[in]	height		The new new height, in screen units
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ *
+ * @pre @a view is created using map_view_create().
+ *
+ * @see map_view_set_screen_location()
+ * @see map_view_get_screen_location()
+ * @see map_view_set_visibility()
+ * @see map_view_create()
+ */
+int map_view_move(map_view_h view, int x, int y);
 
 /**
  * @brief	Resizes the map view.
@@ -1440,31 +855,16 @@ int map_view_get_geometry(const map_view_h view,
  *
  * @pre @a view is created using map_view_create().
  *
- * @par Example
- * @code
-#include <map_view.h>
-
-// map_view_h view is created ahead
-
-int error = MAPS_ERROR_NONE;
-
-// Resize the map view
-error = map_view_resize(view, 720, 1280);
-if(error != MAPS_ERROR_NONE) {
-	// Handle the error
-}
- * @endcode
- *
- * @see map_view_get_geometry()
+ * @see map_view_set_screen_location()
+ * @see map_view_get_screen_location()
  * @see map_view_set_visibility()
  * @see map_view_create()
  */
-int map_view_resize(const map_view_h view, const int width, const int height);
+int map_view_resize(map_view_h view, int width, int height);
 
 /**
  * @brief	Shows or hides the map view.
- * @details This function changes the visibility of map view.
- * on the screen.
+ * @details This function changes the visibility of map view on the screen.
  * @since_tizen 3.0
  * @privlevel public
  * @privilege %http://tizen.org/privilege/mapservice \n
@@ -1482,30 +882,15 @@ int map_view_resize(const map_view_h view, const int width, const int height);
  *
  * @pre @a view is created using map_view_create().
  *
- * @par Example
- * @code
-#include <map_view.h>
-
-// map_view_h view is created ahead
-
-int error = MAPS_ERROR_NONE;
-
-// Set map view visible
-error = map_view_set_visibility(view, true);
-if(error != MAPS_ERROR_NONE) {
-	// Handle the error
-}
- * @endcode
- *
  * @see map_view_get_visibility()
+ * @see map_view_set_screen_location()
  * @see map_view_create()
  */
-int map_view_set_visibility(const map_view_h view, const bool visible);
+int map_view_set_visibility(map_view_h view, bool visible);
 
 /**
  * @brief	Gets the map view visibility.
- * @details This function retrieves whether or not the given map view is
- * visible.
+ * @details This function retrieves whether or not the given map view is visible.
  * @since_tizen 3.0
  *
  * @param[in]	view		The view handle
@@ -1517,270 +902,67 @@ int map_view_set_visibility(const map_view_h view, const bool visible);
  *
  * @pre @a view is created using map_view_create().
  *
- * @par Example
- * @code
-#include <map_view.h>
-
-// map_view_h view is created ahead
-
-int error = MAPS_ERROR_NONE;
-bool visible = false;
-
-// Get map view visible
-error = map_view_get_visibility(view, &visible);
-if(error != MAPS_ERROR_NONE) {
-	// Handle the error
-}
- * @endcode
- *
  * @see map_view_set_visibility()
+ * @see map_view_set_screen_location()
  * @see map_view_create()
  */
 int map_view_get_visibility(const map_view_h view, bool *visible);
 
-/**
- * @brief	Redraws the map view.
- * @details This function forces the redraw routine of the map view on the
- * screen.
- * @remarks Note that this function only marks the map view as needed to be
- * redrawn. Actual redraw is happening when the OS drawing system is ready for
- * it.
- * @since_tizen 3.0
- * @privlevel public
- * @privilege %http://tizen.org/privilege/mapservice \n
- *            %http://tizen.org/privilege/internet \n
- *            %http://tizen.org/privilege/network.get
- *
- * @param[in]	view		The view handle
- * @return	0 on success, otherwise a negative error value
- * @retval	#MAPS_ERROR_NONE Successful
- * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
- * @retval	#MAPS_ERROR_CONNECTION_TIME_OUT Timeout error, no answer
- * @retval	#MAPS_ERROR_NETWORK_UNREACHABLE Network unavailable
- *
- * @pre @a view is created using map_view_create().
- *
- * @see map_view_get_visibility()
- * @see map_view_set_visibility()
- * @see map_view_create()
- */
-int map_view_redraw(const map_view_h view);
 
-
-/* ---------------------USER CONTROL------------------------------------------*/
-
-#ifdef IMPROVEMENT_OF_VISUAL_OBJECTS // temp
-int map_view_set_event_callback(map_view_h view,
-				const map_event_type_e type,
-				map_view_on_event_cb callback,
-				void *user_data);
-
-int map_view_unset_event_callback(map_view_h view,
-				const map_event_type_e type);
-#endif
+/* ---------------------UI CONTROL------------------------------------------*/
 
 /**
- * @brief	Sets the user's gesture callback.
+ * @brief	Sets the event callback.
  * @details This function sets the callback which will be invoked every time the
- * map view processes the user's gesture over the map.
+ * map view processes the user's gesture, action and objects over the map.
  * @since_tizen 3.0
- * @remarks To unregister the callback use map_view_unset_gesture_cb().
+ * @remarks To unregister the callback use map_view_unset_event_cb().
  *
  * @param[in]	view		The view handle
- * @param[in]	callback	The callback, matching the
- * map_view_on_gesture_cb() prototype
- * @param[in]	user_data	The user data pointer to be passed to the
- * callback
+ * @param[in]	type		The event type
+ * @param[in]	callback	The callback, matching the map_view_on_event_cb() prototype
+ * @param[in]	user_data	The user data pointer to be passed to the callback
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
  *
  * @pre @a view is created using map_view_create().
  *
- * @par Example
- * @code
-#include <map_view.h>
-
-// map_view_h view is created ahead
-
-static void my_user_gesture_cb(map_gesture_h gesture, void *user_data)
-{
-	// Handle the gesture...
-
-	// Release the gesture data
-	map_gesture_destroy(gesture);
-}
-
-static int register_gesture_cbs()
-{
-	// Register user's gesture callback
-	int error = map_view_set_gesture_cb(view,
-		my_user_gesture_cb, NULL);
-	if (error != MAPS_ERROR_NONE) {
-		// Handle the error...
-	}
-	return error;
-}
- * @endcode
- *
- * @see map_view_unset_gesture_cb()
- * @see map_view_on_gesture_cb()
- * @see map_view_set_gesture_action()
+ * @see map_view_unset_event_cb()
+ * @see map_view_on_event_cb()
  * @see map_view_set_gesture_enabled()
  * @see map_view_create()
  */
-int map_view_set_gesture_cb(map_view_h view,
-				  map_view_on_gesture_cb callback,
-				  void *user_data);
+int map_view_set_event_cb(map_view_h view, map_event_type_e type,
+	map_view_on_event_cb callback, void *user_data);
 
 /**
- * @brief	Unsets the user's gesture callback.
- * @details This function unsets the user's gesture callback.
+ * @brief	Unsets the event callback.
+ * @details This function unsets the event callback.
  * @since_tizen 3.0
  *
  * @param[in]	view		The view handle
+ * @param[in]	type		The event type
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
  *
  * @pre @a view is created using map_view_create().
- * @pre the user's gesture callback is registered using
- * map_view_set_gesture_cb()
+ * @pre the event callback is registered using map_view_set_event_cb()
  *
- * @par Example
- * @code
-#include <map_view.h>
-
-// map_view_h view is created ahead
-
-// Unregister the user's gesture callback
-int error = map_view_unset_gesture_cb(view);
-if (error != MAPS_ERROR_NONE) {
-	// Handle the error...
-}
- * @endcode
- *
- * @see map_view_set_gesture_cb()
- * @see map_view_get_gesture_action()
+ * @see map_view_set_event_cb()
  * @see map_view_get_gesture_enabled()
  * @see map_view_create()
  */
-int map_view_unset_gesture_cb(map_view_h view);
+int map_view_unset_event_cb(map_view_h view, map_event_type_e type);
 
 /**
- * @brief	Assigns the action to the user gesture.
- * @details This function sets the behaviour of map view by assigning a type of
- * action, listed in #map_action_e, which should be taken in response on a
- * given user's gesture, one of #map_gesture_e.
- * @remarks Note: not all actions can be assigned with a specified gesture.
- * @par Matching gestures to actions
- * | Gesture                         | Allowed Action                       |
- * | :------------------------------ | :----------------------------------- |
- * | #MAP_GESTURE_SCROLL             | #MAP_ACTION_SCROLL                   |
- * | #MAP_GESTURE_FLICK              | #MAP_ACTION_SCROLL                   |
- * | #MAP_GESTURE_PINCH              | #MAP_ACTION_ZOOM                     |
- * | #MAP_GESTURE_TAP                | #MAP_ACTION_SCROLL, #MAP_ACTION_ZOOM |
- * | #MAP_GESTURE_DOUBLE_TAP         | #MAP_ACTION_ZOOM, #MAP_ACTION_SCROLL |
- * | #MAP_GESTURE_2_FINGER_TAP       | #MAP_ACTION_ZOOM                     |
- * | #MAP_GESTURE_ZOOM               | #MAP_ACTION_ZOOM                     |
- * | #MAP_GESTURE_SINGLE_FINGER_ZOOM | #MAP_ACTION_ZOOM                     |
- * | #MAP_GESTURE_ROTATE             | #MAP_ACTION_ROTATE                   |
- * | #MAP_GESTURE_PRESS              | #MAP_ACTION_SCROLL, #MAP_ACTION_ZOOM |
- * @remarks Note: each gesture can be assigned with #MAP_ACTION_NONE.
- * The Application will keep receiving corresponding gesture notifications,
- * however the map view will not be changing.
- *
- * @param[in]	view		The view handle
- * @param[in]	gesture		The user gesture, one of listed in
- * #map_gesture_e
- * @param[in]	action		The action which should be taken, on of
- * listed in #map_action_e
- * @return	0 on success, otherwise a negative error value
- * @retval	#MAPS_ERROR_NONE Successful
- * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- *
- * @pre @a view is created using map_view_create().
- *
- * @par Example
- * @code
-#include <map_view.h>
-
-// map_view_h view is created ahead
-
-int error = MAPS_ERROR_NONE;
-
-// Center the map on the position, taped by the User
-error = map_view_set_gesture_action(view,
-				    MAP_GESTURE_TAP,
-				    MAP_ACTION_SCROLL);
-if(error != MAPS_ERROR_NONE) {
-	// Handle the error
-}
- * @endcode
- *
- * @see #map_gesture_e
- * @see #map_action_e
- * @see map_view_get_gesture_action()
- * @see map_view_set_gesture_enabled()
- * @see map_view_get_gesture_enabled()
- * @see map_view_create()
- */
-int map_view_set_gesture_action(map_view_h view,
-				const map_gesture_e gesture,
-				const map_action_e action);
-
-/**
- * @brief	Gets the action, assigned to the user gesture.
- * @details This function gets the behaviour of map view: it retrieves the
- * action, assigned as a reaction on a given user gesture.
+ * @brief	Enables or disables the map gesture.
+ * @details This function enables or disables the map gesture.
  * @since_tizen 3.0
  *
  * @param[in]	view		The view handle
- * @param[in]	gesture		The user gesture
- * @param[out]	action		The pointer to a #map_action_e in which
- * to store the action assigned to the user gesture
- * @return	0 on success, otherwise a negative error value
- * @retval	#MAPS_ERROR_NONE Successful
- * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- *
- * @pre @a view is created using map_view_create().
- *
- * @par Example
- * @code
-#include <map_view.h>
-
-// map_view_h view is created ahead
-
-int error = MAPS_ERROR_NONE;
-map_action_e action = MAP_ACTION_NONE;
-
-// Get the action, assigned to the tap gesture
-error = map_view_get_gesture_action(view, MAP_GESTURE_TAP, &action);
-if(error != MAPS_ERROR_NONE) {
-	// Handle the error
-}
- * @endcode
- *
- * @see #map_gesture_e
- * @see #map_action_e
- * @see map_view_set_gesture_action()
- * @see map_view_set_gesture_enabled()
- * @see map_view_get_gesture_enabled()
- * @see map_view_create()
- */
-int map_view_get_gesture_action(map_view_h view,
-				const map_gesture_e gesture,
-				map_action_e *action);
-
-/**
- * @brief	Enables or disables the user gesture.
- * @details This function allows or blocks reaction on a given user gesture.
- * @since_tizen 3.0
- *
- * @param[in]	view		The view handle
- * @param[in]	gesture		The user gesture, one of listed in
- * #map_gesture_e
+ * @param[in]	gesture		The user gesture, one of listed in #map_gesture_e
  * @param[in]	enabled		The enable status
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
@@ -1788,41 +970,20 @@ int map_view_get_gesture_action(map_view_h view,
  *
  * @pre @a view is created using map_view_create().
  *
- * @par Example
- * @code
-#include <map_view.h>
-
-// map_view_h view is created ahead
-
-int error = MAPS_ERROR_NONE;
-
-// Disabling long press gesture
-error = map_view_set_gesture_enabled(view, MAP_GESTURE_PRESS, false);
-if(error != MAPS_ERROR_NONE) {
-	// Handle the error
-}
- * @endcode
- *
  * @see #map_gesture_e
  * @see map_view_get_gesture_enabled()
- * @see map_view_set_gesture_action()
- * @see map_view_get_gesture_action()
  * @see map_view_create()
  */
-int map_view_set_gesture_enabled(map_view_h view,
-				 const map_gesture_e gesture,
-				 const bool enabled);
+int map_view_set_gesture_enabled(map_view_h view, map_gesture_e gesture, bool enabled);
 
 /**
- * @brief	Gets the user gesture enable status.
- * @details This function retrieves the enable status of a given user gesture.
+ * @brief	Checks whether the map gesture is enabled or not.
+ * @details This function checks whether the map gesture is enabled or not.
  * @since_tizen 3.0
  *
  * @param[in]	view		The view handle
- * @param[in]	gesture		The user gesture, one of listed in
- * #map_gesture_e
- * @param[out]	enabled		The pointer to a boolean in which to store the
- * enable status
+ * @param[in]	gesture		The user gesture, one of listed in #map_gesture_e
+ * @param[out]	enabled		The pointer to a boolean in which to store the enable status
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
@@ -1831,201 +992,55 @@ int map_view_set_gesture_enabled(map_view_h view,
  * @pre @a enabled status set ad default or modified using
  * map_view_set_gesture_enabled().
  *
- * @par Example
- * @code
-#include <map_view.h>
-
-// map_view_h view is created ahead
-
-int error = MAPS_ERROR_NONE;
-bool enabled = false;
-
-// Find out if the long press gesture is enabled
-error = map_view_get_gesture_enabled(view, MAP_GESTURE_PRESS, &enabled);
-if(error != MAPS_ERROR_NONE) {
-	// Handle the error
-}
- * @endcode
- *
  * @see #map_gesture_e
  * @see map_view_set_gesture_enabled()
- * @see map_view_set_gesture_action()
- * @see map_view_get_gesture_action()
  * @see map_view_create()
  */
-int map_view_get_gesture_enabled(map_view_h view,
-				 const map_gesture_e gesture,
-				 bool *enabled);
-
-
-/*----------------------------------------------------------------------------*/
-/*
- * Snapshot Capture Service
- */
+int map_view_get_gesture_enabled(const map_view_h view, map_gesture_e gesture, bool *enabled);
 
 /**
- * @ingroup	CAPI_MAP_VIEW_MODULE
- * @defgroup	CAPI_MAP_VIEW_SNAPSHOT_MODULE Snapshot
- *
- * @addtogroup CAPI_MAP_VIEW_SNAPSHOT_MODULE
- * @{
- * @brief This provides APIs allowing to capture Map Snapshots.
- *
- */
-
-/**
- * @brief	Called when snapshot requested with the
- * map_view_capture_snapshot().
- * @details The Map View invokes this callback while retrieving a snapshot of
- * the current Map View.
- * \n If snapshot capturing is failed, the value of @a snapshot is NULL.
- * @since_tizen 3.0
- * @remarks The @a snapshot must be released using map_snapshot_destroy().
- *
- * @param[in]	result		The result of request
- * @param[in]	snapshot	The snapshot handle
- * @param[in]	user_data	The pointer to user data passed from
- * map_view_capture_snapshot()
- *
- * @pre map_view_capture_snapshot() will invoke this callback.
- *
- * @see map_view_capture_snapshot()
- * @see #map_snapshot_h
- */
-typedef void (*map_view_snapshot_cb) (maps_error_e result,
-				     map_snapshot_h snapshot,
-				     void *user_data);
-
-/**
- * @brief	Captures a snapshot of the Map View.
- * \n The request is synchronous.
- * @details This function retrieves an image of a map currently represented on
- * the Map View.
+ * @brief	Enables or disables the map scalebar.
+ * @details This function enables or disables the map scalebar.
  * @since_tizen 3.0
  * @privlevel public
- * @privilege %http://tizen.org/privilege/mapservice
- * @remarks To check if Maps Provider is capable of capturing snapshots use
- * maps_service_provider_is_service_supported() with
- * #MAPS_SERVICE_CAPTURE_SNAPSHOT passed as @a service parameter.
+ * @privilege %http://tizen.org/privilege/mapservice \n
+ *            %http://tizen.org/privilege/internet \n
+ *            %http://tizen.org/privilege/network.get
  *
- * @param[in]	view		The Map View handle
- * @param[in]	capture_overlay	The flag indicating if capturing overlay (markers,
- * polylines, polygons, etc.) needed
- * @param[in]	callback	The callback which will receive snapshot
- * @param[in]	user_data	The pointer to user data to be passed to the
- * callback function
+ * @param[in]	view		The view handle
+ * @param[in]	enabled		The enable status
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_SERVICE_NOT_AVAILABLE Service not available
  * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
- * @retval	#MAPS_ERROR_INVALID_OPERATION Operation is not valid
- * @retval	#MAPS_ERROR_UNKNOWN Unknown error
+ * @retval	#MAPS_ERROR_CONNECTION_TIME_OUT Timeout error, no answer
+ * @retval	#MAPS_ERROR_NETWORK_UNREACHABLE Network unavailable
+ * @retval  #MAPS_ERROR_NOT_SUPPORTED Not supported
  *
- * @pre Call maps_service_create() and map_view_create() to issue Maps Service
- * and Map View handles respectively.
- * @post It invokes map_view_snapshot_cb() to deliver requested snapshot.
+ * @pre @a view is created using map_view_create().
  *
- * @par Example
- * @code
-#include <map_view.h>
-
-static void _snapshot_cb(maps_error_e result, int request_id,
-			 map_snapshot_h snapshot, void *user_data)
-{
-	if (!snapshot || !user_data)
-		return false;
-
-	Evas_Object *map_snapshot = (Evas_Object *)user_data;
-
-	// Get snapshot pixels
-	unsigned int *pixels = NULL;
-	int error = map_snapshot_get_data(snapshot, &pixels);
-	if (error == MAPS_ERROR_NONE) {
-		// Draw snapshot on the canvas
-		evas_object_image_data_set(map_snapshot, pixels);
-	}
-
-	// Optionally it is possible to fetch also the snapshot
-	// - central coordinates and area
-	// - zoom level and factor
-	// - orientation
-	// - Evas color space
-	// - etc.
-
-	map_snapshot_destroy(snapshot);
-}
-
-int main(int argc, char *argv[])
-{
-	maps_service_h maps = NULL;
-	map_view_h view = NULL;
-	maps_coordinates_h center = NULL;
-	Evas_Object *parent = NULL;
-	Evas_Object *map_snapshot = NULL;
-	int error = MAPS_ERROR_NONE;
-	int request_id = 0;
-
-	do {
-
-		// Create an instance of Maps Service
-		error = maps_service_create("MapsProvider", &maps);
-		if (error != MAPS_ERROR_NONE)
-			break;
-
-		// Set security key
-		maps_service_set_provider_key(maps, "your-security-key");
-
-		// create an instance of Map View and application UI controls
-		// parent = evas_object_box_add ...
-		// map_snapshot = evas_object_image_add(parent_canvas);
-		error = map_view_create(maps, parent, &view);
-		if (error != MAPS_ERROR_NONE)
-			break;
-
-		// Specify Snapshot center
-		maps_coordinates_create(39.930661, 23.695172, &center);
-
-		error = map_view_set_center(view, center);
-		if (error != MAPS_ERROR_NONE)
-			break;
-
-		error = map_view_set_zoom_level(view, 12);
-		if (error != MAPS_ERROR_NONE)
-			break;
-
-		// Capture snapshot
-		error = map_view_capture_snapshot(view,
-		    				  center,
-		    				  false,
-		    				  _snapshot_cb,
- 						  map_snapshot);
-
-		if (error != MAPS_ERROR_NONE)
-			break;
-
-	} while(false);
-
-	// Release the Map View, Maps Service and used resources
-	maps_coordinates_destroy(center);
-	map_view_destroy(view);
-	maps_service_destroy(maps);
-	return error;
-}
- * @endcode
- *
- * @see map_view_snapshot_cb()
- * @see maps_service_capture_snapshot()
- * @see #map_snapshot_h
- * @see map_snapshot_destroy()
+ * @see map_view_get_scalebar_enabled()
  * @see map_view_create()
- * @see maps_service_create()
  */
-int map_view_capture_snapshot(const map_view_h view,
-			      bool capture_overlay,
-			      map_view_snapshot_cb callback,
-			      void *user_data);
+int map_view_set_scalebar_enabled(map_view_h view, bool enable);
+
+/**
+ * @brief	Checks whether the map scalebar is enabled or not.
+ * @details This function checks whether the map scalebar is enabled or not.
+ * @since_tizen 3.0
+ *
+ * @param[in]	view		The view handle
+ * @param[out]	enabled		The pointer to a boolean in which to store the enable status
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ *
+ * @pre @a view is created using map_view_create().
+ *
+ * @see map_view_set_scalebar_enabled()
+ * @see map_view_create()
+ */
+int map_view_get_scalebar_enabled(const map_view_h view, bool *enabled);
 
 
 /* ---------------------VISUAL OBJECTS ON THE MAP-----------------------------*/
@@ -2048,53 +1063,15 @@ int map_view_capture_snapshot(const map_view_h view,
  * map_object_create_polygon(), map_object_create_polyline() or
  * map_object_create_group()
  *
- * @par Example
- * @code
-#include <map_view.h>
-
-// map_view_h view is created ahead
-
-int error = MAPS_ERROR_NONE;
-map_object_h marker = NULL;
-maps_coordinates_h coordinates = NULL;
-
-
-// Obtain a geographical position to put a marker
-error = maps_coordinates_create(39.929386, 23.696087, &coordinates);
-if(error != MAPS_ERROR_NONE) {
-	// Handle the create coordinates error
-}
-
-// Create an instance of a marker
-error = map_object_create_marker(coordinates,
-				"resources/marker_icon.png",
-				MAP_MARKER_POI,
-				&marker);
-if (error != MAPS_ERROR_NONE) {
-	// Handle the create marker error
-}
-
-// Add marker on the map
-error = map_view_add_object(maps_view, marker);
-if (error != MAPS_ERROR_NONE) {
-	// Handle the add marker error
-}
-
-// Release coordinates
-maps_coordinates_destroy(coordinates);
- * @endcode
- *
  * @see #map_object_h
  * @see map_object_create_marker()
  * @see map_object_create_polygon()
  * @see map_object_create_polyline()
- * @see map_object_create_group()
  * @see map_view_remove_object()
  * @see map_view_remove_all_objects()
  * @see map_view_create()
  */
 int map_view_add_object(map_view_h view, map_object_h object);
-
 
 /**
  * @brief	Removes a visual object from the map.
@@ -2111,28 +1088,12 @@ int map_view_add_object(map_view_h view, map_object_h object);
  * @pre @a view is created using map_view_create().
  * @pre @a object is added using map_view_add_object().
  *
- * @par Example
- * @code
-#include <map_view.h>
-
-// map_view_h view is created ahead
-// map_object_h marker is created ahead
-
-int error = MAPS_ERROR_NONE;
-
-// Removing a visual object from the map
-error = map_view_remove_object(view, marker);
-if (error != MAPS_ERROR_NONE) {
-	// Handle the add marker error
-}
- * @endcode
- *
  * @see map_view_add_object()
  * @see map_view_remove_all_objects()
  * @see #map_object_h
  * @see map_view_create()
  */
-int map_view_remove_object(map_view_h view, const map_object_h object);
+int map_view_remove_object(map_view_h view, map_object_h object);
 
 /**
  * @brief	Removes all visual objects from the map.
@@ -2148,21 +1109,6 @@ int map_view_remove_object(map_view_h view, const map_object_h object);
  * @pre @a view is created using map_view_create().
  * @pre objects are added using map_view_add_object().
  *
- * @par Example
- * @code
-#include <map_view.h>
-
-// map_view_h view is created ahead
-
-int error = MAPS_ERROR_NONE;
-
-// Removing a visual object from the map
-error = map_view_remove_all_objects(view);
-if (error != MAPS_ERROR_NONE) {
-	// Handle the add marker error
-}
- * @endcode
- *
  * @see #map_object_h
  * @see map_view_add_object()
  * @see map_view_remove_all_objects()
@@ -2170,91 +1116,24 @@ if (error != MAPS_ERROR_NONE) {
  */
 int map_view_remove_all_objects(map_view_h view);
 
-
 /**
  * @brief	Retrieves all visual objects on the map.
- * @details This function retrieves all visual objects, previously added to the
- * map.
+ * @details This function retrieves all visual objects, previously added to the map.
  * @since_tizen 3.0
  * @remarks The objects will be delivered via map_object_cb().
  *
  * @param[in]	view		The view handle
  * @param[in]	callback	The callback function to invoke
- * @param[in]	user_data	The user data pointer to be passed to the
- * callback function
+ * @param[in]	user_data	The user data pointer to be passed to the callback function
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
  * @retval	#MAPS_ERROR_NOT_FOUND Result not found
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a view is created using map_view_create().
  * @pre objects are added using map_view_add_object().
  * @post This function invokes map_object_cb() repeatedly to retrieve each
  * visual object.
- *
- * @par Example
- * @code
-#include <map_view.h>
-
-// map_view_h view is created ahead
-
-static bool draw_map_object_cb(int index, int total,
-			     map_object_h object,
-			     void *user_data)
-{
-	if (!object)
-		return false;
-
-	bool visible = false;
-	map_object_type_e type = MAP_OBJECT_UNKNOWN;
-	int error = MAPS_ERROR_NONE;
-
-	error = map_object_get_visible(object, &visible);
-	if (error != MAPS_ERROR_NONE)
-		return false;
-
-	if (!visible)
-		return true; // This object should not be drawn
-
-	// Extract the type of the object
-	error = map_object_get_type(object, &type);
-	if (error != MAPS_ERROR_NONE)
-		return false;
-
-	// Dispatch the drawing routines
-	switch(type) {
-	case MAP_OBJECT_MARKER:
-		__draw_marker(object);
-		break;
-	case MAP_OBJECT_POLYLINE:
-		__draw_polyline(object);
-		break;
-	case MAP_OBJECT_POLYGON:
-		__draw_polygon(object);
-		break;
-	case MAP_OBJECT_GROUP:
-		__draw_group(object);
-		break;
-	case MAP_OBJECT_UNKNOWN:
-	default:
-		// Handle the error of unsupported Map View Object type
-		break;
-	}
-	return true;
-}
-
-static void iterate_through_objects()
-{
-	const int error = map_view_foreach_object(view,
-						  draw_map_object_cb,
-						  NULL);
-	if (error != MAPS_ERROR_NONE) {
-		// Handle the error
-	}
-	return error;
-}
- * @endcode
  *
  * @see #map_object_h
  * @see map_object_cb()
@@ -2263,10 +1142,7 @@ static void iterate_through_objects()
  * @see map_view_remove_all_objects()
  * @see map_view_create()
  */
-int map_view_foreach_object(const map_view_h view,
-			    map_object_cb callback,
-			    void *user_data);
-
+int map_view_foreach_object(const map_view_h view, map_object_cb callback, void *user_data);
 
 /**
  * @}
