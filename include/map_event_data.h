@@ -65,7 +65,6 @@
 
 
 #include <map_object.h>
-#include <map_gesture.h>
 
 
 #ifdef __cplusplus
@@ -93,38 +92,58 @@ typedef void *map_event_data_h;
  * zoom, long press, or APIs, such as set center or change zoom level.
  * \n To re-assign view actions to user gestures use map_view_set_gesture_action().
  *
- * @see map_view_set_gesture_action()
  * @see #map_gesture_e
  */
 typedef enum _map_action_e {
+	/** Indicates the empty action */
+	MAP_ACTION_NONE,
+
 	/** Indicates the set center action */
 	MAP_ACTION_SCROLL,
 
-#ifdef IMPROVEMENT_OF_GESTURES_AND_ACTIONS
 	/** Indicates the zoom action */
 	MAP_ACTION_ZOOM,
 
+	/** Indicates the zoom-in action */
 	MAP_ACTION_ZOOM_IN,
 
+	/** Indicates the zoom-out action */
 	MAP_ACTION_ZOOM_OUT,
 
+	/** Indicates the zoom and scrolling action */
 	MAP_ACTION_ZOOM_AND_SCROLL,
 
+	/** Indicates the zoom and rotation action */
 	MAP_ACTION_ZOOM_AND_ROTATE,
-#else
-	/** Indicates the move center action */
-	MAP_ACTION_MOVE_CENTER,
-
-	/** Indicates the zoom action */
-	MAP_ACTION_ZOOM,
-#endif
 
 	/** Indicates the rotation action */
 	MAP_ACTION_ROTATE,
-
-	/** Indicates the empty action */
-	MAP_ACTION_NONE,
 } map_action_e;
+
+/**
+ * @brief	Enumeration of user gestures over map view
+ * @since_tizen 3.0
+ */
+typedef enum _map_gesture_e {
+	MAP_GESTURE_NONE, /**< Indicates the empty gesture */
+
+	MAP_GESTURE_SCROLL, /**< Indicates the move map user gesture */
+
+	MAP_GESTURE_ZOOM, /**< Indicates the zoom user gesture */
+
+	MAP_GESTURE_TAP, /**< Indicates the tap user gesture */
+
+	MAP_GESTURE_DOUBLE_TAP, /**< Indicates the double tap user gesture */
+
+	MAP_GESTURE_2_FINGER_TAP, /**< Indicates the two-finger tap user
+				    gesture */
+
+	MAP_GESTURE_SINGLE_FINGER_ZOOM, /**< Indicates the single finger zoom
+					  user gesture (the gesture consist of
+					  initial click and following pan) */
+
+	MAP_GESTURE_LONG_PRESS, /**< Indicates the long press user gesture */
+} map_gesture_e;
 
 /**
  * @brief	Enumerations of map event types
@@ -186,7 +205,6 @@ int map_event_data_destroy(map_event_data_h event);
 int map_event_data_clone(const map_event_data_h origin,
 			 map_event_data_h *cloned);
 
-
 /**
  * @brief	Gets the event type.
  * @details This function gets the event type.
@@ -201,82 +219,6 @@ int map_event_data_clone(const map_event_data_h origin,
  *
  * @pre @a event may be obtained in map_view_on_event_cb()
  *
- * @par Example
- * @code
-#include <map_view.h>
-
-static void map_view_event_cb(maps_error_e result,
-			      const map_event_type_e type,
-			      map_event_data_h event_data,
-			      void *user_data)
-{
-	LOG("map_view_event_cb enter");
-
-	map_gesture_e gesture_type = MAP_GESTURE_NONE;
-	map_action_e action_type = MAP_ACTION_NONE;
-
-	switch (type) {
-		case MAP_EVENT_GESTURE:
-		case MAP_EVENT_OBJECT:
-			LOG("MAP_EVENT_GESTURE or MAP_EVENT_OBJECT");
-			map_event_data_get_gesture_type(event_data,
-							&gesture_type);
-			switch (gesture_type) {
-				case MAP_GESTURE_SCROLL:
-					LOG("MAP_GESTURE_SCROLL");
-					break;
-				case MAP_GESTURE_TAP:
-					LOG("MAP_GESTURE_TAP");
-					break;
-				case MAP_GESTURE_DOUBLE_TAP:
-					LOG("MAP_GESTURE_SCROLL");
-					break;
-				case MAP_GESTURE_2_FINGER_TAP:
-					LOG("MAP_GESTURE_2_FINGER_TAP");
-					break;
-				case MAP_GESTURE_LONG_PRESS:
-					LOG("MAP_GESTURE_LONG_PRESS");
-					break;
-				case MAP_GESTURE_NONE:
-				default:
-					LOG("default gesture_type");
-					break;
-			}
-			break;
-		case MAP_EVENT_ACTION:
-			LOG("MAP_EVENT_ACTION");
-			map_event_data_get_action_type(event_data,
-						       &action_type);
-			switch (action_type) {
-				case MAP_ACTION_SCROLL:
-					LOG("MAP_ACTION_SCROLL");
-					break;
-				case MAP_ACTION_MOVE_CENTER:
-					LOG("MAP_ACTION_MOVE_CENTER");
-					break;
-				case MAP_ACTION_ZOOM:
-					LOG("MAP_ACTION_ZOOM");
-					break;
-				case MAP_ACTION_ROTATE:
-					LOG("MAP_ACTION_ROTATE");
-					break;
-				case MAP_ACTION_NONE:
-				default:
-					LOG("default action_type");
-					break;
-			}
-			break;
-		case MAP_EVENT_READY:
-			LOG("MAP_EVENT_READY");
-			break;
-		default:
-			LOG("default type");
-			break;
-	}
-	map_event_data_destroy(event_data);
-}
- * @endcode
- *
  * @see #map_event_type_e
  * @see map_view_on_event_cb()
  * @see map_event_data_destroy()
@@ -285,6 +227,7 @@ static void map_view_event_cb(maps_error_e result,
  */
 int map_event_data_get_type(const map_event_data_h event,
 			    map_event_type_e *event_type);
+
 /**
  * @brief	Gets the event gesture type.
  * @details This function gets the event gesture type if the event type is
@@ -309,6 +252,7 @@ int map_event_data_get_type(const map_event_data_h event,
  */
 int map_event_data_get_gesture_type(map_event_data_h event,
 				    map_gesture_e *gesture_type);
+
 /**
  * @brief	Gets the event action type.
  * @details This function gets the event action type if the event type is
@@ -350,27 +294,6 @@ int map_event_data_get_action_type(map_event_data_h event,
  *
  * @pre @a event may be obtained in map_view_on_event_cb()
  *
- * @par Example
- * @code
-#include <map_view.h>
-
-// event obtained earlier in the map_view_on_event_cb
-
-int error = MAPS_ERROR_NONE;
-maps_coordinates_h center = NULL;
-
-// Getting coordinates of new center of the map
-error = map_event_data_get_center(event, &center);
-if (error != MAPS_ERROR_NONE) {
-	// Handle the error
-}
-
-// Do something with center coordinates ...
-
-// Release coordinates
-maps_coordinates_destroy(center);
- * @endcode
- *
  * @see map_event_data_get_type()
  * @see #map_event_type_e
  * @see #map_event_data_h
@@ -388,33 +311,14 @@ int map_event_data_get_center(map_event_data_h event,
  * @since_tizen 3.0
  *
  * @param[in]	event		The event data handle
- * @param[out]	delta_x		The pointer to an integer in which to store the
- * delta x
- * @param[out]	delta_y		The pointer to an integer in which to store the
- * delta y
+ * @param[out]	delta_x		The pointer to an integer in which to store the delta x
+ * @param[out]	delta_y		The pointer to an integer in which to store the delta y
  * @return	0, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
  * @retval	#MAPS_ERROR_NOT_SUPPORTED The @a x and @a y values is not supported
  *
  * @pre @a event may be obtained in map_view_on_event_cb()
- *
- * @par Example
- * @code
-#include <map_view.h>
-
-// event obtained earlier in the map_view_on_event_cb
-
-int error = MAPS_ERROR_NONE;
-int delta_x = 0;
-int delta_y = 0;
-
-// Getting the delta coordinates of moved center of the map
-error = map_event_data_get_delta(event, &delta_x,  &delta_y);
-if (error != MAPS_ERROR_NONE) {
-	// Handle the error
-}
- * @endcode
  *
  * @see map_event_data_get_type()
  * @see #map_event_type_e
@@ -443,23 +347,6 @@ int map_event_data_get_delta(map_event_data_h event,
  *
  * @pre @a event may be obtained in map_view_on_event_cb()
  *
- * @par Example
- * @code
-#include <map_view.h>
-
-// event obtained earlier in the map_view_on_event_cb
-
-int error = MAPS_ERROR_NONE;
-int x = 0;
-int y = 0;
-
-// Getting screen coordinates of the event
-error = map_event_data_get_xy(event, &x, &y);
-if (error != MAPS_ERROR_NONE) {
-	// Handle the error
-}
- * @endcode
- *
  * @see map_event_data_get_type()
  * @see #map_event_type_e
  * @see #map_event_data_h
@@ -483,22 +370,6 @@ int map_event_data_get_xy(map_event_data_h event, int *x, int* y);
  * @retval	#MAPS_ERROR_NOT_SUPPORTED The @a fingers value is not supported
  *
  * @pre @a event may be obtained in map_view_on_event_cb()
- *
- * @par Example
- * @code
-#include <map_view.h>
-
-// event obtained earlier in the map_view_on_event_cb
-
-int error = MAPS_ERROR_NONE;
-int fingers = 0;
-
-// Getting the number of user's fingers
-error = map_event_data_get_fingers(event, &fingers);
-if (error != MAPS_ERROR_NONE) {
-	// Handle the error
-}
- * @endcode
  *
  * @see map_event_data_get_type()
  * @see #map_event_type_e
@@ -524,22 +395,6 @@ int map_event_data_get_fingers(map_event_data_h event, int *fingers);
  * supported
  *
  * @pre @a event may be obtained in map_view_on_event_cb()
- *
- * @par Example
- * @code
-#include <map_view.h>
-
-// event obtained earlier in the map_view_on_event_cb
-
-int error = MAPS_ERROR_NONE;
-double zoom_factor = .0;
-
-// Getting the new zoom factor
-error = map_event_data_get_zoom_factor(event, &zoom_factor);
-if (error != MAPS_ERROR_NONE) {
-	// Handle the error
-}
- * @endcode
  *
  * @see map_event_data_get_type()
  * @see #map_event_type_e
@@ -567,22 +422,6 @@ int map_event_data_get_zoom_factor(map_event_data_h event,
  *
  * @pre @a event may be obtained in map_view_on_event_cb()
  *
- * @par Example
- * @code
-#include <map_view.h>
-
-// event obtained earlier in the map_view_on_event_cb
-
-int error = MAPS_ERROR_NONE;
-double rotation_angle = .0;
-
-// Getting the new rotation angle
-error = map_event_data_get_rotation_angle(event, &rotation_angle);
-if (error != MAPS_ERROR_NONE) {
-	// Handle the error
-}
- * @endcode
- *
  * @see map_event_data_get_type()
  * @see #map_event_type_e
  * @see #map_event_data_h
@@ -609,22 +448,6 @@ int map_event_data_get_rotation_angle(map_event_data_h event,
  * @see #map_object_h
  *
  * @pre @a event may be obtained in map_view_on_event_cb()
- *
- * @par Example
- * @code
-#include <map_view.h>
-
-// event obtained earlier in the map_view_on_event_cb
-
-int error = MAPS_ERROR_NONE;
-map_object_h object = NULL;
-
-// Getting the object, involved in the detected event
-error = map_event_data_get_object(event, &object);
-if (error != MAPS_ERROR_NONE) {
-	// Handle the error
-}
- * @endcode
  *
  * @see map_event_data_get_type()
  * @see #map_event_type_e

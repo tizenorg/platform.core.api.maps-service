@@ -34,30 +34,26 @@ extern "C" {
  * @{
  * @brief This provides enumerations of Maps API preferences
 
-* - - - - - - - - - - - - -
-*
-* Preference key names
-* --------------------
 *
 * The Preferences are organized as a key-value table where available Preference
 * keys are following strings:
 *
 * * Place search preferences
-*  - MAPS_PLACE_FILTER_TYPE
-*  - MAPS_PLACE_FILTER_SORT_BY
+*  - #MAPS_PLACE_FILTER_TYPE
+*  - #MAPS_PLACE_FILTER_SORT_BY
 *
 * * Route search preferences
-*  - MAPS_ROUTE_FREEFORM_ADDR_TO_AVOID
-*  - MAPS_ROUTE_STRUCTED_ADDR_TO_AVOID
-*  - MAPS_ROUTE_CIRCLE_AREA_TO_AVOID
-*  - MAPS_ROUTE_RECT_AREA_TO_AVOID
+*  - #MAPS_ROUTE_FREEFORM_ADDR_TO_AVOID
+*  - #MAPS_ROUTE_STRUCTED_ADDR_TO_AVOID
+*  - #MAPS_ROUTE_CIRCLE_AREA_TO_AVOID
+*  - #MAPS_ROUTE_RECT_AREA_TO_AVOID
 *
-*  - MAPS_ROUTE_GEOMETRY_BOUNDING_BOX
-*  - MAPS_ROUTE_GEOMETRY_RETRIEVAL
-*  - MAPS_ROUTE_INSTRUCTION_GEOMETRY
-*  - MAPS_ROUTE_INSTRUCTION_BOUNDING_BOX
-*  - MAPS_ROUTE_INSTRUCTION_RETRIEVAL
-*  - MAPS_ROUTE_REALTIME_TRAFFIC
+*  - #MAPS_ROUTE_GEOMETRY_BOUNDING_BOX
+*  - #MAPS_ROUTE_GEOMETRY_RETRIEVAL
+*  - #MAPS_ROUTE_INSTRUCTION_GEOMETRY
+*  - #MAPS_ROUTE_INSTRUCTION_BOUNDING_BOX
+*  - #MAPS_ROUTE_INSTRUCTION_RETRIEVAL
+*  - #MAPS_ROUTE_REALTIME_TRAFFIC
 *  .
 * .
 */
@@ -165,7 +161,6 @@ typedef void *maps_preference_h;
  * @brief	Enumeration of allowed distance units.
  * @details This enumeration represents allowed distance units used in Maps
  * Services.
- * \n This enumeration is used in #maps_area_s.
  * @since_tizen 2.4
  *
  * @see #maps_preference_h
@@ -181,7 +176,6 @@ typedef enum _maps_distance_unit_e {
  * @brief	Enumeration of allowed route optimization option.
  * @details This enumeration represents allowed route optimization option used
  * in Route Service.
- * \n This enumeration is used in #maps_area_s.
  * @since_tizen 2.4
  *
  * @see #_maps_route_transport_mode_e
@@ -210,7 +204,6 @@ typedef enum _maps_route_optimization_e {
  * @brief	Enumeration of preferable route types.
  * @details This enumeration represents allowed route types used in Route
  * Service.
- * \n This enumeration is used in #maps_area_s.
  * @since_tizen 2.4
  *
  * @see #_maps_distance_unit_e
@@ -240,7 +233,6 @@ typedef enum _maps_route_transport_mode_e {
  * @brief	Enumeration of route feature weights.
  * @details This enumeration represents allowed route feature weights used in
  * Route Service.
- * \n This enumeration is used in #maps_area_s.
  * @since_tizen 2.4
  *
  * @see #_maps_distance_unit_e
@@ -268,7 +260,6 @@ typedef enum _maps_route_feature_weight_e {
  * @brief	Enumeration of route features.
  * @details This enumeration represents allowed route features used in Route
  * Service.
- * \n This enumeration is used in #maps_area_s.
  * @since_tizen 2.4
  *
  * @see #_maps_distance_unit_e
@@ -725,7 +716,6 @@ int maps_preference_set_route_feature(maps_preference_h preference,
  */
 int maps_preference_set_property(maps_preference_h preference,
 				 const char *key, const char *value);
-
 
 #ifdef __cplusplus
 }

@@ -23,35 +23,35 @@
 
 extern int _map_event_data_create(map_event_data_h *event);
 
-extern int _map_event_data_set_type(map_event_data_h event,
-			     map_event_type_e event_type);
+extern int _map_event_data_set_type(const map_event_data_h event,
+				    const map_event_type_e event_type);
 
-extern int _map_event_data_set_gesture_type(map_event_data_h event,
-				     const map_gesture_e gesture_type);
+extern int _map_event_data_set_gesture_type(const map_event_data_h event,
+					    const map_gesture_e gesture_type);
 
-extern int _map_event_data_set_action_type(map_event_data_h event,
-				    const map_action_e action_type);
+extern int _map_event_data_set_action_type(const map_event_data_h event,
+					   const map_action_e action_type);
 
-extern int _map_event_data_set_center(map_event_data_h event,
-			       const maps_coordinates_h center);
+extern int _map_event_data_set_center(const map_event_data_h event,
+			 	      const maps_coordinates_h center);
 
-extern int _map_event_data_set_delta(map_event_data_h event,
-			      const int delta_x, const int delta_y);
+extern int _map_event_data_set_delta(const map_event_data_h event,
+				     const int delta_x, const int delta_y);
 
-extern int _map_event_data_set_xy(map_event_data_h event,
-			   const int x, const int y);
+extern int _map_event_data_set_xy(const map_event_data_h event,
+				  const int x, const int y);
 
-extern int _map_event_data_set_fingers(map_event_data_h event,
-				const int fingers);
+extern int _map_event_data_set_fingers(const map_event_data_h event,
+				       const int fingers);
 
-extern int _map_event_data_set_zoom_factor(map_event_data_h event,
-				    const double zoom_factor);
+extern int _map_event_data_set_zoom_factor(const map_event_data_h event,
+					   const double zoom_factor);
 
-extern int _map_event_data_set_rotation_angle(map_event_data_h event,
-				       const double rotation_angle);
+extern int _map_event_data_set_rotation_angle(const map_event_data_h event,
+				 	      const double rotation_angle);
 
-extern int _map_event_data_set_object(map_event_data_h event,
-			       map_object_h object);
+extern int _map_event_data_set_object(const map_event_data_h event,
+				      const map_object_h object);
 
 extern int _map_object_create(const map_object_type_e type,
 			      map_object_h *object);

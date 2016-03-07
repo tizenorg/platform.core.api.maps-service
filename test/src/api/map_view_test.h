@@ -32,18 +32,18 @@ void utc_map_view_show_location_p(void);
 void utc_map_view_show_location_n(void);
 
 
-/*int map_view_screen_to_geography(const map_view_h view,
+/*int map_view_screen_to_geolocation(const map_view_h view,
 				  const int x, const int y,
 				  maps_coordinates_h *coordinates);*/
-void utc_map_view_screen_to_geography_p(void);
-void utc_map_view_screen_to_geography_n(void);
+void utc_map_view_screen_to_geolocation_p(void);
+void utc_map_view_screen_to_geolocation_n(void);
 
 
-/*int map_view_geography_to_screen(const map_view_h view,
+/*int map_view_geolocation_to_screen(const map_view_h view,
 				  const maps_coordinates_h coordinates,
 				  int *x, int *y);*/
-void utc_map_view_geography_to_screen_p(void);
-void utc_map_view_geography_to_screen_n(void);
+void utc_map_view_geolocation_to_screen_p(void);
+void utc_map_view_geolocation_to_screen_n(void);
 
 
 /*int map_view_get_panel(const map_view_h view, Evas_Object **panel);*/

@@ -20,18 +20,8 @@
 extern int _map_object_create(const map_object_type_e type,
 			      map_object_h *object);
 
-int _map_object_marker_set_type(map_object_h marker,
+extern int _map_object_marker_set_type(const map_object_h marker,
 				const map_marker_type_e type);
-
-int view::marker_constructor::get_size_x()
-{
-	return 16;
-}
-
-int view::marker_constructor::get_size_y()
-{
-	return 16;
-}
 
 map_object_h view::marker_constructor::construct(maps_coordinates_h coordinates,
 						const char *image_file_path,
@@ -42,7 +32,7 @@ map_object_h view::marker_constructor::construct(maps_coordinates_h coordinates,
 		return NULL;
 	}
 
-	if ((type < MAP_MARKER_POI) || (type > MAP_MARKER_NONE)) {
+	if ((type < MAP_MARKER_PIN) || (type > MAP_MARKER_NONE)) {
 		__error = MAPS_ERROR_INVALID_PARAMETER;
 		return NULL;
 	}
@@ -71,18 +61,6 @@ map_object_h view::marker_constructor::construct(maps_coordinates_h coordinates,
 		/* 4 Move the marker to the given coordinates */
 		__error = map_object_marker_set_coordinates(marker,
 								 coordinates);
-		if (__error != MAPS_ERROR_NONE)
-			break;
-
-		/* 5 Set marker size */
-		__error = map_object_marker_resize(marker,
-						   get_size_x(),
-						   get_size_y());
-		if (__error != MAPS_ERROR_NONE)
-			break;
-
-		/* 6. Make the Marker visible */
-		__error = map_object_set_visible(marker, true);
 		if (__error != MAPS_ERROR_NONE)
 			break;
 

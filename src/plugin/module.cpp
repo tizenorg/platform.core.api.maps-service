@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
+#include <glib/gstdio.h>
 #include "module.h"
 #include "maps_util.h"
-#include <glib/gstdio.h>
 #include "thread.h"
 #include "command.h"
 #include "command_queue.h"
@@ -45,7 +45,7 @@ plugin::provider_info plugin::binary_extractor::get_plugin_info(const
 	if (file_name.empty())
 		return provider_info::empty_instance;
 
-	/* 1.Init plugin */
+	/* 1.Initialize plugin */
 	GMod *plugin = gmod_new(file_name, FALSE);
 	if (!plugin)
 		return provider_info::empty_instance;
@@ -76,16 +76,18 @@ plugin::provider_info plugin::binary_extractor::get_plugin_info(const
 	return info;
 }
 
-maps_plugin_h plugin::binary_extractor::init(const provider_info &info)
+maps_plugin_h plugin::binary_extractor::init(const provider_info &info,
+					     int *init_error)
 {
-	/* 1.Init plugin */
-	if (info.file.empty())
+	/* 1.Initialize plugin */
+	if (info.file.empty() || !init_error)
 		return NULL;
+
+	*init_error = MAPS_ERROR_NONE;
 
 	GMod *plugin = gmod_new(info.file, TRUE);
 	if (!plugin) {
 		MAPS_LOGE("Open Module Failed: %s", info.file.c_str());
-		gmod_free(plugin);
 		return NULL;
 	}
 
@@ -171,6 +173,12 @@ maps_plugin_h plugin::binary_extractor::init(const provider_info &info)
 			(maps_plugin_search_place_by_address_f)
 			gmod_find_sym(plugin,
 			"maps_plugin_search_place_by_address");
+		new_plugin->interface.maps_plugin_search_place_list =
+			(maps_plugin_search_place_list_f) gmod_find_sym(plugin,
+			"maps_plugin_search_place_list");
+		new_plugin->interface.maps_plugin_get_place_details =
+			(maps_plugin_get_place_details_f) gmod_find_sym(plugin,
+			"maps_plugin_get_place_details");
 
 		/* Route */
 		new_plugin->interface.maps_plugin_search_route =
@@ -222,8 +230,8 @@ maps_plugin_h plugin::binary_extractor::init(const provider_info &info)
 
 		/* 2.3 Check whether the plugin init function is valid */
 		if (!new_plugin->interface.maps_plugin_init) {
-			MAPS_LOGE("ERROR! Plugin initialization function is "
-				  "invalid");
+			MAPS_LOGE(
+			"ERROR! Plugin initialization function is invalid");
 			break;
 		}
 
@@ -233,53 +241,57 @@ maps_plugin_h plugin::binary_extractor::init(const provider_info &info)
 			new_plugin->interface.
 			maps_plugin_init((maps_plugin_h *) (&new_plugin));
 		if (ret != MAPS_ERROR_NONE) {
-			MAPS_LOGE("ERROR! Plugin initialization function "
-				  "failed: %d", ret);
+			MAPS_LOGE(
+			"ERROR! Plugin initialization function ""failed: %d",
+				ret);
 			break;
 		}
 
 		if (!new_plugin->interface.maps_plugin_set_provider_key) {
-			MAPS_LOGE("ERROR! Plugin set_provider_key function "
-				  "is NULL: %d", ret);
+			MAPS_LOGE(
+			"ERROR! Plugin set_provider_key function is NULL: %d",
+				ret);
 			break;
 		}
 
 		if (!new_plugin->interface.maps_plugin_get_provider_key) {
-			MAPS_LOGE("ERROR! Plugin set_provider_key function is "
-				  "NULL: %d", ret);
+			MAPS_LOGE(
+			"ERROR! Plugin set_provider_key function is NULL: %d",
+				ret);
 			break;
 		}
 
 		if (!new_plugin->interface.maps_plugin_set_preference) {
-			MAPS_LOGE("ERROR! Plugin set_preference function is "
-				  "NULL: %d", ret);
+			MAPS_LOGE(
+			"ERROR! Plugin set_preference function is NULL: %d",
+				ret);
 			break;
 		}
 
 		if (!new_plugin->interface.maps_plugin_get_preference) {
-			MAPS_LOGE("ERROR! Plugin get_preference function is "
-				  "NULL: %d", ret);
+			MAPS_LOGE(
+			"ERROR! Plugin get_preference function is NULL: %d",
+				ret);
 			break;
 		}
 
 		if (!new_plugin->interface.maps_plugin_is_data_supported) {
-			MAPS_LOGE("ERROR! Plugin support_is_data_supported "
-				  "function is NULL: %d", ret);
+			MAPS_LOGE(
+				"ERROR! Plugin support_is_data_supported function is NULL: %d",
+				ret);
 			break;
 		}
 
 		if (!new_plugin->interface.maps_plugin_is_service_supported) {
-			MAPS_LOGE("ERROR! Plugin support_is_service_supported "
-				  "function is NULL: %d", ret);
+			MAPS_LOGE(
+				"ERROR! Plugin support_is_service_supported function is NULL: %d",
+				ret);
 			break;
 		}
 
 		/* 2.7 Create a queue with asynchronous requests to plugin */
-#ifdef _MAPS_SERVICE_SUPPORTS_ASYNC_QUEUE_
 		if (session::command_queue::is_async())
-		/* We are going to use this queue for view commands */
 			new_plugin->request_queue = g_async_queue_new();
-#endif /*_MAPS_SERVICE_SUPPORTS_ASYNC_QUEUE_*/
 
 		/* 2.8 Initialize the mutex for the map of pending requests */
 		new_plugin->pending_request_maps =
@@ -323,10 +335,8 @@ void plugin::binary_extractor::shutdown(maps_plugin_h plugin_h)
 	session::thread().stop(plugin);
 
 	/* 2. Destroy the request queue */
-#ifdef _MAPS_SERVICE_SUPPORTS_ASYNC_QUEUE_
 	if (plugin->request_queue)
 		g_async_queue_unref(plugin->request_queue);
-#endif /* _MAPS_SERVICE_SUPPORTS_ASYNC_QUEUE_ */
 
 	/* 3. Destroy the map of pending requests */
 	if (plugin->pending_request_maps) {
@@ -452,15 +462,12 @@ void plugin::binary_extractor::trace_dbg(const plugin_s *plugin) const
 		MAPS_LOGD("module path:\t\t\t%s", mod->path);
 	}
 
-#ifdef _MAPS_SERVICE_SUPPORTS_ASYNC_QUEUE_
 	if (!plugin->request_queue) {
 		MAPS_LOGD("PLUGIN request queue is NULL");
 	}
 	else {
-		MAPS_LOGD("plugin request queue:\t\t\t%p",
-			  plugin->request_queue);
+		MAPS_LOGD("plugin request queue:\t\t\t%p", plugin->request_queue);
 	}
-#endif /*_MAPS_SERVICE_SUPPORTS_ASYNC_QUEUE_ */
 
 	const interface_s *itf = &plugin->interface;
 	MAPS_LOGD("maps_plugin_init:\t\t\t%p", itf->maps_plugin_init);
@@ -493,6 +500,10 @@ void plugin::binary_extractor::trace_dbg(const plugin_s *plugin) const
 		itf->maps_plugin_search_place_by_area);
 	MAPS_LOGD("maps_plugin_search_place_by_address:\t%p",
 		itf->maps_plugin_search_place_by_address);
+	MAPS_LOGD("maps_plugin_search_place_list:\t\t%p",
+		itf->maps_plugin_search_place_list);
+	MAPS_LOGD("maps_plugin_get_place_details:\t%p",
+		itf->maps_plugin_get_place_details);
 
 	MAPS_LOGD("maps_plugin_search_route:\t\t%p",
 		itf->maps_plugin_search_route);

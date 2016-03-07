@@ -17,6 +17,7 @@
 
 #include "inertial_camera.h"
 #include "maps_util.h"
+#include "map_view_plugin.h"
 #include <glib.h>
 
 
@@ -175,7 +176,6 @@ void view::inertial_camera::next_transition_step()
 	maps_coordinates_get_latitude_longitude(cur_center, &prev_lat, &prev_lon);
 	maps_coordinates_get_latitude_longitude(target_center, &target_lat, &target_lon);
 
-#ifdef IMPROVEMENT_OF_GESTURES_AND_ACTIONS
 	/* Transiting map center */
 	double next_lat = calc_next_step(prev_lat, target_lat, .15);
 	if (next_lat != prev_lat) transiting = true;
@@ -187,28 +187,14 @@ void view::inertial_camera::next_transition_step()
 	{
 		int tx, ty, nx, ny;
 		maps_coordinates_s next_center_s = { next_lat, next_lon };
-		map_view_geography_to_screen(_view, &next_center_s, &nx, &ny);
-		map_view_geography_to_screen(_view, target_center, &tx, &ty);
+		map_view_geolocation_to_screen(_view, &next_center_s, &nx, &ny);
+		map_view_geolocation_to_screen(_view, target_center, &tx, &ty);
 		if (nx == tx && ny == ty) {
 			transiting = false;
 			next_lat = target_lat;
 			next_lon = target_lon;
 		}
 	}
-#else
-	/* Transiting map center */
-	double next_lat = calc_next_step(prev_lat, target_lat, .5);
-	if(ABS(next_lat - prev_lat) > __GEO_ACCURACY)
-		transiting = true;
-	else
-		next_lat = target_lat;
-
-	double next_lon = calc_next_step(prev_lon, target_lon, .5);
-	if(ABS(next_lon - prev_lon) > __GEO_ACCURACY)
-		transiting = true;
-	else
-		next_lon = target_lon;
-#endif
 
 	maps_coordinates_set_latitude_longitude(cur_center, next_lat, next_lon);
 

@@ -18,12 +18,9 @@
 #define __MAPS_PLACE_PRIVATE_H__
 
 #include <maps_service.h>
-#include "maps_extra_types_private.h"
+#include <maps_extra_types.h>
 
 /**
- * @ingroup	CAPI_MAPS_PLACE_MODULE
- * @defgroup	CAPI_MAPS_PLACE_DATA_MODULE Place
- *
  * @file maps_place_private.h
  * @brief This file contains the functions related to Place information.
  *

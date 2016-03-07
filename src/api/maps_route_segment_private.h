@@ -18,7 +18,7 @@
 #define __MAPS_ROUTE_SEGMENT_PRIVATE_H__
 
 #include <maps_service.h>
-#include "maps_extra_types_private.h"
+#include <maps_extra_types.h>
 
 /**
  * @ingroup	CAPI_MAPS_PLACE_MODULE
