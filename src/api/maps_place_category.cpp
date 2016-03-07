@@ -34,7 +34,6 @@ const gsize _MAPS_PLACE_CATEGORY_URL_MAX_LENGTH = 128;
 
 EXPORT_API int maps_place_category_create(maps_place_category_h *place)
 {
-	MAPS_LOG_API;
 	if (!place)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	*place = g_slice_new0(maps_place_category_s);
@@ -49,7 +48,6 @@ EXPORT_API int maps_place_category_create(maps_place_category_h *place)
 
 EXPORT_API int maps_place_category_destroy(maps_place_category_h place)
 {
-	MAPS_LOG_API;
 	if (!place)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	int error = MAPS_ERROR_NONE;
@@ -70,7 +68,6 @@ EXPORT_API int maps_place_category_destroy(maps_place_category_h place)
 EXPORT_API int maps_place_category_clone(const maps_place_category_h origin,
 					 maps_place_category_h *cloned)
 {
-	MAPS_LOG_API;
 	if (!cloned || !origin)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -102,7 +99,6 @@ EXPORT_API int maps_place_category_clone(const maps_place_category_h origin,
 		}
 
 		return MAPS_ERROR_NONE;
-
 	} while (false);
 
 	maps_place_category_destroy(*cloned);
@@ -115,7 +111,6 @@ EXPORT_API int maps_place_category_clone(const maps_place_category_h origin,
 EXPORT_API int maps_place_category_get_name(const maps_place_category_h place,
 					    char **name)
 {
-	MAPS_LOG_API;
 	if (!place || !name)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_get_string(((maps_place_category_s *) place)->name,
@@ -125,7 +120,6 @@ EXPORT_API int maps_place_category_get_name(const maps_place_category_h place,
 EXPORT_API int maps_place_category_get_id(const maps_place_category_h place,
 					  char **id)
 {
-	MAPS_LOG_API;
 	if (!place || !id)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_get_string(((maps_place_category_s *) place)->id,
@@ -135,7 +129,6 @@ EXPORT_API int maps_place_category_get_id(const maps_place_category_h place,
 EXPORT_API int maps_place_category_get_url(const maps_place_category_h place,
 					   char **url)
 {
-	MAPS_LOG_API;
 	if (!place || !url)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_get_string(((maps_place_category_s *) place)->url,
@@ -147,7 +140,6 @@ EXPORT_API int maps_place_category_get_url(const maps_place_category_h place,
 EXPORT_API int maps_place_category_set_id(maps_place_category_h place,
 					  const char *id)
 {
-	MAPS_LOG_API;
 	if (!place || !id)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_set_string(id, _MAPS_PLACE_CATEGORY_ID_MAX_LENGTH,
@@ -157,7 +149,6 @@ EXPORT_API int maps_place_category_set_id(maps_place_category_h place,
 EXPORT_API int maps_place_category_set_name(maps_place_category_h place,
 					    const char *name)
 {
-	MAPS_LOG_API;
 	if (!place || !name)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_set_string(name, _MAPS_PLACE_CATEGORY_NAME_MAX_LENGTH,
@@ -167,7 +158,6 @@ EXPORT_API int maps_place_category_set_name(maps_place_category_h place,
 EXPORT_API int maps_place_category_set_url(maps_place_category_h place,
 					   const char *url)
 {
-	MAPS_LOG_API;
 	if (!place || !url)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_set_string(url, _MAPS_PLACE_CATEGORY_URL_MAX_LENGTH,

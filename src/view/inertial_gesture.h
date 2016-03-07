@@ -24,9 +24,7 @@ namespace view
 	class inertial_gesture : public gesture_detector {
 	protected:
 		gesture_detector *_d;
-		#ifdef IMPROVEMENT_OF_GESTURES_AND_ACTIONS
 		touch_point _down[MAX_FINGERS];
-		#endif
 		touch_point _last[MAX_FINGERS];
 		touch_point _prev[MAX_FINGERS];
 		double _cur_x[MAX_FINGERS];

@@ -22,6 +22,7 @@
 #include <glib.h>
 
 #include "map_view.h"
+#include "map_view_plugin.h"
 #include "maps_util.h"
 #include "module.h"
 #include "empty_module.h"
@@ -32,6 +33,7 @@
 #include "inertial_camera.h"
 #include "inertial_gesture.h"
 #include "gesture_detector_statemachine.h"
+#include "map_event_data.h"
 
 
 /* TODO: remove useless or duplicative includes */
@@ -89,8 +91,8 @@ typedef struct _map_view_s {
 	Evas_Object *panel;
 
 	/* Gesture Support */
-	map_action_e gesture_actions[MAP_GESTURE_NONE + 1];
-	bool gesture_available[MAP_GESTURE_NONE + 1];
+	map_action_e gesture_actions[MAP_GESTURE_LONG_PRESS + 1];
+	bool gesture_available[MAP_GESTURE_LONG_PRESS + 1];
 
 	/* Continuous gesture info */
 	view::finger_event_stream *finger_stream;
@@ -104,8 +106,12 @@ typedef struct _map_view_s {
 	volatile bool ready_to_draw;
 
 	/* Map View Preferences */
-	map_view_type_e type;
+	map_type_e type;
 	char *language;
+	bool buildings_enabled;
+	bool traffic_enabled;
+	bool public_transit_enabled;
+	bool scalebar_enabled;
 
 } map_view_s;
 
@@ -118,50 +124,22 @@ const gsize _MAPS_VIEW_LANGUAGE_MAX_LENGTH = 16;
 
 /* ---------------------------------------------------------------------------*/
 
-
 extern plugin::plugin_s *__extract_plugin(maps_service_h maps);
-
-
-extern int _map_event_data_set_type(map_event_data_h event,
-				    map_event_type_e event_type);
-
-extern int _map_event_data_set_gesture_type(map_event_data_h event,
-					    const map_gesture_e
-					    gesture_type);
-
-extern int _map_event_data_set_action_type(map_event_data_h event,
-					   const map_action_e action_type);
-
-extern int _map_event_data_set_center(map_event_data_h event,
-				      const maps_coordinates_h center);
-
-extern int _map_event_data_set_delta(map_event_data_h event,
-				     const int delta_x, const int delta_y);
-
-extern int _map_event_data_set_xy(map_event_data_h event,
-				  const int x, const int y);
-
-extern int _map_event_data_set_fingers(map_event_data_h event,
-				       const int fingers);
-
-extern int _map_event_data_set_zoom_factor(map_event_data_h event,
-					   const double zoom_factor);
-
-extern int _map_event_data_set_rotation_angle(map_event_data_h event,
-					      const double rotation_angle);
-
-extern int _map_event_data_set_object(map_event_data_h event,
-				      map_object_h object);
-
+extern int _map_event_data_set_type(const map_event_data_h event, map_event_type_e event_type);
+extern int _map_event_data_set_gesture_type(const map_event_data_h event, map_gesture_e gesture_type);
+extern int _map_event_data_set_action_type(const map_event_data_h event, map_action_e action_type);
+extern int _map_event_data_set_center(const map_event_data_h event, const maps_coordinates_h center);
+extern int _map_event_data_set_delta(const map_event_data_h event, int delta_x, int delta_y);
+extern int _map_event_data_set_position(const map_event_data_h event, int x, int y);
+extern int _map_event_data_set_fingers(const map_event_data_h event, int fingers);
+extern int _map_event_data_set_zoom_factor(const map_event_data_h event, double zoom_factor);
+extern int _map_event_data_set_rotation_angle(const map_event_data_h event, double rotation_angle);
+extern int _map_event_data_set_object(const map_event_data_h event, const map_object_h object);
 extern int _map_event_data_create(map_event_data_h *event);
-
-extern int _map_object_set_view(map_object_h object, map_view_h view);
-
+extern int _map_object_set_view(const map_object_h object, const map_view_h view);
 map_event_data_h _map_view_create_event_data(map_event_type_e type);
-
-void _map_view_invoke_event_callback(map_view_h view,
-				     map_event_data_h event_data);
-
+void _map_view_invoke_event_callback(const map_view_h view, const map_event_data_h event_data);
+int _map_view_set_inertia_enabled(const map_view_h view, bool enabled);
 
 /* ---------------------------------------------------------------------------*/
 
@@ -178,10 +156,8 @@ static const plugin::interface_s *__get_plugin_interface(map_view_h view)
 /* ---------------------------------------------------------------------------*/
 
 
-static void __map_view_on_event_empty_cb(maps_error_e result,
-					 const map_event_type_e type,
-					 map_event_data_h event_data,
-					 void *user_data)
+static void __map_view_on_event_empty_cb(map_event_type_e type,
+	map_event_data_h event_data, void *user_data)
 {
 	/* empty */
 }
@@ -217,16 +193,7 @@ session::command_queue *__map_view_select_q()
 	/* return session::command_queue_view::interface(); */
 }
 
-static session::command_queue *q()
-{
-	/* Obsolete approach */
-	/*return session::command_queue_view::interface();*/
-
-	return __map_view_select_q();
-}
-
-bool _map_view_is_gesture_available(map_view_h view,
-				    map_gesture_e gesture)
+bool _map_view_is_gesture_available(map_view_h view, map_gesture_e gesture)
 {
 	if(!view)
 		return false;
@@ -234,8 +201,7 @@ bool _map_view_is_gesture_available(map_view_h view,
 	return v->gesture_available[gesture];
 }
 
-map_action_e _map_view_get_gesture_action(map_view_h view,
-					       map_gesture_e gesture)
+map_action_e _map_view_get_gesture_action(map_view_h view, map_gesture_e gesture)
 {
 	if(!view)
 		return MAP_ACTION_NONE;
@@ -251,9 +217,7 @@ void *_map_view_get_maps_service_ptr(map_view_h view)
 	return v->maps;
 }
 
-int _map_view_on_object_operation(map_view_h view,
-				  const map_object_h object,
-				  map_object_operation_e operation)
+int _map_view_on_object_operation(map_view_h view, map_object_h object, map_object_operation_e operation)
 {
 	if(!view)
 		return  MAPS_ERROR_INVALID_PARAMETER;
@@ -261,27 +225,10 @@ int _map_view_on_object_operation(map_view_h view,
 	if(!__get_plugin_interface(view)->maps_plugin_on_object)
 		return  MAPS_ERROR_INVALID_PARAMETER;
 
-	return __get_plugin_interface(view)->maps_plugin_on_object(object,
-								operation);
+	return __get_plugin_interface(view)->maps_plugin_on_object(object, operation);
 }
 
-#if 0
-/* DEBUG: for mesuring FPS */
-#include <sys/timeb.h>
-static int __get_milli_count()
-{
-	timeb tb;
-	ftime(&tb);
-	int nCount = tb.millitm + (tb.time & 0xfffff) * 1000;
-	return nCount;
-}
-#endif
-
-
-static void __on_canvas_tap(void *data,
-			    Evas *e,
-			    Evas_Object *obj,
-			    void *event_info)
+static void __on_canvas_tap(void *data, Evas *e, Evas_Object *obj, void *event_info)
 {
 	MAPS_LOGI("__on_canvas_tap");
 	if(!event_info || !data)
@@ -296,10 +243,7 @@ static void __on_canvas_tap(void *data,
 	v->finger_stream->tap((Evas_Event_Mouse_Down *)event_info);
 }
 
-static void __on_canvas_up(void *data,
-			   Evas *e,
-			   Evas_Object *obj,
-			   void *event_info)
+static void __on_canvas_up(void *data, Evas *e, Evas_Object *obj, void *event_info)
 {
 	MAPS_LOGI("__on_canvas_up");
 	if(!event_info || !data)
@@ -315,10 +259,7 @@ static void __on_canvas_up(void *data,
 }
 
 
-static void __on_canvas_line(void *data,
-			     Evas *e,
-			     Evas_Object *obj,
-			     void *event_info)
+static void __on_canvas_line(void *data, Evas *e, Evas_Object *obj, void *event_info)
 {
 	MAPS_LOGI("__on_canvas_line");
 	if(!event_info || !data)
@@ -333,10 +274,7 @@ static void __on_canvas_line(void *data,
 	v->finger_stream->move((Evas_Event_Mouse_Move *)event_info);
 }
 
-static void __on_canvas_multi_tap(void *data,
-				  Evas *e,
-				  Evas_Object *obj,
-				  void *event_info)
+static void __on_canvas_multi_tap(void *data, Evas *e, Evas_Object *obj, void *event_info)
 {
 	MAPS_LOGI("__on_canvas_multi_tap");
 	if(!event_info || !data)
@@ -352,10 +290,7 @@ static void __on_canvas_multi_tap(void *data,
 }
 
 
-static void __on_canvas_multi_up(void *data,
-				  Evas *e,
-				  Evas_Object *obj,
-				  void *event_info)
+static void __on_canvas_multi_up(void *data, Evas *e, Evas_Object *obj, void *event_info)
 {
 	MAPS_LOGI("__on_canvas_multi_up");
 	if(!event_info || !data)
@@ -371,9 +306,7 @@ static void __on_canvas_multi_up(void *data,
 }
 
 static void __maps_plugin_render_map_cb(maps_error_e result, int request_id,
-				 maps_coordinates_h center,
-				 maps_area_h area,
-				 void *user_data)
+	maps_coordinates_h center, maps_area_h area, void *user_data)
 {
 	if ((result != MAPS_ERROR_NONE) || !center || !area || !user_data)
 		return;
@@ -399,10 +332,8 @@ static void __maps_plugin_render_map_cb(maps_error_e result, int request_id,
 
 }
 
-static int __maps_plugin_render_map(map_view_h view,
-				    const maps_coordinates_h coordinates,
-				    const double zoom_factor,
-				    const double rotation_angle)
+static int __maps_plugin_render_map(const map_view_h view,
+	const maps_coordinates_h coordinates, const double zoom_factor, const double rotation_angle)
 {
 	if (!view || !coordinates)
 		return MAPS_ERROR_INVALID_PARAMETER;
@@ -418,10 +349,7 @@ static int __maps_plugin_render_map(map_view_h view,
 
 }
 
-static void __on_canvas_multi_line(void *data,
-				  Evas *e,
-				  Evas_Object *obj,
-				  void *event_info)
+static void __on_canvas_multi_line(void *data, Evas *e, Evas_Object *obj, void *event_info)
 {
 	MAPS_LOGI("__on_canvas_multi_line");
 	if(!event_info || !data)
@@ -440,9 +368,8 @@ static void __on_canvas_multi_line(void *data,
 {
 }*/
 
-void _map_view_set_idle_listener(map_view_h view,
-				 void (*callback)(void *user_data),
-				 void *user_data)
+void _map_view_set_idle_listener(const map_view_h view,
+	void (*callback)(void *user_data), void *user_data)
 {
 
 	if(!view)
@@ -486,53 +413,24 @@ static Eina_Bool __map_view_on_idle_cb(void *data)
 		g_usleep(10*1000);
 	}
 
-#if 0
-	/* Extract and run the on-going command */
-	q()->process(__extract_plugin(v->maps));
-#endif
-
 	return ECORE_CALLBACK_RENEW; // same as EINA_TRUE
 }
 
 static Eina_Bool __map_view_animator_cb(void *data)
 {
-	map_view_s *v = (map_view_s *) data;
-	if (!v)
-		return ECORE_CALLBACK_CANCEL;
-
-	if (!v->ready_to_draw)
-		return ECORE_CALLBACK_RENEW;
-
-	v->ready_to_draw = false;
-
-	/* draw routin: use the plugin function */
-	int width = 0;
-	int height = 0;
-	map_view_get_geometry(v, NULL, NULL, &width, &height);
-
-	/* The Plugin should draw a map. */
-	__get_plugin_interface(v)->
-		maps_plugin_draw_map(v->canvas, 0, 0, width, height);
-
-	q()->push(new session::command_view_ready(v->maps, v));
-
 	return ECORE_CALLBACK_RENEW;
 }
 
-int __map_view_ready(map_view_h view)
+void __map_view_ready(const map_view_h view)
 {
-	map_view_s *v = (map_view_s *) view;
-	if (!v)
-		return MAPS_ERROR_INVALID_PARAMETER;
+	if (!view) return;
+
+	_map_view_set_inertia_enabled(view, true);
 
 	/* Invoke user registered event callback */
-	_map_view_invoke_event_callback(v,
+	_map_view_invoke_event_callback((map_view_s *)view,
 			_map_view_create_event_data(MAP_EVENT_READY));
-
-	return MAPS_ERROR_NONE;
 }
-
-
 
 
 /* ----------------------CREATE AND DESTROY-----------------------------------*/
@@ -547,11 +445,8 @@ static void __map_view_panel_resize_cb(void *data, Evas *e, Evas_Object *obj, vo
 }
 
 /* Create the panel and link it to the instance of Maps Service */
-EXPORT_API int map_view_create(const maps_service_h maps,
-				Evas_Image *obj,
-				map_view_h *view)
+EXPORT_API int map_view_create(maps_service_h maps, Evas_Image *obj, map_view_h *view)
 {
-	MAPS_LOG_API;
 	if (!maps || !obj || !view)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -576,57 +471,12 @@ EXPORT_API int map_view_create(const maps_service_h maps,
 		v->event_callbacks[i].user_data = NULL;
 	}
 
-#ifdef IMPROVEMENT_OF_GESTURES_AND_ACTIONS
-	/*
-	Gestures                        | Available actions
-	--------------------------------+------------------------------------------------------
-	MAP_GESTURE_SCROLL		| MAP_ACTION_NONE
-                                        |
-	MAP_GESTURE_ZOOM,		| MAP_ACTION_ZOOM
-                                        |
-	MAP_GESTURE_TAP,		| MAP_ACTION_SCROLL, MAP_ACTION_ZOOM_IN, MAP_ACTION_ZOOM_OUT,
-                                        |
-	MAP_GESTURE_DOUBLE_TAP,		| MAP_ACTION_SCROLL, MAP_ACTION_ZOOM_IN, MAP_ACTION_ZOOM_OUT,
-	                                | MAP_ACTION_ZOOM_AND_SCROLL
-                                        |
-	MAP_GESTURE_2_FINGER_TAP,	| MAP_ACTION_SCROLL, MAP_ACTION_ZOOM_IN, MAP_ACTION_ZOOM_OUT,
-	                                | MAP_ACTION_ZOOM_AND_SCROLL
-                                        |
-	MAP_GESTURE_SINGLE_FINGER_ZOOM,	| MAP_ACTION_ZOOM, MAP_ACTION_ZOOM_AND_SCROLL
-                                        |
-	MAP_GESTURE_LONG_PRESS,		| MAP_ACTION_SCROLL, MAP_ACTION_ZOOM_IN, MAP_ACTION_ZOOM_OUT
-	*/
-
 	/* Assign gestures to actions */
 	v->gesture_actions[MAP_GESTURE_SCROLL] = MAP_ACTION_NONE;
 	v->gesture_actions[MAP_GESTURE_ZOOM] = MAP_ACTION_ZOOM;
-	v->gesture_actions[MAP_GESTURE_FLICK] = MAP_ACTION_SCROLL;
-	v->gesture_actions[MAP_GESTURE_TAP] = MAP_ACTION_SCROLL;
-	v->gesture_actions[MAP_GESTURE_DOUBLE_TAP] = MAP_ACTION_ZOOM_AND_SCROLL;
-	v->gesture_actions[MAP_GESTURE_2_FINGER_TAP] = MAP_ACTION_ZOOM_OUT;
-	v->gesture_actions[MAP_GESTURE_SINGLE_FINGER_ZOOM] = MAP_ACTION_ZOOM;
-	v->gesture_actions[MAP_GESTURE_LONG_PRESS] = MAP_ACTION_SCROLL;
-	v->gesture_actions[MAP_GESTURE_NONE] = MAP_ACTION_NONE;
-
-	/* Set up gesture availability */
-	v->gesture_available[MAP_GESTURE_SCROLL] = true;
-	v->gesture_available[MAP_GESTURE_ZOOM] = true;
-	v->gesture_available[MAP_GESTURE_FLICK] = true;
-	v->gesture_available[MAP_GESTURE_TAP] = true;
-	v->gesture_available[MAP_GESTURE_DOUBLE_TAP] = true;
-	v->gesture_available[MAP_GESTURE_2_FINGER_TAP] = true;
-	v->gesture_available[MAP_GESTURE_SINGLE_FINGER_ZOOM] = true;
-	v->gesture_available[MAP_GESTURE_LONG_PRESS] = true;
-	v->gesture_available[MAP_GESTURE_NONE] = false;
-#else
-	/* Assign gestures to actions */
-	v->gesture_actions[MAP_GESTURE_SCROLL] = MAP_ACTION_SCROLL;
-	v->gesture_actions[MAP_GESTURE_FLICK] = MAP_ACTION_SCROLL;
-	v->gesture_actions[MAP_GESTURE_PINCH] = MAP_ACTION_SCROLL;
 	v->gesture_actions[MAP_GESTURE_TAP] = MAP_ACTION_NONE;
-	v->gesture_actions[MAP_GESTURE_DOUBLE_TAP] = MAP_ACTION_ZOOM;
-	v->gesture_actions[MAP_GESTURE_2_FINGER_TAP] = MAP_ACTION_ZOOM;
-	v->gesture_actions[MAP_GESTURE_ZOOM] = MAP_ACTION_ZOOM;
+	v->gesture_actions[MAP_GESTURE_DOUBLE_TAP] = MAP_ACTION_ZOOM_IN;
+	v->gesture_actions[MAP_GESTURE_2_FINGER_TAP] = MAP_ACTION_ZOOM_OUT;
 	v->gesture_actions[MAP_GESTURE_SINGLE_FINGER_ZOOM] = MAP_ACTION_ZOOM;
 	v->gesture_actions[MAP_GESTURE_ROTATE] = MAP_ACTION_ROTATE;
 	v->gesture_actions[MAP_GESTURE_LONG_PRESS] = MAP_ACTION_NONE;
@@ -634,17 +484,14 @@ EXPORT_API int map_view_create(const maps_service_h maps,
 
 	/* Set up gesture availability */
 	v->gesture_available[MAP_GESTURE_SCROLL] = true;
-	v->gesture_available[MAP_GESTURE_FLICK] = true;
-	v->gesture_available[MAP_GESTURE_PINCH] = true;
+	v->gesture_available[MAP_GESTURE_ZOOM] = true;
 	v->gesture_available[MAP_GESTURE_TAP] = true;
 	v->gesture_available[MAP_GESTURE_DOUBLE_TAP] = true;
 	v->gesture_available[MAP_GESTURE_2_FINGER_TAP] = true;
-	v->gesture_available[MAP_GESTURE_ZOOM] = true; /* pinch zoom */
 	v->gesture_available[MAP_GESTURE_SINGLE_FINGER_ZOOM] = true;
 	v->gesture_available[MAP_GESTURE_ROTATE] = true;
 	v->gesture_available[MAP_GESTURE_LONG_PRESS] = true;
 	v->gesture_available[MAP_GESTURE_NONE] = false;
-#endif
 
 	/* Gesture Processing */
 	v->finger_stream = new view::finger_event_stream(v);
@@ -652,31 +499,13 @@ EXPORT_API int map_view_create(const maps_service_h maps,
 		MAPS_LOGE("OUT_OF_MEMORY(0x%08x)", MAPS_ERROR_OUT_OF_MEMORY);
 		return MAPS_ERROR_OUT_OF_MEMORY;
 	}
-	evas_object_event_callback_add(v->panel,
-				       EVAS_CALLBACK_MOUSE_DOWN,
-				       __on_canvas_tap,
-				       v);
-	evas_object_event_callback_add(v->panel,
-				       EVAS_CALLBACK_MOUSE_UP,
-				       __on_canvas_up,
-				       v);
-	evas_object_event_callback_add(v->panel,
-				       EVAS_CALLBACK_MOUSE_MOVE,
-				       __on_canvas_line,
-				       v);
+	evas_object_event_callback_add(v->panel, EVAS_CALLBACK_MOUSE_DOWN, __on_canvas_tap, v);
+	evas_object_event_callback_add(v->panel, EVAS_CALLBACK_MOUSE_UP, __on_canvas_up, v);
+	evas_object_event_callback_add(v->panel, EVAS_CALLBACK_MOUSE_MOVE, __on_canvas_line, v);
 
-	evas_object_event_callback_add(v->panel,
-				       EVAS_CALLBACK_MULTI_DOWN,
-				       __on_canvas_multi_tap,
-				       v);
-	evas_object_event_callback_add(v->panel,
-				       EVAS_CALLBACK_MULTI_UP,
-				       __on_canvas_multi_up,
-				       v);
-	evas_object_event_callback_add(v->panel,
-				       EVAS_CALLBACK_MULTI_MOVE,
-				       __on_canvas_multi_line,
-				       v);
+	evas_object_event_callback_add(v->panel, EVAS_CALLBACK_MULTI_DOWN, __on_canvas_multi_tap, v);
+	evas_object_event_callback_add(v->panel, EVAS_CALLBACK_MULTI_UP, __on_canvas_multi_up, v);
+	evas_object_event_callback_add(v->panel, EVAS_CALLBACK_MULTI_MOVE, __on_canvas_multi_line, v);
 
 	/* Set up canvas and Ecore */
 	v->canvas = evas_object_evas_get(v->panel);
@@ -698,13 +527,11 @@ EXPORT_API int map_view_create(const maps_service_h maps,
 	*view = (map_view_h) v;
 
 	/* Notify the Plugin, that the view is created */
-	__get_plugin_interface(*view)->maps_plugin_set_map_view(*view);
+	__get_plugin_interface(v)->maps_plugin_set_map_view(*view, __map_view_ready);
 
 	/* Set up zoom and rotation */
-	__get_plugin_interface(v)->maps_plugin_get_min_zoom_level(
-							  &v->min_zoom_level);
-	__get_plugin_interface(v)->maps_plugin_get_max_zoom_level(
-								  &v->max_zoom_level);
+	__get_plugin_interface(v)->maps_plugin_get_min_zoom_level(&v->min_zoom_level);
+	__get_plugin_interface(v)->maps_plugin_get_max_zoom_level(&v->max_zoom_level);
 
 	if(v->min_zoom_level <= 0)
 		v->min_zoom_level = 2;
@@ -717,7 +544,10 @@ EXPORT_API int map_view_create(const maps_service_h maps,
 
 	maps_coordinates_create(.0, .0, &v->center);
 
-	map_view_set_inertia_enabled(v, true);
+	v->type = MAP_TYPE_NORMAL;
+	v->buildings_enabled = false;
+	v->traffic_enabled = false;
+	v->public_transit_enabled = false;
 
 	return MAPS_ERROR_NONE;
 }
@@ -725,7 +555,6 @@ EXPORT_API int map_view_create(const maps_service_h maps,
 /* Destroy the panel and unlink it from the instance of Maps Service */
 EXPORT_API int map_view_destroy(map_view_h view)
 {
-	MAPS_LOG_API;
 	if (!view)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -736,26 +565,13 @@ EXPORT_API int map_view_destroy(map_view_h view)
 		delete v->finger_stream;
 	v->finger_stream = NULL;
 
-	evas_object_event_callback_del(v->panel,
-				       EVAS_CALLBACK_MOUSE_DOWN,
-				       __on_canvas_tap);
-	evas_object_event_callback_del(v->panel,
-				       EVAS_CALLBACK_MOUSE_UP,
-				       __on_canvas_up);
-	evas_object_event_callback_del(v->panel,
-				       EVAS_CALLBACK_MOUSE_MOVE,
-				       __on_canvas_line);
+	evas_object_event_callback_del(v->panel, EVAS_CALLBACK_MOUSE_DOWN, __on_canvas_tap);
+	evas_object_event_callback_del(v->panel, EVAS_CALLBACK_MOUSE_UP, __on_canvas_up);
+	evas_object_event_callback_del(v->panel, EVAS_CALLBACK_MOUSE_MOVE, __on_canvas_line);
 
-	evas_object_event_callback_del(v->panel,
-				       EVAS_CALLBACK_MULTI_DOWN,
-				       __on_canvas_multi_tap);
-	evas_object_event_callback_del(v->panel,
-				       EVAS_CALLBACK_MULTI_UP,
-				       __on_canvas_multi_up);
-	evas_object_event_callback_del(v->panel,
-				       EVAS_CALLBACK_MULTI_MOVE,
-				       __on_canvas_multi_line);
-
+	evas_object_event_callback_del(v->panel, EVAS_CALLBACK_MULTI_DOWN, __on_canvas_multi_tap);
+	evas_object_event_callback_del(v->panel, EVAS_CALLBACK_MULTI_UP, __on_canvas_multi_up);
+	evas_object_event_callback_del(v->panel, EVAS_CALLBACK_MULTI_MOVE, __on_canvas_multi_line);
 
 
 	/* Unregister idle handler */
@@ -771,7 +587,7 @@ EXPORT_API int map_view_destroy(map_view_h view)
 		ecore_animator_del(v->animator);
 
 	/* Notify the Plugin, that the view is to be destroyed */
-	__get_plugin_interface(view)->maps_plugin_set_map_view(NULL);
+	__get_plugin_interface(view)->maps_plugin_set_map_view(NULL, NULL);
 
 	/* Destroy a visual panel */
 	if (v->panel)
@@ -828,10 +644,8 @@ int _map_view_get_plugin_center(const map_view_h view,
 
 /* Show the map with a given position centered using current zoom level and
  * rotation angle */
-EXPORT_API int map_view_set_center(const map_view_h view,
-				   const maps_coordinates_h coordinates)
+EXPORT_API int map_view_set_center(map_view_h view, maps_coordinates_h coordinates)
 {
-	MAPS_LOG_API;
 	if (!view || !coordinates)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	double zoom_factor = 1.;
@@ -844,7 +658,6 @@ EXPORT_API int map_view_set_center(const map_view_h view,
 	if (error != MAPS_ERROR_NONE)
 		return error;
 
-	#ifdef IMPROVEMENT_OF_GESTURES_AND_ACTIONS
 	map_view_s *v = (map_view_s *) view;
 
 	/* Set up the target for camera inertial movement */
@@ -863,26 +676,6 @@ EXPORT_API int map_view_set_center(const map_view_h view,
 		maps_coordinates_destroy(v->center);
 		maps_coordinates_clone(coordinates, &v->center);
 	}
-	#else
-	map_view_s *v = (map_view_s *) view;
-	if(v->center != coordinates) {
-		if (v->center)
-			maps_coordinates_destroy(v->center);
-		maps_coordinates_clone(coordinates, &v->center);
-	}
-
-	/* Set up the target for camera inertial movement */
-	if(v->inertial_camera)
-		v->inertial_camera->set_targets(v->center,
-						zoom_factor,
-						rotation_angle);
-	else
-		/* Rund rendering in the plugin */
-		error = __maps_plugin_render_map(view,
-						 v->center,
-						 zoom_factor,
-						 rotation_angle);
-	#endif
 
 	/* Invoke user registered event callback */
 	map_event_data_h ed =
@@ -891,6 +684,7 @@ EXPORT_API int map_view_set_center(const map_view_h view,
 		_map_event_data_set_action_type(ed, MAP_ACTION_SCROLL);
 		_map_event_data_set_center(ed, v->center);
 		_map_view_invoke_event_callback(v, ed);
+		map_event_data_destroy(ed);
 	}
 
 	return error;
@@ -916,32 +710,41 @@ int _map_view_move_center(map_view_h view, const int delta_x, const int delta_y)
 	map_event_data_h ed =
 		_map_view_create_event_data(MAP_EVENT_ACTION);
 	if(ed) {
-		#ifdef IMPROVEMENT_OF_GESTURES_AND_ACTIONS
 		_map_event_data_set_action_type(ed, MAP_ACTION_SCROLL);
-		#else
-		_map_event_data_set_action_type(ed, MAP_ACTION_MOVE_CENTER);
-		#endif
 		_map_event_data_set_delta(ed, delta_x, delta_y);
 		_map_view_invoke_event_callback(view, ed);
+		map_event_data_destroy(ed);
 	}
 
 	return error;
 }
 
-EXPORT_API int map_view_get_center(const map_view_h view,
-				   maps_coordinates_h *coordinates)
+EXPORT_API int map_view_set_scalebar_enabled(const map_view_h view, bool enable)
 {
-	MAPS_LOG_API;
+	if (!view)
+		return MAPS_ERROR_INVALID_PARAMETER;
+
+	return __get_plugin_interface(view)->maps_plugin_set_scalebar(enable);
+}
+
+EXPORT_API int map_view_get_scalebar_enabled(const map_view_h view, bool *enabled)
+{
+	if (!view || !enabled)
+		return MAPS_ERROR_INVALID_PARAMETER;
+
+	return __get_plugin_interface(view)->maps_plugin_get_scalebar(enabled);
+}
+
+EXPORT_API int map_view_get_center(const map_view_h view, maps_coordinates_h *coordinates)
+{
 	if (!view || !coordinates)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	map_view_s *v = (map_view_s *) view;
 	return maps_coordinates_clone(v->center, coordinates);
 }
 
-EXPORT_API int map_view_set_zoom_level(map_view_h view, const int level)
+EXPORT_API int map_view_set_zoom_level(map_view_h view, int level)
 {
-#if 1
-	MAPS_LOG_API;
 	if (!view)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -956,31 +759,6 @@ EXPORT_API int map_view_set_zoom_level(map_view_h view, const int level)
 
 	v->zoom_level = new_level;
 	v->zoom_factor = double(new_level); /* Update the integer  zoom level too */
-#else
-	MAPS_LOG_API;
-	if (!view || (level <= 1))
-		return MAPS_ERROR_INVALID_PARAMETER;
-
-	map_view_s *v = (map_view_s *) view;
-
-
-	/* TODO: consider more convenient for App Devs approach:
-	 *    level = min(level, max_zoom);
-	 *    level = max(level, min_zoom);
-	 *    error = NONE
-	 */
-
-	/* Check if new zoom factor matches existing zoom range */
-	if((level < v->min_zoom_level) || (level > v->max_zoom_level))
-		return MAPS_ERROR_INVALID_PARAMETER;
-
-	/* Add inertia to the zoom process */
-	if(v->inertial_camera)
-		v->inertial_camera->set_zoom_target(double(level));
-
-	v->zoom_level = level;
-	v->zoom_factor = double(level); /* Update the integer  zoom level too */
-#endif
 
 	const int error = map_view_set_center(view, v->center);
 
@@ -991,6 +769,7 @@ EXPORT_API int map_view_set_zoom_level(map_view_h view, const int level)
 		_map_event_data_set_action_type(ed, MAP_ACTION_ZOOM);
 		_map_event_data_set_zoom_factor(ed, v->zoom_factor);
 		_map_view_invoke_event_callback(v, ed);
+		map_event_data_destroy(ed);
 	}
 
 	return error;
@@ -998,7 +777,6 @@ EXPORT_API int map_view_set_zoom_level(map_view_h view, const int level)
 
 EXPORT_API int map_view_get_zoom_level(const map_view_h view, int *level)
 {
-	MAPS_LOG_API;
 	if (!view || !level)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	map_view_s *v = (map_view_s *) view;
@@ -1006,10 +784,8 @@ EXPORT_API int map_view_get_zoom_level(const map_view_h view, int *level)
 	return MAPS_ERROR_NONE;
 }
 
-EXPORT_API int map_view_get_min_zoom_level(const map_view_h view,
-					   int *min_zoom_level)
+EXPORT_API int map_view_get_min_zoom_level(const map_view_h view, int *min_zoom_level)
 {
-	MAPS_LOG_API;
 	if (!view || !min_zoom_level)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	map_view_s *v = (map_view_s *) view;
@@ -1017,10 +793,8 @@ EXPORT_API int map_view_get_min_zoom_level(const map_view_h view,
 	return MAPS_ERROR_NONE;
 }
 
-EXPORT_API int map_view_get_max_zoom_level(const map_view_h view,
-					   int *max_zoom_level)
+EXPORT_API int map_view_get_max_zoom_level(const map_view_h view, int *max_zoom_level)
 {
-	MAPS_LOG_API;
 	if (!view || !max_zoom_level)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	map_view_s *v = (map_view_s *) view;
@@ -1034,7 +808,6 @@ int _map_view_set_zoom_rotate(map_view_h view,
 			      const bool rotation_changed,
 			      const double angle)
 {
-	MAPS_LOG_API;
 	if (!view)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -1042,50 +815,27 @@ int _map_view_set_zoom_rotate(map_view_h view,
 
 	/* 1. Apply new zoom and orientation values */
 	if (zoom_changed) {
-		/* TODO: consider more convenient for App Devs approach:
-		*    factor = min(factor, max_zoom);
-		*    factor = max(factor, min_zoom);
-		*    error = NONE
-		 */
-
-		#if 1
 		double new_factor = factor;
 		if (new_factor < v->min_zoom_level) new_factor = v->min_zoom_level;
 		if (new_factor > v->max_zoom_level) new_factor = v->max_zoom_level;
 
 		/* Add inertia to the zoom process */
-		if(v->inertial_camera) {
+		if(v->inertial_camera)
 			v->inertial_camera->set_zoom_target(new_factor);
-			if(rotation_changed)
-				v->inertial_camera->set_rotation_target(angle);
-		}
 
 		/* Update Map View zoom factor */
 		v->zoom_factor = new_factor;
 
-		/* Update the integer  zoom level too */
+		/* Update the integer zoom level too */
 		v->zoom_level = int(new_factor);
-		#else
-		/* Check if new zoom factor matches existing zoom range */
-		if((factor < v->min_zoom_level) || (factor > v->max_zoom_level))
-			return MAPS_ERROR_INVALID_PARAMETER;
-
-		/* Add inertia to the zoom process */
-		if(v->inertial_camera) {
-			v->inertial_camera->set_zoom_target(factor);
-			if(rotation_changed)
-				v->inertial_camera->set_rotation_target(angle);
-		}
-
-		/* Update Map View zoom factor */
-		v->zoom_factor = factor;
-
-		/* Update the integer  zoom level too */
-		v->zoom_level = int(factor);
-		#endif
 	}
 
 	if (rotation_changed) {
+		/* Add inertia to the rotation process */
+		if(v->inertial_camera)
+			v->inertial_camera->set_rotation_target(angle);
+
+		/* Update Map View rotation angle */
 		v->rotation_angle = angle;
 	}
 
@@ -1101,6 +851,7 @@ int _map_view_set_zoom_rotate(map_view_h view,
 			_map_event_data_set_action_type(ed, MAP_ACTION_ZOOM);
 			_map_event_data_set_zoom_factor(ed, v->zoom_factor);
 			_map_view_invoke_event_callback(v, ed);
+			map_event_data_destroy(ed);
 		}
 	}
 
@@ -1110,9 +861,9 @@ int _map_view_set_zoom_rotate(map_view_h view,
 			_map_view_create_event_data(MAP_EVENT_ACTION);
 		if(ed) {
 			_map_event_data_set_action_type(ed, MAP_ACTION_ROTATE);
-			_map_event_data_set_rotation_angle(ed,
-							   v->rotation_angle);
+			_map_event_data_set_rotation_angle(ed, v->rotation_angle);
 			_map_view_invoke_event_callback(v, ed);
+			map_event_data_destroy(ed);
 		}
 	}
 
@@ -1122,25 +873,19 @@ int _map_view_set_zoom_rotate(map_view_h view,
 EXPORT_API int map_view_set_zoom_factor(const map_view_h view,
 					const double factor)
 {
-	MAPS_LOG_API;
 	if (!view)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
-#if 1
 	map_view_s *v = (map_view_s *) view;
 	double new_factor = factor;
 	if (new_factor < v->min_zoom_level) new_factor = v->min_zoom_level;
 	if (new_factor > v->max_zoom_level) new_factor = v->max_zoom_level;
 
 	return _map_view_set_zoom_rotate(view, true, new_factor, false, .0);
-#else
-	return _map_view_set_zoom_rotate(view, true, factor, false, .0);
-#endif
 }
 
 EXPORT_API int map_view_get_zoom_factor(const map_view_h view, double *factor)
 {
-	MAPS_LOG_API;
 	if (!view || !factor)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	map_view_s *v = (map_view_s *) view;
@@ -1148,10 +893,8 @@ EXPORT_API int map_view_get_zoom_factor(const map_view_h view, double *factor)
 	return MAPS_ERROR_NONE;
 }
 
-EXPORT_API int map_view_set_orientation(const map_view_h view,
-					const double angle)
+EXPORT_API int map_view_set_orientation(map_view_h view, double angle)
 {
-	MAPS_LOG_API;
 	if (!view)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -1163,10 +906,8 @@ EXPORT_API int map_view_set_orientation(const map_view_h view,
 	return _map_view_set_zoom_rotate(view, false, .0, true, angle);
 }
 
-EXPORT_API int map_view_get_orientation(const map_view_h view,
-					double *angle)
+EXPORT_API int map_view_get_orientation(const map_view_h view, double *angle)
 {
-	MAPS_LOG_API;
 	if (!view || !angle)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	map_view_s *v = (map_view_s *) view;
@@ -1179,33 +920,28 @@ EXPORT_API int map_view_get_orientation(const map_view_h view,
 
 
 /* Converting screen coordinates to geographical */
-EXPORT_API int map_view_screen_to_geography(const map_view_h view,
-				  const int x, const int y,
-				  maps_coordinates_h *coordinates)
+EXPORT_API int map_view_screen_to_geolocation(map_view_h view,
+	int x, int y, maps_coordinates_h *coordinates)
 {
-	MAPS_LOG_API;
 	if (!view || !coordinates)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	int posx = 0;
 	int posy = 0;
-	map_view_get_geometry(view, &posx, &posy, NULL, NULL);
+	map_view_get_screen_location(view, &posx, &posy, NULL, NULL);
 	return __get_plugin_interface(view)->
-		maps_plugin_screen_to_geography(x - posx, y - posy,
-						coordinates);
+		maps_plugin_screen_to_geography(x - posx, y - posy, coordinates);
 }
 
-EXPORT_API int map_view_geography_to_screen(const map_view_h view,
-				  const maps_coordinates_h coordinates,
-				  int *x, int *y)
+EXPORT_API int map_view_geolocation_to_screen(const map_view_h view,
+	const maps_coordinates_h coordinates, int *x, int *y)
 {
-	MAPS_LOG_API;
 	if (!view || !coordinates || !x || !y)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	int posx = 0;
 	int posy = 0;
-	map_view_get_geometry(view, &posx, &posy, NULL, NULL);
+	map_view_get_screen_location(view, &posx, &posy, NULL, NULL);
 	const int error = __get_plugin_interface(view)->
-			maps_plugin_geography_to_screen(coordinates, x, y);
+		maps_plugin_geography_to_screen(coordinates, x, y);
 	*x += posx;
 	*y += posy;
 	return error;
@@ -1215,21 +951,19 @@ EXPORT_API int map_view_geography_to_screen(const map_view_h view,
 /* --------------------MAPS VIEW PREFERENCES----------------------------------*/
 
 
-EXPORT_API int map_view_set_type(map_view_h view, const map_view_type_e type)
+EXPORT_API int map_view_set_map_type(map_view_h view, map_type_e type)
 {
-	MAPS_LOG_API;
 	if (!view)
 		return MAPS_ERROR_INVALID_PARAMETER;
-	if ((type < MAP_VIEW_TYPE_DAY) || (type > MAP_VIEW_TYPE_TERRAIN))
+	if ((type < MAP_TYPE_NORMAL) || (type > MAP_TYPE_HYBRID))
 		return MAPS_ERROR_INVALID_PARAMETER;
 	map_view_s *v = (map_view_s *) view;
 	v->type = type;
 	return MAPS_ERROR_NONE;
 }
 
-EXPORT_API int map_view_get_type(const map_view_h view, map_view_type_e *type)
+EXPORT_API int map_view_get_map_type(const map_view_h view, map_type_e *type)
 {
-	MAPS_LOG_API;
 	if (!view || !type)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	map_view_s *v = (map_view_s *) view;
@@ -1237,9 +971,62 @@ EXPORT_API int map_view_get_type(const map_view_h view, map_view_type_e *type)
 	return MAPS_ERROR_NONE;
 }
 
-EXPORT_API int map_view_set_inertia_enabled(map_view_h view, bool enabled)
+EXPORT_API int map_view_set_buildings_enabled(map_view_h view, bool enabled)
 {
-	MAPS_LOG_API;
+	if (!view)
+		return MAPS_ERROR_INVALID_PARAMETER;
+	map_view_s *v = (map_view_s *) view;
+	v->buildings_enabled = enabled;
+	return MAPS_ERROR_NONE;
+}
+
+EXPORT_API int map_view_get_buildings_enabled(const map_view_h view, bool *enabled)
+{
+	if (!view || !enabled)
+		return MAPS_ERROR_INVALID_PARAMETER;
+	map_view_s *v = (map_view_s *) view;
+	*enabled = v->buildings_enabled;
+	return MAPS_ERROR_NONE;
+}
+
+EXPORT_API int map_view_set_traffic_enabled(map_view_h view, bool enabled)
+{
+	if (!view)
+		return MAPS_ERROR_INVALID_PARAMETER;
+	map_view_s *v = (map_view_s *) view;
+	v->traffic_enabled = enabled;
+	return MAPS_ERROR_NONE;
+}
+
+EXPORT_API int map_view_get_traffic_enabled(const map_view_h view, bool *enabled)
+{
+	if (!view || !enabled)
+		return MAPS_ERROR_INVALID_PARAMETER;
+	map_view_s *v = (map_view_s *) view;
+	*enabled = v->traffic_enabled;
+	return MAPS_ERROR_NONE;
+}
+
+EXPORT_API int map_view_set_public_transit_enabled(map_view_h view, bool enabled)
+{
+	if (!view)
+		return MAPS_ERROR_INVALID_PARAMETER;
+	map_view_s *v = (map_view_s *) view;
+	v->public_transit_enabled = enabled;
+	return MAPS_ERROR_NONE;
+}
+
+EXPORT_API int map_view_get_public_transit_enabled(const map_view_h view, bool *enabled)
+{
+	if (!view || !enabled)
+		return MAPS_ERROR_INVALID_PARAMETER;
+	map_view_s *v = (map_view_s *) view;
+	*enabled = v->public_transit_enabled;
+	return MAPS_ERROR_NONE;
+}
+
+int _map_view_set_inertia_enabled(map_view_h view, bool enabled)
+{
 	if (!view)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	map_view_s *v = (map_view_s *) view;
@@ -1281,7 +1068,6 @@ EXPORT_API int map_view_set_inertia_enabled(map_view_h view, bool enabled)
 
 EXPORT_API int map_view_get_inertia_enabled(map_view_h view, bool *enabled)
 {
-	MAPS_LOG_API;
 	if (!view || !enabled)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -1292,7 +1078,6 @@ EXPORT_API int map_view_get_inertia_enabled(map_view_h view, bool *enabled)
 
 EXPORT_API int map_view_set_language(map_view_h view, const char *language)
 {
-	MAPS_LOG_API;
 	if (!view || !language)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -1330,7 +1115,6 @@ EXPORT_API int map_view_set_language(map_view_h view, const char *language)
 
 EXPORT_API int map_view_get_language(const map_view_h view, char **language)
 {
-	MAPS_LOG_API;
 	if (!view || !language)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_get_string(((map_view_s *) view)->language,
@@ -1341,9 +1125,8 @@ EXPORT_API int map_view_get_language(const map_view_h view, char **language)
 /* --------------------MAPS PANEL MANIPULATIONS-------------------------------*/
 
 
-EXPORT_API int map_view_get_port(const map_view_h view, Evas_Object **viewport)
+EXPORT_API int map_view_get_viewport(const map_view_h view, Evas_Object **viewport)
 {
-	MAPS_LOG_API;
 	if (!view || !viewport)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	map_view_s *v = (map_view_s *) view;
@@ -1351,22 +1134,36 @@ EXPORT_API int map_view_get_port(const map_view_h view, Evas_Object **viewport)
 	return MAPS_ERROR_NONE;
 }
 
-EXPORT_API int map_view_get_geometry(const map_view_h view,
-			   int *x, int *y,
-			   int *width, int *height)
+EXPORT_API int map_view_set_screen_location(map_view_h view, int x, int y, int width, int height)
 {
-	MAPS_LOG_API;
 	if (!view)
+		return MAPS_ERROR_INVALID_PARAMETER;
+	int error = map_view_move(view, x, y);
+	if (error == MAPS_ERROR_NONE)
+		error = map_view_resize(view, width, height);
+	return error;
+}
+
+EXPORT_API int map_view_get_screen_location(const map_view_h view, int *x, int *y, int *width, int *height)
+{
+	if (!view || !x || !y || !width || !height)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	map_view_s *v = (map_view_s *) view;
 	evas_object_geometry_get(v->panel, x, y, width, height);
 	return MAPS_ERROR_NONE;
 }
 
-EXPORT_API int map_view_resize(const map_view_h view,
-				const int width, const int height)
+EXPORT_API int map_view_move(map_view_h view, int x, int y)
 {
-	MAPS_LOG_API;
+	if (!view || (x < 0) || (y < 0))
+		return MAPS_ERROR_INVALID_PARAMETER;
+	map_view_s *v = (map_view_s *) view;
+	evas_object_move(v->panel, x, y);
+	return MAPS_ERROR_NONE;
+}
+
+EXPORT_API int map_view_resize(map_view_h view, int width, int height)
+{
 	if (!view || (width <= 0) || (height <= 0))
 		return MAPS_ERROR_INVALID_PARAMETER;
 	map_view_s *v = (map_view_s *) view;
@@ -1374,9 +1171,8 @@ EXPORT_API int map_view_resize(const map_view_h view,
 	return map_view_set_center(view, v->center);
 }
 
-EXPORT_API int map_view_set_visible(const map_view_h view, const bool visible)
+EXPORT_API int map_view_set_visibility(map_view_h view, bool visible)
 {
-	MAPS_LOG_API;
 	if (!view)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	map_view_s *v = (map_view_s *) view;
@@ -1387,9 +1183,8 @@ EXPORT_API int map_view_set_visible(const map_view_h view, const bool visible)
 	return MAPS_ERROR_NONE;
 }
 
-EXPORT_API int map_view_get_visible(const map_view_h view, bool *visible)
+EXPORT_API int map_view_get_visibility(const map_view_h view, bool *visible)
 {
-	MAPS_LOG_API;
 	if (!view || !visible)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	map_view_s *v = (map_view_s *) view;
@@ -1397,34 +1192,24 @@ EXPORT_API int map_view_get_visible(const map_view_h view, bool *visible)
 	return MAPS_ERROR_NONE;
 }
 
-EXPORT_API int map_view_redraw(const map_view_h view)
+int _map_view_redraw(const map_view_h view)
 {
-	MAPS_LOG_API;
 	if (!view)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	map_view_s *v = (map_view_s *) view;
 
-#if 0
-	/* render and get the updated rectangles: */
-	Eina_List *updates = evas_render_updates(v->canvas);
-	evas_render_updates_free(updates);
-#endif
 	/* Signal to the animator, that we are ready to draw */
 	v->ready_to_draw = true;
 
 	return MAPS_ERROR_NONE;
 }
 
-
 /* ---------------------USER CONTROL------------------------------------------*/
 
 
-EXPORT_API int map_view_set_event_callback(map_view_h view,
-					   const map_event_type_e type,
-					   map_view_on_event_cb callback,
-					   void *user_data)
+EXPORT_API int map_view_set_event_cb(map_view_h view, map_event_type_e type,
+	map_view_on_event_cb callback, void *user_data)
 {
-	MAPS_LOG_API;
 	if (!view || !callback)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	if((type < MAP_EVENT_GESTURE) || (type > MAP_EVENT_READY))
@@ -1437,10 +1222,8 @@ EXPORT_API int map_view_set_event_callback(map_view_h view,
 	return MAPS_ERROR_NONE;
 }
 
-EXPORT_API int map_view_unset_event_callback(map_view_h view,
-					     const map_event_type_e type)
+EXPORT_API int map_view_unset_event_cb(map_view_h view, map_event_type_e type)
 {
-	MAPS_LOG_API;
 	if (!view)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	if((type < MAP_EVENT_GESTURE) || (type > MAP_EVENT_READY))
@@ -1453,59 +1236,22 @@ EXPORT_API int map_view_unset_event_callback(map_view_h view,
 	return MAPS_ERROR_NONE;
 }
 
-EXPORT_API int map_view_set_gesture_action(map_view_h view,
-					   const map_gesture_e gesture,
-					   const map_action_e action)
+EXPORT_API int map_view_set_gesture_enabled(map_view_h view, map_gesture_e gesture, bool enabled)
 {
-	MAPS_LOG_API;
 	if (!view)
 		return MAPS_ERROR_INVALID_PARAMETER;
-	if((gesture < MAP_GESTURE_SCROLL) || (gesture > MAP_GESTURE_NONE))
-		return MAPS_ERROR_INVALID_PARAMETER;
-	if((action < MAP_ACTION_SCROLL) || (action > MAP_ACTION_NONE))
-		return MAPS_ERROR_INVALID_PARAMETER;
-	map_view_s *v = (map_view_s *) view;
-	v->gesture_actions[gesture] = action;
-	return MAPS_ERROR_NONE;
-}
-
-EXPORT_API int map_view_get_gesture_action(map_view_h view,
-					    const map_gesture_e gesture,
-					    map_action_e *action)
-{
-	MAPS_LOG_API;
-	if (!view || !action)
-		return MAPS_ERROR_INVALID_PARAMETER;
-	if((gesture < MAP_GESTURE_SCROLL) || (gesture > MAP_GESTURE_NONE))
-		return MAPS_ERROR_INVALID_PARAMETER;
-	map_view_s *v = (map_view_s *) view;
-	*action = v->gesture_actions[gesture];
-	return MAPS_ERROR_NONE;
-}
-
-
-EXPORT_API int map_view_set_gesture_enabled(map_view_h view,
-					    const map_gesture_e gesture,
-					    const bool enabled)
-{
-	MAPS_LOG_API;
-	if (!view)
-		return MAPS_ERROR_INVALID_PARAMETER;
-	if((gesture < MAP_GESTURE_SCROLL) || (gesture > MAP_GESTURE_NONE))
+	if((gesture < MAP_GESTURE_NONE) || (gesture > MAP_GESTURE_LONG_PRESS))
 		return MAPS_ERROR_INVALID_PARAMETER;
 	map_view_s *v = (map_view_s *) view;
 	v->gesture_available[gesture] = enabled;
 	return MAPS_ERROR_NONE;
 }
 
-EXPORT_API int map_view_get_gesture_enabled(map_view_h view,
-					    const map_gesture_e gesture,
-					    bool *enabled)
+EXPORT_API int map_view_get_gesture_enabled(const map_view_h view, map_gesture_e gesture, bool *enabled)
 {
-	MAPS_LOG_API;
 	if (!view || !enabled)
 		return MAPS_ERROR_INVALID_PARAMETER;
-	if((gesture < MAP_GESTURE_SCROLL) || (gesture > MAP_GESTURE_NONE))
+	if((gesture < MAP_GESTURE_NONE) || (gesture > MAP_GESTURE_LONG_PRESS))
 		return MAPS_ERROR_INVALID_PARAMETER;
 	map_view_s *v = (map_view_s *) view;
 	*enabled = v->gesture_available[gesture];
@@ -1517,7 +1263,6 @@ EXPORT_API int map_view_get_gesture_enabled(map_view_h view,
 
 EXPORT_API int map_view_add_object(map_view_h view, map_object_h object)
 {
-	MAPS_LOG_API;
 	if (!view || !object)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -1525,9 +1270,7 @@ EXPORT_API int map_view_add_object(map_view_h view, map_object_h object)
 	do {
 		/* Add Visual Object to the list of View Visual Objects */
 		map_view_s *v = (map_view_s *)view;
-		error = maps_item_list_append(v->view_objects,
-					      object,
-					      maps_item_no_clone);
+		error = maps_item_list_append(v->view_objects, object, NULL);
 		if(error != MAPS_ERROR_NONE)
 			break;
 
@@ -1537,14 +1280,12 @@ EXPORT_API int map_view_add_object(map_view_h view, map_object_h object)
 			break;
 
 		/* Notify the plugin about added object */
-		error = _map_view_on_object_operation(view,
-						      object,
-						      MAP_OBJECT_ADD);
+		error = _map_view_on_object_operation(view, object, MAP_OBJECT_ADD);
 		if(error != MAPS_ERROR_NONE)
 			break;
 
 		/* Redraw the view */
-		error = map_view_redraw(v);
+		error = _map_view_redraw(v);
 		if(error != MAPS_ERROR_NONE)
 			break;
 
@@ -1554,10 +1295,8 @@ EXPORT_API int map_view_add_object(map_view_h view, map_object_h object)
 	return error;
 }
 
-EXPORT_API int map_view_remove_object(map_view_h view,
-				      const map_object_h object)
+EXPORT_API int map_view_remove_object(map_view_h view, map_object_h object)
 {
-	MAPS_LOG_API;
 	if (!view || !object)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -1565,23 +1304,12 @@ EXPORT_API int map_view_remove_object(map_view_h view,
 	do {
 		/* Remove Visual Object from the list of View Visual Objects */
 		map_view_s *v = (map_view_s *)view;
-		error =  maps_item_list_remove(v->view_objects,
-						   object,
-						   map_object_destroy);
+		error =  maps_item_list_remove(v->view_objects, object, map_object_destroy);
 		if(error != MAPS_ERROR_NONE)
 			return error;
 
-#if 0
-		/* Notify the plugin about added object */
-		error = _map_view_on_object_operation(view,
-						      object,
-						      MAP_OBJECT_REMOVE);
-		if(error != MAPS_ERROR_NONE)
-			break;
-#endif
-
 		/* Redraw the view */
-		error = map_view_redraw(v);
+		error = _map_view_redraw(v);
 		if(error != MAPS_ERROR_NONE)
 			return error;
 
@@ -1593,27 +1321,18 @@ EXPORT_API int map_view_remove_object(map_view_h view,
 
 EXPORT_API int map_view_remove_all_objects(map_view_h view)
 {
-	MAPS_LOG_API;
 	if (!view)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
 	int error = MAPS_ERROR_NONE;
 	do {
 		map_view_s *v = (map_view_s *)view;
-		error = maps_item_list_remove_all(v->view_objects,
-						      map_object_destroy);
+		error = maps_item_list_remove_all(v->view_objects, map_object_destroy);
 		if(error != MAPS_ERROR_NONE)
 			return error;
 
-		/* Notify the plugin view, that all objects are removed */
-		_map_view_on_object_operation(view,
-					      NULL,
-					      MAP_OBJECT_REMOVE_ALL);
-		if(error != MAPS_ERROR_NONE)
-			break;
-
 		/* Redraw the view */
-		error = map_view_redraw(v);
+		error = _map_view_redraw(v);
 		if(error != MAPS_ERROR_NONE)
 			return error;
 
@@ -1623,17 +1342,12 @@ EXPORT_API int map_view_remove_all_objects(map_view_h view)
 	return error;
 }
 
-EXPORT_API int map_view_foreach_object(const map_view_h view,
-					map_object_cb callback,
-					void *user_data)
+EXPORT_API int map_view_foreach_object(map_view_h view, map_object_cb callback, void *user_data)
 {
-	MAPS_LOG_API;
 	if (!view || !callback)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	map_view_s *v = (map_view_s *)view;
-	return maps_item_list_foreach(v->view_objects,
-				      maps_item_no_clone,
-				      callback, user_data);
+	return maps_item_list_foreach(v->view_objects, NULL, callback, user_data);
 }
 
 
@@ -1655,8 +1369,7 @@ map_event_data_h _map_view_create_event_data(map_event_type_e type)
 	return event_data;
 }
 
-void _map_view_invoke_event_callback(map_view_h view,
-				     map_event_data_h event_data)
+void _map_view_invoke_event_callback(map_view_h view, map_event_data_h event_data)
 {
 	if(!view || !event_data)
 		return;
@@ -1666,7 +1379,7 @@ void _map_view_invoke_event_callback(map_view_h view,
 	map_event_type_e type = MAP_EVENT_GESTURE;
 	map_event_data_get_type(event_data, &type);
 
-	v->event_callbacks[type].callback(MAPS_ERROR_NONE, type, event_data,
+	v->event_callbacks[type].callback(type, event_data,
 					  v->event_callbacks[type].user_data);
 }
 
@@ -1688,9 +1401,7 @@ typedef struct _map_view_collect_poly_object_point_s {
 } map_view_collect_poly_object_point_s;
 
 
-static bool __map_object_poly_collect_points_cb(int index,
-						     maps_coordinates_h point,
-						     void *user_data)
+static bool __map_object_poly_collect_points_cb(int index, maps_coordinates_h point, void *user_data)
 {
 	if(!point || !user_data)
 		return false;
@@ -1700,56 +1411,38 @@ static bool __map_object_poly_collect_points_cb(int index,
 
 	int x = 0;
 	int y = 0;
-	if(map_view_geography_to_screen(cpop->v, point, &x, &y) ==
-	   MAPS_ERROR_NONE)
+	if(map_view_geolocation_to_screen(cpop->v, point, &x, &y) == MAPS_ERROR_NONE)
 		cpop->pd->add_point(float(x), float(y));
-
-	maps_coordinates_destroy(point);
 
 	return true;
 }
 
-static bool __map_view_hit_test_cb(int index, int total,
-				   map_object_h object,
-				   void *user_data)
+static bool __map_view_hit_test_cb(int index, int total, map_object_h object, void *user_data)
 {
 	if(!object || !user_data)
 		return false;
 
-	#ifdef IMPROVEMENT_OF_VISUAL_OBJECTS
 	/* If it is an unvisible object, skip this hit-testing. */
 	bool visible = false;
 	map_object_get_visible(object, &visible);
 	if (!visible) return true;
-	#endif
 
 	map_view_hit_test_data_s *htd = (map_view_hit_test_data_s *)user_data;
 
-	map_object_type_e type = MAP_OBJECT_UNKNOWN;
+	map_object_type_e type;
 	map_object_get_type(object, &type);
 	switch(type) {
-		case MAP_OBJECT_GROUP: {
-			map_object_group_foreach_object(object,
-							__map_view_hit_test_cb,
-							htd);
-			#ifndef IMPROVEMENT_OF_VISUAL_OBJECTS
-			/* BLOCK : If one of objects in the group, the actual object should be returned. */
-			if(htd->object)
-				htd->object = object;
-			#endif
-			break;
-		}
 		case MAP_OBJECT_POLYLINE: {
 			view::poly_shape_hit_test pd;
-			map_view_collect_poly_object_point_s cpop = {htd->v,
-									&pd};
+			map_view_collect_poly_object_point_s cpop = {htd->v, &pd};
 			int error = map_object_polyline_foreach_point(object,
-				__map_object_poly_collect_points_cb,
-				&cpop);
+				__map_object_poly_collect_points_cb, &cpop);
 			if(error != MAPS_ERROR_NONE)
 				break;
 
-			if(pd.hit_test(float(htd->x), float(htd->y), false))
+			int width = 0;
+			map_object_polyline_get_width(object, &width);
+			if(pd.hit_test(float(htd->x), float(htd->y), false, width))
 				htd->object = object;
 
 			break;
@@ -1757,11 +1450,9 @@ static bool __map_view_hit_test_cb(int index, int total,
 
 		case MAP_OBJECT_POLYGON: {
 			view::poly_shape_hit_test pd;
-			map_view_collect_poly_object_point_s cpop = {htd->v,
-									&pd};
+			map_view_collect_poly_object_point_s cpop = {htd->v, &pd};
 			int error = map_object_polygon_foreach_point(object,
-				__map_object_poly_collect_points_cb,
-				&cpop);
+				__map_object_poly_collect_points_cb, &cpop);
 			if(error != MAPS_ERROR_NONE)
 				break;
 
@@ -1776,14 +1467,13 @@ static bool __map_view_hit_test_cb(int index, int total,
 
 			int x = 0;
 			int y = 0;
-			map_view_geography_to_screen(htd->v, c, &x, &y);
+			map_view_geolocation_to_screen(htd->v, c, &x, &y);
 			maps_coordinates_destroy(c);
 
 			int w = 0;
 			int h = 0;
 			map_object_marker_get_size(object, &w, &h);
 
-			#ifdef IMPROVEMENT_OF_VISUAL_OBJECTS
 			/* In case of PIN marker type, rearrange the hit-area. */
 			map_marker_type_e marker_type;
 			map_object_marker_get_type(object, &marker_type);
@@ -1791,22 +1481,16 @@ static bool __map_view_hit_test_cb(int index, int total,
 				y -= h / 2;
 
 			/* Add some margin of the hit-area. */
-			w += 20;
-			h += 20;
-			#endif
+			if (w < 30) w = 30;
+			if (h < 30) h = 30;
 
+			/* Check hit-area */
 			if((x > (htd->x - w)) && (x < (htd->x + w))
 			   && (y > (htd->y - h)) && (y < (htd->y + h))) {
 				htd->object = object;
 			}
 			break;
 		}
-#ifdef TIZEN_3_0_NEXT_MS
-		case MAP_OBJECT_ROUTE: {
-			/* TODO: Implement Hit Test for route */
-			break;
-		}
-#endif /* TIZEN_3_0_NEXT_MS */
 		default:
 			break;
 	}
@@ -1818,10 +1502,7 @@ static bool __map_view_hit_test_cb(int index, int total,
 }
 
 
-map_object_h _map_object_hit_test(map_view_h view,
-					    const int x,
-					    const int y,
-					    map_gesture_e gesture)
+map_object_h _map_object_hit_test(map_view_h view, int x, int y, map_gesture_e gesture)
 {
 	if (!view)
 		return NULL;
@@ -1848,6 +1529,7 @@ map_object_h _map_object_hit_test(map_view_h view,
 		_map_event_data_set_object(ed, htd.object);
 		_map_event_data_set_gesture_type(ed, gesture);
 		_map_view_invoke_event_callback(view, ed);
+		map_event_data_destroy(ed);
 	}
 
 	/* 2. Extract test result */

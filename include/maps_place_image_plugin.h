@@ -41,7 +41,7 @@ extern "C" {
  * @brief Creates a new place image handle.
  * @details This function creates a new place image handle and allocates all
  * needed resources.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks @a image must be released using maps_place_image_destroy().
  * \n @a image may be cloned using maps_place_image_clone().
  *
@@ -59,7 +59,7 @@ int maps_place_image_create(maps_place_image_h *image);
 /**
  * @brief	Sets the place image id.
  * @details This function sets the place image id.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	image		The handle of place image
  * @param[in]	id		The place image id
@@ -77,7 +77,7 @@ int maps_place_image_set_id(maps_place_image_h image, const char *id);
 /**
  * @brief	Sets the place image URL.
  * @details This function sets the place image URL.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	image		The handle of place image
  * @param[in]	url		The place image url
@@ -95,7 +95,7 @@ int maps_place_image_set_url(maps_place_image_h image, const char *url);
 /**
  * @brief	Sets the place image width.
  * @details This function sets the place image width.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	image		The handle of place image
  * @param[in]	width		The place image width
@@ -113,7 +113,7 @@ int maps_place_image_set_width(maps_place_image_h image, const int width);
 /**
  * @brief	Sets the place image height.
  * @details This function sets the place image height.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	image		The handle of place image
  * @param[in]	height		The place image height
@@ -131,7 +131,7 @@ int maps_place_image_set_height(maps_place_image_h image, const int height);
 /**
  * @brief	Sets the place image user link.
  * @details This function sets the place image user link.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	image		The handle of place image
  * @param[in]	user		The place image user link
@@ -151,7 +151,7 @@ int maps_place_image_set_user_link(maps_place_image_h image,
 /**
  * @brief	Sets the place image media.
  * @details This function sets the place image media.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	image		The handle of place image
  * @param[in]	media		The place image media
