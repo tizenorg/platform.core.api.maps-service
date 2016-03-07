@@ -317,7 +317,7 @@ void utc_add_marker_p(void)
 
 	int error = rc.utc_add_marker(e.o,
 				      maps::coordinates(-85.0, 60.0),
-				      MAP_MARKER_POI);
+				      MAP_MARKER_PIN);
 	g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
 
 	error = map_object_group_foreach_object(e.o,
@@ -334,13 +334,13 @@ void utc_add_marker_n(void)
 	/* Negative test 1 */
 	int error = rc.utc_add_marker(NULL,
 				      maps::coordinates(-85.0, 60.0),
-				      MAP_MARKER_POI);
+				      MAP_MARKER_PIN);
 	g_assert_cmpint(error, ==, MAPS_ERROR_INVALID_PARAMETER);
 
 	/* Negative test 2 */
 	error = rc.utc_add_marker(e.o,
 				  NULL,
-				  MAP_MARKER_POI);
+				  MAP_MARKER_PIN);
 	g_assert_cmpint(error, ==, MAPS_ERROR_INVALID_PARAMETER);
 
 	error = map_object_group_foreach_object(e.o,

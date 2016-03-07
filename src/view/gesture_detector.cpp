@@ -29,18 +29,14 @@ extern bool _map_view_is_gesture_available(map_view_h view,
 view::gesture_detector::gesture_detector(map_view_h v)
 	: _view(v)
 	, _gp(this)
-	#ifdef IMPROVEMENT_OF_GESTURES_AND_ACTIONS
 	, _tap_timer(NULL)
-	#endif
 	, _long_press_timer(NULL)
 {
 }
 
 view::gesture_detector::~gesture_detector()
 {
-	#ifdef IMPROVEMENT_OF_GESTURES_AND_ACTIONS
 	stop_tap_timer();
-	#endif
 	stop_long_press_timer();
 }
 
@@ -90,7 +86,6 @@ void view::gesture_detector::move(int finger_no, const touch_point &tp)
 {
 }
 
-#ifdef IMPROVEMENT_OF_GESTURES_AND_ACTIONS
 void view::gesture_detector::on_tap_timer()
 {
 }
@@ -125,7 +120,6 @@ Eina_Bool view::gesture_detector::__on_tap_timer(void *data)
 
 	return ECORE_CALLBACK_CANCEL;
 }
-#endif
 
 void view::gesture_detector::on_long_press_timer()
 {

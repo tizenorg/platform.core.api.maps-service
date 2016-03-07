@@ -175,8 +175,7 @@ EXPORT_API int maps_plugin_set_preference(maps_item_hashtable_h preference)
 	return MAPS_ERROR_NONE;
 }
 
-EXPORT_API int maps_plugin_is_service_supported(maps_service_e service,
-						bool *supported)
+EXPORT_API int maps_plugin_is_service_supported(maps_service_e service, bool *supported)
 {
 	switch (service) {
 	case MAPS_SERVICE_GEOCODE:
@@ -189,6 +188,8 @@ EXPORT_API int maps_plugin_is_service_supported(maps_service_e service,
 	case MAPS_SERVICE_SEARCH_ROUTE:
 	case MAPS_SERVICE_SEARCH_ROUTE_WAYPOINTS:
 	case MAPS_SERVICE_CANCEL_REQUEST:
+	case MAPS_SERVICE_MULTI_REVERSE_GEOCODE:
+	case MAPS_SERVICE_SEARCH_PLACE_LIST:
 		*supported = true;
 		return MAPS_ERROR_NONE;
 	default:
@@ -197,8 +198,7 @@ EXPORT_API int maps_plugin_is_service_supported(maps_service_e service,
 	}
 }
 
-EXPORT_API int maps_plugin_is_data_supported(maps_service_data_e data,
-					     bool *supported)
+EXPORT_API int maps_plugin_is_data_supported(maps_service_data_e data, bool *supported)
 {
 	switch (data) {
 	case MAPS_PLACE_ADDRESS:
@@ -222,6 +222,24 @@ EXPORT_API int maps_plugin_is_data_supported(maps_service_data_e data,
 	}
 }
 
+EXPORT_API int maps_plugin_is_widget_supported(maps_service_widget_e service, bool *supported)
+{
+	if (!supported)
+		return MAPS_ERROR_INVALID_PARAMETER;
+
+	switch(service)
+	{
+		case MAPS_WIDGET_TRAFFIC:
+		case MAPS_WIDGET_PUBLIC_TRANSIT:
+		case MAPS_WIDGET_SCALEBAR:
+		case MAPS_WIDGET_BUILDING:
+			*supported = TRUE;
+			return MAPS_ERROR_NONE;
+		default:
+			*supported = FALSE;
+			return MAPS_ERROR_NOT_SUPPORTED;
+	}
+}
 
 EXPORT_API int maps_plugin_geocode(const char *address,
 				   const maps_item_hashtable_h preference,
@@ -593,14 +611,14 @@ static int __extract_view_geometry()
 	int error = MAPS_ERROR_NONE;
 
 	do {
-		error = map_view_get_geometry(__map_view, NULL, NULL,
+		error = map_view_get_screen_location(__map_view, NULL, NULL,
 					       &__width, &__height);
 		if (error != MAPS_ERROR_NONE)
 			break;
 
 		int __x = 0;
 		int __y = 0;
-		error = map_view_get_geometry(__map_view,
+		error = map_view_get_screen_location(__map_view,
 					       &__x, &__y,
 					       NULL, NULL);
 		if (error != MAPS_ERROR_NONE)
@@ -996,7 +1014,6 @@ static void __draw_marker(const map_object_h object, unsigned int *pixels)
 
 }
 
-static void __draw_group(const map_object_h object, unsigned int *pixels);
 
 static bool __for_each_map_object_cb(int index, int total,
 					  map_object_h object,
@@ -1016,16 +1033,13 @@ static bool __for_each_map_object_cb(int index, int total,
 		return true; /* This object should not be drawn */
 
 	/* Extract the type of the object */
-	map_object_type_e type = MAP_OBJECT_UNKNOWN;
+	map_object_type_e type;
 	error = map_object_get_type(object, &type);
 	if (error != MAPS_ERROR_NONE)
 		return false;
 
 	unsigned int *pixels = (unsigned int *)user_data;
 	switch(type) {
-	case MAP_OBJECT_GROUP:
-		__draw_group(object, pixels);
-		break;
 	case MAP_OBJECT_POLYLINE:
 		__draw_polyline(object, pixels);
 		break;
@@ -1049,26 +1063,12 @@ static bool __for_each_map_object_cb(int index, int total,
 		break;
 	}
 #endif /* TIZEN_3_0_NEXT_MS */
-	case MAP_OBJECT_UNKNOWN:
-		g_print("WARNING! Unknown Maps View Object Type!\n");
-		break;
 	default:
 		g_print("ERROR! Unsupported Maps View Object Type!\n");
 		break;
 	}
 	/*map_object_destroy(object);*/
 	return true;
-}
-
-static void __draw_group(const map_object_h object, unsigned int *pixels)
-{
-	/*g_print("__draw_group\n");*/
-	if (!object || !pixels)
-		return;
-
-	map_object_group_foreach_object(object,
-					     __for_each_map_object_cb,
-					     pixels);
 }
 
 static bool __perform_render_map()
@@ -1304,7 +1304,7 @@ EXPORT_API int maps_plugin_on_object(const map_object_h object,
 
 	case MAP_OBJECT_ADD: {
 
-		map_object_type_e type = MAP_OBJECT_UNKNOWN;
+		map_object_type_e type;
 		map_object_get_type(object, &type);
 #ifdef TIZEN_3_0_NEXT_MS
 		if(type != MAP_OBJECT_ROUTE)
@@ -1352,12 +1352,6 @@ EXPORT_API int maps_plugin_on_object(const map_object_h object,
 	case MAP_OBJECT_REMOVE:
 #ifdef TIZEN_3_0_NEXT_MS
 		__remove_route(object);
-#endif /* TIZEN_3_0_NEXT_MS */
-		break;
-
-	case MAP_OBJECT_REMOVE_ALL:
-#ifdef TIZEN_3_0_NEXT_MS
-		__remove_all_routes();
 #endif /* TIZEN_3_0_NEXT_MS */
 		break;
 
