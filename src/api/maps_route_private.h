@@ -18,16 +18,13 @@
 #define __MAPS_ROUTE_PRIVATE_H__
 
 #include <maps_service.h>
-#include "maps_extra_types_private.h"
+#include <maps_extra_types.h>
 
 /**
- * @ingroup	CAPI_MAPS_PLACE_MODULE
- * @defgroup	CAPI_MAPS_PLACE_DATA_MODULE Place
- *
  * @file maps_route_private.h
- * @brief This file contains the functions related to Place information.
+ * @brief This file contains the functions related to Route information.
  *
- * @addtogroup CAPI_MAPS_PLACE_DATA_MODULE
+ * @addtogroup CAPI_MAPS_ROUTE_DATA_MODULE
  * @{
  * @brief This provides APIs related to Place information, used in Place
  * Discovery and Search.
@@ -41,7 +38,7 @@ extern "C" {
  * @internal
  * @brief	Checks if a route data feature is supported.
  * @details This function checks if a route data feature is supported.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	route		The handle to route
  * @param[in]	data		The feature to be checked
@@ -61,7 +58,7 @@ int _maps_route_is_data_supported(const maps_route_h route,
  * @internal
  * @brief	Sets the supported route data features.
  * @details This function sets the supported route data features.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	route		The handle to route
  * @param[in]	supported_data	The supported route data features

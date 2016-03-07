@@ -44,7 +44,7 @@ extern "C" {
  * @brief Creates a new place review handle.
  * @details This function creates a new place review handle and allocates all
  * needed resources.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks @a review must be released using maps_place_review_destroy().
  * \n @a review may be cloned using maps_place_review_clone().
  *
@@ -62,7 +62,7 @@ int maps_place_review_create(maps_place_review_h *review);
 /**
  * @brief	Sets the place review date.
  * @details This function sets the place review date.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	review		The handle to place review
  * @param[in]	date		The place review date
@@ -80,7 +80,7 @@ int maps_place_review_set_date(maps_place_review_h review, const char *date);
 /**
  * @brief	Sets the place review title.
  * @details This function sets the place review title.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	review		The handle to place review
  * @param[in]	title		The place review title
@@ -99,7 +99,7 @@ int maps_place_review_set_title(maps_place_review_h review,
 /**
  * @brief	Sets the place review rating.
  * @details This function sets the place review rating.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	review		The handle to place review
  * @param[in]	rating		The place review rating
@@ -118,7 +118,7 @@ int maps_place_review_set_rating(maps_place_review_h review,
 /**
  * @brief	Sets the place review description.
  * @details This function sets the place review description.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	review		The handle to place review
  * @param[in]	description	The place review description
@@ -137,7 +137,7 @@ int maps_place_review_set_description(maps_place_review_h review,
 /**
  * @brief	Sets the place review language.
  * @details This function sets the place review language.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	review		The handle to place review
  * @param[in]	language	The place review language
@@ -156,7 +156,7 @@ int maps_place_review_set_language(maps_place_review_h review,
 /**
  * @brief	Sets the place review media.
  * @details This function sets the place review media.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	review		The handle to place review
  * @param[in]	media		The place review media
@@ -176,7 +176,7 @@ int maps_place_review_set_media(maps_place_review_h review,
 /**
  * @brief	Sets the place review user link.
  * @details This function sets the place review user link.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	review		The handle to place review
  * @param[in]	user		The place review user link

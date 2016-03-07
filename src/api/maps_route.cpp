@@ -22,7 +22,6 @@
 #include "maps_route_segment_plugin.h"
 #include "maps_route_private.h"
 #include "maps_route_segment_private.h"
-#include "maps_extra_types_private.h"
 
 static bool __is_supported(const maps_route_h route, maps_service_data_e data)
 {
@@ -39,14 +38,6 @@ static bool __maps_route_set_supported_data_foreach_cb(int index, int total,
 	return true;
 }
 
-#if 0
-static int __maps_route_set_supported_data_clone_cb(void *origin, void **cloned)
-{
-	*cloned = origin;	/* No clonning, please */
-	return MAPS_ERROR_NONE;
-}
-#endif
-
 /*----------------------------------------------------------------------------*/
 
 /*
@@ -54,22 +45,23 @@ static int __maps_route_set_supported_data_clone_cb(void *origin, void **cloned)
  */
 typedef struct _maps_route_s
 {
-	char *route_id;			/* route_id */
-	maps_coordinates_h origin;	/* Coordinate StartCoord */
-	maps_coordinates_h destination;	/* Coordinates destCoord */
-	maps_area_h bounding_box;	/* A rectangular geographical area */
-	maps_route_transport_mode_e transport_mode;	/* The transport mode
+	char *route_id;			/*< route_id */
+	maps_coordinates_h origin;	/*< Coordinate StartCoord */
+	maps_coordinates_h destination;	/*< Coordinates destCoord */
+	maps_area_h bounding_box;	/*< A rectangular geographical area */
+	maps_route_transport_mode_e transport_mode;	/*< The transport mode
 							  for the route */
-	double total_distance;		/* Total distance */
-	long total_duration;		/* Total duration */
-	maps_distance_unit_e distance_unit;	/* Distance units */
-	maps_item_list_h segments;	/* List of segments,
+	double total_distance;		/*< Total distance */
+	long total_duration;		/*< Total duration */
+	maps_distance_unit_e distance_unit;	/*< Distance units */
+	maps_item_list_h segments;	/*< List of segments,
 						  maps_route_segment_h */
-	maps_item_list_h path;		/* Path, list of maps_coordinates_h */
-	maps_item_hashtable_h properties;	/* Key/Value> */
+	maps_item_list_h path;		/*< Path, list of maps_coordinates_h */
+	maps_item_hashtable_h properties;	/*< Key/Value> */
 
 	/* The table of available data features */
 	maps_int_hashtable_h supported_data;
+	/* TODO: implement hashtable<int, int> */
 } maps_route_s;
 
 const gsize _MAPS_ROUTE_ID_MAX_LENGTH = 32;
@@ -78,7 +70,6 @@ const gsize _MAPS_ROUTE_ID_MAX_LENGTH = 32;
 
 EXPORT_API int maps_route_create(maps_route_h *route)
 {
-	MAPS_LOG_API;
 	if (!route)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	*route = (maps_route_h) g_slice_new0(maps_route_s);
@@ -93,7 +84,6 @@ EXPORT_API int maps_route_create(maps_route_h *route)
 
 EXPORT_API int maps_route_destroy(maps_route_h route)
 {
-	MAPS_LOG_API;
 	if (!route)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -131,7 +121,6 @@ EXPORT_API int maps_route_destroy(maps_route_h route)
 EXPORT_API int maps_route_clone(const maps_route_h origin,
 				maps_route_h *cloned)
 {
-	MAPS_LOG_API;
 	if (!cloned || !origin)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -202,14 +191,14 @@ EXPORT_API int maps_route_clone(const maps_route_h origin,
 
 		if (r->properties) {
 			error = maps_route_set_properties(*cloned,
-							  r->properties);
+				r->properties);
 			if (error != MAPS_ERROR_NONE)
 				break;
 		}
 
 		if (r->supported_data) {
 			error = _maps_route_set_supported_data(*cloned,
-						       r->supported_data);
+				r->supported_data);
 			if (error != MAPS_ERROR_NONE)
 				break;
 		}
@@ -227,7 +216,6 @@ EXPORT_API int maps_route_clone(const maps_route_h origin,
 EXPORT_API int maps_route_get_route_id(const maps_route_h route,
 				       char **route_id)
 {
-	MAPS_LOG_API;
 	if (!route || !route_id)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_get_string(((maps_route_s *) route)->route_id,
@@ -237,7 +225,6 @@ EXPORT_API int maps_route_get_route_id(const maps_route_h route,
 EXPORT_API int maps_route_get_origin(const maps_route_h route,
 				     maps_coordinates_h *origin)
 {
-	MAPS_LOG_API;
 	if (!route || !origin)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_coordinates_clone(((maps_route_s *) route)->origin, origin);
@@ -247,7 +234,6 @@ EXPORT_API int maps_route_get_origin(const maps_route_h route,
 EXPORT_API int maps_route_get_destination(const maps_route_h route,
 					  maps_coordinates_h *destination)
 {
-	MAPS_LOG_API;
 	if (!route || !destination)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_coordinates_clone(((maps_route_s *) route)->destination,
@@ -257,7 +243,6 @@ EXPORT_API int maps_route_get_destination(const maps_route_h route,
 EXPORT_API int maps_route_get_bounding_box(const maps_route_h route,
 					   maps_area_h *bounding_box)
 {
-	MAPS_LOG_API;
 	if (!route || !bounding_box)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_area_clone(((maps_route_s *) route)->bounding_box,
@@ -268,7 +253,6 @@ EXPORT_API int maps_route_get_transport_mode(const maps_route_h route,
 					     maps_route_transport_mode_e *
 					     transport_mode)
 {
-	MAPS_LOG_API;
 	if (!route || !transport_mode)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	*transport_mode = ((maps_route_s *) route)->transport_mode;
@@ -278,7 +262,6 @@ EXPORT_API int maps_route_get_transport_mode(const maps_route_h route,
 EXPORT_API int maps_route_get_total_distance(const maps_route_h route,
 					     double *total_distance)
 {
-	MAPS_LOG_API;
 	if (!route || !total_distance)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	*total_distance = ((maps_route_s *) route)->total_distance;
@@ -288,7 +271,6 @@ EXPORT_API int maps_route_get_total_distance(const maps_route_h route,
 EXPORT_API int maps_route_get_total_duration(const maps_route_h route,
 					     long *total_duration)
 {
-	MAPS_LOG_API;
 	if (!route || !total_duration)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	*total_duration = ((maps_route_s *) route)->total_duration;
@@ -299,7 +281,6 @@ EXPORT_API int maps_route_foreach_path(const maps_route_h route,
 				       maps_route_path_cb callback,
 				       void *user_data)
 {
-	MAPS_LOG_API;
 	/* Check if the handle of the Route is valid */
 	if (!route)
 		return MAPS_ERROR_INVALID_PARAMETER;
@@ -320,7 +301,6 @@ EXPORT_API int maps_route_foreach_segment(const maps_route_h route,
 					  maps_route_segment_cb callback,
 					  void *user_data)
 {
-	MAPS_LOG_API;
 	/* Check if the handle of the Route is valid */
 	if (!route)
 		return MAPS_ERROR_INVALID_PARAMETER;
@@ -342,7 +322,6 @@ EXPORT_API int maps_route_foreach_property(const maps_route_h route,
 					   maps_route_properties_cb callback,
 					   void *user_data)
 {
-	MAPS_LOG_API;
 	if (!route || !callback)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_item_hashtable_foreach(((maps_route_s *) route)->properties,
@@ -352,7 +331,6 @@ EXPORT_API int maps_route_foreach_property(const maps_route_h route,
 EXPORT_API int maps_route_get_distance_unit(const maps_route_h route,
 					    maps_distance_unit_e *distance_unit)
 {
-	MAPS_LOG_API;
 	if (!route || !distance_unit)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	*distance_unit = ((maps_route_s *) route)->distance_unit;
@@ -383,7 +361,6 @@ int _maps_route_is_data_supported(const maps_route_h route,
 EXPORT_API int maps_route_set_route_id(const maps_route_h route,
 				       const char *route_id)
 {
-	MAPS_LOG_API;
 	if (!route || !route_id)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_set_string(route_id, _MAPS_ROUTE_ID_MAX_LENGTH,
@@ -393,7 +370,6 @@ EXPORT_API int maps_route_set_route_id(const maps_route_h route,
 EXPORT_API int maps_route_set_origin(maps_route_h route,
 				     const maps_coordinates_h origin)
 {
-	MAPS_LOG_API;
 	if (!route || !origin)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_route_s *p = (maps_route_s *) route;
@@ -405,7 +381,6 @@ EXPORT_API int maps_route_set_origin(maps_route_h route,
 EXPORT_API int maps_route_set_destination(maps_route_h route,
 					  const maps_coordinates_h destination)
 {
-	MAPS_LOG_API;
 	if (!route || !destination)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_route_s *p = (maps_route_s *) route;
@@ -417,7 +392,6 @@ EXPORT_API int maps_route_set_destination(maps_route_h route,
 EXPORT_API int maps_route_set_bounding_box(maps_route_h route,
 					   const maps_area_h bounding_box)
 {
-	MAPS_LOG_API;
 	if (!route || !bounding_box)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_route_s *p = (maps_route_s *) route;
@@ -429,7 +403,6 @@ EXPORT_API int maps_route_set_bounding_box(maps_route_h route,
 EXPORT_API int maps_route_set_total_distance(maps_route_h route,
 					     const double total_distance)
 {
-	MAPS_LOG_API;
 	if (!route || total_distance < 0)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	((maps_route_s *) route)->total_distance = total_distance;
@@ -439,7 +412,6 @@ EXPORT_API int maps_route_set_total_distance(maps_route_h route,
 EXPORT_API int maps_route_set_total_duration(maps_route_h route,
 					     const long total_duration)
 {
-	MAPS_LOG_API;
 	if (!route || total_duration < 0)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	((maps_route_s *) route)->total_duration = total_duration;
@@ -450,7 +422,6 @@ EXPORT_API int maps_route_set_transport_mode(maps_route_h route,
 					     const maps_route_transport_mode_e
 					     transport_mode)
 {
-	MAPS_LOG_API;
 	if (!route)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	if ((transport_mode < MAPS_ROUTE_TRANSPORT_MODE_CAR) ||
@@ -463,7 +434,6 @@ EXPORT_API int maps_route_set_transport_mode(maps_route_h route,
 EXPORT_API int maps_route_set_path(maps_route_h route,
 				   const maps_item_list_h path)
 {
-	MAPS_LOG_API;
 	if (!route || !path)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_route_s *p = (maps_route_s *) route;
@@ -478,7 +448,6 @@ EXPORT_API int maps_route_set_path(maps_route_h route,
 EXPORT_API int maps_route_set_segments(maps_route_h route,
 				       const maps_item_list_h segments)
 {
-	MAPS_LOG_API;
 	if (!route || !segments)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_route_s *p = (maps_route_s *) route;
@@ -494,7 +463,6 @@ EXPORT_API int maps_route_set_segments(maps_route_h route,
 EXPORT_API int maps_route_set_properties(maps_route_h route,
 					 const maps_item_hashtable_h properties)
 {
-	MAPS_LOG_API;
 	if (!route || !properties)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_route_s *p = (maps_route_s *) route;
@@ -507,7 +475,6 @@ EXPORT_API int maps_route_set_distance_unit(maps_route_h route,
 					    const maps_distance_unit_e
 					    distance_unit)
 {
-	MAPS_LOG_API;
 	if (!route)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	if ((distance_unit < MAPS_DISTANCE_UNIT_M) ||
@@ -525,18 +492,13 @@ int _maps_route_set_supported_data(maps_route_h route,
 	maps_route_s *p = (maps_route_s *) route;
 	if (p->supported_data)
 		maps_int_hashtable_destroy(p->supported_data);
-
-	int error = maps_int_hashtable_clone(supported_data,
-					     &p->supported_data);
+	int error =
+		maps_int_hashtable_clone(supported_data, &p->supported_data);
 	if (error != MAPS_ERROR_NONE)
 		return error;
 
-	if (!p->segments)
-		return error;
-
-	return maps_item_list_foreach(p->segments,
-				      maps_item_no_clone,
-				__maps_route_set_supported_data_foreach_cb,
-				supported_data);
-
+	if (p->segments)
+		error = maps_item_list_foreach(p->segments, NULL,
+			__maps_route_set_supported_data_foreach_cb, supported_data);
+	return error;
 }

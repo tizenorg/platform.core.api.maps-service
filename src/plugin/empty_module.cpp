@@ -147,6 +147,22 @@ int maps_plugin_search_place_by_address_empty(const char *address,
 	return 0;
 }
 
+int maps_plugin_search_place_list_empty(const maps_area_h boundary,
+				   const maps_place_filter_h filter,
+				   maps_preference_h preference,
+				   maps_service_search_place_list_cb callback,
+				   void *user_data, int *request_id)
+{
+	return 0;
+}
+
+int maps_plugin_get_place_details_empty(const char *url,
+						maps_service_get_place_details_cb callback,
+						void *user_data, int *request_id)
+{
+	return 0;
+}
+
 /* Route */
 int maps_plugin_search_route_empty(const maps_coordinates_h origin,
 				   const maps_coordinates_h destination,
@@ -174,7 +190,8 @@ int maps_plugin_cancel_request_empty(int request_id)
 }
 
 /* Mapping */
-int maps_plugin_set_map_view_empty(const map_view_h view)
+int maps_plugin_set_map_view_empty(const map_view_h view,
+				   maps_plugin_map_view_ready_cb callback)
 {
 	return 0;
 }
@@ -205,8 +222,7 @@ int maps_plugin_draw_map_empty(Evas* canvas, const int x, const int y,
 }
 
 int maps_plugin_on_object_empty(const map_object_h object,
-				     const map_object_operation_e
-				     operation)
+				const map_object_operation_e operation)
 {
 	return 0;
 }
@@ -238,6 +254,11 @@ int maps_plugin_get_center_empty(maps_coordinates_h *coordinates)
 	return 0;
 }
 
+int maps_plugin_init_module_empty(maps_plugin_h *plugin, const char *module)
+{
+	return 0;
+}
+
 /* Interface of a plugin with all empty functions */
 plugin::interface_s empty_interface = {
 	/* Plugin dedicated functions */
@@ -263,6 +284,8 @@ plugin::interface_s empty_interface = {
 	maps_plugin_search_place_empty,
 	maps_plugin_search_place_by_area_empty,
 	maps_plugin_search_place_by_address_empty,
+	maps_plugin_search_place_list_empty,
+	maps_plugin_get_place_details_empty,
 
 	/* Route */
 	maps_plugin_search_route_empty,
@@ -281,7 +304,9 @@ plugin::interface_s empty_interface = {
 	maps_plugin_geography_to_screen_empty,
 	maps_plugin_get_min_zoom_level_empty,
 	maps_plugin_get_max_zoom_level_empty,
-	maps_plugin_get_center_empty
+	maps_plugin_get_center_empty,
+	
+	maps_plugin_init_module_empty,
 };
 
 

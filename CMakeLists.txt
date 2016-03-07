@@ -32,10 +32,6 @@ SET(dependents
 	eina
 	evas
 	ecore
-#	capi-appfw-application
-#	ecore
-#	ecore-evas
-#	elementary
 	)
 SET(pc_dependents "capi-base-common")
 
