@@ -40,7 +40,6 @@ const gsize _MAPS_PLACE_REVIEW_LANGUAGE_MAX_LENGTH = 32;
 
 EXPORT_API int maps_place_review_create(maps_place_review_h *place)
 {
-	MAPS_LOG_API;
 	if (!place)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	*place = (maps_place_review_h) g_slice_new0(maps_place_review_s);
@@ -55,7 +54,6 @@ EXPORT_API int maps_place_review_create(maps_place_review_h *place)
 
 EXPORT_API int maps_place_review_destroy(maps_place_review_h place)
 {
-	MAPS_LOG_API;
 	if (!place)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -82,7 +80,6 @@ EXPORT_API int maps_place_review_destroy(maps_place_review_h place)
 EXPORT_API int maps_place_review_clone(const maps_place_review_h origin,
 				       maps_place_review_h *cloned)
 {
-	MAPS_LOG_API;
 	if (!cloned || !origin)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -145,7 +142,6 @@ EXPORT_API int maps_place_review_clone(const maps_place_review_h origin,
 EXPORT_API int maps_place_review_get_date(const maps_place_review_h place,
 					  char **date)
 {
-	MAPS_LOG_API;
 	if (!place || !date)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_get_string(((maps_place_review_s *) place)->date,
@@ -155,7 +151,6 @@ EXPORT_API int maps_place_review_get_date(const maps_place_review_h place,
 EXPORT_API int maps_place_review_get_title(const maps_place_review_h place,
 					   char **title)
 {
-	MAPS_LOG_API;
 	if (!place || !title)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_get_string(((maps_place_review_s *) place)->title,
@@ -165,7 +160,6 @@ EXPORT_API int maps_place_review_get_title(const maps_place_review_h place,
 EXPORT_API int maps_place_review_get_rating(const maps_place_review_h place,
 					    double *rating)
 {
-	MAPS_LOG_API;
 	if (!place || !rating)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	*rating = ((maps_place_review_s *) place)->rating;
@@ -176,7 +170,6 @@ EXPORT_API int maps_place_review_get_description(const maps_place_review_h
 						 place,
 						 char **description)
 {
-	MAPS_LOG_API;
 	if (!place || !description)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_get_string(((maps_place_review_s *) place)->description,
@@ -186,7 +179,6 @@ EXPORT_API int maps_place_review_get_description(const maps_place_review_h
 EXPORT_API int maps_place_review_get_language(const maps_place_review_h place,
 					      char ** language)
 {
-	MAPS_LOG_API;
 	if (!place || !language)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_get_string(((maps_place_review_s *) place)->language,
@@ -196,7 +188,6 @@ EXPORT_API int maps_place_review_get_language(const maps_place_review_h place,
 EXPORT_API int maps_place_review_get_media(const maps_place_review_h place,
 					   maps_place_media_h *media)
 {
-	MAPS_LOG_API;
 	if (!place || !media)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_place_media_clone(((maps_place_review_s *) place)->media,
@@ -206,7 +197,6 @@ EXPORT_API int maps_place_review_get_media(const maps_place_review_h place,
 EXPORT_API int maps_place_review_get_user_link(const maps_place_review_h place,
 					       maps_place_link_object_h *user)
 {
-	MAPS_LOG_API;
 	if (!place || !user)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_place_link_object_clone(((maps_place_review_s *) place)->
@@ -218,7 +208,6 @@ EXPORT_API int maps_place_review_get_user_link(const maps_place_review_h place,
 EXPORT_API int maps_place_review_set_date(maps_place_review_h place,
 					  const char *date)
 {
-	MAPS_LOG_API;
 	if (!place || !date)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_set_string(date, _MAPS_PLACE_REVIEW_DATE_MAX_LENGTH,
@@ -228,7 +217,6 @@ EXPORT_API int maps_place_review_set_date(maps_place_review_h place,
 EXPORT_API int maps_place_review_set_title(maps_place_review_h place,
 					   const char *title)
 {
-	MAPS_LOG_API;
 	if (!place || !title)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_set_string(title, _MAPS_PLACE_REVIEW_TITLE_MAX_LENGTH,
@@ -238,7 +226,6 @@ EXPORT_API int maps_place_review_set_title(maps_place_review_h place,
 EXPORT_API int maps_place_review_set_rating(maps_place_review_h place,
 					    const double rating)
 {
-	MAPS_LOG_API;
 	if (!place)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	((maps_place_review_s *) place)->rating = rating;
@@ -248,7 +235,6 @@ EXPORT_API int maps_place_review_set_rating(maps_place_review_h place,
 EXPORT_API int maps_place_review_set_description(maps_place_review_h place,
 						 const char *description)
 {
-	MAPS_LOG_API;
 	if (!place || !description)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_set_string(description,
@@ -259,7 +245,6 @@ EXPORT_API int maps_place_review_set_description(maps_place_review_h place,
 EXPORT_API int maps_place_review_set_language(maps_place_review_h place,
 					      const char *language)
 {
-	MAPS_LOG_API;
 	if (!place || !language)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_set_string(language, _MAPS_PLACE_REVIEW_LANGUAGE_MAX_LENGTH,
@@ -269,7 +254,6 @@ EXPORT_API int maps_place_review_set_language(maps_place_review_h place,
 EXPORT_API int maps_place_review_set_media(maps_place_review_h place,
 					   const maps_place_media_h media)
 {
-	MAPS_LOG_API;
 	if (!place || !media)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_place_review_s *r = (maps_place_review_s *) place;
@@ -282,7 +266,6 @@ EXPORT_API int maps_place_review_set_user_link(maps_place_review_h place,
 					       const maps_place_link_object_h
 					       user)
 {
-	MAPS_LOG_API;
 	if (!place || !user)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_place_review_s *r = (maps_place_review_s *) place;

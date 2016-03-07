@@ -41,7 +41,7 @@ extern "C" {
  * @details The handle of Place Link Object instance.
  * @remarks To release the handle use maps_place_link_object_destroy().
  * \n To clone the handle use maps_place_link_object_clone().
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @see maps_place_link_object_destroy()
  * @see maps_place_link_object_clone()
@@ -55,7 +55,7 @@ typedef void *maps_place_link_object_h;
  * resources.
  * @details This function destroys the place link object handle and releases all
  * its resources.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	link		The place link object handle to destroy
  * @return	0 on success, otherwise a negative error value
@@ -70,7 +70,7 @@ int maps_place_link_object_destroy(maps_place_link_object_h link);
  * @brief	Clones the place link object handle.
  * @details This function clones the place link object handle @a origin and all
  * its resources.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks @a cloned must be released using maps_place_link_object_destroy().
  *
  * @param[in]	origin		The original place link object handle
@@ -90,7 +90,7 @@ int maps_place_link_object_clone(const maps_place_link_object_h origin,
 /**
  * @brief	Gets the place link object id.
  * @details This function gets the place link object id.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks @a id must be released using free().
  *
  * @param[in]	link		The handle of place link object
@@ -105,7 +105,7 @@ int maps_place_link_object_get_id(const maps_place_link_object_h link,
 /**
  * @brief	Gets the place link object name.
  * @details This function gets the place link object name.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks @a name must be released using free().
  *
  * @param[in]	link		The handle of place link object
@@ -120,7 +120,7 @@ int maps_place_link_object_get_name(const maps_place_link_object_h link,
 /**
  * @brief	Gets the place link object string.
  * @details This function gets the place link object string.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks @a string must be released using free().
  *
  * @param[in]	link		The handle of place link object
@@ -135,7 +135,7 @@ int maps_place_link_object_get_string(const maps_place_link_object_h link,
 /**
  * @brief	Gets the place link object type.
  * @details This function gets the place link object type.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks @a type must be released using free().
  *
  * @param[in]	link		The handle of place link object

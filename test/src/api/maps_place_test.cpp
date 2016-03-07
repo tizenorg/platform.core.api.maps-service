@@ -22,7 +22,6 @@
 #include <glib.h>
 #include "maps_place_private.h"
 #include "maps_util.h"
-#include "maps_extra_types_private.h"
 
  /* int maps_place_create(maps_place_h* place); */
 /* int maps_place_destroy(maps_place_h place); */

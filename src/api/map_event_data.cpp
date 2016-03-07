@@ -59,42 +59,31 @@ typedef struct _map_event_data_s {
 
 /*----------------------------------------------------------------------------*/
 
-int _map_event_data_set_type(map_event_data_h event,
-			     map_event_type_e event_type);
+int _map_event_data_set_type(const map_event_data_h event, map_event_type_e event_type);
 
-int _map_event_data_set_gesture_type(map_event_data_h event,
-				     const map_gesture_e gesture_type);
+int _map_event_data_set_gesture_type(const map_event_data_h event, map_gesture_e gesture_type);
 
-int _map_event_data_set_action_type(map_event_data_h event,
-				    const map_action_e action_type);
+int _map_event_data_set_action_type(const map_event_data_h event, map_action_e action_type);
 
-int _map_event_data_set_center(map_event_data_h event,
-			       const maps_coordinates_h center);
+int _map_event_data_set_center(const map_event_data_h event, const maps_coordinates_h center);
 
-int _map_event_data_set_delta(map_event_data_h event,
-			      const int delta_x, const int delta_y);
+int _map_event_data_set_delta(const map_event_data_h event, int delta_x, int delta_y);
 
-int _map_event_data_set_xy(map_event_data_h event,
-			   const int x, const int y);
+int _map_event_data_set_position(const map_event_data_h event, int x, int y);
 
-int _map_event_data_set_fingers(map_event_data_h event,
-				const int fingers);
+int _map_event_data_set_fingers(const map_event_data_h event, int fingers);
 
-int _map_event_data_set_zoom_factor(map_event_data_h event,
-				    const double zoom_factor);
+int _map_event_data_set_zoom_factor(const map_event_data_h event, double zoom_factor);
 
-int _map_event_data_set_rotation_angle(map_event_data_h event,
-				       const double rotation_angle);
+int _map_event_data_set_rotation_angle(const map_event_data_h event, double rotation_angle);
 
-int _map_event_data_set_object(map_event_data_h event,
-			       map_object_h object);
+int _map_event_data_set_object(const map_event_data_h event, const map_object_h object);
 
 
 /*----------------------------------------------------------------------------*/
 
 int _map_event_data_create(map_event_data_h *event)
 {
-	MAPS_LOG_API;
 	if (!event)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -114,7 +103,6 @@ int _map_event_data_create(map_event_data_h *event)
 
 EXPORT_API int map_event_data_destroy(map_event_data_h event)
 {
-	MAPS_LOG_API;
 	if (!event)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -128,10 +116,8 @@ EXPORT_API int map_event_data_destroy(map_event_data_h event)
 	return MAPS_ERROR_NONE;
 }
 
-EXPORT_API int maps_view_event_data_clone(const map_event_data_h origin,
-					  map_event_data_h *cloned)
+EXPORT_API int map_view_event_data_clone(const map_event_data_h origin, map_event_data_h *cloned)
 {
-	MAPS_LOG_API;
 	if (!cloned || !origin)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -150,7 +136,7 @@ EXPORT_API int maps_view_event_data_clone(const map_event_data_h origin,
 		_map_event_data_set_gesture_type(*cloned, e->gesture_type);
 		_map_event_data_set_action_type(*cloned, e->action_type);
 		_map_event_data_set_center(*cloned, e->center);
-		_map_event_data_set_xy(*cloned, e->x, e->y);
+		_map_event_data_set_position(*cloned, e->x, e->y);
 		_map_event_data_set_fingers(*cloned, e->fingers);
 		_map_event_data_set_zoom_factor(*cloned, e->zoom_factor);
 		_map_event_data_set_rotation_angle(*cloned, e->rotation_angle);
@@ -166,8 +152,7 @@ EXPORT_API int maps_view_event_data_clone(const map_event_data_h origin,
 
 /*----------------------------------------------------------------------------*/
 
-int _map_event_data_set_type(map_event_data_h event,
-				  map_event_type_e event_type)
+int _map_event_data_set_type(map_event_data_h event, map_event_type_e event_type)
 {
 	if (!event)
 		return MAPS_ERROR_INVALID_PARAMETER;
@@ -176,8 +161,7 @@ int _map_event_data_set_type(map_event_data_h event,
 	return MAPS_ERROR_NONE;
 }
 
-int _map_event_data_set_center(map_event_data_h event,
-				    const maps_coordinates_h center)
+int _map_event_data_set_center(map_event_data_h event, maps_coordinates_h center)
 {
 	if (!event || !center)
 		return MAPS_ERROR_INVALID_PARAMETER;
@@ -185,8 +169,7 @@ int _map_event_data_set_center(map_event_data_h event,
 	return maps_coordinates_clone(center, &e->center);
 }
 
-int _map_event_data_set_delta(map_event_data_h event,
-				   const int delta_x, const int delta_y)
+int _map_event_data_set_delta(map_event_data_h event, int delta_x, int delta_y)
 {
 	if (!event)
 		return MAPS_ERROR_INVALID_PARAMETER;
@@ -196,8 +179,7 @@ int _map_event_data_set_delta(map_event_data_h event,
 	return MAPS_ERROR_NONE;
 }
 
-int _map_event_data_set_xy(map_event_data_h event,
-				const int x, const int y)
+int _map_event_data_set_position(map_event_data_h event, int x, int y)
 {
 	if (!event)
 		return MAPS_ERROR_INVALID_PARAMETER;
@@ -207,8 +189,7 @@ int _map_event_data_set_xy(map_event_data_h event,
 	return MAPS_ERROR_NONE;
 }
 
-int _map_event_data_set_fingers(map_event_data_h event,
-				     const int fingers)
+int _map_event_data_set_fingers(map_event_data_h event, int fingers)
 {
 	if (!event)
 		return MAPS_ERROR_INVALID_PARAMETER;
@@ -217,34 +198,29 @@ int _map_event_data_set_fingers(map_event_data_h event,
 	return MAPS_ERROR_NONE;
 }
 
-int _map_event_data_set_gesture_type(map_event_data_h event,
-					  const map_gesture_e gesture_type)
+int _map_event_data_set_gesture_type(map_event_data_h event, map_gesture_e gesture_type)
 {
 	if (!event)
 		return MAPS_ERROR_INVALID_PARAMETER;
-	if((gesture_type < MAP_GESTURE_SCROLL)
-	   || (gesture_type > MAP_GESTURE_NONE))
+	if((gesture_type < MAP_GESTURE_NONE) || (gesture_type > MAP_GESTURE_LONG_PRESS))
 		return MAPS_ERROR_INVALID_PARAMETER;
 	map_event_data_s *e = (map_event_data_s *) event;
 	e->gesture_type = gesture_type;
 	return MAPS_ERROR_NONE;
 }
 
-int _map_event_data_set_action_type(map_event_data_h event,
-					 const map_action_e action_type)
+int _map_event_data_set_action_type(map_event_data_h event, map_action_e action_type)
 {
 	if (!event)
 		return MAPS_ERROR_INVALID_PARAMETER;
-	if((action_type < MAP_ACTION_SCROLL)
-	   || (action_type > MAP_ACTION_NONE))
+	if((action_type < MAP_ACTION_NONE) || (action_type > MAP_ACTION_ROTATE))
 		return MAPS_ERROR_INVALID_PARAMETER;
 	map_event_data_s *e = (map_event_data_s *) event;
 	e->action_type = action_type;
 	return MAPS_ERROR_NONE;
 }
 
-int _map_event_data_set_zoom_factor(map_event_data_h event,
-					 const double zoom_factor)
+int _map_event_data_set_zoom_factor(map_event_data_h event, double zoom_factor)
 {
 	if (!event)
 		return MAPS_ERROR_INVALID_PARAMETER;
@@ -253,8 +229,7 @@ int _map_event_data_set_zoom_factor(map_event_data_h event,
 	return MAPS_ERROR_NONE;
 }
 
-int _map_event_data_set_rotation_angle(map_event_data_h event,
-					    const double rotation_angle)
+int _map_event_data_set_rotation_angle(map_event_data_h event, double rotation_angle)
 {
 	if (!event)
 		return MAPS_ERROR_INVALID_PARAMETER;
@@ -263,8 +238,7 @@ int _map_event_data_set_rotation_angle(map_event_data_h event,
 	return MAPS_ERROR_NONE;
 }
 
-int _map_event_data_set_object(map_event_data_h event,
-				    map_object_h object)
+int _map_event_data_set_object(map_event_data_h event, map_object_h object)
 {
 	if (!event)
 		return MAPS_ERROR_INVALID_PARAMETER;
@@ -277,10 +251,8 @@ int _map_event_data_set_object(map_event_data_h event,
 /*----------------------------------------------------------------------------*/
 
 
-EXPORT_API int map_event_data_clone(const map_event_data_h origin,
-				    map_event_data_h *cloned)
+EXPORT_API int map_event_data_clone(const map_event_data_h origin, map_event_data_h *cloned)
 {
-	MAPS_LOG_API;
 	if (!origin || !cloned)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -292,33 +264,18 @@ EXPORT_API int map_event_data_clone(const map_event_data_h origin,
 
 		map_event_data_s *e = (map_event_data_s *) origin;
 
-
 		error = _map_event_data_set_type(*cloned, e->event_type);
 		if (error != MAPS_ERROR_NONE)
 			break;
 
-		error = _map_event_data_set_gesture_type(*cloned,
-							 e->gesture_type);
-
-		error = _map_event_data_set_action_type(*cloned,
-							e->action_type);
-
+		error = _map_event_data_set_gesture_type(*cloned, e->gesture_type);
+		error = _map_event_data_set_action_type(*cloned, e->action_type);
 		error = _map_event_data_set_center(*cloned, e->center);
-
-		error = _map_event_data_set_delta(*cloned,
-						  e->delta_x,
-						  e->delta_y);
-
-		error = _map_event_data_set_xy(*cloned, e->x, e->y);
-
+		error = _map_event_data_set_delta(*cloned, e->delta_x, e->delta_y);
+		error = _map_event_data_set_position(*cloned, e->x, e->y);
 		error = _map_event_data_set_fingers(*cloned, e->fingers);
-
-		error = _map_event_data_set_zoom_factor(*cloned,
-							e->zoom_factor);
-
-		error = _map_event_data_set_rotation_angle(*cloned,
-							   e->rotation_angle);
-
+		error = _map_event_data_set_zoom_factor(*cloned, e->zoom_factor);
+		error = _map_event_data_set_rotation_angle(*cloned, e->rotation_angle);
 		error = _map_event_data_set_object(*cloned, e->object);
 
 		return MAPS_ERROR_NONE;
@@ -330,10 +287,8 @@ EXPORT_API int map_event_data_clone(const map_event_data_h origin,
 
 }
 
-EXPORT_API int map_event_data_get_type(const map_event_data_h event,
-					    map_event_type_e *event_type)
+EXPORT_API int map_event_data_get_type(const map_event_data_h event, map_event_type_e *event_type)
 {
-	MAPS_LOG_API;
 	if (!event || !event_type)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	map_event_data_s *e = (map_event_data_s *) event;
@@ -341,24 +296,19 @@ EXPORT_API int map_event_data_get_type(const map_event_data_h event,
 	return MAPS_ERROR_NONE;
 }
 
-EXPORT_API int map_event_data_get_gesture_type(map_event_data_h event,
-					map_gesture_e *gesture_type)
+EXPORT_API int map_event_data_get_gesture_type(const map_event_data_h event, map_gesture_e *gesture_type)
 {
-	MAPS_LOG_API;
 	if (!event || !gesture_type)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	map_event_data_s *e = (map_event_data_s *) event;
-	if((e->event_type != MAP_EVENT_GESTURE)
-	   && (e->event_type != MAP_EVENT_OBJECT))
+	if((e->event_type != MAP_EVENT_GESTURE) && (e->event_type != MAP_EVENT_OBJECT))
 		return MAPS_ERROR_NOT_SUPPORTED;
 	*gesture_type = e->gesture_type;
 	return MAPS_ERROR_NONE;
 }
 
-EXPORT_API int map_event_data_get_action_type(map_event_data_h event,
-						map_action_e *action_type)
+EXPORT_API int map_event_data_get_action_type(const map_event_data_h event, map_action_e *action_type)
 {
-	MAPS_LOG_API;
 	if (!event || !action_type)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	map_event_data_s *e = (map_event_data_s *) event;
@@ -368,23 +318,18 @@ EXPORT_API int map_event_data_get_action_type(map_event_data_h event,
 	return MAPS_ERROR_NONE;
 }
 
-EXPORT_API int map_event_data_get_center(map_event_data_h event,
-					       maps_coordinates_h *center)
+EXPORT_API int map_event_data_get_center(const map_event_data_h event, maps_coordinates_h *center)
 {
-	MAPS_LOG_API;
 	if (!event || !center)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	map_event_data_s *e = (map_event_data_s *) event;
-	if((e->event_type != MAP_EVENT_ACTION)
-	   && (e->event_type != MAP_EVENT_GESTURE))
+	if((e->event_type != MAP_EVENT_ACTION) && (e->event_type != MAP_EVENT_GESTURE))
 		return MAPS_ERROR_NOT_SUPPORTED;
 	return maps_coordinates_clone(e->center, center);
 }
 
-EXPORT_API int map_event_data_get_delta(map_event_data_h event,
-					     int *delta_x, int *delta_y)
+EXPORT_API int map_event_data_get_delta(const map_event_data_h event, int *delta_x, int *delta_y)
 {
-	MAPS_LOG_API;
 	if (!event || !delta_x || !delta_y)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	map_event_data_s *e = (map_event_data_s *) event;
@@ -395,10 +340,8 @@ EXPORT_API int map_event_data_get_delta(map_event_data_h event,
 	return MAPS_ERROR_NONE;
 }
 
-EXPORT_API int map_event_data_get_xy(map_event_data_h event,
-					  int *x, int* y)
+EXPORT_API int map_event_data_get_position(const map_event_data_h event, int *x, int* y)
 {
-	MAPS_LOG_API;
 	if (!event || !x || !y)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	map_event_data_s *e = (map_event_data_s *) event;
@@ -409,10 +352,8 @@ EXPORT_API int map_event_data_get_xy(map_event_data_h event,
 	return MAPS_ERROR_NONE;
 }
 
-EXPORT_API int map_event_data_get_fingers(map_event_data_h event,
-					       int *fingers)
+EXPORT_API int map_event_data_get_fingers(const map_event_data_h event, int *fingers)
 {
-	MAPS_LOG_API;
 	if (!event || !fingers)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	map_event_data_s *e = (map_event_data_s *) event;
@@ -422,39 +363,30 @@ EXPORT_API int map_event_data_get_fingers(map_event_data_h event,
 	return MAPS_ERROR_NONE;
 }
 
-EXPORT_API int map_event_data_get_zoom_factor(map_event_data_h event,
-						   double *zoom_factor)
+EXPORT_API int map_event_data_get_zoom_factor(const map_event_data_h event, double *zoom_factor)
 {
-	MAPS_LOG_API;
 	if (!event || !zoom_factor)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	map_event_data_s *e = (map_event_data_s *) event;
-	if((e->event_type != MAP_EVENT_GESTURE)
-	   && (e->event_type != MAP_EVENT_ACTION))
+	if((e->event_type != MAP_EVENT_GESTURE) && (e->event_type != MAP_EVENT_ACTION))
 		return MAPS_ERROR_NOT_SUPPORTED;
 	*zoom_factor = e->zoom_factor;
 	return MAPS_ERROR_NONE;
 }
 
-EXPORT_API int map_event_data_get_rotation_angle(map_event_data_h
-						      event,
-						      double *rotation_angle)
+EXPORT_API int map_event_data_get_rotation_angle(const map_event_data_h event, double *rotation_angle)
 {
-	MAPS_LOG_API;
 	if (!event || !rotation_angle)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	map_event_data_s *e = (map_event_data_s *) event;
-	if((e->event_type != MAP_EVENT_GESTURE)
-	   && (e->event_type != MAP_EVENT_ACTION))
+	if((e->event_type != MAP_EVENT_GESTURE) && (e->event_type != MAP_EVENT_ACTION))
 		return MAPS_ERROR_NOT_SUPPORTED;
 	*rotation_angle = e->rotation_angle;
 	return MAPS_ERROR_NONE;
 }
 
-EXPORT_API int map_event_data_get_object(map_event_data_h event,
-					      map_object_h *object)
+EXPORT_API int map_event_data_get_object(const map_event_data_h event, map_object_h *object)
 {
-	MAPS_LOG_API;
 	if (!event || !object)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	map_event_data_s *e = (map_event_data_s *) event;

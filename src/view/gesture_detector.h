@@ -31,10 +31,8 @@ namespace view
 		/* The gesture processing unit */
 		gesture_processor _gp;
 
-		#ifdef IMPROVEMENT_OF_GESTURES_AND_ACTIONS
 		/* Tap gesture timer */
 		Ecore_Timer *_tap_timer;
-		#endif
 
 		/* Long press gesture timer */
 		Ecore_Timer *_long_press_timer;
@@ -51,13 +49,8 @@ namespace view
 
 		/* Half a second is a popular duration of double click in UI */
 		static const unsigned int __CLICK_DURATION = 500 * __MIL_SEC;
-		#ifdef IMPROVEMENT_OF_GESTURES_AND_ACTIONS
 		static const unsigned int __DOUBLE_CLICK_DURATION = __CLICK_DURATION;
 		static const double __TAP_DURATION = 0.5;
-		#else
-		static const unsigned int __DOUBLE_CLICK_DURATION =
-			2 * __CLICK_DURATION;
-		#endif
 		/* Half a second is a popular duration of double click in UI
 		* however, sometimes it is 1 second */
 		static const double __LONG_PRESS_DURATION = 0.5;
@@ -78,19 +71,15 @@ namespace view
 		virtual void tap(int finger_no, const touch_point &tp);
 		virtual void move(int finger_no, const touch_point &tp);
 		virtual void up(int finger_no, const touch_point &tp);
-		#ifdef IMPROVEMENT_OF_GESTURES_AND_ACTIONS
 		virtual void on_tap_timer();
-		#endif
 		virtual void on_long_press_timer();
 		virtual void halt_gesture();
 	protected:
 		virtual void reset();
 	public:
-		#ifdef IMPROVEMENT_OF_GESTURES_AND_ACTIONS
 		static Eina_Bool __on_tap_timer(void *data);
 		void start_tap_timer();
 		void stop_tap_timer();
-		#endif
 		static Eina_Bool __on_long_press_timer(void *data);
 		void start_long_press_timer();
 		void stop_long_press_timer();

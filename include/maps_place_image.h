@@ -42,7 +42,7 @@ extern "C" {
  * @details The handle of Place Image instance.
  * @remarks To release the handle use maps_place_image_destroy().
  * \n To clone the handle use maps_place_image_clone().
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @see maps_place_image_destroy()
  * @see maps_place_image_clone()
@@ -55,7 +55,7 @@ typedef void *maps_place_image_h;
  * @brief	Destroys the place image handle and releases all its resources.
  * @details This function destroys the place image handle and releases all its
  * resources.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	image		The place image handle to destroy
  * @return	0 on success, otherwise a negative error value
@@ -70,7 +70,7 @@ int maps_place_image_destroy(maps_place_image_h image);
  * @brief	Clones the place image handle.
  * @details This function clones the place image handle @a origin and all its
  * resources.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks @a cloned must be released using maps_place_image_destroy().
  *
  * @param[in]	origin		The original place image handle
@@ -90,7 +90,7 @@ int maps_place_image_clone(const maps_place_image_h origin,
 /**
  * @brief	Gets the place image id.
  * @details This function gets the place image id.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks @a id must be released using free().
  *
  * @param[in]	image		The handle of place image
@@ -104,7 +104,7 @@ int maps_place_image_get_id(const maps_place_image_h image, char **id);
 /**
  * @brief	Gets the place image URL.
  * @details This function gets the place image URL.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks @a url must be released using free().
  *
  * @param[in]	image		The handle of place image
@@ -118,7 +118,7 @@ int maps_place_image_get_url(const maps_place_image_h image, char **url);
 /**
  * @brief	Gets the place image width.
  * @details This function gets the place image width.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	image		The handle of place image
  * @param[out]	width		The place image width
@@ -131,7 +131,7 @@ int maps_place_image_get_width(const maps_place_image_h image, int *width);
 /**
  * @brief	Gets the place image height.
  * @details This function gets the place image height.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	image		The handle of place image
  * @param[out]	height	The place image height
@@ -144,7 +144,7 @@ int maps_place_image_get_height(const maps_place_image_h image, int *height);
 /**
  * @brief	Gets the place image user link.
  * @details This function gets the place image user link.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks @a user must be released using maps_place_link_object_destroy().
  *
  * @param[in]	image		The handle of place image
@@ -161,7 +161,7 @@ int maps_place_image_get_user_link(const maps_place_image_h image,
 /**
  * @brief	Gets the place image media.
  * @details This function gets the place image media.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks @a media must be released using maps_place_media_destroy().
  *
  * @param[in]	image		The handle of place image

@@ -31,7 +31,6 @@ const gsize _MAPS_PLACE_URL_DESC_MAX_LENGTH = 512;
 
 EXPORT_API int maps_place_url_create(maps_place_url_h *place)
 {
-	MAPS_LOG_API;
 	if (!place)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	*place = (maps_place_url_h) g_slice_new0(maps_place_url_s);
@@ -46,7 +45,6 @@ EXPORT_API int maps_place_url_create(maps_place_url_h *place)
 
 EXPORT_API int maps_place_url_destroy(maps_place_url_h place)
 {
-	MAPS_LOG_API;
 	if (!place)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -64,7 +62,6 @@ EXPORT_API int maps_place_url_destroy(maps_place_url_h place)
 EXPORT_API int maps_place_url_clone(const maps_place_url_h origin,
 				    maps_place_url_h *cloned)
 {
-	MAPS_LOG_API;
 	if (!cloned || !origin)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -102,7 +99,6 @@ EXPORT_API int maps_place_url_clone(const maps_place_url_h origin,
 EXPORT_API int maps_place_url_get_path(const maps_place_url_h place,
 				       char **path)
 {
-	MAPS_LOG_API;
 	if (!place || !path)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_get_string(((maps_place_url_s *) place)->path,
@@ -112,7 +108,6 @@ EXPORT_API int maps_place_url_get_path(const maps_place_url_h place,
 EXPORT_API int maps_place_url_get_description(const maps_place_url_h place,
 					      char **desc)
 {
-	MAPS_LOG_API;
 	if (!place || !desc)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_get_string(((maps_place_url_s *) place)->desc,
@@ -123,7 +118,6 @@ EXPORT_API int maps_place_url_get_description(const maps_place_url_h place,
 
 EXPORT_API int maps_place_url_set_path(maps_place_url_h place, const char *path)
 {
-	MAPS_LOG_API;
 	if (!place || !path)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_set_string(path, _MAPS_PLACE_URL_PATH_MAX_LENGTH,
@@ -133,7 +127,6 @@ EXPORT_API int maps_place_url_set_path(maps_place_url_h place, const char *path)
 EXPORT_API int maps_place_url_set_description(maps_place_url_h place,
 					      const char *desc)
 {
-	MAPS_LOG_API;
 	if (!place || !desc)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_set_string(desc, _MAPS_PLACE_URL_DESC_MAX_LENGTH,

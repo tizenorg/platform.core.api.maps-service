@@ -20,18 +20,19 @@
 
 session::command_queue *session::command_queue::interface()
 {
-#ifdef _MAPS_SERVICE_SUPPORTS_ASYNC_QUEUE_
 	if (is_async()) {
+#ifdef _MAPS_SERVICE_SUPPORTS_ASYNC_QUEUE_
 		static command_queue_async async_queue;
 		return &async_queue;
-	} else {
+#else
+		static command_queue_sync sync_queue;
+		return &sync_queue;
+#endif /* _MAPS_SERVICE_SUPPORTS_ASYNC_QUEUE_ */
+	}
+	else {
 		static command_queue_sync sync_queue;
 		return &sync_queue;
 	}
-#else
-	static command_queue_sync sync_queue;
-	return &sync_queue;
-#endif /* _MAPS_SERVICE_SUPPORTS_ASYNC_QUEUE_ */
 }
 
 /*----------------------------------------------------------------------------*/
@@ -91,13 +92,11 @@ session::command *session::command_queue_async::pop(plugin::plugin_s *p)
 	/* https://developer.gnome.org/glib/stable/glib-Asynchronous-Queues.html#g-async-queue-timeout-pop */
 	command* c =
 		(command *) g_async_queue_timeout_pop(p->request_queue,
-					/*300 * G_TIME_SPAN_MILLISECOND);*/
-					/* Small timeout is better for UI */
 					10 * G_TIME_SPAN_MILLISECOND);
 	return (c) ? c : command::empty_ptr();
 }
 
-void session::command_queue_async::process(plugin::plugin_s* p)
+void session::command_queue_async::process(plugin::plugin_s *p)
 {
 	if (not p or not p->request_queue)
 		return;
@@ -106,7 +105,7 @@ void session::command_queue_async::process(plugin::plugin_s* p)
 	pop(p)->run();
 }
 
-void session::command_queue_async::clear(plugin::plugin_s* p)
+void session::command_queue_async::clear(plugin::plugin_s *p)
 {
 	if (not p or not p->request_queue)
 		return;
@@ -161,7 +160,7 @@ gint session::command_queue_view::iterate(gconstpointer a,
 	return (pa < pb ? +1 : pa == pb ? 0 : -1);
 }
 
-int session::command_queue_view::push(command* c)
+int session::command_queue_view::push(command *c)
 {
 	/*g_print("session::command_queue_view::push "
 			"pushed a command: %p\n", c);*/
@@ -216,7 +215,7 @@ int session::command_queue_view::push(command* c)
 	return MAPS_ERROR_NONE;
 }
 
-session::command* session::command_queue_view::pop(plugin::plugin_s* p)
+session::command* session::command_queue_view::pop(plugin::plugin_s *p)
 {
 	/*g_print("session::command_queue_view::pop\n");*/
 	if (!p || !p->request_queue)
