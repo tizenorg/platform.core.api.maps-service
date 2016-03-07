@@ -138,3 +138,10 @@ plugin::provider_info plugin::find_by_names(const string &provider)
 
 	return provider_info::empty_instance;
 }
+
+void plugin::split_provider_name(const char *original, char **provider, char **module)
+{
+	char *save;
+	*provider = strtok_r(g_strdup(original), "/", &save);
+	*module = g_strdup(strtok_r(NULL, "", &save));
+}
