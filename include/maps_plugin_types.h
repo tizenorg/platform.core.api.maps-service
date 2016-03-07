@@ -21,21 +21,43 @@
 extern "C" {
 #endif
 
+/**
+ * @ingroup	CAPI_MAPS_CONTAINERS_MODULE
+ * @defgroup	CAPI_MAPS_CONTAINERS_MODULE_OBJECT_LIST Maps Object Lists
+ *
+ * @file maps_plugin_types.h
+ * @brief This section contains API for using list of maps objects
+ *
+ * @addtogroup CAPI_MAPS_CONTAINERS_MODULE_OBJECT_LIST
+ * @{
+ * @brief This provides API for using list of maps objects.
+ */
+
 #include <glib.h>
 
 /**
  * @brief	Structure of the coordinates list.
- * @since_tizen 2.4
+ * @since_tizen 3.0
  * @remarks #maps_coordinates_list_h is a void pointer to the #maps_coordinates_list_s.
+ *
+ * @see maps_coordinates_list_create()
+ * @see maps_coordinates_list_destroy()
  */
 typedef GList maps_coordinates_list_s;
 
 /**
  * @brief	Structure of the address list.
- * @since_tizen 2.4
+ * @since_tizen 3.0
  * @remarks #maps_address_list_h is a void pointer to the #maps_address_list_s.
+ *
+ * @see maps_address_list_create()
+ * @see maps_address_list_destroy()
  */
 typedef GList maps_address_list_s;
+
+/**
+ * @}
+ */
 
 #ifdef __cplusplus
 }

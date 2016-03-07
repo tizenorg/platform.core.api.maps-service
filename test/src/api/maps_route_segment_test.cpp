@@ -23,7 +23,6 @@
 #include <glib.h>
 #include "maps_route_segment_private.h"
 #include "maps_util.h"
-#include "maps_extra_types_private.h"
 
 #include <maps_object.h>
 using namespace maps;

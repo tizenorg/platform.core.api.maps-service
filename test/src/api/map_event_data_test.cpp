@@ -22,39 +22,17 @@
 
 
 extern int _map_event_data_create(map_event_data_h *event);
-
-extern int _map_event_data_set_type(map_event_data_h event,
-			     map_event_type_e event_type);
-
-extern int _map_event_data_set_gesture_type(map_event_data_h event,
-				     const map_gesture_e gesture_type);
-
-extern int _map_event_data_set_action_type(map_event_data_h event,
-				    const map_action_e action_type);
-
-extern int _map_event_data_set_center(map_event_data_h event,
-			       const maps_coordinates_h center);
-
-extern int _map_event_data_set_delta(map_event_data_h event,
-			      const int delta_x, const int delta_y);
-
-extern int _map_event_data_set_xy(map_event_data_h event,
-			   const int x, const int y);
-
-extern int _map_event_data_set_fingers(map_event_data_h event,
-				const int fingers);
-
-extern int _map_event_data_set_zoom_factor(map_event_data_h event,
-				    const double zoom_factor);
-
-extern int _map_event_data_set_rotation_angle(map_event_data_h event,
-				       const double rotation_angle);
-
-extern int _map_event_data_set_object(map_event_data_h event,
-			       map_object_h object);
-
-extern int _map_object_create(const map_object_type_e type,
-			      map_object_h *object);
+extern int _map_event_data_set_type(map_event_data_h event, map_event_type_e event_type);
+extern int _map_event_data_set_gesture_type(map_event_data_h event, map_gesture_e gesture_type);
+extern int _map_event_data_set_action_type(map_event_data_h event, map_action_e action_type);
+extern int _map_event_data_set_center(map_event_data_h event, maps_coordinates_h center);
+extern int _map_event_data_set_delta(map_event_data_h event, int delta_x, const int delta_y);
+extern int _map_event_data_set_position(map_event_data_h event, int x, int y);
+extern int _map_event_data_set_fingers(map_event_data_h event, int fingers);
+extern int _map_event_data_set_zoom_factor(map_event_data_h event, double zoom_factor);
+extern int _map_event_data_set_rotation_angle(map_event_data_h event, double rotation_angle);
+extern int _map_event_data_set_object(map_event_data_h event, map_object_h object);
+extern int _map_object_create(const map_object_type_e type, map_object_h *object);
 
 
 /*int map_event_data_destroy(map_event_data_h event);*/
@@ -306,38 +284,38 @@ void utc_map_event_data_get_delta_n(void)
 }
 
 
-/*int map_event_data_get_xy(map_event_data_h event, int *x, int* y);*/
-void utc_map_event_data_get_xy_p(void)
+/*int map_event_data_get_position(map_event_data_h event, int *x, int* y);*/
+void utc_map_event_data_get_position_p(void)
 {
 	test_env e;
 
 	int error = _map_event_data_set_type(e.e, MAP_EVENT_GESTURE);
 	g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
 
-	error = _map_event_data_set_xy(e.e, 11, 22);
+	error = _map_event_data_set_position(e.e, 11, 22);
 	g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
 
 	int x = 0;
 	int y = 0;
-	error = map_event_data_get_xy(e.e, &x, &y);
+	error = map_event_data_get_position(e.e, &x, &y);
 	g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
 	g_assert_cmpint(x , ==, 11);
 	g_assert_cmpint(y , ==, 22);
 }
 
-void utc_map_event_data_get_xy_n(void)
+void utc_map_event_data_get_position_n(void)
 {
 	test_env e;
 
 	int x = 0;
 	int y = 0;
-	int error = map_event_data_get_xy(NULL, &x, &y);
+	int error = map_event_data_get_position(NULL, &x, &y);
 	g_assert_cmpint(error, ==, MAPS_ERROR_INVALID_PARAMETER);
 
-	error = map_event_data_get_xy(e.e, NULL, &y);
+	error = map_event_data_get_position(e.e, NULL, &y);
 	g_assert_cmpint(error, ==, MAPS_ERROR_INVALID_PARAMETER);
 
-	error = map_event_data_get_xy(e.e, &x, NULL);
+	error = map_event_data_get_position(e.e, &x, NULL);
 	g_assert_cmpint(error, ==, MAPS_ERROR_INVALID_PARAMETER);
 }
 
