@@ -24,15 +24,15 @@ void utc_construct_marker_p(void)
 {
 	/* Construct a marker */
 	view::marker_constructor mc;
-	map_object_h marker = mc.construct(maps::coordinates(10.1, 20.1),
+	maps_view_object_h marker = mc.construct(maps::coordinates(10.1, 20.1),
 					   "test_marker.png",
-					   MAP_MARKER_POI);
+					   MAPS_VIEW_MARKER_PIN);
 	g_assert_cmpint(mc.get_error(), ==, MAPS_ERROR_NONE);
 	g_assert(marker);
 
 	/* Check Marker Coordinates */
 	maps_coordinates_h coords = NULL;
-	int error = map_object_marker_get_coordinates(marker, &coords);
+	int error = maps_view_object_marker_get_coordinates(marker, &coords);
 	g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
 
 	double lat = 0, lon = 0;
@@ -45,19 +45,19 @@ void utc_construct_marker_p(void)
 
 	/* Check Marker Image File */
 	char *file_path = NULL;
-	error = map_object_marker_get_image_file(marker, &file_path);
+	error = maps_view_object_marker_get_image_file(marker, &file_path);
 	g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
 	g_assert(file_path);
 	g_assert_cmpstr(file_path, ==, "test_marker.png");
 	g_free(file_path);
 
 	/* Check Marker Type */
-	map_marker_type_e type = MAP_MARKER_NONE;
-	error = map_object_marker_get_type(marker, &type);
+	maps_view_marker_type_e type = MAPS_VIEW_MARKER_NONE;
+	error = maps_view_object_marker_get_type(marker, &type);
 	g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
-	g_assert_cmpint(type, ==, MAP_MARKER_POI);
+	g_assert_cmpint(type, ==, MAPS_VIEW_MARKER_PIN);
 
-	error = map_object_destroy(marker);
+	error = maps_view_object_destroy(marker);
 	g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
 }
 
@@ -66,23 +66,23 @@ void utc_construct_marker_n(void)
 	view::marker_constructor mc;
 
 	/* Negative Test 1 */
-	map_object_h marker = mc.construct(NULL,
+	maps_view_object_h marker = mc.construct(NULL,
 					   "test_marker.png",
-					   MAP_MARKER_POI);
+					   MAP_MARKER_PIN);
 	g_assert_cmpint(mc.get_error(), ==, MAPS_ERROR_INVALID_PARAMETER);
 	g_assert(!marker);
 
 	/* Negative Test 2 */
 	marker = mc.construct(maps::coordinates(10.1, 20.1),
 			      NULL,
-			      MAP_MARKER_POI);
+			      MAP_MARKER_PIN);
 	g_assert_cmpint(mc.get_error(), ==, MAPS_ERROR_INVALID_PARAMETER);
 	g_assert(!marker);
 
 	/* Negative Test 3 */
 	marker = mc.construct(maps::coordinates(10.1, 20.1),
 			      "test_marker.png",
-			      map_marker_type_e(-2));
+			      maps_view_marker_type_e(-2));
 	g_assert_cmpint(mc.get_error(), ==, MAPS_ERROR_INVALID_PARAMETER);
 	g_assert(!marker);
 }

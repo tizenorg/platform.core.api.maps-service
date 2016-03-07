@@ -19,7 +19,7 @@
 
 #include <Ecore.h>
 #include <Evas.h>
-#include "map_view.h"
+#include "maps_view.h"
 #include "command.h"
 #include "command_queue.h"
 #include "runtime_data.h"
@@ -109,7 +109,7 @@ namespace view
 		session::command_queue *q();
 		void *get_maps();
 		session::command *construct_gesture_command(
-						map_gesture_e gesture,
+						maps_view_gesture_e gesture,
 						const maps_coordinates_h c,
 						const bool zoom_changed,
 						const double zoom,
@@ -118,15 +118,6 @@ namespace view
 	protected:
 		touch_point calc_center(const touch_point &tp1,
 					const touch_point &tp2) const;
-	protected:
-		/* TODO: | DEBUG ONLY | REMOVE WHEN NO NEEDED */
-		map_object_h __DEBUG_add_marker(
-					const int x, const int y,
-					const map_marker_type_e type);
-		map_object_h __DEBUG_add_geo_marker(
-					const maps_coordinates_h coords,
-					const map_marker_type_e type);
-		/* ----- | DEBUG ONLY | REMOVE WHEN NO NEEDED */
 	};
 
 
@@ -140,7 +131,7 @@ namespace view
 		bool _finger_moving[MAX_FINGERS];
 		touch_point _finger_down[MAX_FINGERS];
 	public:
-		finger_event_stream(map_view_h v);
+		finger_event_stream(maps_view_h v);
 		~finger_event_stream();
 	public:
 

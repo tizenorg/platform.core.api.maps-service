@@ -49,7 +49,7 @@ void utc_construct_polyline_p(void)
 		maps_coordinates_destroy(c);
 	}
 
-	map_object_h polyline = pc.construct(path, 0x01, 0x02, 0x03, 0x04, 3);
+	maps_view_object_h polyline = pc.construct(path, 0x01, 0x02, 0x03, 0x04, 3);
 	g_assert_cmpint(pc.get_error(), ==, MAPS_ERROR_NONE);
 	g_assert(polyline);
 
@@ -57,7 +57,7 @@ void utc_construct_polyline_p(void)
 
 	/* Check Polygon path */
 	int iterations = 0;
-	int error = map_object_polyline_foreach_point(polyline,
+	int error = maps_view_object_polyline_foreach_point(polyline,
 				       __utc_map_object_poly_point_cb,
 				       &iterations);
 	g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
@@ -68,7 +68,7 @@ void utc_construct_polyline_p(void)
 	unsigned char g = 0;
 	unsigned char b = 0;
 	unsigned char a = 0;
-	error = map_object_polyline_get_color(polyline, &r, &g, &b, &a);
+	error = maps_view_object_polyline_get_color(polyline, &r, &g, &b, &a);
 	g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
 	g_assert_cmpint(r, ==, 0x01);
 	g_assert_cmpint(g, ==, 0x02);
@@ -77,11 +77,11 @@ void utc_construct_polyline_p(void)
 
 	/* Check line width */
 	int width = 0;
-	error = map_object_polyline_get_width(polyline, &width);
+	error = maps_view_object_polyline_get_width(polyline, &width);
 	g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
 	g_assert_cmpint(width, ==, 3);
 
-	error = map_object_destroy(polyline);
+	error = maps_view_object_destroy(polyline);
 	g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
 }
 
@@ -90,7 +90,7 @@ void utc_construct_polyline_n(void)
 	view::polyline_constructor pc;
 
 	/* Negative test 1 */
-	map_object_h polyline = pc.construct(NULL, 0x01, 0x02, 0x03, 0x04, 1);
+	maps_view_object_h polyline = pc.construct(NULL, 0x01, 0x02, 0x03, 0x04, 1);
 	g_assert_cmpint(pc.get_error(), ==, MAPS_ERROR_INVALID_PARAMETER);
 	g_assert(!polyline);
 

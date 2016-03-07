@@ -26,11 +26,11 @@
 #include "maps_util.h"
 #include <Ecore.h>
 
-#include <map_view.h>
+#include <maps_view.h>
 
 /* For Route Visual Data */
 #include "dummy_route_constructor.h"
-#include "map_object.h"
+#include "maps_view_object.h"
 #include <map>
 
 
@@ -44,16 +44,16 @@ static char __provider_key[1024] = { 0 };
 class maps_plugin_route {
 public:
 	/* Handle of the corresponding Map View Object */
-	map_object_h view_object;
+	maps_view_object_h view_object;
 
 	/* List of visual objects, comprising the route */
-	map_object_h group;
+	maps_view_object_h group;
 
 	/* Route Content */
 	maps_route_h content;
 
 public:
-	maps_plugin_route(const map_object_h object,
+	maps_plugin_route(const maps_view_object_h object,
 			  const maps_route_h route)
 		: view_object(object)
 		  , group(NULL)
@@ -66,7 +66,7 @@ public:
 	~maps_plugin_route()
 	{
 		if(group)
-			map_object_destroy(group);
+			maps_view_object_destroy(group);
 
 		if(content)
 			maps_route_destroy(content);
@@ -76,7 +76,7 @@ public:
 /* Global storage of all route objects */
 std::map<void *, void *> __routes;
 
-static void __remove_route(const map_object_h object)
+static void __remove_route(const maps_view_object_h object)
 {
 	if(!object)
 		return;
@@ -102,7 +102,7 @@ static void __remove_all_routes()
 	__routes.clear();
 }
 
-static void __store_route(const map_object_h object,
+static void __store_route(const maps_view_object_h object,
 			  maps_plugin_route *route)
 {
 	if(!object || !route)
@@ -112,7 +112,7 @@ static void __store_route(const map_object_h object,
 }
 
 
-static maps_plugin_route *__get_route(const map_object_h object)
+static maps_plugin_route *__get_route(const maps_view_object_h object)
 {
 	if(!object)
 		return NULL;
@@ -175,8 +175,7 @@ EXPORT_API int maps_plugin_set_preference(maps_item_hashtable_h preference)
 	return MAPS_ERROR_NONE;
 }
 
-EXPORT_API int maps_plugin_is_service_supported(maps_service_e service,
-						bool *supported)
+EXPORT_API int maps_plugin_is_service_supported(maps_service_e service, bool *supported)
 {
 	switch (service) {
 	case MAPS_SERVICE_GEOCODE:
@@ -189,6 +188,8 @@ EXPORT_API int maps_plugin_is_service_supported(maps_service_e service,
 	case MAPS_SERVICE_SEARCH_ROUTE:
 	case MAPS_SERVICE_SEARCH_ROUTE_WAYPOINTS:
 	case MAPS_SERVICE_CANCEL_REQUEST:
+	case MAPS_SERVICE_MULTI_REVERSE_GEOCODE:
+	case MAPS_SERVICE_SEARCH_PLACE_LIST:
 		*supported = true;
 		return MAPS_ERROR_NONE;
 	default:
@@ -197,8 +198,7 @@ EXPORT_API int maps_plugin_is_service_supported(maps_service_e service,
 	}
 }
 
-EXPORT_API int maps_plugin_is_data_supported(maps_service_data_e data,
-					     bool *supported)
+EXPORT_API int maps_plugin_is_data_supported(maps_service_data_e data, bool *supported)
 {
 	switch (data) {
 	case MAPS_PLACE_ADDRESS:
@@ -222,6 +222,24 @@ EXPORT_API int maps_plugin_is_data_supported(maps_service_data_e data,
 	}
 }
 
+EXPORT_API int maps_plugin_is_widget_supported(maps_service_widget_e service, bool *supported)
+{
+	if (!supported)
+		return MAPS_ERROR_INVALID_PARAMETER;
+
+	switch(service)
+	{
+		case MAPS_WIDGET_TRAFFIC:
+		case MAPS_WIDGET_PUBLIC_TRANSIT:
+		case MAPS_WIDGET_SCALEBAR:
+		case MAPS_WIDGET_BUILDING:
+			*supported = TRUE;
+			return MAPS_ERROR_NONE;
+		default:
+			*supported = FALSE;
+			return MAPS_ERROR_NOT_SUPPORTED;
+	}
+}
 
 EXPORT_API int maps_plugin_geocode(const char *address,
 				   const maps_item_hashtable_h preference,
@@ -529,7 +547,7 @@ EXPORT_API int maps_plugin_cancel_request(int request_id)
 }
 
 /*-----------------MAPPING API------------------------------------------------*/
-static map_view_h __map_view = NULL;
+static maps_view_h __map_view = NULL;
 static double __zoom_factor = 1.;
 static double __rotation_angle = 0.;
 static maps_coordinates_h __center_coords = NULL;
@@ -593,14 +611,14 @@ static int __extract_view_geometry()
 	int error = MAPS_ERROR_NONE;
 
 	do {
-		error = map_view_get_geometry(__map_view, NULL, NULL,
+		error = map_view_get_screen_location(__map_view, NULL, NULL,
 					       &__width, &__height);
 		if (error != MAPS_ERROR_NONE)
 			break;
 
 		int __x = 0;
 		int __y = 0;
-		error = map_view_get_geometry(__map_view,
+		error = map_view_get_screen_location(__map_view,
 					       &__x, &__y,
 					       NULL, NULL);
 		if (error != MAPS_ERROR_NONE)
@@ -635,7 +653,7 @@ int __get_milli_span(int nTimeStart)
 }
 #endif
 
-EXPORT_API int maps_plugin_set_map_view(const map_view_h view)
+EXPORT_API int maps_plugin_set_map_view(const maps_view_h view)
 {
 	if (view) {
 		__map_view = view;
@@ -764,7 +782,7 @@ static bool __map_view_poly_collect_points_cb(int index, int total,
 }
 
 
-static void __draw_polyline(const map_object_h object,
+static void __draw_polyline(const maps_view_object_h object,
 			    unsigned int *pixels)
 {
 	/*g_print("__draw_polyline\n");*/
@@ -773,7 +791,7 @@ static void __draw_polyline(const map_object_h object,
 
 	/* Fetch polyline points in one array */
 	__collecting_poings_s cp = { 0 };
-	int error =  map_object_polyline_foreach_point(object,
+	int error =  maps_view_object_polyline_foreach_point(object,
 					    __map_view_poly_collect_points_cb,
 					    &cp);
 	if (error != MAPS_ERROR_NONE) {
@@ -789,7 +807,7 @@ static void __draw_polyline(const map_object_h object,
 	unsigned char g = 0;
 	unsigned char b = 0;
 	unsigned char a = 0;
-	map_object_polyline_get_color(object, &r, &g, &b, &a);
+	maps_view_object_polyline_get_color(object, &r, &g, &b, &a);
 	unsigned int color = ((1 | a) << 24)
 		| ((1 | r) << 16)
 		| ((1 | g) << 8)
@@ -819,7 +837,7 @@ static void __draw_polyline(const map_object_h object,
 	g_free(cp.poly_coords);
 }
 
-static void __draw_polygon(const map_object_h object,
+static void __draw_polygon(const maps_view_object_h object,
 			   unsigned int *pixels)
 {
 	/* g_print("__draw_polygon\n");*/
@@ -828,7 +846,7 @@ static void __draw_polygon(const map_object_h object,
 
 	/* Fetch polygon points in one array */
 	__collecting_poings_s cp = { 0 };
-	int error =  map_object_polygon_foreach_point(object,
+	int error =  maps_view_object_polygon_foreach_point(object,
 					    __map_view_poly_collect_points_cb,
 					    &cp);
 	if (error != MAPS_ERROR_NONE)
@@ -838,7 +856,7 @@ static void __draw_polygon(const map_object_h object,
 	unsigned char g = 0;
 	unsigned char b = 0;
 	unsigned char a = 0;
-	map_object_polygon_get_fill_color(object, &r, &g, &b, &a);
+	maps_view_object_polygon_get_fill_color(object, &r, &g, &b, &a);
 	unsigned int color = ((1 | a) << 24)
 		| ((1 | r) << 16)
 		| ((1 | g) << 8)
@@ -913,7 +931,7 @@ static void __draw_polygon(const map_object_h object,
 	g_free(cp.poly_coords);
 }
 
-static void __draw_marker(const map_object_h object, unsigned int *pixels)
+static void __draw_marker(const maps_view_object_h object, unsigned int *pixels)
 {
 	/*g_print("__draw_marker\n");*/
 	if (!object || !pixels)
@@ -921,7 +939,7 @@ static void __draw_marker(const map_object_h object, unsigned int *pixels)
 
 	/* Get the Marker geographical coordinate */
 	maps_coordinates_h coords = NULL;
-	int error = map_object_marker_get_coordinates(object, &coords);
+	int error = maps_view_object_marker_get_coordinates(object, &coords);
 	if (error != MAPS_ERROR_NONE)
 		return;
 
@@ -936,19 +954,19 @@ static void __draw_marker(const map_object_h object, unsigned int *pixels)
 	/* Get the Makre screen size */
 	int screen_width = 0;
 	int screen_height = 0;
-	error = map_object_marker_get_size(object,
+	error = maps_view_object_marker_get_size(object,
 					   &screen_width,
 					   &screen_height);
 	if (error != MAPS_ERROR_NONE)
 		return;
 
 	/* Draw the marker */
-	map_marker_type_e type = MAP_MARKER_NONE;
-	map_object_marker_get_type(object, &type);
+	maps_view_marker_type_e type = MAPS_VIEW_MARKER_NONE;
+	maps_view_object_marker_get_type(object, &type);
 	switch(type) {
 #ifdef TIZEN_3_0_NEXT_MS
-	case MAP_MARKER_START:
-	case MAP_MARKER_FINISH: {
+	case MAPS_VIEW_MARKER_START:
+	case MAPS_VIEW_MARKER_FINISH: {
 		const int dx = screen_width / 2;
 		const int dy = screen_height;
 
@@ -962,7 +980,7 @@ static void __draw_marker(const map_object_h object, unsigned int *pixels)
 		break;
 	}
 #endif /* TIZEN_3_0_NEXT_MS */
-	case MAP_MARKER_POI: {
+	case MAPS_VIEW_MARKER_POI: {
 		const int dx = screen_width / 2;
 		const int dy = screen_height / 2;
 
@@ -974,12 +992,12 @@ static void __draw_marker(const map_object_h object, unsigned int *pixels)
 		break;
 	}
 #ifdef TIZEN_3_0_NEXT_MS
-	case MAP_MARKER_FIRST:
-	case MAP_MARKER_SECOND:
-	case MAP_MARKER_FAVOURITE:
-	case MAP_MARKER_CONSTRUCTION:
+	case MAPS_VIEW_MARKER_FIRST:
+	case MAPS_VIEW_MARKER_SECOND:
+	case MAPS_VIEW_MARKER_FAVOURITE:
+	case MAPS_VIEW_MARKER_CONSTRUCTION:
 #endif /* TIZEN_3_0_NEXT_MS */
-	case MAP_MARKER_NONE:
+	case MAPS_VIEW_MARKER_NONE:
 	default: {
 		const int dx = screen_width / 2;
 		const int dy = screen_height / 2;
@@ -996,13 +1014,12 @@ static void __draw_marker(const map_object_h object, unsigned int *pixels)
 
 }
 
-static void __draw_group(const map_object_h object, unsigned int *pixels);
 
-static bool __for_each_map_object_cb(int index, int total,
-					  map_object_h object,
+static bool __for_each_maps_view_object_cb(int index, int total,
+					  maps_view_object_h object,
 					  void *user_data)
 {
-	/*g_print("__for_each_map_object_cb\n");*/
+	/*g_print("__for_each_maps_view_object_cb\n");*/
 
 	if (!object)
 		return false;
@@ -1016,27 +1033,24 @@ static bool __for_each_map_object_cb(int index, int total,
 		return true; /* This object should not be drawn */
 
 	/* Extract the type of the object */
-	map_object_type_e type = MAP_OBJECT_UNKNOWN;
-	error = map_object_get_type(object, &type);
+	maps_view_object_type_e type;
+	error = maps_view_object_get_type(object, &type);
 	if (error != MAPS_ERROR_NONE)
 		return false;
 
 	unsigned int *pixels = (unsigned int *)user_data;
 	switch(type) {
-	case MAP_OBJECT_GROUP:
-		__draw_group(object, pixels);
-		break;
-	case MAP_OBJECT_POLYLINE:
+	case MAPS_VIEW_OBJECT_POLYLINE:
 		__draw_polyline(object, pixels);
 		break;
-	case MAP_OBJECT_POLYGON:
+	case MAPS_VIEW_OBJECT_POLYGON:
 		__draw_polygon(object, pixels);
 		break;
-	case MAP_OBJECT_MARKER:
+	case MAPS_VIEW_OBJECT_MARKER:
 		__draw_marker(object, pixels);
 		break;
 #ifdef TIZEN_3_0_NEXT_MS
-	case MAP_OBJECT_ROUTE: {
+	case MAPS_VIEW_OBJECT_ROUTE: {
 		/* The Maps Plugin is in charge of drawing the route */
 
 
@@ -1049,26 +1063,12 @@ static bool __for_each_map_object_cb(int index, int total,
 		break;
 	}
 #endif /* TIZEN_3_0_NEXT_MS */
-	case MAP_OBJECT_UNKNOWN:
-		g_print("WARNING! Unknown Maps View Object Type!\n");
-		break;
 	default:
 		g_print("ERROR! Unsupported Maps View Object Type!\n");
 		break;
 	}
-	/*map_object_destroy(object);*/
+	/*maps_view_object_destroy(object);*/
 	return true;
-}
-
-static void __draw_group(const map_object_h object, unsigned int *pixels)
-{
-	/*g_print("__draw_group\n");*/
-	if (!object || !pixels)
-		return;
-
-	map_object_group_foreach_object(object,
-					     __for_each_map_object_cb,
-					     pixels);
 }
 
 static bool __perform_render_map()
@@ -1080,7 +1080,7 @@ static bool __perform_render_map()
 
 	/* Apply the image file to the maps pannel */
 	if (!__img) {
-		map_view_get_panel(__map_view, &__img);
+		maps_view_get_panel(__map_view, &__img);
 		evas_object_image_file_set(__img, "/tmp/maps/tizen.jpg", NULL);
 		int err = evas_object_image_load_error_get(__img);
 		if (err != EVAS_LOAD_ERROR_NONE) {
@@ -1293,8 +1293,8 @@ EXPORT_API int maps_plugin_draw_map(Evas* canvas, const int x, const int y,
 	return MAPS_ERROR_NONE;
 }
 
-EXPORT_API int maps_plugin_on_object(const map_object_h object,
-			       const map_object_operation_e operation)
+EXPORT_API int maps_plugin_on_object(const maps_view_object_h object,
+			       const maps_view_object_operation_e operation)
 {
 	/* Construct and store internally a Route visual representation */
 	if(!object)
@@ -1302,35 +1302,35 @@ EXPORT_API int maps_plugin_on_object(const map_object_h object,
 
 	switch(operation) {
 
-	case MAP_OBJECT_ADD: {
+	case MAPS_VIEW_OBJECT_ADD: {
 
-		map_object_type_e type = MAP_OBJECT_UNKNOWN;
-		map_object_get_type(object, &type);
+		maps_view_object_type_e type;
+		maps_view_object_get_type(object, &type);
 #ifdef TIZEN_3_0_NEXT_MS
-		if(type != MAP_OBJECT_ROUTE)
+		if(type != MAPS_VIEW_OBJECT_ROUTE)
 			break; /* We are interested only in Route */
 #endif /* TIZEN_3_0_NEXT_MS */
 
 		break;
 	}
 
-	case MAP_OBJECT_SET_VISIBLE:
+	case MAPS_VIEW_OBJECT_SET_VISIBLE:
 		/* Ignore */
 		break;
 
-	case MAP_OBJECT_MOVE:
+	case MAPS_VIEW_OBJECT_MOVE:
 
 		/* TODO: */
 
 		break;
 
-	case MAP_OBJECT_CHANGE: {
+	case MAPS_VIEW_OBJECT_CHANGE: {
 
 #ifdef TIZEN_3_0_NEXT_MS
-		map_object_type_e type = MAP_OBJECT_UNKNOWN;
-		map_object_get_type(object, &type);
+		maps_view_object_type_e type = MAPS_VIEW_OBJECT_UNKNOWN;
+		maps_view_object_get_type(object, &type);
 
-		if(type != MAP_OBJECT_ROUTE)
+		if(type != MAPS_VIEW_OBJECT_ROUTE)
 			break; /* We are interested only in Route */
 
 		/* Extract the Route Content from the Map View object */
@@ -1349,15 +1349,9 @@ EXPORT_API int maps_plugin_on_object(const map_object_h object,
 		break;
 	}
 
-	case MAP_OBJECT_REMOVE:
+	case MAPS_VIEW_OBJECT_REMOVE:
 #ifdef TIZEN_3_0_NEXT_MS
 		__remove_route(object);
-#endif /* TIZEN_3_0_NEXT_MS */
-		break;
-
-	case MAP_OBJECT_REMOVE_ALL:
-#ifdef TIZEN_3_0_NEXT_MS
-		__remove_all_routes();
 #endif /* TIZEN_3_0_NEXT_MS */
 		break;
 

@@ -16,8 +16,8 @@
 #ifndef __MAPS_VIEW_POLYGON_CONSTRUCTOR_H__
 #define __MAPS_VIEW_POLYGON_CONSTRUCTOR_H__
 
-
-#include "map_object.h"
+#include "maps_error.h"
+#include "maps_view_object.h"
 
 namespace view
 {
@@ -30,7 +30,7 @@ namespace view
 		{
 		}
 	public:
-		map_object_h construct(const maps_coordinates_list_h coordinates,
+		maps_view_object_h construct(const maps_coordinates_list_h coordinates,
 				       const unsigned char r,
 				       const unsigned char g,
 				       const unsigned char b,

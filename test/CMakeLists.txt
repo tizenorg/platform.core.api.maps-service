@@ -76,9 +76,9 @@ SET (TEST_SRCS
 
 	src/api/maps_preference_test.cpp
 
-	src/api/map_view_test.cpp
-	src/api/map_object_test.cpp
-	src/api/map_event_data_test.cpp
+	src/api/maps_view_test.cpp
+	src/api/maps_view_object_test.cpp
+	src/api/maps_view_event_data_test.cpp
 	)
 
 #aux_source_directory(src sources)

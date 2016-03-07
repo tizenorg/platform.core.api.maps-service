@@ -17,10 +17,11 @@
 
 #include "inertial_camera.h"
 #include "maps_util.h"
+#include "maps_view_plugin.h"
 #include <glib.h>
 
 
-view::inertial_camera::inertial_camera(map_view_h view)
+view::inertial_camera::inertial_camera(maps_view_h view)
 	: _view(view)
 	  , target_zoom_factor(.0)
 	  , target_rotation_angle(.0)
@@ -63,9 +64,9 @@ void view::inertial_camera::set_cur_state()
 
 	if(!cur_center)
 		maps_coordinates_destroy(cur_center);
-	map_view_get_center(_view, &cur_center);
-	map_view_get_zoom_factor(_view, &cur_zoom_factor);
-	map_view_get_orientation(_view, &cur_rotation_angle);
+	maps_view_get_center(_view, &cur_center);
+	maps_view_get_zoom_factor(_view, &cur_zoom_factor);
+	maps_view_get_orientation(_view, &cur_rotation_angle);
 }
 
 void view::inertial_camera::set_targets(const maps_coordinates_h center,
@@ -175,7 +176,6 @@ void view::inertial_camera::next_transition_step()
 	maps_coordinates_get_latitude_longitude(cur_center, &prev_lat, &prev_lon);
 	maps_coordinates_get_latitude_longitude(target_center, &target_lat, &target_lon);
 
-#ifdef IMPROVEMENT_OF_GESTURES_AND_ACTIONS
 	/* Transiting map center */
 	double next_lat = calc_next_step(prev_lat, target_lat, .15);
 	if (next_lat != prev_lat) transiting = true;
@@ -187,44 +187,31 @@ void view::inertial_camera::next_transition_step()
 	{
 		int tx, ty, nx, ny;
 		maps_coordinates_s next_center_s = { next_lat, next_lon };
-		map_view_geography_to_screen(_view, &next_center_s, &nx, &ny);
-		map_view_geography_to_screen(_view, target_center, &tx, &ty);
+		maps_view_geolocation_to_screen(_view, &next_center_s, &nx, &ny);
+		maps_view_geolocation_to_screen(_view, target_center, &tx, &ty);
 		if (nx == tx && ny == ty) {
 			transiting = false;
 			next_lat = target_lat;
 			next_lon = target_lon;
 		}
 	}
-#else
-	/* Transiting map center */
-	double next_lat = calc_next_step(prev_lat, target_lat, .5);
-	if(ABS(next_lat - prev_lat) > __GEO_ACCURACY)
-		transiting = true;
-	else
-		next_lat = target_lat;
-
-	double next_lon = calc_next_step(prev_lon, target_lon, .5);
-	if(ABS(next_lon - prev_lon) > __GEO_ACCURACY)
-		transiting = true;
-	else
-		next_lon = target_lon;
-#endif
 
 	maps_coordinates_set_latitude_longitude(cur_center, next_lat, next_lon);
 
 	/* Transiting zoom */
-	cur_zoom_factor = calc_next_step(cur_zoom_factor,
-					 target_zoom_factor,
-					 .2);
+	cur_zoom_factor = calc_next_step(cur_zoom_factor, target_zoom_factor, .2);
 	if(ABS(cur_zoom_factor - target_zoom_factor) > __ZOOM_ACCURACY)
 		transiting = true;
 	else
 		cur_zoom_factor = target_zoom_factor;
 
 	/* Transizint orientation */
-	cur_rotation_angle = calc_next_step(cur_rotation_angle,
-					    target_rotation_angle,
-					    .5);
+	if(target_rotation_angle - cur_rotation_angle > 180.)
+		target_rotation_angle -= 360.;
+	else if(target_rotation_angle - cur_rotation_angle < -180.)
+		target_rotation_angle += 360.;
+
+	cur_rotation_angle = calc_next_step(cur_rotation_angle, target_rotation_angle, .5);
 	if(ABS(cur_rotation_angle - target_rotation_angle) > __ROTATE_ACCURACY)
 		transiting = true;
 	else

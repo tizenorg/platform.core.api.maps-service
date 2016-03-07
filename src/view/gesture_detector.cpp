@@ -19,28 +19,24 @@
 #include <glib.h>
 
 
-extern bool _map_view_is_gesture_available(map_view_h view,
-					   map_gesture_e gesture);
+extern bool _maps_view_is_gesture_available(maps_view_h view,
+					   maps_view_gesture_e gesture);
 
 
 /*----------------------------------------------------------------------------*/
 
 
-view::gesture_detector::gesture_detector(map_view_h v)
+view::gesture_detector::gesture_detector(maps_view_h v)
 	: _view(v)
 	, _gp(this)
-	#ifdef IMPROVEMENT_OF_GESTURES_AND_ACTIONS
 	, _tap_timer(NULL)
-	#endif
 	, _long_press_timer(NULL)
 {
 }
 
 view::gesture_detector::~gesture_detector()
 {
-	#ifdef IMPROVEMENT_OF_GESTURES_AND_ACTIONS
 	stop_tap_timer();
-	#endif
 	stop_long_press_timer();
 }
 
@@ -90,7 +86,6 @@ void view::gesture_detector::move(int finger_no, const touch_point &tp)
 {
 }
 
-#ifdef IMPROVEMENT_OF_GESTURES_AND_ACTIONS
 void view::gesture_detector::on_tap_timer()
 {
 }
@@ -125,7 +120,6 @@ Eina_Bool view::gesture_detector::__on_tap_timer(void *data)
 
 	return ECORE_CALLBACK_CANCEL;
 }
-#endif
 
 void view::gesture_detector::on_long_press_timer()
 {
@@ -162,9 +156,9 @@ Eina_Bool view::gesture_detector::__on_long_press_timer(void *data)
 	return ECORE_CALLBACK_CANCEL;
 }
 
-bool view::gesture_detector::is_gesture_available(map_gesture_e gesture)
+bool view::gesture_detector::is_gesture_available(maps_view_gesture_e gesture)
 {
-	return _map_view_is_gesture_available(_view, gesture);
+	return _maps_view_is_gesture_available(_view, gesture);
 }
 
 bool view::gesture_detector::finger_dragged_enough(int finger_no)
@@ -217,7 +211,7 @@ void view::gesture_detector::log(const char *str, log_colors color)
 void view::gesture_detector::log_map_center(int color)
 {
 	maps_coordinates_h central_coords = NULL;
-	map_view_get_center(_view, &central_coords);
+	maps_view_get_center(_view, &central_coords);
 	double lat = .0, lon = .0;
 	maps_coordinates_get_latitude_longitude(central_coords, &lat, &lon);
 	maps_coordinates_destroy(central_coords);

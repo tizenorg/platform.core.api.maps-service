@@ -20,6 +20,7 @@
 #include <glib.h>
 #include <math.h>  /* for sqrt */
 #include "gesture_detector_statemachine.h"
+#include "maps_view_plugin.h"
 
 
 
@@ -27,46 +28,23 @@
 
 
 /* Using protected functions of Map View */
-extern bool _map_view_is_gesture_available(map_view_h view,
-					   map_gesture_e gesture);
-extern map_action_e _map_view_get_gesture_action(map_view_h view,
-					      map_gesture_e gesture);
-extern void *_map_view_get_maps_service_ptr(map_view_h view);
-
-extern map_object_h _map_object_hit_test(map_view_h view,
-						   const int x,
-						   const int y,
-						   map_gesture_e gesture);
-
-extern int _map_event_data_set_gesture_type(map_event_data_h event,
-					 const map_gesture_e gesture_type);
-
-extern int _map_event_data_set_xy(map_event_data_h event,
-				       const int x, const int y);
-
-extern int _map_event_data_set_center(map_event_data_h event,
-				      const maps_coordinates_h center);
-
-extern int _map_event_data_set_fingers(map_event_data_h event,
-					    const int fingers);
-
-extern int _map_event_data_set_zoom_factor(map_event_data_h event,
-						const double zoom_factor);
-
-extern int _map_event_data_set_rotation_angle(map_event_data_h event,
-						   const double rotation_angle);
-
-extern map_event_data_h _map_view_create_event_data(map_event_type_e
-							 type);
-extern void _map_view_invoke_event_callback(map_view_h view,
-					    map_event_data_h event_data);
+extern bool _maps_view_is_gesture_available(maps_view_h view, maps_view_gesture_e gesture);
+extern maps_view_action_e _maps_view_get_gesture_action(maps_view_h view, maps_view_gesture_e gesture);
+extern void *_maps_view_get_maps_service_ptr(maps_view_h view);
+extern maps_view_object_h _maps_view_object_hit_test(maps_view_h view, int x, int y, maps_view_gesture_e gesture);
+extern int _maps_view_event_data_set_gesture_type(maps_view_event_data_h event, maps_view_gesture_e gesture_type);
+extern int _maps_view_event_data_set_position(maps_view_event_data_h event, int x, int y);
+extern int _maps_view_event_data_set_center(maps_view_event_data_h event, maps_coordinates_h center);
+extern int _maps_view_event_data_set_fingers(maps_view_event_data_h event, int fingers);
+extern int _maps_view_event_data_set_zoom_factor(maps_view_event_data_h event, double zoom_factor);
+extern int _maps_view_event_data_set_rotation_angle(maps_view_event_data_h event, double rotation_angle);
+extern maps_view_event_data_h _maps_view_create_event_data(maps_view_event_type_e type);
+extern void _maps_view_invoke_event_callback(maps_view_h view, maps_view_event_data_h event_data);
 
 
 #ifdef _MOVE_CENTER_COMMAND_DEFINED_
-extern int _map_view_set_center_directly(const map_view_h view,
-				  const maps_coordinates_h coordinates);
-extern int _map_view_get_plugin_center(const map_view_h view,
-				       maps_coordinates_h *center);
+extern int _maps_view_set_center_directly(maps_view_h view, maps_coordinates_h coordinates);
+extern int _maps_view_get_plugin_center(const maps_view_h view, maps_coordinates_h *center);
 #endif /* _MOVE_CENTER_COMMAND_DEFINED_ */
 
 /* ---------------------------------------------------------------------------*/
@@ -77,13 +55,13 @@ view::zoom_calculator::zoom_calculator(const touch_point &start_tp_f1,
 					const touch_point &start_tp_f2,
 					const touch_point &cur_tp_f2)
 	: _start_tp_f1(start_tp_f1)
-	  , _cur_tp_f1(cur_tp_f1)
-	  , _start_tp_f2(start_tp_f2)
-	  , _cur_tp_f2(cur_tp_f2)
-	  , _new_zoom_factor(.0)
-	  , _new_rotation_angle(.0)
-	  , _zoom_happend(false)
-	  , _rotation_happend(false)
+	, _cur_tp_f1(cur_tp_f1)
+	, _start_tp_f2(start_tp_f2)
+	, _cur_tp_f2(cur_tp_f2)
+	, _new_zoom_factor(.0)
+	, _new_rotation_angle(.0)
+	, _zoom_happend(false)
+	, _rotation_happend(false)
 {
 	/* Finding the start radius */
 	const int start_dx = _start_tp_f2._x - _start_tp_f1._x;
@@ -98,22 +76,29 @@ view::zoom_calculator::zoom_calculator(const touch_point &start_tp_f1,
 
 	/* Calculating the zoom factor */
 	if((start_r != .0) && (cur_r != .0) && (start_r != cur_r)) {
-		#if 1
 		if (cur_r > start_r)
 			_new_zoom_factor = (cur_r / start_r) - 1;
 		else
 			_new_zoom_factor = -((start_r / cur_r) - 1);
-		#else
-		_new_zoom_factor = cur_r / start_r;
-		#endif
 		_zoom_happend = true;
 	}
 
 	/* Calculating the rotation angle */
-	const double start_angle = atan2(start_dy, start_dx);
-	const double cur_angle = atan2(cur_dy, cur_dx);
-	_new_rotation_angle = (cur_angle - start_angle) * 180. / M_PI;
-	_rotation_happend = true;
+	const double inner1 = sqrt(start_dx * start_dx + start_dy * start_dy);
+	const double inner2 = sqrt(cur_dx * cur_dx + cur_dy * cur_dy);
+	const double norm = inner1 * inner2;
+	const double inner = (cur_dx * start_dx) + (cur_dy * start_dy);
+	const double angle = acos(inner / norm);
+	const double curl = (cur_dx * start_dy) - (cur_dy * start_dx);
+
+	if (curl < 0) {
+		_new_rotation_angle = (angle / M_PI * 180.);
+		_rotation_happend = true;
+	}
+	else if (curl > 0) {
+		_new_rotation_angle = 360 - (angle / M_PI * 180.);
+		_rotation_happend = true;
+	}
 }
 
 
@@ -129,42 +114,7 @@ view::gesture_processor::~gesture_processor()
 {
 }
 
-
-/* TODO: | DEBUG ONLY | REMOVE WHEN NO NEEDED */
-map_object_h view::gesture_processor::__DEBUG_add_marker(const int x,
-							 const int y,
-							 const map_marker_type_e type)
-
-{
-	maps_coordinates_h coords = NULL;
-	map_view_screen_to_geography(_gd->_view, x,  y, &coords);
-	map_object_h marker = NULL;
-	map_object_create_marker(coords,
-				 "/tmp/maps/icon_bluestar.png",
-				 type,
-				 &marker);
-	map_view_add_object(_gd->_view, marker);
-	maps_coordinates_destroy(coords);
-	return marker;
-}
-
-map_object_h view::gesture_processor::__DEBUG_add_geo_marker(
-					const maps_coordinates_h coords,
-					const map_marker_type_e type)
-
-{
-	return NULL;
-	map_object_h marker = NULL;
-	map_object_create_marker(coords,
-				 "/tmp/maps/icon_redstar.png",
-				 type,
-				 &marker);
-	map_view_add_object(_gd->_view, marker);
-	return marker;
-}
-/* ----- | DEBUG ONLY | REMOVE WHEN NO NEEDED */
-
-extern session::command_queue *__map_view_select_q();
+extern session::command_queue *__maps_view_select_q();
 
 session::command_queue *view::gesture_processor::q()
 {
@@ -183,155 +133,101 @@ session::command_queue *view::gesture_processor::q()
 	/*return session::command_queue_sync::interface();*/
 
 	/* Will use the same queue as used in Map View */
-	return __map_view_select_q();
+	return __maps_view_select_q();
 }
 
 void *view::gesture_processor::get_maps()
 {
-	return _map_view_get_maps_service_ptr(_gd->_view);
+	return _maps_view_get_maps_service_ptr(_gd->_view);
 }
 
 session::command *view::gesture_processor::construct_gesture_command(
-						map_gesture_e gesture,
+						maps_view_gesture_e gesture,
 						const maps_coordinates_h c,
 						const bool zoom_changed,
 						const double zoom,
 						const bool rotation_changed,
 						const double angle)
 {
+	double zoom_factor = zoom;
+	double rotation_angle = angle;
+
 	/* Check if the gesture is available */
-	if (!_map_view_is_gesture_available(_gd->_view, gesture)) {
+	if (!_maps_view_is_gesture_available(_gd->_view, gesture)) {
 		return session::command::empty_ptr();
 	}
 
 	/* Perform gesture action */
-	switch(_map_view_get_gesture_action(_gd->_view, gesture)) {
-	case MAP_ACTION_SCROLL: {
+	switch(_maps_view_get_gesture_action(_gd->_view, gesture)) {
+	case MAPS_VIEW_ACTION_SCROLL: {
 		maps_coordinates_h coords = c;
 		maps_coordinates_h center_clone = NULL;
 		if(!coords) {
-			map_view_get_center(_gd->_view, &center_clone);
+			maps_view_get_center(_gd->_view, &center_clone);
 			coords = center_clone;
 		}
 		session::command *cmd =
-			new session::command_view_set_center(get_maps(),
-							     _gd->_view,
-							     coords);
+			new session::command_view_set_center(get_maps(), _gd->_view, coords);
 		maps_coordinates_destroy(center_clone);
 		return cmd;
 	}
-#ifdef IMPROVEMENT_OF_GESTURES_AND_ACTIONS
-	case MAP_ACTION_ZOOM: {
-		MAPS_LOGD("MAP_ACTION_ZOOM");
-		double zoom_factor = zoom;
-		if(zoom_factor == .0 || !zoom_changed)
-			map_view_get_zoom_factor(_gd->_view, &zoom_factor);
-		return new session::command_view_zoom(get_maps(), _gd->_view,
-							zoom_factor);
-	}
-	case MAP_ACTION_ZOOM_IN: {
-		MAPS_LOGD("MAP_ACTION_ZOOM_IN");
-		double zoom_factor = zoom;
+	case MAPS_VIEW_ACTION_ZOOM_IN: {
+		MAPS_LOGD("MAPS_VIEW_ACTION_ZOOM_IN");
 		if (zoom_factor == .0 || !zoom_changed)
-			map_view_get_zoom_factor(_gd->_view, &zoom_factor);
-		return new session::command_view_zoom(get_maps(), _gd->_view,
-							zoom_factor + 1.);
+			maps_view_get_zoom_factor(_gd->_view, &zoom_factor);
+		return new session::command_view_zoom(get_maps(), _gd->_view, zoom_factor + 1.);
 	}
-	case MAP_ACTION_ZOOM_OUT: {
-		MAPS_LOGD("MAP_ACTION_ZOOM_OUT");
-		double zoom_factor = zoom;
+	case MAPS_VIEW_ACTION_ZOOM_OUT: {
+		MAPS_LOGD("MAPS_VIEW_ACTION_ZOOM_OUT");
 		if (zoom_factor == .0 || !zoom_changed)
-			map_view_get_zoom_factor(_gd->_view, &zoom_factor);
-		return new session::command_view_zoom(get_maps(), _gd->_view,
-							zoom_factor - 1.);
+			maps_view_get_zoom_factor(_gd->_view, &zoom_factor);
+		return new session::command_view_zoom(get_maps(), _gd->_view, zoom_factor - 1.);
 	}
-	case MAP_ACTION_ZOOM_AND_SCROLL: {
-		MAPS_LOGD("MAP_ACTION_ZOOM_AND_SCROLL");
+	case MAPS_VIEW_ACTION_ZOOM_AND_SCROLL: {
+		MAPS_LOGD("MAPS_VIEW_ACTION_ZOOM_AND_SCROLL");
 		double cur_zoom_factor;
-		map_view_get_zoom_factor(_gd->_view, &cur_zoom_factor);
+		maps_view_get_zoom_factor(_gd->_view, &cur_zoom_factor);
 
-		double new_zoom_factor = zoom;
-		if (new_zoom_factor == .0 || !zoom_changed)
-			map_view_get_zoom_factor(_gd->_view, &new_zoom_factor);
+		if (zoom_factor == .0 || !zoom_changed)
+			maps_view_get_zoom_factor(_gd->_view, &zoom_factor);
 
-		if (new_zoom_factor == cur_zoom_factor) new_zoom_factor++;
-		map_view_set_zoom_factor(_gd->_view, new_zoom_factor);
+		if (zoom_factor == cur_zoom_factor) zoom_factor++;
+		maps_view_set_zoom_factor(_gd->_view, zoom_factor);
 
 		maps_coordinates_h coords = c;
 		maps_coordinates_h center_clone = NULL;
 		if(!coords) {
-			map_view_get_center(_gd->_view, &center_clone);
+			maps_view_get_center(_gd->_view, &center_clone);
 			coords = center_clone;
 		}
 		session::command *cmd =
-			new session::command_view_set_center(get_maps(),
-							     _gd->_view,
-							     coords);
+			new session::command_view_set_center(get_maps(), _gd->_view, coords);
 		maps_coordinates_destroy(center_clone);
 		return cmd;
 	}
-	case MAP_ACTION_ZOOM_AND_ROTATE: {
-		MAPS_LOGD("MAP_ACTION_ZOOM_AND_ROTATE");
-		double zoom_factor = zoom;
-		if(zoom_factor == .0 || !zoom_changed)
-			map_view_get_zoom_factor(_gd->_view, &zoom_factor);
-		double rotation_angle = angle;
-		if(rotation_angle == .0 || !rotation_changed)
-			map_view_get_orientation(_gd->_view, &rotation_angle);
-		rotation_angle -= (int(rotation_angle) / 360) * 360;
-		return new session::command_view_zoom_rotate(get_maps(),
-							 _gd->_view,
-							 zoom_factor,
-							 rotation_angle);
-	}
-	case MAP_ACTION_ROTATE: {
-		MAPS_LOGD("MAP_ACTION_ROTATE");
-		double rotation_angle = angle;
-		if(rotation_angle == .0 || !rotation_changed)
-			map_view_get_orientation(_gd->_view, &rotation_angle);
-		rotation_angle -= (int(rotation_angle) / 360) * 360;
-		return new session::command_view_rotate(get_maps(), _gd->_view,
-							rotation_angle);
-	}
-#else
-	case MAP_ACTION_ZOOM:
-	case MAP_ACTION_ROTATE: {
+	case MAPS_VIEW_ACTION_ZOOM:
+	case MAPS_VIEW_ACTION_ROTATE: {
 		if(zoom_changed & rotation_changed) {
-			double zoom_factor = zoom;
+			MAPS_LOGD("rotation_angle=%f", rotation_angle);
 			if(zoom_factor == .0)
-				map_view_get_zoom_factor(_gd->_view,
-							 &zoom_factor);
-			double rotation_angle = angle;
+				maps_view_get_zoom_factor(_gd->_view, &zoom_factor);
 			if(rotation_angle == .0)
-				map_view_get_orientation(_gd->_view,
-							 &rotation_angle);
+				maps_view_get_orientation(_gd->_view, &rotation_angle);
 			rotation_angle -= (int(rotation_angle) / 360) * 360;
-			return new session::command_view_zoom_rotate(get_maps(),
-							 _gd->_view,
-							 zoom_factor,
-							 rotation_angle);
+			return new session::command_view_zoom_rotate(get_maps(), _gd->_view, zoom_factor, rotation_angle);
 		} else if(zoom_changed) {
-			double zoom_factor = zoom;
 			if(zoom_factor == .0)
-				map_view_get_zoom_factor(_gd->_view,
-							 &zoom_factor);
+				maps_view_get_zoom_factor(_gd->_view, &zoom_factor);
 			MAPS_LOGI("\t set new zoom command: %f\n", zoom_factor);
-			return new session::command_view_zoom(get_maps(),
-							      _gd->_view,
-							      zoom_factor);
+			return new session::command_view_zoom(get_maps(), _gd->_view, zoom_factor);
 		} else if(rotation_changed) {
-			double rotation_angle = angle;
 			if(rotation_angle == .0)
-				map_view_get_orientation(_gd->_view,
-							 &rotation_angle);
+				maps_view_get_orientation(_gd->_view, &rotation_angle);
 			rotation_angle -= (int(rotation_angle) / 360) * 360;
-			return new session::command_view_rotate(get_maps(),
-								_gd->_view,
-								rotation_angle);
+			return new session::command_view_rotate(get_maps(), _gd->_view, rotation_angle);
 		}
 	}
-#endif
-	case MAP_ACTION_NONE:
+	case MAPS_VIEW_ACTION_NONE:
 		MAPS_LOGI("GESTURE: This Gesture is assigned with no Action");
 	default:
 		return session::command::empty_ptr();
@@ -343,47 +239,29 @@ void view::gesture_processor::on_long_press()
 	/* Assumed that we can tap only with a single finger */
 	touch_point tp = _gd->_info._finger_move[0];
 
-#ifdef IMPROVEMENT_OF_GESTURES_AND_ACTIONS
 	/* Check if any object was affected */
-	map_object_h hit = _map_object_hit_test(_gd->_view,
+	maps_view_object_h hit = _maps_view_object_hit_test(_gd->_view,
 						tp._x,
 						tp._y,
-						MAP_GESTURE_LONG_PRESS);
+						MAPS_VIEW_GESTURE_LONG_PRESS);
 	if (hit) return;
 
 	/* Enqueue the detected command */
 	maps_coordinates_h c = NULL;
-	map_view_screen_to_geography(_gd->_view, tp._x, tp._y, &c);
-	q()->push(construct_gesture_command(MAP_GESTURE_LONG_PRESS, c,
+	maps_view_screen_to_geolocation(_gd->_view, tp._x, tp._y, &c);
+	q()->push(construct_gesture_command(MAPS_VIEW_GESTURE_LONG_PRESS, c,
 					    false, .0, false, .0));
-#else
-	/* Enqueue the detected command */
-	maps_coordinates_h c = NULL;
-	map_view_screen_to_geography(_gd->_view, tp._x, tp._y, &c);
-	q()->push(construct_gesture_command(MAP_GESTURE_LONG_PRESS, c,
-					    false, .0, false, .0));
-
-	double lat = .0;
-	double lon = .0;
-	maps_coordinates_get_latitude_longitude(c, &lat, &lon);
-	MAPS_LOGI("GESTURE PRESS coordinates: %f, %f", lat, lon);
-
-	/* Check if any object was affected */
-	_map_object_hit_test(_gd->_view,
-				  tp._x,
-				  tp._y,
-				  MAP_GESTURE_LONG_PRESS);
-#endif
 
 	/* Invoke user registered event callback */
-	map_event_data_h ed =
-		_map_view_create_event_data(MAP_EVENT_GESTURE);
+	maps_view_event_data_h ed =
+		_maps_view_create_event_data(MAPS_VIEW_EVENT_GESTURE);
 	if(ed) {
-		_map_event_data_set_gesture_type(ed, MAP_GESTURE_LONG_PRESS);
-		_map_event_data_set_xy(ed, tp._x, tp._y);
-		_map_event_data_set_center(ed, c);
-		_map_event_data_set_fingers(ed, 1);
-		_map_view_invoke_event_callback(_gd->_view, ed);
+		_maps_view_event_data_set_gesture_type(ed, MAPS_VIEW_GESTURE_LONG_PRESS);
+		_maps_view_event_data_set_position(ed, tp._x, tp._y);
+		_maps_view_event_data_set_center(ed, c);
+		_maps_view_event_data_set_fingers(ed, 1);
+		_maps_view_invoke_event_callback(_gd->_view, ed);
+		maps_view_event_data_destroy(ed);
 	}
 
 	maps_coordinates_destroy(c);
@@ -391,110 +269,63 @@ void view::gesture_processor::on_long_press()
 
 void view::gesture_processor::on_double_tap()
 {
-#ifdef IMPROVEMENT_OF_GESTURES_AND_ACTIONS
 	/* Assumed that we can tap only with a single finger */
 	touch_point tp = _gd->_info_history._finger_up[0];
 
 	/* Check if any object was affected */
-	map_object_h hit = _map_object_hit_test(_gd->_view,
+	maps_view_object_h hit = _maps_view_object_hit_test(_gd->_view,
 						tp._x,
 						tp._y,
-						MAP_GESTURE_DOUBLE_TAP);
+						MAPS_VIEW_GESTURE_DOUBLE_TAP);
 	if (hit) return;
 
 	/* Enqueue the detected command */
 	maps_coordinates_h c = NULL;
-	map_view_screen_to_geography(_gd->_view, tp._x, tp._y, &c);
-	q()->push(construct_gesture_command(MAP_GESTURE_DOUBLE_TAP, c,
+	maps_view_screen_to_geolocation(_gd->_view, tp._x, tp._y, &c);
+	q()->push(construct_gesture_command(MAPS_VIEW_GESTURE_DOUBLE_TAP, c,
 					    false, .0, false, .0));
-#else
-	/* Default double tap effect is zoom level up */
-	double new_zoom_factor = 1. + int(_gd->_info._start_view_state._zoom_factor);
-
-	/* TODO: it also may be cashed in the _info._start_view_state */
-	int max_zoom_level = 0;
-	map_view_get_max_zoom_level(_gd->_view, &max_zoom_level);
-
-	if(new_zoom_factor > max_zoom_level)
-		new_zoom_factor = max_zoom_level;
-
-	/* Enqueue the detected command */
-	q()->push(construct_gesture_command(MAP_GESTURE_DOUBLE_TAP,
-					    NULL,
-					    true, new_zoom_factor,
-					    false, .0));
-
-	/* Assumed that we can double tap only with a single finger */
-	touch_point tp = _gd->_info._finger_move[0];
-
-	/* Check if any object was affected */
-	_map_object_hit_test(_gd->_view,
-				  tp._x,
-				  tp._y,
-				  MAP_GESTURE_DOUBLE_TAP);
-#endif
 
 	/* Invoke user registered event callback */
-	map_event_data_h ed =
-		_map_view_create_event_data(MAP_EVENT_GESTURE);
+	maps_view_event_data_h ed =
+		_maps_view_create_event_data(MAPS_VIEW_EVENT_GESTURE);
 	if(ed) {
-		_map_event_data_set_gesture_type(ed,
-						      MAP_GESTURE_DOUBLE_TAP);
-		_map_event_data_set_xy(ed, tp._x, tp._y);
-		_map_event_data_set_fingers(ed, 1);
-		_map_view_invoke_event_callback(_gd->_view, ed);
+		_maps_view_event_data_set_gesture_type(ed,
+						      MAPS_VIEW_GESTURE_DOUBLE_TAP);
+		_maps_view_event_data_set_position(ed, tp._x, tp._y);
+		_maps_view_event_data_set_fingers(ed, 1);
+		_maps_view_invoke_event_callback(_gd->_view, ed);
+		maps_view_event_data_destroy(ed);
 	}
 }
 
 void view::gesture_processor::on_tap()
 {
-#ifdef IMPROVEMENT_OF_GESTURES_AND_ACTIONS
 	/* Assumed that we can tap only with a single finger */
 	touch_point tp = _gd->_info_history._finger_up[0];
 
 	/* Check if any object was affected */
-	map_object_h hit = _map_object_hit_test(_gd->_view,
+	maps_view_object_h hit = _maps_view_object_hit_test(_gd->_view,
 						tp._x,
 						tp._y,
-						MAP_GESTURE_TAP);
+						MAPS_VIEW_GESTURE_TAP);
 	if (hit) return;
 
 	/* Enqueue the detected command */
 	maps_coordinates_h c = NULL;
-	map_view_screen_to_geography(_gd->_view, tp._x, tp._y, &c);
-	q()->push(construct_gesture_command(MAP_GESTURE_TAP, c,
+	maps_view_screen_to_geolocation(_gd->_view, tp._x, tp._y, &c);
+	q()->push(construct_gesture_command(MAPS_VIEW_GESTURE_TAP, c,
 					    false, .0, false, .0));
 	maps_coordinates_destroy(c);
-#else
-	/* Assumed that we can tap only with a single finger */
-	touch_point tp = _gd->_info._finger_move[0];
-
-	/* TODO: Soon it might be a good time to reject the
-	*  use case "tap for set center", because
-	*  it may lead to inconvenient sharpy UX */
-
-	/* Enqueue the detected command */
-	maps_coordinates_h c = NULL;
-	map_view_screen_to_geography(_gd->_view, tp._x, tp._y, &c);
-	q()->push(construct_gesture_command(MAP_GESTURE_TAP, c,
-					    false, .0, false, .0));
-	maps_coordinates_destroy(c);
-
-	/* Check if any object was affected */
-	_map_object_hit_test(_gd->_view,
-				  tp._x,
-				  tp._y,
-				  MAP_GESTURE_TAP);
-#endif
 
 	/* Invoke user registered event callback */
-	map_event_data_h ed =
-		_map_view_create_event_data(MAP_EVENT_GESTURE);
+	maps_view_event_data_h ed =
+		_maps_view_create_event_data(MAPS_VIEW_EVENT_GESTURE);
 	if(ed) {
-		_map_event_data_set_gesture_type(ed, MAP_GESTURE_TAP);
-		_map_event_data_set_xy(ed, tp._x, tp._y);
-		_map_event_data_set_fingers(ed, 1);
-		_map_view_invoke_event_callback(_gd->_view, ed);
+		_maps_view_event_data_set_gesture_type(ed, MAPS_VIEW_GESTURE_TAP);
+		_maps_view_event_data_set_position(ed, tp._x, tp._y);
+		_maps_view_event_data_set_fingers(ed, 1);
+		_maps_view_invoke_event_callback(_gd->_view, ed);
+		maps_view_event_data_destroy(ed);
 	}
 }
 
@@ -502,79 +333,28 @@ void view::gesture_processor::on_two_finger_tap()
 {
 	MAPS_LOGW("\nON TWO FINGER TAP\n");
 
-#ifdef IMPROVEMENT_OF_GESTURES_AND_ACTIONS
 	const touch_point tp_f1 = _gd->_info._finger_move[0];
 	const touch_point tp_f2 = _gd->_info._finger_move[1];
 	const touch_point gesture_center = calc_center(tp_f1, tp_f2);
 
 	/* Enqueue the detected command */
 	maps_coordinates_h c = NULL;
-	map_view_screen_to_geography(_gd->_view, gesture_center._x,
+	maps_view_screen_to_geolocation(_gd->_view, gesture_center._x,
 						gesture_center._y, &c);
 
 	/* Enqueue the detected command */
-	q()->push(construct_gesture_command(MAP_GESTURE_2_FINGER_TAP, c,
+	q()->push(construct_gesture_command(MAPS_VIEW_GESTURE_2_FINGER_TAP, c,
 					    false, .0, false, .0));
-#else
-	/* Default double tap effect is zoom level up */
-	double new_zoom_factor =
-		-1. + int(_gd->_info._start_view_state._zoom_factor);
-
-	/* DEBUG */
-	_gd->_info._start_view_state.trace();
-	_gd->_info_history._start_view_state.trace();
-
-	/* TODO: it also may be cashed in the _info._start_view_state */
-	int min_zoom_level = 0;
-	int error = map_view_get_min_zoom_level(_gd->_view, &min_zoom_level);
-	if(error != MAPS_ERROR_NONE)
-		MAPS_LOGE("ERROR [%d]: map_view_get_min_zoom_level", error);
-
-	if(new_zoom_factor < min_zoom_level) {
-		MAPS_LOGI("\t ...Correcting to min zoom level %d, "
-			  "from predicted factor %f, "
-			  "view: %p\n",
-			  min_zoom_level, new_zoom_factor, _gd->_view);
-		new_zoom_factor = min_zoom_level;
-	}
-
-	MAPS_LOGI("\t new zoom factor: %f\n", new_zoom_factor);
-
-	/* Enqueue the detected command */
-	q()->push(construct_gesture_command(MAP_GESTURE_2_FINGER_TAP,
-					    NULL,
-					    true, new_zoom_factor,
-					    false, .0));
-
-	const touch_point tp = _gd->_info._finger_move[0];
-
-#if 0
-	/* TODO: desicde if two-finger tap is applicable for object hit test */
-	/* Check if any object was affected */
-	_map_object_hit_test(_gd->_view,
-				  tp._x,
-				  tp._y,
-				  MAP_GESTURE_2_FINGER_TAP);
-#endif
-#endif
 
 	/* Invoke user registered event callback */
-	map_event_data_h ed =
-		_map_view_create_event_data(MAP_EVENT_GESTURE);
+	maps_view_event_data_h ed =
+		_maps_view_create_event_data(MAPS_VIEW_EVENT_GESTURE);
 	if(ed) {
-		_map_event_data_set_gesture_type(ed, MAP_GESTURE_2_FINGER_TAP);
-
-#ifndef IMPROVEMENT_OF_GESTURES_AND_ACTIONS
-		/* Calculate proper coordinates: center between fingers */
-		const touch_point tp_f1 = _gd->_info._finger_move[0];
-		const touch_point tp_f2 = _gd->_info._finger_move[1];
-		const touch_point gesture_center = calc_center(tp_f1, tp_f2);
-#endif
-		_map_event_data_set_xy(ed, gesture_center._x,
-					   gesture_center._y);
-
-		_map_event_data_set_fingers(ed, 2);
-		_map_view_invoke_event_callback(_gd->_view, ed);
+		_maps_view_event_data_set_gesture_type(ed, MAPS_VIEW_GESTURE_2_FINGER_TAP);
+		_maps_view_event_data_set_position(ed, gesture_center._x, gesture_center._y);
+		_maps_view_event_data_set_fingers(ed, 2);
+		_maps_view_invoke_event_callback(_gd->_view, ed);
+		maps_view_event_data_destroy(ed);
 	}
 }
 
@@ -584,54 +364,14 @@ void view::gesture_processor::on_flick()
 
 void view::gesture_processor::on_panning_finished(int finger_no)
 {
-#ifndef _MOVE_CENTER_COMMAND_DEFINED_
-	return;
-#endif /* _MOVE_CENTER_COMMAND_DEFINED_ */
-
 	/* Obtain fresh central coordinates of the map in the Plugin */
 	maps_coordinates_h c = NULL;
-	_map_view_get_plugin_center(_gd->_view, &c);
+	_maps_view_get_plugin_center(_gd->_view, &c);
 
 	/* Directly set the updated center of the map */
-	_map_view_set_center_directly(_gd->_view, c);
+	_maps_view_set_center_directly(_gd->_view, c);
 
 	maps_coordinates_destroy(c);
-
-#if 0
-	/* Assumed that we can tap only with a single finger */
-	const touch_point cur_tp = _gd->_info._finger_move[finger_no];
-	const touch_point start_tp = _gd->_info._finger_down[finger_no];
-
-	/* Calculate the new center of the map by adding the delta
-	* to the original center (e.g. the center of the map before the event
-	* has started) */
-
-	/* a. Calculating the delta of the gesture */
-	int delta_x = cur_tp._x - start_tp._x;
-	int delta_y = cur_tp._y - start_tp._y;
-
-	/* b. Get the initial screen coordinates of the center */
-	int center_x = 0;
-	int center_y = 0;
-	map_view_geography_to_screen(_gd->_view,
-				     _gd->_info._start_view_state._center,
-				     &center_x,
-				     &center_y);
-
-	/* c. Apply the delta to the intital center coordinates */
-	center_x -= delta_x;
-	center_y -= delta_y;
-
-	/* d. Converting screent coordinates of new center to
-	* the geographical */
-	maps_coordinates_h c = NULL;
-	map_view_screen_to_geography(_gd->_view, center_x, center_y, &c);
-
-	/* Directly set the updated center of the map */
-	_map_view_set_center_directly(_gd->_view, c);
-
-	maps_coordinates_destroy(c);
-#endif
 }
 
 void view::gesture_processor::on_pan(int finger_no)
@@ -644,8 +384,10 @@ void view::gesture_processor::on_pan(int finger_no)
 	* to the original center (e.g. the center of the map before the event
 	* has started) */
 
+	/* Check if the gesture is available */
+	if (!_maps_view_is_gesture_available(_gd->_view, MAPS_VIEW_GESTURE_SCROLL))
+		return;
 
-#ifdef _MOVE_CENTER_COMMAND_DEFINED_
 	touch_point prev_tp = _gd->_info._prev_finger_down[finger_no];
 	if(prev_tp.empty())
 		prev_tp = _gd->_info._finger_down[finger_no];
@@ -660,54 +402,15 @@ void view::gesture_processor::on_pan(int finger_no)
 							-delta_x,
 							-delta_y));
 
-
-#else
-	const touch_point start_tp = _gd->_info._finger_down[finger_no];
-
-	/* a. Calculating the delta of the gesture */
-	int delta_x = cur_tp._x - start_tp._x;
-	int delta_y = cur_tp._y - start_tp._y;
-
-	/* b. Get the initial screen coordinates of the center */
-	int center_x = 0;
-	int center_y = 0;
-	map_view_geography_to_screen(_gd->_view,
-				     _gd->_info._start_view_state._center,
-				     &center_x,
-				     &center_y);
-
-	/* c. Apply the delta to the intital center coordinates */
-	center_x -= delta_x;
-	center_y -= delta_y;
-
-	/* d. Converting screent coordinates of new center to
-	* the geographical */
-	maps_coordinates_h c = NULL;
-	map_view_screen_to_geography(_gd->_view, center_x, center_y, &c);
-
-	/* e. Construct the corresponding command */
-	q()->push(construct_gesture_command(MAP_GESTURE_SCROLL, c,
-					    false, .0, false, .0));
-	maps_coordinates_destroy(c);
-#endif /* _MOVE_CENTER_COMMAND_DEFINED_ */
-
-#if 0
-	/* TODO: desicde if panning is applicable for object hit test */
-	/* Check if any object was affected */
-	_map_object_hit_test(_gd->_view,
-				  tp._x,
-				  tp._y,
-				  MAP_GESTURE_SCROLL);
-#endif
-
 	/* Invoke user registered event callback */
-	map_event_data_h ed =
-		_map_view_create_event_data(MAP_EVENT_GESTURE);
+	maps_view_event_data_h ed =
+		_maps_view_create_event_data(MAPS_VIEW_EVENT_GESTURE);
 	if(ed) {
-		_map_event_data_set_gesture_type(ed, MAP_GESTURE_SCROLL);
-		_map_event_data_set_xy(ed, cur_tp._x, cur_tp._y);
-		_map_event_data_set_fingers(ed, 1);
-		_map_view_invoke_event_callback(_gd->_view, ed);
+		_maps_view_event_data_set_gesture_type(ed, MAPS_VIEW_GESTURE_SCROLL);
+		_maps_view_event_data_set_position(ed, cur_tp._x, cur_tp._y);
+		_maps_view_event_data_set_fingers(ed, 1);
+		_maps_view_invoke_event_callback(_gd->_view, ed);
+		maps_view_event_data_destroy(ed);
 	}
 }
 
@@ -752,7 +455,7 @@ void view::gesture_processor::on_single_finger_zoom()
 		return; /* No zoom happend */
 
 	int map_height = 0;
-	map_view_get_geometry(_gd->_view, NULL, NULL, NULL, &map_height);
+	maps_view_get_screen_location(_gd->_view, NULL, NULL, NULL, &map_height);
 	const int half_height = map_height / 2;
 
 	const double delta_zoom = 1. * vertical_way / half_height;
@@ -764,8 +467,8 @@ void view::gesture_processor::on_single_finger_zoom()
 	/* TODO: it also may be cashed in the _info._start_view_state */
 	int min_zoom_level = 0;
 	int max_zoom_level = 0;
-	map_view_get_min_zoom_level(_gd->_view, &min_zoom_level);
-	map_view_get_max_zoom_level(_gd->_view, &max_zoom_level);
+	maps_view_get_min_zoom_level(_gd->_view, &min_zoom_level);
+	maps_view_get_max_zoom_level(_gd->_view, &max_zoom_level);
 	if(new_zoom_factor < min_zoom_level)
 		new_zoom_factor = min_zoom_level;
 	if(new_zoom_factor > max_zoom_level)
@@ -773,39 +476,29 @@ void view::gesture_processor::on_single_finger_zoom()
 
 	/* Invoke user registered event callback for ZOOM */
 	do {
-		map_event_data_h ed =
-			_map_view_create_event_data(MAP_EVENT_GESTURE);
+		maps_view_event_data_h ed =
+			_maps_view_create_event_data(MAPS_VIEW_EVENT_GESTURE);
 		if(!ed)
 			break;
-		_map_event_data_set_gesture_type(ed,
-						MAP_GESTURE_SINGLE_FINGER_ZOOM);
-		_map_event_data_set_zoom_factor(ed, new_zoom_factor);
-		_map_event_data_set_fingers(ed, 2);
+		_maps_view_event_data_set_gesture_type(ed, MAPS_VIEW_GESTURE_SINGLE_FINGER_ZOOM);
+		_maps_view_event_data_set_zoom_factor(ed, new_zoom_factor);
+		_maps_view_event_data_set_fingers(ed, 2);
 
 		/* Find the current center of the gesture */
 		const touch_point cur_center = cur_tp_f1;
 			/*_gd->_info._start_view_state._center;*/
-		_map_event_data_set_xy(ed, cur_center._x, cur_center._y);
-		_map_view_invoke_event_callback(_gd->_view, ed);
+		_maps_view_event_data_set_position(ed, cur_center._x, cur_center._y);
+		_maps_view_invoke_event_callback(_gd->_view, ed);
+		maps_view_event_data_destroy(ed);
 	} while(false);
 
-#ifdef IMPROVEMENT_OF_GESTURES_AND_ACTIONS
 	/* Enqueue the detected zomm command */
-	q()->push(construct_gesture_command(MAP_GESTURE_SINGLE_FINGER_ZOOM,
+	q()->push(construct_gesture_command(MAPS_VIEW_GESTURE_SINGLE_FINGER_ZOOM,
 					    _gd->_info._start_view_state._center,
 					    true,
 					    new_zoom_factor,
 					    false,
 					    .0));
-#else
-	/* Enqueue the detected zomm command */
-	q()->push(construct_gesture_command(MAP_GESTURE_SINGLE_FINGER_ZOOM,
-					    NULL,
-					    true,
-					    new_zoom_factor,
-					    false,
-					    .0));
-#endif
 }
 
 void view::gesture_processor::on_zoom_rotate()
@@ -844,49 +537,31 @@ void view::gesture_processor::on_zoom_rotate()
 
 	/* Analyse zoom factor changes */
 	bool zoom_changed = false;
-	if(zc.zoom_happend()) {
-		#if 1
+	if(zc.zoom_happend() && _maps_view_is_gesture_available(_gd->_view, MAPS_VIEW_GESTURE_ZOOM)) {
 		/* Apply newly calculated zoom factor */
 		new_zoom_factor += _gd->_info._start_view_state._zoom_factor;
-		#else
-		/* Apply newly calculated zoom factor */
-		if(new_zoom_factor > 1.)
-			new_zoom_factor =
-				_gd->_info._start_view_state._zoom_factor
-				+ new_zoom_factor - 1.;
-		else if(new_zoom_factor != 0.) {
-			 new_zoom_factor =
-				 _gd->_info._start_view_state._zoom_factor
-				 - (1. - new_zoom_factor);
-		}
-		else
-			 new_zoom_factor =
-				 _gd->_info._start_view_state._zoom_factor;
-		#endif
 
 		/* Correct the zoom factor accordingly to allowed limits */
 		/* TODO: it also may be cashed in the _info._start_view_state */
 		int min_zoom_level = 0;
 		int max_zoom_level = 0;
-		map_view_get_min_zoom_level(_gd->_view, &min_zoom_level);
-		map_view_get_max_zoom_level(_gd->_view, &max_zoom_level);
+		maps_view_get_min_zoom_level(_gd->_view, &min_zoom_level);
+		maps_view_get_max_zoom_level(_gd->_view, &max_zoom_level);
 		if(new_zoom_factor < min_zoom_level)
 			new_zoom_factor = min_zoom_level;
 		if(new_zoom_factor > max_zoom_level)
 			new_zoom_factor = max_zoom_level;
 
 		/* Check if the zoom changed relatively to initial state */
-		zoom_changed = _gd->_info._start_view_state._zoom_factor
-			!= new_zoom_factor;
+		zoom_changed = (_gd->_info._start_view_state._zoom_factor != new_zoom_factor);
 	}
 
 	/* Analyze rotation angle changes */
 	bool rotation_changed = false;
-	if(zc.rotation_happend()) {
+	if(zc.rotation_happend() && _maps_view_is_gesture_available(_gd->_view, MAPS_VIEW_GESTURE_ROTATE)) {
 		/* Apply newly calculated rotation angle */
 		new_rotation_angle =
-			_gd->_info._start_view_state._rotation_angle
-			+ new_rotation_angle;
+			_gd->_info._start_view_state._rotation_angle + new_rotation_angle;
 
 		/* Correct the rotation angle to normalize it
 		 *  inside the diapazone of 0..360 degree */
@@ -894,91 +569,55 @@ void view::gesture_processor::on_zoom_rotate()
 		new_rotation_angle += 360. * (int(new_rotation_angle) / 360);
 
 		/* Check if the angle changed relatively to initial state */
-		rotation_changed =  _gd->_info._start_view_state._rotation_angle
-			!= new_rotation_angle;
+		rotation_changed = (_gd->_info._start_view_state._rotation_angle != new_rotation_angle);
 	}
 
-#ifdef IMPROVEMENT_OF_GESTURES_AND_ACTIONS
-	if(!zoom_changed && !rotation_changed)
-		return; // Seems nothing changed, we can return
-
-	do {
-		map_event_data_h ed =
-			_map_view_create_event_data(MAP_EVENT_GESTURE);
-		if(!ed)
-			break;
-		_map_event_data_set_gesture_type(ed, MAP_GESTURE_ZOOM);
-		_map_event_data_set_zoom_factor(ed, new_zoom_factor);
-		_map_event_data_set_rotation_angle(ed, new_rotation_angle);
-		_map_event_data_set_fingers(ed, 2);
-
-		/* Find the current center of the gesture */
-		const touch_point cur_center = calc_center(cur_tp_f1,
-							   cur_tp_f2);
-		_map_event_data_set_xy(ed,
-					    cur_center._x,
-					    cur_center._y);
-		_map_view_invoke_event_callback(_gd->_view, ed);
-	} while(false);
-#else
 	/* Invoke user registered event callback for ZOOM */
 	do {
 		if(!zoom_changed)
 			break;
-		map_event_data_h ed =
-			_map_view_create_event_data(MAP_EVENT_GESTURE);
+		maps_view_event_data_h ed = _maps_view_create_event_data(MAPS_VIEW_EVENT_GESTURE);
 		if(!ed)
 			break;
-		_map_event_data_set_gesture_type(ed, MAP_GESTURE_ZOOM);
-		_map_event_data_set_zoom_factor(ed, new_zoom_factor);
-		_map_event_data_set_fingers(ed, 2);
+		_maps_view_event_data_set_gesture_type(ed, MAPS_VIEW_GESTURE_ZOOM);
+		_maps_view_event_data_set_zoom_factor(ed, new_zoom_factor);
+		_maps_view_event_data_set_fingers(ed, 2);
 
 		/* Find the current center of the gesture */
-		const touch_point cur_center = calc_center(cur_tp_f1,
-							   cur_tp_f2);
-		_map_event_data_set_xy(ed,
-					    cur_center._x,
-					    cur_center._y);
-		_map_view_invoke_event_callback(_gd->_view, ed);
+		const touch_point cur_center = calc_center(cur_tp_f1, cur_tp_f2);
+		_maps_view_event_data_set_position(ed, cur_center._x, cur_center._y);
+		_maps_view_invoke_event_callback(_gd->_view, ed);
+		maps_view_event_data_destroy(ed);
 	} while(false);
 
 	/* Invoke user registered event callback for ROTATION */
 	do {
 		if(rotation_changed)
 			break;
-
-		map_event_data_h ed =
-			_map_view_create_event_data(MAP_EVENT_GESTURE);
+		maps_view_event_data_h ed = _maps_view_create_event_data(MAPS_VIEW_EVENT_GESTURE);
 		if(!ed)
 			break;
-		_map_event_data_set_gesture_type(ed, MAP_GESTURE_ROTATE);
-		_map_event_data_set_rotation_angle(ed, new_rotation_angle);
-		_map_event_data_set_fingers(ed, 2);
+		_maps_view_event_data_set_gesture_type(ed, MAPS_VIEW_GESTURE_ROTATE);
+		_maps_view_event_data_set_rotation_angle(ed, new_rotation_angle);
+		_maps_view_event_data_set_fingers(ed, 2);
 
 		/* Find the current center of the gesture */
-		const touch_point cur_center = calc_center(cur_tp_f1,
-							   cur_tp_f2);
-		_map_event_data_set_xy(ed,
-					    cur_center._x,
-					    cur_center._y);
-		_map_view_invoke_event_callback(_gd->_view, ed);
+		const touch_point cur_center = calc_center(cur_tp_f1, cur_tp_f2);
+		_maps_view_event_data_set_position(ed, cur_center._x, cur_center._y);
+		_maps_view_invoke_event_callback(_gd->_view, ed);
+		maps_view_event_data_destroy(ed);
 	} while(false);
 
 
 	if(!zoom_changed && !rotation_changed)
 		return; // Seems nothing changed, we can return
-#endif
 
 	/* Ignore center move if zoom is not available */
 	const bool movable_center =
-		_map_view_is_gesture_available(_gd->_view, MAP_GESTURE_ZOOM);
+		_maps_view_is_gesture_available(_gd->_view, MAPS_VIEW_GESTURE_ZOOM);
 	if(!movable_center) {
-		q()->push(construct_gesture_command(MAP_GESTURE_ZOOM,
-						    NULL,
-						    zoom_changed,
-						    new_zoom_factor,
-						    rotation_changed,
-						    new_rotation_angle));
+		q()->push(construct_gesture_command(MAPS_VIEW_GESTURE_ZOOM,
+			NULL, zoom_changed, new_zoom_factor, rotation_changed, new_rotation_angle));
 		return;
 	}
 
@@ -998,41 +637,28 @@ void view::gesture_processor::on_zoom_rotate()
 	const int delta_x = cur_center._x - start_center._x;
 	const int delta_y = cur_center._y - start_center._y;
 
-
 	/* b. Get the initial screen coordinates of the center */
 	int center_x = 0;
 	int center_y = 0;
-	map_view_geography_to_screen(_gd->_view,
-				     _gd->_info._start_view_state._center,
-				     &center_x,
-				     &center_y);
-
+	double lat, lon;
+	maps_coordinates_get_latitude_longitude(_gd->_info._start_view_state._center, &lat, &lon);
+	maps_view_geolocation_to_screen(_gd->_view, _gd->_info._start_view_state._center, &center_x, &center_y);
 
 	/* c. Apply the delta to the intital center coordinates */
 	center_x -= delta_x;
 	center_y -= delta_y;
 
-
 	/* d. Converting screent coordinates of new center to
 	* the geographical */
 	maps_coordinates_h new_center = NULL;
-	map_view_screen_to_geography(_gd->_view,
-				     center_x,
-				     center_y,
-				     &new_center);
+	maps_view_screen_to_geolocation(_gd->_view, center_x, center_y, &new_center);
 
 	/* e. Enque the command to move the center */
-	q()->push(new session::command_view_set_center(get_maps(),
-							       _gd->_view,
-							       new_center));
+	q()->push(new session::command_view_set_center(get_maps(), _gd->_view, new_center));
 
 	/* f. Enqueue the detected zomm command */
-	q()->push(construct_gesture_command(MAP_GESTURE_ZOOM,
-					    new_center,
-					    zoom_changed,
-					    new_zoom_factor,
-					    rotation_changed,
-					    new_rotation_angle));
+	q()->push(construct_gesture_command(MAPS_VIEW_GESTURE_ZOOM,
+		new_center, zoom_changed, new_zoom_factor, rotation_changed, new_rotation_angle));
 
 	maps_coordinates_destroy(new_center);
 }
@@ -1047,11 +673,10 @@ void view::gesture_processor::on_pinch()
 /*    VIEW EVENT STREAM                                                       */
 /* ---------------------------------------------------------------------------*/
 
-
-view::finger_event_stream::finger_event_stream(map_view_h v)
+view::finger_event_stream::finger_event_stream(maps_view_h v)
 	: _d(NULL)
 {
-	/* TODO: extract in dedicated factory in map_view.cpp */
+	/* TODO: extract in dedicated factory in maps_view.cpp */
 	/* Issuing an instance of gestuer detector */
 	_d = new gesture_detector_statemachine(v);
 	/*_d = new inertial_gesture(v);*/
@@ -1063,7 +688,6 @@ view::finger_event_stream::finger_event_stream(map_view_h v)
 		_finger_moving[i] = false;
 	}
 }
-
 
 void view::finger_event_stream::set_gesture_detector(gesture_detector *d)
 {

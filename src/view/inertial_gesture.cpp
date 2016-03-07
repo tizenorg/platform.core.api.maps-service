@@ -22,13 +22,13 @@
 #include <unistd.h>
 #include <time.h>
 
-extern void _map_view_set_idle_listener(map_view_h view,
+extern void _maps_view_set_idle_listener(maps_view_h view,
 					void (*callback)(void *user_data),
 					void *user_data);
 
-extern void _map_view_halt_inertial_camera(map_view_h view);
+extern void _maps_view_halt_inertial_camera(maps_view_h view);
 
-view::inertial_gesture::inertial_gesture(map_view_h view)
+view::inertial_gesture::inertial_gesture(maps_view_h view)
 	: gesture_detector(view)
 	  , _d(NULL)
 	  , transiting(false)
@@ -37,12 +37,12 @@ view::inertial_gesture::inertial_gesture(map_view_h view)
 
 	_d = new gesture_detector_statemachine(view);
 
-	_map_view_set_idle_listener(view, on_idle, this);
+	_maps_view_set_idle_listener(view, on_idle, this);
 }
 
 view::inertial_gesture::~inertial_gesture()
 {
-	_map_view_set_idle_listener(_view, NULL, NULL);
+	_maps_view_set_idle_listener(_view, NULL, NULL);
 
 	if(_d)
 		delete _d;
@@ -81,14 +81,12 @@ void view::inertial_gesture::tap(int finger_no, const touch_point &tp)
 			_d->up(i, tp);
 		}
 
-		_map_view_halt_inertial_camera(_view);
+		_maps_view_halt_inertial_camera(_view);
 		_d->halt_gesture();
 		reset();
 	}
 
-	#ifdef IMPROVEMENT_OF_GESTURES_AND_ACTIONS
 	_down[finger_no] = tp;
-	#endif
 	_last[finger_no] = tp;
 	_prev[finger_no] = tp;
 	_cur_x[finger_no] = tp._x;
@@ -123,11 +121,9 @@ void view::inertial_gesture::up(int finger_no, const touch_point &tp)
 	unsigned int dt =
 		_last[finger_no]._timestamp - _prev[finger_no]._timestamp;
 
-	#ifdef IMPROVEMENT_OF_GESTURES_AND_ACTIONS
 	int trajectory = get_trajectory_effective_length(_down[finger_no], tp);
 	MAPS_LOGD("trajectory=%d", trajectory);
 	if (trajectory <= 5) dt = 0;
-	#endif
 
 	if(dt == 0) {
 		_derivative_x[finger_no] = .0;

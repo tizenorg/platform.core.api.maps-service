@@ -17,10 +17,10 @@
 
 #include "polygon_constructor.h"
 
-extern int _map_object_create(const map_object_type_e type,
-			      map_object_h *object);
+extern int _maps_view_object_create(const maps_view_object_type_e type,
+			      maps_view_object_h *object);
 
-map_object_h view::polygon_constructor::construct(const maps_coordinates_list_h
+maps_view_object_h view::polygon_constructor::construct(const maps_coordinates_list_h
 						  coordinates,
 						  const unsigned char r,
 						  const unsigned char g,
@@ -34,27 +34,27 @@ map_object_h view::polygon_constructor::construct(const maps_coordinates_list_h
 
 	__error = MAPS_ERROR_NONE;
 
-	map_object_h polygon = NULL;
+	maps_view_object_h polygon = NULL;
 	do {
 		/* 1. Create a visual object for marker */
-		__error = _map_object_create(MAP_OBJECT_POLYGON,
+		__error = _maps_view_object_create(MAPS_VIEW_OBJECT_POLYGON,
 						 &polygon);
 		if (__error != MAPS_ERROR_NONE)
 			break;
 
 		/* 2. Set the polygon points */
-		__error = map_object_polygon_set_polygon(polygon, coordinates);
+		__error = maps_view_object_polygon_set_polygon(polygon, coordinates);
 		if (__error != MAPS_ERROR_NONE)
 			break;
 
 		/* 3. Set the polygon color */
-		__error = map_object_polygon_set_fill_color(polygon,
+		__error = maps_view_object_polygon_set_fill_color(polygon,
 								 r, g, b, a);
 		if (__error != MAPS_ERROR_NONE)
 			break;
 
 		/* 5. Set the polygon visible */
-		__error = map_object_set_visible(polygon, true);
+		__error = maps_view_object_set_visible(polygon, true);
 		if (__error != MAPS_ERROR_NONE)
 			break;
 
@@ -64,6 +64,6 @@ map_object_h view::polygon_constructor::construct(const maps_coordinates_list_h
 	} while(false);
 
 	/* FAILURE: Releasing objects */
-	map_object_destroy(polygon);
+	maps_view_object_destroy(polygon);
 	return NULL;
 }

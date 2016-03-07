@@ -17,7 +17,6 @@
 #ifndef __MAPS_SERVICE_TEST_API_OBJECT_H__
 #define __MAPS_SERVICE_TEST_API_OBJECT_H__
 
-#include <maps_service.h>
 #include <maps_plugin.h>
 #include <maps_address.h>
 #include <maps_place_plugin.h>

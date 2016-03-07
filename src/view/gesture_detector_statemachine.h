@@ -17,7 +17,7 @@
 #define __MAPS_VIEW_GESTURE_DETECTOR_STATEMACHINE_H__
 
 
-#include "map_view.h"
+#include "maps_view.h"
 #include "runtime_data.h"
 #include "gesture_detector.h"
 
@@ -31,9 +31,7 @@ namespace view
 		FINGER2_DOWN,
 		FINGER2_MOVE,
 		FINGER2_UP,
-		#ifdef IMPROVEMENT_OF_GESTURES_AND_ACTIONS
 		TAP_TIMER,
-		#endif
 		LONG_PRESS_TIMER
 	};
 
@@ -93,15 +91,13 @@ namespace view
 		bool is_panning[MAX_FINGERS];
 
 	public:
-		gesture_detector_statemachine(map_view_h v);
+		gesture_detector_statemachine(maps_view_h v);
 		virtual ~gesture_detector_statemachine();
 	public:
 		virtual void tap(int finger_no, const touch_point &tp);
 		virtual void move(int finger_no, const touch_point &tp);
 		virtual void up(int finger_no, const touch_point &tp);
-		#ifdef IMPROVEMENT_OF_GESTURES_AND_ACTIONS
 		virtual void on_tap_timer();
-		#endif
 		virtual void on_long_press_timer();
 		virtual void halt_gesture();
 	public:
@@ -116,9 +112,6 @@ namespace view
 		void detected_finger2_pan();	/* Pan (by second finger) */
 		void detected_zoom_rotate();		/* Zoom, Rotate etc */
 		void detected_2finger_tap();	/* 2Finger Tap */
-		#ifdef IMPROVEMENT_OF_GESTURES_AND_ACTIONS
-		void detected_flick();
-		#endif
 	private:
 		void start_panning(int finger_no);
 		void finish_panning(int finger_no);
