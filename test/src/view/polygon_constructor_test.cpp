@@ -49,7 +49,7 @@ void utc_construct_polygon_p(void)
 		maps_coordinates_destroy(c);
 	}
 
-	map_object_h polygon = pc.construct(path, 0x01, 0x02, 0x03, 0x04);
+	maps_view_object_h polygon = pc.construct(path, 0x01, 0x02, 0x03, 0x04);
 	g_assert_cmpint(pc.get_error(), ==, MAPS_ERROR_NONE);
 	g_assert(polygon);
 
@@ -57,7 +57,7 @@ void utc_construct_polygon_p(void)
 
 	/* Check Polygon path */
 	int iterations = 0;
-	int error = map_object_polygon_foreach_point(polygon,
+	int error = maps_view_object_polygon_foreach_point(polygon,
 				       __utc_map_object_poly_point_cb,
 				       &iterations);
 	g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
@@ -68,7 +68,7 @@ void utc_construct_polygon_p(void)
 	unsigned char g = 0;
 	unsigned char b = 0;
 	unsigned char a = 0;
-	error = map_object_polygon_get_fill_color(polygon, &r, &g, &b, &a);
+	error = maps_view_object_polygon_get_fill_color(polygon, &r, &g, &b, &a);
 	g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
 	g_assert_cmpint(r, ==, 0x01);
 	g_assert_cmpint(g, ==, 0x02);
@@ -76,7 +76,7 @@ void utc_construct_polygon_p(void)
 	g_assert_cmpint(a, ==, 0x04);
 
 
-	error = map_object_destroy(polygon);
+	error = maps_view_object_destroy(polygon);
 	g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
 }
 
@@ -84,7 +84,7 @@ void utc_construct_polygon_n(void)
 {
 	view::polygon_constructor pc;
 
-	map_object_h polygon = pc.construct(NULL, 0x01, 0x02, 0x03, 0x04);
+	maps_view_object_h polygon = pc.construct(NULL, 0x01, 0x02, 0x03, 0x04);
 	g_assert_cmpint(pc.get_error(), ==, MAPS_ERROR_INVALID_PARAMETER);
 	g_assert(!polygon);
 }

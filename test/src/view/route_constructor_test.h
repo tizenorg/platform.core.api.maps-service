@@ -33,23 +33,23 @@ void utc_get_finish_marker_p(void);
 /*static const char *get_default_marker_image();*/
 void utc_get_default_marker_p(void);
 
-/*static int add_marker(map_object_h route_object,
+/*static int add_marker(maps_view_object_h route_object,
 				       const maps_coordinates_h coords,
-				       map_marker_type_e type);*/
+				       maps_view_marker_type_e type);*/
 void utc_add_marker_p(void);
 void utc_add_marker_n(void);
 
-/*void add_start_marker(map_object_h route_object,
+/*void add_start_marker(maps_view_object_h route_object,
 		      maps_route_h route);*/
 void utc_add_start_marker_p(void);
 void utc_add_start_marker_n(void);
 
-/*void add_finish_marker(map_object_h route_object,
+/*void add_finish_marker(maps_view_object_h route_object,
 		       maps_route_h route);*/
 void utc_add_finish_marker_p(void);
 void utc_add_finish_marker_n(void);
 
-/*static int add_trajectory(map_object_h route_object,
+/*static int add_trajectory(maps_view_object_h route_object,
 			  maps_item_list_h route_points);*/
 void utc_add_trajectory_p(void);
 void utc_add_trajectory_n(void);
@@ -61,7 +61,7 @@ void utc_add_trajectory_n(void);
 void utc_add_trajectory_markers_p(void);
 void utc_add_trajectory_markers_n(void);
 
-/*void add_route_path(map_object_h route_object,
+/*void add_route_path(maps_view_object_h route_object,
 		    maps_route_h route);*/
 void utc_add_route_path_p(void);
 void utc_add_route_path_n(void);
@@ -72,7 +72,7 @@ void utc_add_route_path_n(void);
 void utc_collect_path_points_p(void);
 void utc_collect_path_points_n(void);
 
-/*void add_route_segments(map_object_h route_object,
+/*void add_route_segments(maps_view_object_h route_object,
 			maps_route_h route);*/
 void utc_add_route_segments_p(void);
 void utc_add_route_segments_n(void);

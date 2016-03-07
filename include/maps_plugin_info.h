@@ -40,7 +40,7 @@ extern "C" {
  * @remarks To create the handle use maps_plugin_info_create().
  * \n To release the handle use maps_plugin_info_destroy().
  * \n To clone the handle use maps_plugin_info_clone().
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @see maps_plugin_info_create()
  * @see maps_plugin_info_destroy()
@@ -54,7 +54,7 @@ typedef void *maps_plugin_info_h;
  * @brief	Creates a new plugin info handle.
  * @details This function creates a new plugin info handle and allocates all
  * needed resources.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks @a info must be released using maps_plugin_info_destroy().
  * \n @a info may be cloned using maps_plugin_info_clone().
  *
@@ -73,7 +73,7 @@ int maps_plugin_info_create(maps_plugin_info_h *info);
  * @brief	Destroys the plugin info handle and releases all its resources.
  * @details This function destroys the plugin info handle and releases all its
  * resources.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	info	The plugin info handle to destroy
  * @return	0 on success, otherwise a negative error value
@@ -91,7 +91,7 @@ int maps_plugin_info_destroy(maps_plugin_info_h info);
  * @brief	Clones the plugin info handle.
  * @details This function clones the plugin info handle @a origin and all its
  * resources.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks @a cloned must be released using maps_plugin_info_destroy().
  *
  * @param[in]	origin		The original plugin info handle
@@ -114,7 +114,7 @@ int maps_plugin_info_clone(const maps_plugin_info_h origin,
 /**
  * @brief	Gets the plugin provider name.
  * @details This function gets the plugin provider name.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks @a provider_name must be released using free().
  *
  * @param[in]	info		The handle of plugin info
@@ -133,7 +133,7 @@ int maps_plugin_info_get_provider_name(const maps_plugin_info_h info,
 /**
  * @brief	Sets the plugin provider name.
  * @details This function sets the plugin provider name.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	info		The handle of plugin info
  * @param[in]	provider_name	The plugin info name

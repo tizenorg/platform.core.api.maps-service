@@ -33,46 +33,46 @@ void utc_map_event_data_get_type_p(void);
 void utc_map_event_data_get_type_n(void);
 
 
-/*int map_event_data_get_gesture_type(map_event_data_h event,
-					 map_gesture_e *gesture_type);*/
+/*int map_event_data_get_gesture_type(maps_view_event_data_h event,
+					 maps_view_gesture_e *gesture_type);*/
 void utc_map_event_data_get_gesture_type_p(void);
 void utc_map_event_data_get_gesture_type_n(void);
 
-/* int map_event_data_get_action_type(map_event_data_h event,
-					map_action_e *action_type);*/
+/* int map_event_data_get_action_type(maps_view_event_data_h event,
+					maps_view_action_e *action_type);*/
 void utc_map_event_data_get_action_type_p(void);
 void utc_map_event_data_get_action_type_n(void);
 
-/*int map_event_data_get_center(map_event_data_h event,
+/*int map_event_data_get_center(maps_view_event_data_h event,
 				   maps_coordinates_h *center);*/
 void utc_map_event_data_get_center_p(void);
 void utc_map_event_data_get_center_n(void);
 
-/*int map_event_data_get_delta(map_event_data_h event,
+/*int map_event_data_get_delta(maps_view_event_data_h event,
 				  int *delta_x, int *delta_y);*/
 void utc_map_event_data_get_delta_p(void);
 void utc_map_event_data_get_delta_n(void);
 
-/*int map_event_data_get_xy(map_event_data_h event, int *x, int* y);*/
-void utc_map_event_data_get_xy_p(void);
-void utc_map_event_data_get_xy_n(void);
+/*int map_event_data_get_position(maps_view_event_data_h event, int *x, int* y);*/
+void utc_map_event_data_get_position_p(void);
+void utc_map_event_data_get_position_n(void);
 
-/*int map_event_data_get_fingers(map_event_data_h event, int *fingers);*/
+/*int map_event_data_get_fingers(maps_view_event_data_h event, int *fingers);*/
 void utc_map_event_data_get_fingers_p(void);
 void utc_map_event_data_get_fingers_n(void);
 
-/*int map_event_data_get_zoom_factor(map_event_data_h event,
+/*int map_event_data_get_zoom_factor(maps_view_event_data_h event,
 					double *zoom_factor);*/
 void utc_map_event_data_get_zoom_factor_p(void);
 void utc_map_event_data_get_zoom_factor_n(void);
 
-/*int map_event_data_get_rotation_angle(map_event_data_h event,
+/*int map_event_data_get_rotation_angle(maps_view_event_data_h event,
 					   double *rotation_angle);*/
 void utc_map_event_data_get_rotation_angle_p(void);
 void utc_map_event_data_get_rotation_angle_n(void);
 
-/*int map_event_data_get_object(map_event_data_h event,
-				   map_object_h *object);*/
+/*int map_event_data_get_object(maps_view_event_data_h event,
+				   maps_view_object_h *object);*/
 void utc_map_event_data_get_object_p(void);
 void utc_map_event_data_get_object_n(void);
 

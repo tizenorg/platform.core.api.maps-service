@@ -41,7 +41,7 @@ extern "C" {
  * @brief Creates a new place link object handle.
  * @details This function creates a new place link object handle and allocates
  * all needed resources.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks @a link must be released using maps_place_link_object_destroy().
  * \n @a link may be cloned using maps_place_link_object_clone().
  *
@@ -59,7 +59,7 @@ int maps_place_link_object_create(maps_place_link_object_h *link);
 /**
  * @brief	Sets the place link object id.
  * @details This function sets the place link object id.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	link		The handle of place link object
  * @param[in]	id		The place link object id
@@ -78,7 +78,7 @@ int maps_place_link_object_set_id(maps_place_link_object_h link,
 /**
  * @brief	Sets the place link object string.
  * @details This function sets the place link object string.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	link		The handle of place link object
  * @param[in]	string		The place link object string
@@ -97,7 +97,7 @@ int maps_place_link_object_set_string(maps_place_link_object_h link,
 /**
  * @brief	Sets the place link object type.
  * @details This function sets the place link object type.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	link		The handle of place link object
  * @param[in]	type		The place link object type
@@ -116,7 +116,7 @@ int maps_place_link_object_set_type(maps_place_link_object_h link,
 /**
  * @brief	Sets the place link object name.
  * @details This function sets the place link object name.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	link		The handle of place link object
  * @param[in]	name		The place link object name

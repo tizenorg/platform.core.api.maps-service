@@ -24,9 +24,7 @@ namespace view
 	class inertial_gesture : public gesture_detector {
 	protected:
 		gesture_detector *_d;
-		#ifdef IMPROVEMENT_OF_GESTURES_AND_ACTIONS
 		touch_point _down[MAX_FINGERS];
-		#endif
 		touch_point _last[MAX_FINGERS];
 		touch_point _prev[MAX_FINGERS];
 		double _cur_x[MAX_FINGERS];
@@ -40,7 +38,7 @@ namespace view
 	private:
 		static const double __ACCURACY = 1;
 	public:
-		inertial_gesture(map_view_h view);
+		inertial_gesture(maps_view_h view);
 		~inertial_gesture();
 	private:
 		inertial_gesture(const inertial_gesture &src);
