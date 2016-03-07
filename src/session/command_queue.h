@@ -19,8 +19,6 @@
 
 #include "module.h"
 
-/*#define _MAPS_SERVICE_SUPPORTS_ASYNC_QUEUE_*/
-
 namespace session
 {
 
@@ -35,12 +33,10 @@ namespace session
 		virtual void clear(plugin::plugin_s *p) = 0;
 	public:
 		static command_queue *interface();
-#ifdef _MAPS_SERVICE_SUPPORTS_ASYNC_QUEUE_
 		static bool is_async()
 		{
-			return true;
+			return false;
 		}
-#endif /*_MAPS_SERVICE_SUPPORTS_ASYNC_QUEUE_*/
 	};
 
 	class command_queue_sync:public command_queue

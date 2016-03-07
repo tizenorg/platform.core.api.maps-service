@@ -24,12 +24,11 @@
  * @defgroup	CAPI_MAPS_CONTAINERS_MODULE Container Data Types
  *
  * @file maps_extra_types.h
- * @brief This file contains definitions and functions of several Maps Service
- * data types, such as lists and hash tables.
+ * @brief This file contains definitions and functions of useful data types.
  *
  * @addtogroup CAPI_MAPS_CONTAINERS_MODULE
  * @{
- * @brief This provides several Maps Service data types, such as lists and hash
+ * @brief This provides variable Maps Service data types, such as lists and hash
  * tables.
  */
 
@@ -41,9 +40,11 @@ extern "C" {
  * @ingroup	CAPI_MAPS_CONTAINERS_MODULE
  * @defgroup	CAPI_MAPS_CONTAINERS_MODULE_ITEM_LIST Maps Item Lists
  *
+ * @file maps_extra_types.h
+ * @brief This section contains API for using List of item pointers.
+ *
  * @addtogroup CAPI_MAPS_CONTAINERS_MODULE_ITEM_LIST
  * @{
- * @file maps_extra_types.h
  * @brief This provides API for using List of item pointers.
  */
 
@@ -56,7 +57,7 @@ extern "C" {
  * \n The items of the list may be iterated using maps_item_list_foreach().
  * \n To append an item to the list use maps_item_list_append().
  * \n The items of the list may be removed maps_item_list_remove_all().
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @see maps_item_list_create()
  * @see maps_item_list_destroy()
@@ -68,7 +69,7 @@ typedef void *maps_item_list_h;
  * @brief	Creates a new list of item pointers.
  * @details This function creates a new instance of item pointer list, associate
  * a new handle with it and allocates all needed resources.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks @a list must be released using maps_item_list_destroy().
  * \n @a list may be cloned using maps_item_list_clone().
  *
@@ -87,7 +88,7 @@ int maps_item_list_create(maps_item_list_h *list);
  * @brief	Destroys the list handle and releases all its resources.
  * @details This function destroys the list handle and releases all its
  * resources.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	list		The handle of list to be deleted
  * @return	0 on success, otherwise a negative error value
@@ -105,7 +106,7 @@ int maps_item_list_destroy(maps_item_list_h list);
  * @brief	Clone function, making a copy of a list item.
  * @details This function is called once for each item of the given list while
  * the list is being cloned during the maps_item_list_clone() procedure.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks If this function returns the value different from MAPS_ERROR_NONE,
  * the cloned item will not be appended to the list.
  *
@@ -127,7 +128,7 @@ typedef int (*maps_item_list_clone_cb) (void *origin, void **cloned);
  * @details This function clones the list of item pointers @a origin and all its
  * resources.
  * \n The list handle @a origin may be created using maps_item_list_create().
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks @a cloned must be released using maps_item_list_destroy().
  *
  * @param[in]	origin		The handle of list to be cloned
@@ -153,7 +154,8 @@ int maps_item_list_clone(const maps_item_list_h origin,
  * @brief	Appends an item to the list.
  * @details This function appends an item @a data to the list of item pointers
  * @a list.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @remarks If @a clone_func is null, @a data will not be cloned.
  *
  * @param[in]	list		The handle of list
  * @param[in]	data		The item pointer to be pointed to the list
@@ -177,7 +179,7 @@ int maps_item_list_append(maps_item_list_h list, const void *data,
  * @details This function is called once for each item of the given list while
  * the list is being iterated
  * during the maps_item_list_foreach() procedure.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks The @a data must be released by you.
  *
  * @param[in]	index		The current index of item
@@ -199,7 +201,7 @@ typedef bool(*maps_item_list_foreach_cb) (int index, int total, void *data,
  * @brief	Gets the items of the specified list.
  * @details This function delivers items of a specified list via
  * maps_item_list_foreach_cb() callback.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	list		The handle of list
  * @param[in]	clone_func	The function for cloning the list values
@@ -230,7 +232,7 @@ int maps_item_list_foreach(maps_item_list_h list,
  * @details This function is called once for each item of the given list while
  * the list is being destroyed
  * during the maps_item_list_remove_all() procedures.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks The return of this function is ignored.
  *
  * @param[in]	data		The pointer to the list item which is to be
@@ -249,7 +251,7 @@ typedef int (*maps_item_list_free_cb) (void *data);
  * @brief	Removes and destroys list item.
  * @details This function removes the given items from the @a list and releases
  * resources, assigned with it.
- * @since_tizen 2.4
+ * @since_tizen 3.0
  * @remarks The @a item is destroyed with #maps_item_list_free_cb. If this
  * callback is NULL, item will not be destroyed.
  *
@@ -276,9 +278,7 @@ int maps_item_list_remove(maps_item_list_h list,
  * @brief	Removes and destroys all list items.
  * @details This function removes all items of the @a list and releases
  * resources, assigned with them.
- * If two elements contain the same data, only the first is removed.
- * If none of the elements contain the data, the GList is unchanged.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks Each item is destroyed with #maps_item_list_free_cb. If this
  * callback is NULL, items will not be destroyed.
  *
@@ -299,6 +299,48 @@ int maps_item_list_remove_all(maps_item_list_h list,
 			      maps_item_list_free_cb free_func);
 
 /**
+ * @brief	Called once for each item while iterating through the given list.
+ * @details This function is called once for each item of the given list while
+ * the list is being iterated during the maps_item_list_foreach_noclone() procedure.
+ * @since_tizen 3.0
+ *
+ * @param[in]	index		The current index of item
+ * @param[in]	data		The pointer to the list item
+ * @param[in]	user_data	The user data passed from maps_item_list_foreach_noclone()
+ * @return	@c true to continue with the next iteration of the loop, \n @c false to break out of the loop
+ *
+ * @pre maps_item_list_foreach_noclone() will invoke this callback.
+ *
+ * @see maps_item_list_foreach_noclone()
+ */
+typedef bool(*maps_item_list_foreach_noclone_cb) (int index, void *data, void *user_data);
+
+/**
+ * @brief	Gets the items of the specified list.
+ * @details This function delivers items of a specified list via maps_item_list_foreach_noclone_cb() callback.
+ * @since_tizen 3.0
+ * @remarks This function is useful while adding to the list an item of arbitrary type without cloning it.
+ * \n maps_item_list_foreach() is useful when cloning the value is required while adding to the list.
+ *
+ * @param[in]	list		The handle of list
+ * @param[in]	callback	The callback to be invoked for delivering each list item
+ * @param[in]	user_data	The user data to be passed to the callback function
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_FOUND Result not found
+ *
+ * @pre @a list is created using maps_item_list_create().
+ * @post This function invokes maps_item_list_foreach_noclone_cb() to deliver list items.
+ *
+ * @see maps_item_list_foreach_noclone_cb()
+ * @see maps_item_list_append()
+ * @see maps_item_list_foreach()
+ * @see maps_service_create()
+ */
+int maps_item_list_foreach_noclone(maps_item_list_h list, maps_item_list_foreach_noclone_cb callback, void *user_data);
+
+/**
  * @}
  */
 
@@ -308,9 +350,11 @@ int maps_item_list_remove_all(maps_item_list_h list,
  * @ingroup	CAPI_MAPS_CONTAINERS_MODULE
  * @defgroup	CAPI_MAPS_CONTAINERS_MODULE_STRING_HASHTABLE Maps String Hash Tables
  *
+ * @file maps_extra_types.h
+ * @brief This section contains API for using Hash Table of strings.
+ *
  * @addtogroup CAPI_MAPS_CONTAINERS_MODULE_STRING_HASHTABLE
  * @{
- * @file maps_extra_types.h
  * @brief This provides API for using Hash Table of strings.
  */
 
@@ -329,7 +373,7 @@ int maps_item_list_remove_all(maps_item_list_h list,
  * maps_string_hashtable_remove().
  * \n To check if key is added to the table use
  * maps_string_hashtable_contains().
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @see maps_string_hashtable_create()
  * @see maps_string_hashtable_destroy()
@@ -341,7 +385,7 @@ typedef void *maps_string_hashtable_h;
  * @brief	Creates a new Hash Table of strings.
  * @details This function creates a new instance of Hash Table of strings,
  * associate a new handle with it and allocates all needed resources.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks @a table must be released using maps_string_hashtable_destroy().
  * \n @a table may be cloned using maps_string_hashtable_clone().
  *
@@ -361,7 +405,7 @@ int maps_string_hashtable_create(maps_string_hashtable_h *table);
  * resources.
  * @details This function destroys the Hash Table handle and releases all its
  * resources.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks All strings stored in the table will be released.
  *
  * @param[in]	table		The handle of table to be destroyed
@@ -382,7 +426,7 @@ int maps_string_hashtable_destroy(maps_string_hashtable_h table);
  * resources.
  * \n The list handle @a origin may be created using
  * maps_string_hashtable_create().
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks @a cloned must be released using maps_string_hashtable_destroy().
  *
  * @param[in]	origin		The handle of the table to be cloned
@@ -404,7 +448,7 @@ int maps_string_hashtable_clone(const maps_string_hashtable_h origin,
  * @brief	Sets the association between string key and value in the table.
  * @details This function sets the association between string key and value in
  * the Hash Table.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	table		The handle of the table
  * @param[in]	key		The string value of "key"
@@ -426,7 +470,7 @@ int maps_string_hashtable_set(maps_string_hashtable_h table, const char *key,
  * @brief	Gets the string value associated with a string key in the table.
  * @details This function gets the string value associated with a string key in
  * the Hash Table.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remark The @a value must be released using free().
  *
  * @param[in]	table		The handle of the table
@@ -448,7 +492,7 @@ int maps_string_hashtable_get(maps_string_hashtable_h table, const char *key,
 /**
  * @brief	Removes the key-value pair from the table.
  * @details This function removes the key-value pair from the Hash Table.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks The resources, used by item will be released automatically.
  *
  * @param[in]	table		The handle of the table
@@ -472,7 +516,7 @@ int maps_string_hashtable_remove(maps_string_hashtable_h table,
  * @details This function is called once for each key-value pair of the given
  * table while the table is being iterated
  * during the maps_string_hashtable_foreach() procedure.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks The @a key and @a value must be released using free().
  *
  * @param[in]	index		The current index of item
@@ -496,7 +540,7 @@ typedef bool(*maps_string_hashtable_foreach_cb) (int index, int total,
  * @brief	Gets the key-value pairs of the specified table.
  * @details This function delivers key-value pairs of a specified table via
  * maps_string_hashtable_foreach_cb() callback.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	table		The handle of table
  * @param[in]	callback	The callback to be invoked for delivering each
@@ -525,7 +569,7 @@ int maps_string_hashtable_foreach(maps_string_hashtable_h table,
  * @brief	Checks if key is in hash_table.
  * @details This function checks if the specified key is in the Hash Table of
  * strings.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	table		The handle of the table
  * @param[in]	key		The string value of "key"
@@ -549,13 +593,257 @@ int maps_string_hashtable_contains(maps_string_hashtable_h table,
 
 /*----------------------------------------------------------------------------*/
 
+/*
+ * @ingroup	CAPI_MAPS_CONTAINERS_MODULE
+ * @defgroup	CAPI_MAPS_CONTAINERS_MODULE_INT_HASHTABLE Maps Integer Hash Tables
+ *
+ * @file maps_extra_types.h
+ * @brief This section contains API for using Hash Table of integers.
+ *
+ * @addtogroup CAPI_MAPS_CONTAINERS_MODULE_INT_HASHTABLE
+ * @{
+ * @brief This provides API for using Hash Table of integers.
+ */
+
+/*
+ * @brief	The handle of Hash Table of integers.
+ * @details The handle of Hash Table of integers can be obtained via call of
+ * maps_int_hashtable_create().
+ * @remarks To release the handle use maps_int_hashtable_destroy().
+ * \n To clone the handle use maps_int_hashtable_clone().
+ * \n To assign the value to a key use maps_int_hashtable_set().
+ * \n The value, assigned with a specified key may be obtained using maps_int_hashtable_get().
+ * \n All key-value pairs of the table may be iterated using maps_int_hashtable_foreach().
+ * \n The key-value pair may be removed form the table using maps_int_hashtable_remove().
+ * \n To check if key is added to the table use maps_int_hashtable_contains().
+ * @since_tizen 3.0
+ *
+ * @see maps_int_hashtable_create()
+ * @see maps_int_hashtable_destroy()
+ * @see maps_int_hashtable_clone()
+ */
+typedef void *maps_int_hashtable_h;
+
+/*
+ * @brief	Creates a new Hash Table of integers.
+ * @details This function creates a new instance of Hash Table of integers,
+ * associate a new handle with it and allocates all needed resources.
+ * @since_tizen 3.0
+ * @remarks @a table must be released using maps_int_hashtable_destroy().
+ * \n @a table may be cloned using maps_int_hashtable_clone().
+ *
+ * @param[out]	table		The handle of newly created table
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ *
+ * @see maps_int_hashtable_clone()
+ * @see maps_int_hashtable_destroy()
+ */
+int maps_int_hashtable_create(maps_int_hashtable_h *table);
+
+/*
+ * @brief	Destroys the Hash Table of integers and releases all its
+ * resources.
+ * @details This function destroys the Hash Table handle and releases all its
+ * resources.
+ * @since_tizen 3.0
+ * @remarks All integers stored in the table will be released.
+ *
+ * @param[in]	table		The handle of table to be destroyed
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ *
+ * @pre @a table is created using maps_int_hashtable_create().
+ *
+ * @see maps_int_hashtable_create()
+ * @see maps_int_hashtable_clone()
+ */
+int maps_int_hashtable_destroy(maps_int_hashtable_h table);
+
+/*
+ * @brief	Clones the Hash Table of integerss.
+ * @details This function clones the Hash Table of integers @a origin and all
+ * its resources.
+ * \n The list handle @a origin may be created using
+ * maps_int_hashtable_create().
+ * @since_tizen 3.0
+ * @remarks @a cloned must be released using maps_int_hashtable_destroy().
+ *
+ * @param[in]	origin		The handle of the table to be cloned
+ * @param[out]	cloned		The handle of the cloned table
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ *
+ * @pre @a table is created using maps_int_hashtable_create().
+ *
+ * @see maps_int_hashtable_create()
+ * @see maps_int_hashtable_destroy()
+ */
+int maps_int_hashtable_clone(const maps_int_hashtable_h origin,
+			     maps_int_hashtable_h *cloned);
+
+/*
+ * @brief	Sets the association between integer key and value in the table.
+ * @details This function sets the association between int key and value in
+ * the Hash Table.
+ * @since_tizen 3.0
+ *
+ * @param[in]	table		The handle of the table
+ * @param[in]	key		The integer value of "key"
+ * @param[in]	value		The integer value of "value"
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ *
+ * @pre @a table is created using maps_int_hashtable_create().
+ *
+ * @see maps_int_hashtable_get()
+ * @see maps_int_hashtable_remove()
+ * @see maps_int_hashtable_create()
+ */
+int maps_int_hashtable_set(maps_int_hashtable_h table, const int key,
+			   const int value);
+
+/*
+ * @brief	Gets the integer value associated with an integer key in the
+ * table.
+ * @details This function gets the integer value associated with a integer key
+ * in the Hash Table.
+ * @since_tizen 3.0
+ *
+ * @param[in]	table		The handle of the table
+ * @param[in]	key		The integer value of "key"
+ * @param[out]	value		The integer value of "value"
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ *
+ * @pre @a table is created using maps_int_hashtable_create().
+ *
+ * @see maps_int_hashtable_set()
+ * @see maps_int_hashtable_remove()
+ * @see maps_int_hashtable_create()
+ */
+int maps_int_hashtable_get(maps_int_hashtable_h table, const int key,
+			   int *value);
+
+/*
+ * @brief	Removes the key-value pair from the table.
+ * @details This function removes the key-value pair from the Hash Table.
+ * @since_tizen 3.0
+ * @remarks The resources, used by item will be released automatically.
+ *
+ * @param[in]	table		The handle of the table
+ * @param[in]	key		The integer value of "key"
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ *
+ * @pre @a table is created using maps_int_hashtable_create().
+ *
+ * @see maps_int_hashtable_set()
+ * @see maps_int_hashtable_get()
+ * @see maps_int_hashtable_create()
+ */
+int maps_int_hashtable_remove(maps_int_hashtable_h table,
+			      const int key);
+
+/*
+ * @brief	Called once for each key-value pair while iterating through
+ * the given table.
+ * @details This function is called once for each key-value pair of the given
+ * table while the table is being iterated
+ * during the maps_int_hashtable_foreach() procedure.
+ * @since_tizen 3.0
+ *
+ * @param[in]	index		The current index of item
+ * @param[in]	total		The total amount of items
+ * @param[in]	key		The integer value of "key"
+ * @param[in]	value		The integer value of "value"
+ * @param[in]	user_data	The user data passed from
+ * maps_int_hashtable_foreach()
+ * @return	@c true to continue with the next iteration of the loop, \n @c
+ * false to break out of the loop
+ *
+ * @pre maps_int_hashtable_foreach() will invoke this callback.
+ *
+ * @see maps_int_hashtable_foreach()
+ */
+typedef bool(*maps_int_hashtable_foreach_cb) (int index, int total,
+					      const int key, const int value,
+					      void *user_data);
+
+/*
+ * @brief	Gets the key-value pairs of the specified table.
+ * @details This function delivers key-value pairs of a specified table via
+ * maps_int_hashtable_foreach_cb() callback.
+ * @since_tizen 3.0
+ *
+ * @param[in]	table		The handle of table
+ * @param[in]	callback	The callback to be invoked for delivering each
+ * key-value pair
+ * @param[in]	user_data	The user data to be passed to the callback
+ * function
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_FOUND Result not found
+ *
+ * @pre @a table is created using maps_int_hashtable_create().
+ * @post This function invokes maps_int_hashtable_foreach_cb() to deliver
+ * key-value pairs.
+ *
+ * @see maps_int_hashtable_foreach_cb()
+ * @see maps_int_hashtable_set()
+ * @see maps_int_hashtable_get()
+ * @see maps_int_hashtable_create()
+ */
+int maps_int_hashtable_foreach(maps_int_hashtable_h table,
+				  maps_int_hashtable_foreach_cb callback,
+				  void *user_data);
+
+/*
+ * @brief	Checks if key is in hash_table.
+ * @details This function checks if the specified key is in the Hash Table of
+ * integers.
+ * @since_tizen 3.0
+ *
+ * @param[in]	table		The handle of the table
+ * @param[in]	key		The integer value of "key"
+ * @param[out]	contains	The flag of key presence
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ *
+ * @pre @a table is created using maps_int_hashtable_create().
+ *
+ * @see maps_int_hashtable_set()
+ * @see maps_int_hashtable_get()
+ * @see maps_int_hashtable_create()
+ */
+int maps_int_hashtable_contains(maps_int_hashtable_h table,
+				const int key, bool *contains);
+
+/*
+ * @}
+ */
+
+/*----------------------------------------------------------------------------*/
+
 /**
  * @ingroup	CAPI_MAPS_CONTAINERS_MODULE
  * @defgroup	CAPI_MAPS_CONTAINERS_MODULE_ITEM_HASHTABLE Maps Item Hash Tables
  *
+ * @file maps_extra_types.h
+ * @brief This section contains API for using Hash Table of arbitrary items.
+ *
  * @addtogroup CAPI_MAPS_CONTAINERS_MODULE_ITEM_HASHTABLE
  * @{
- * @file maps_extra_types.h
  * @brief This provides API for using Hash Table of arbitrary items.
  */
 
@@ -574,7 +862,7 @@ int maps_string_hashtable_contains(maps_string_hashtable_h table,
  * maps_item_hashtable_remove().
  * \n To check if key is added to the table use
  * maps_item_hashtable_contains().
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @see maps_item_hashtable_create()
  * @see maps_item_hashtable_destroy()
@@ -586,7 +874,7 @@ typedef void *maps_item_hashtable_h;
  * @brief	Creates a new Hash Table of arbitrary items.
  * @details This function creates a new instance of Hash Table of arbitrary
  * items, associate a new handle with it and allocates all needed resources.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks @a table must be released using maps_item_hashtable_destroy().
  * \n @a table may be cloned using maps_item_hashtable_clone().
  *
@@ -606,7 +894,7 @@ int maps_item_hashtable_create(maps_item_hashtable_h *table);
 * resources.
  * @details This function destroys the Hash Table handle and releases all its
  * resources.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks All items stored in the table will be released with corresponding
  * functions, specified during maps_item_hashtable_set().
  *
@@ -628,7 +916,7 @@ int maps_item_hashtable_destroy(maps_item_hashtable_h table);
  * all its resources.
  * \n The list handle @a origin may be created using
  * maps_item_hashtable_create().
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks @a cloned must be released using maps_item_hashtable_destroy().
  *
  * @param[in]	origin		The handle of the table to be cloned
@@ -652,7 +940,7 @@ int maps_item_hashtable_clone(const maps_item_hashtable_h origin,
  * while it is being cloned during the maps_item_hashtable_clone() procedure.
  * \n This function must be assigned while adding new item to the table using
  * maps_item_hashtable_set().
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks If this function returns the value different from MAPS_ERROR_NONE,
  * the cloned item will not be appended to the list.
  *
@@ -679,7 +967,7 @@ typedef int (*maps_item_hashtable_clone_cb) (void *origin, void **cloned);
  * \n It is also called while the item is removed with
  * maps_item_hashtable_remove()
  * or the item value is exchanged with a new one with maps_item_hashtable_set().
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks The return of this function is ignored.
  *
  * @param[in]	data		The pointer to the table item which is to be
@@ -703,7 +991,7 @@ typedef int (*maps_item_hashtable_free_cb) (void *data);
  * which is useful while adding to the table an item of string type (char*).
  * This function is intended to be passed as the @a clone_func argument in the
  * maps_item_hashtable_set().
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks This function will be called implicitly in the
  * maps_item_hashtable_clone() procedure.
  *
@@ -729,7 +1017,7 @@ int maps_item_hashtable_clone_string(void *origin, void **cloned);
  * which is useful while adding to the table an item of string type (char*).
  * This function is intended to be passed as the @a free_func argument in the
  * maps_item_hashtable_set().
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks This function will be called implicitly in the
  * maps_item_hashtable_destroy(), maps_item_hashtable_remove(),
  * maps_item_hashtable_set() procedures.
@@ -757,7 +1045,7 @@ int maps_item_hashtable_free_string(void *data);
  * which is useful while adding to the table an item of integer type (int*).
  * This function is intended to be passed as the @a clone_func argument in the
  * maps_item_hashtable_set().
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks This function will be called implicitly in the
  * maps_item_hashtable_clone() procedure.
  *
@@ -782,7 +1070,7 @@ int maps_item_hashtable_clone_int(void *origin, void **cloned);
  * which is useful while adding to the table an item of integer type (int*).
  * This function is intended to be passed as the @a free_func argument in the
  * maps_item_hashtable_set().
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks This function will be called implicitly in the
  * maps_item_hashtable_destroy(), maps_item_hashtable_remove(),
  * maps_item_hashtable_set() procedures.
@@ -810,7 +1098,7 @@ int maps_item_hashtable_free_int(void *data);
  * which is useful while adding to the table an item of floating point numeric
  * type (double*). This function is intended to be passed as the @a
  * clone_func argument in the maps_item_hashtable_set().
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks This function will be called implicitly in the
  * maps_item_hashtable_clone() procedure.
  *
@@ -837,7 +1125,7 @@ int maps_item_hashtable_clone_float(void *origin, void **cloned);
  * type (double*).
  * This function is intended to be passed as the @a free_func argument in the
  * maps_item_hashtable_set().
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks This function will be called implicitly in the
  * maps_item_hashtable_destroy(), maps_item_hashtable_remove(),
  * maps_item_hashtable_set() procedures.
@@ -864,7 +1152,7 @@ int maps_item_hashtable_free_float(void *data);
  * value in the table.
  * @details This function sets the association between string key and string
  * value in the Hash Table.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remark New instances of key and value will be put to the table. The key and
  * value must be released.
  * \n This function uses implicitly maps_item_hashtable_clone_string() and
@@ -894,7 +1182,7 @@ int maps_item_hashtable_set_string(maps_item_hashtable_h table,
  * table.
  * @details This function sets the association between string key and integer
  * value in the Hash Table.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remark New instances of key and value will be put to the table. The key and
  * value must be released.
  * \n This function uses implicitly maps_item_hashtable_clone_int() and
@@ -924,7 +1212,7 @@ int maps_item_hashtable_set_int(maps_item_hashtable_h table, const char *key,
  * numeric value in the table.
  * @details This function sets the association between string key and floating
  * point numeric value in the Hash Table.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remark New instances of key and value will be put to the table. The key and
  * value must be released.
  * \n This function uses implicitly maps_item_hashtable_clone_int() and
@@ -973,7 +1261,7 @@ int maps_item_hashtable_set_float(maps_item_hashtable_h table,
  * - maps_item_hashtable_set_int()
  * - maps_item_hashtable_set_float()
  * .
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remark New instances of key and value will be put to the table. The @a key
  * and @a value must be released.
  *
@@ -1011,7 +1299,7 @@ int maps_item_hashtable_set(maps_item_hashtable_h table, const char *key,
  * value in the table.
  * @details This function gets the association between string key and string
  * value in the Hash Table.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remark @a value must be released using free().
  *
  * @param[in]	table		The handle of the table
@@ -1038,7 +1326,7 @@ int maps_item_hashtable_get_string(maps_item_hashtable_h table,
  * table.
  * @details This function gets the association between string key and integer
  * value in the Hash Table.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	table		The handle of the table
  * @param[in]	key The		string value of "key"
@@ -1064,7 +1352,7 @@ int maps_item_hashtable_get_int(maps_item_hashtable_h table, const char *key,
  * numeric value in the table.
  * @details This function gets the association between string key and floating
  * point numeric value in the Hash Table.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	table		The handle of the table
  * @param[in]	key		The string value of "key"
@@ -1089,7 +1377,7 @@ int maps_item_hashtable_get_float(maps_item_hashtable_h table,
  * @brief	Gets the value associated with a string key in the table.
  * @details This function gets the value associated with a string key in the
  * Hash Table.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remark Th @a value must be released by you.
  *
  * @param[in]	table		The handle of the table
@@ -1111,7 +1399,7 @@ int maps_item_hashtable_get(maps_item_hashtable_h table, const char *key,
 /**
  * @brief	Removes the key-value pair from the table.
  * @details This function removes the key-value pair from the Hash Table.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks The resources, used by item will be released automatically.
  *
  * @param[in]	table		The handle of the table
@@ -1135,7 +1423,7 @@ int maps_item_hashtable_remove(maps_item_hashtable_h table, const char *key);
  * @details This function is called once for each key-value pair of the given
  * table while the table is being iterated
  * during the maps_item_hashtable_foreach() procedure.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks The @a key and @a value must be released by you.
  *
  * @param[in]	index		The current index of item
@@ -1159,7 +1447,7 @@ typedef bool(*maps_item_hashtable_foreach_cb) (int index, int total,
  * @brief	Gets the key-value pairs of the specified table.
  * @details This function delivers key-value pairs of a specified table via
  * maps_item_hashtable_foreach_cb() callback.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	table		The handle of table
  * @param[in]	callback	The callback to be invoked for delivering each
@@ -1187,7 +1475,7 @@ int maps_item_hashtable_foreach(maps_item_hashtable_h table,
 /**
  * @brief	Checks if key is in hash_table.
  * @details This function checks if the specified key is in the Hash Table.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	table		The handle of the table
  * @param[in]	key		The string value of "key"
@@ -1205,55 +1493,6 @@ int maps_item_hashtable_foreach(maps_item_hashtable_h table,
  */
 int maps_item_hashtable_contains(maps_item_hashtable_h table, const char *key,
 				 bool *contains);
-
-/**
- * @}
- */
-
-
-/*----------------------------------------------------------------------------*/
-
-/**
- * @ingroup	CAPI_MAPS_CONTAINERS_MODULE
- * @defgroup	CAPI_MAPS_CONTAINERS_MODULE_UTILITY Maps Container Utilities
- *
- * @addtogroup CAPI_MAPS_CONTAINERS_MODULE_UTILITY
- * @{
- * @file maps_extra_types.h
- * @brief This provides API for helping usage of container types, such as
- * maps_item_list_h and maps_item_hashtable_h.
- */
-
-
-/**
-* @brief	Copies the table item of arbitrary type type without cloning.
- * @details This is a helper function of type #maps_item_no_clone,
- * which is useful while adding to the table or list an item of arbitrary type
- * without cloning it. It allows to add to the container the given object
- * instead of its clone and, consequently, reduce the memory consumption.
- * This function is intended to be passed as the @a
- * clone_func argument in functions, such as the maps_item_hashtable_set() ot
- * maps_item_list_append().
- * @since_tizen 3.0
- * @remarks This function will be called implicitly in the
- * maps_item_hashtable_clone(), maps_item_list_append() or similar procedure.
- *
- * @param[in]	origin		The pointer of the item to be cloned
- * @param[out]	cloned		The pointer of the clone
- * @return	void pointer of a copy floating point number
- * @retval	#MAPS_ERROR_NONE Successful
- * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
- * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- *
- * @pre maps_item_hashtable_clone() will invoke this callback.
- * @pre maps_item_list_append() will invoke this callback.
- *
- * @see maps_item_list_append()
- * @see maps_item_hashtable_clone_cb()
- * @see maps_item_hashtable_set()
- * @see maps_item_hashtable_free_float()
- */
-int maps_item_no_clone(void *origin, void **cloned);
 
 /**
  * @}

@@ -41,7 +41,7 @@ extern "C" {
  * @brief Creates a new place contact handle.
  * @details This function creates a new place contact handle and allocates all
  * needed resources.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks @a place contact must be released using
  * maps_place_contact_destroy().
  * \n @a contact may be cloned using maps_place_contact_clone().
@@ -60,7 +60,7 @@ int maps_place_contact_create(maps_place_contact_h *contact);
 /**
  * @brief	Sets the place contact label
  * @details This function sets the place contact label.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	contact		The handle of contact contact
  * @param[in]	label		The place contact label
@@ -79,7 +79,7 @@ int maps_place_contact_set_label(maps_place_contact_h contact,
 /**
  * @brief	Sets the place contact type
  * @details This function sets the place contact type.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	contact		The handle to place contact
  * @param[in]	type		The place contact type
@@ -98,7 +98,7 @@ int maps_place_contact_set_type(maps_place_contact_h contact,
 /**
  * @brief	Sets the place contact value
  * @details This function sets the place contact value.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	contact		The handle to place contact
  * @param[in]	value		The place contact value
