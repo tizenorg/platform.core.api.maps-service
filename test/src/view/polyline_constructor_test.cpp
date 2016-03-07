@@ -49,7 +49,7 @@ void utc_construct_polyline_p(void)
 		maps_coordinates_destroy(c);
 	}
 
-	map_object_h polyline = pc.construct(path, 0x01, 0x02, 0x03, 0x04, 3);
+	maps_view_object_h polyline = pc.construct(path, 0x01, 0x02, 0x03, 0x04, 3);
 	g_assert_cmpint(pc.get_error(), ==, MAPS_ERROR_NONE);
 	g_assert(polyline);
 
@@ -81,7 +81,7 @@ void utc_construct_polyline_p(void)
 	g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
 	g_assert_cmpint(width, ==, 3);
 
-	error = map_object_destroy(polyline);
+	error = maps_object_destroy(polyline);
 	g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
 }
 
@@ -90,7 +90,7 @@ void utc_construct_polyline_n(void)
 	view::polyline_constructor pc;
 
 	/* Negative test 1 */
-	map_object_h polyline = pc.construct(NULL, 0x01, 0x02, 0x03, 0x04, 1);
+	maps_view_object_h polyline = pc.construct(NULL, 0x01, 0x02, 0x03, 0x04, 1);
 	g_assert_cmpint(pc.get_error(), ==, MAPS_ERROR_INVALID_PARAMETER);
 	g_assert(!polyline);
 

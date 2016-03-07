@@ -20,7 +20,7 @@
 #include "polyline_constructor.h"
 
 #ifdef TIZEN_3_0_NEXT_MS
-extern int _map_object_route_set_content(map_object_h route,
+extern int _map_object_route_set_content(maps_view_object_h route,
 					      const maps_route_h content);
 
 
@@ -43,9 +43,9 @@ const char *view::dummy_route_constructor::get_default_marker_image()
 }
 
 
-int view::dummy_route_constructor::add_marker(map_object_h route_object,
+int view::dummy_route_constructor::add_marker(maps_view_object_h route_object,
 					 const maps_coordinates_h coords,
-					 map_marker_type_e type)
+					 maps_view_marker_type_e type)
 {
 	if(!route_object || !coords)
 		return MAPS_ERROR_INVALID_PARAMETER;
@@ -66,7 +66,7 @@ int view::dummy_route_constructor::add_marker(map_object_h route_object,
 	}
 
 	marker_constructor mc;
-	map_object_h marker = mc.construct(coords, image_file, type);
+	maps_view_object_h marker = mc.construct(coords, image_file, type);
 	if(!marker)
 		return mc.get_error();
 	return map_object_group_add_object(route_object, marker);
@@ -83,14 +83,14 @@ bool view::dummy_route_constructor::add_trajectory_markers(int index,
 	return true;
 }
 
-int view::dummy_route_constructor::add_trajectory(map_object_h route_object,
+int view::dummy_route_constructor::add_trajectory(maps_view_object_h route_object,
 					    maps_item_list_h points)
 {
 	if(!route_object || !points)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
 	polyline_constructor pc;
-	map_object_h polyline = pc.construct(NULL, points, 255, 0, 0, 0, 1);
+	maps_view_object_h polyline = pc.construct(NULL, points, 255, 0, 0, 0, 1);
 	if(!polyline)
 		return pc.get_error();
 	int e = map_object_group_add_object(route_object, polyline);
@@ -102,7 +102,7 @@ int view::dummy_route_constructor::add_trajectory(map_object_h route_object,
 	return e;
 }
 
-void view::dummy_route_constructor::add_start_marker(map_object_h route_object,
+void view::dummy_route_constructor::add_start_marker(maps_view_object_h route_object,
 					       maps_route_h route)
 {
 	if(!route_object || !route) {
@@ -120,7 +120,7 @@ void view::dummy_route_constructor::add_start_marker(map_object_h route_object,
 	}
 }
 
-void view::dummy_route_constructor::add_finish_marker(map_object_h route_object,
+void view::dummy_route_constructor::add_finish_marker(maps_view_object_h route_object,
 						maps_route_h route)
 {
 	if(!route_object || !route) {
@@ -138,7 +138,7 @@ void view::dummy_route_constructor::add_finish_marker(map_object_h route_object,
 	}
 }
 
-void view::dummy_route_constructor::add_route_path(map_object_h route_object,
+void view::dummy_route_constructor::add_route_path(maps_view_object_h route_object,
 					     maps_route_h route)
 {
 	if(!route_object || !route) {
@@ -176,7 +176,7 @@ bool view::dummy_route_constructor::collect_path_points(int index, int total,
 	return true;
 }
 
-void view::dummy_route_constructor::add_route_segments(map_object_h route_object,
+void view::dummy_route_constructor::add_route_segments(maps_view_object_h route_object,
 						 maps_route_h route)
 {
 	if(!route_object || !route) {
@@ -194,7 +194,7 @@ bool view::dummy_route_constructor::collect_segments(int index, int total,
 	if (!segment)
 		return false;
 
-	map_object_h route_object = (map_object_h)user_data;
+	maps_view_object_h route_object = (maps_view_object_h)user_data;
 	if(!route_object) {
 		maps_route_segment_destroy(segment);
 		return false;
@@ -233,7 +233,7 @@ bool view::dummy_route_constructor::collect_segments(int index, int total,
 	return true;
 }
 
-map_object_h view::dummy_route_constructor::construct(maps_route_h route)
+maps_view_object_h view::dummy_route_constructor::construct(maps_route_h route)
 {
 	if (!route) {
 		__error = MAPS_ERROR_INVALID_PARAMETER;
@@ -242,7 +242,7 @@ map_object_h view::dummy_route_constructor::construct(maps_route_h route)
 
 	__error = MAPS_ERROR_NONE;
 
-	map_object_h route_object = NULL;
+	maps_view_object_h route_object = NULL;
 	do {
 		/* 1. Create a visual object for route */
 		__error = map_object_create(MAP_OBJECT_GROUP,
@@ -276,7 +276,7 @@ map_object_h view::dummy_route_constructor::construct(maps_route_h route)
 	} while(false);
 
 	/* FAILURE: Releasing objects */
-	map_object_destroy(route_object);
+	maps_view_object_destroy(route_object);
 	return NULL;
 }
 #endif /* TIZEN_3_0_NEXT_MS */

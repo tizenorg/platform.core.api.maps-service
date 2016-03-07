@@ -17,13 +17,13 @@
 #define __MAPS_VIEW_INERTIAL_CAMERA_H__
 
 
-#include "map_view.h"
+#include "maps_view.h"
 
 namespace view
 {
 	class inertial_camera {
 	protected:
-		map_view_h _view;
+		maps_view_h _view;
 
 		/* Targets */
 		double target_zoom_factor;
@@ -42,7 +42,7 @@ namespace view
 		static const double __ZOOM_ACCURACY = 0.1;
 		static const double __ROTATE_ACCURACY = 0.5;
 	public:
-		inertial_camera(map_view_h view);
+		inertial_camera(maps_view_h view);
 		~inertial_camera();
 	private:
 		inertial_camera(const inertial_camera &src);

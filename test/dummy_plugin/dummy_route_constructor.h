@@ -34,7 +34,7 @@ namespace view
 		{
 		}
 	public:
-		map_object_h construct(maps_route_h route);
+		maps_view_object_h construct(maps_route_h route);
 		int get_error() const
 		{
 			return __error;
@@ -44,15 +44,15 @@ namespace view
 		static const char *get_finish_marker_image();
 		static const char *get_default_marker_image();
 	protected:
-		static int add_marker(map_object_h route_object,
+		static int add_marker(maps_view_object_h route_object,
 				       const maps_coordinates_h coords,
-				       map_marker_type_e type);
-		void add_start_marker(map_object_h route_object,
+				       maps_view_marker_type_e type);
+		void add_start_marker(maps_view_object_h route_object,
 				      maps_route_h route);
-		void add_finish_marker(map_object_h route_object,
+		void add_finish_marker(maps_view_object_h route_object,
 				       maps_route_h route);
 	protected:
-		static int add_trajectory(map_object_h route_object,
+		static int add_trajectory(maps_view_object_h route_object,
 					  maps_item_list_h route_points);
 
 		static bool add_trajectory_markers(int index,
@@ -60,13 +60,13 @@ namespace view
 						   void *data,
 						   void *user_data);
 
-		void add_route_path(map_object_h route_object,
+		void add_route_path(maps_view_object_h route_object,
 				    maps_route_h route);
 		static bool collect_path_points(int index, int total,
 						maps_coordinates_h coordinates,
 						void *user_data);
 
-		void add_route_segments(map_object_h route_object,
+		void add_route_segments(maps_view_object_h route_object,
 					maps_route_h route);
 		static bool collect_segments(int index, int total,
 						   maps_route_segment_h segment,

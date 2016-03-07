@@ -17,7 +17,7 @@
 #define __MAPS_VIEW_RUNTIME_DATA_H__
 
 
-#include "map_view.h"
+#include "maps_view.h"
 
 #define MAX_FINGERS 10
 
@@ -60,7 +60,7 @@ namespace view
 		~map_state();
 	public:
 		void reset();
-		void capture(map_view_h view);
+		void capture(maps_view_h view);
 	public:
 		void trace();
 	};
@@ -92,7 +92,7 @@ namespace view
 
 		/* This field would be useful for complicated gestures, such as
 		 *  "double tap and pan" for zooming */
-		map_gesture_e _cur_gesture;
+		maps_view_gesture_e _cur_gesture;
 
 		/*bool _going;*/ /* Do we need this? */
 

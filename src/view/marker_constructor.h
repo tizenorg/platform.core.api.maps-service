@@ -16,8 +16,8 @@
 #ifndef __MAPS_VIEW_MARKER_CONSTRUCTOR_H__
 #define __MAPS_VIEW_MARKER_CONSTRUCTOR_H__
 
-
-#include "map_object.h"
+#include "maps_error.h"
+#include "maps_view_object.h"
 
 namespace view
 {
@@ -30,16 +30,13 @@ namespace view
 		{
 		}
 	public:
-		map_object_h construct(maps_coordinates_h coordinates,
+		maps_view_object_h construct(maps_coordinates_h coordinates,
 				       const char *image_file_path,
-				       map_marker_type_e type);
+				       maps_view_marker_type_e type);
 		int get_error() const
 		{
 			return __error;
 		}
-	public:
-		static int get_size_x();
-		static int get_size_y();
 	};
 };
 

@@ -49,7 +49,7 @@ void utc_construct_polygon_p(void)
 		maps_coordinates_destroy(c);
 	}
 
-	map_object_h polygon = pc.construct(path, 0x01, 0x02, 0x03, 0x04);
+	maps_view_object_h polygon = pc.construct(path, 0x01, 0x02, 0x03, 0x04);
 	g_assert_cmpint(pc.get_error(), ==, MAPS_ERROR_NONE);
 	g_assert(polygon);
 
@@ -76,7 +76,7 @@ void utc_construct_polygon_p(void)
 	g_assert_cmpint(a, ==, 0x04);
 
 
-	error = map_object_destroy(polygon);
+	error = maps_object_destroy(polygon);
 	g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
 }
 
@@ -84,7 +84,7 @@ void utc_construct_polygon_n(void)
 {
 	view::polygon_constructor pc;
 
-	map_object_h polygon = pc.construct(NULL, 0x01, 0x02, 0x03, 0x04);
+	maps_view_object_h polygon = pc.construct(NULL, 0x01, 0x02, 0x03, 0x04);
 	g_assert_cmpint(pc.get_error(), ==, MAPS_ERROR_INVALID_PARAMETER);
 	g_assert(!polygon);
 }

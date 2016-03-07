@@ -84,14 +84,14 @@ void utc_construct_route_p(void)
 	/* Construct route view object */
 	view::route_constructor rc;
 
-	map_object_h route_object = rc.construct(NULL,
+	maps_view_object_h route_object = rc.construct(NULL,
 						      r.route);
 	g_assert_cmpint(rc.get_error(), ==, MAPS_ERROR_NONE);
 	g_assert(route_object);
 
 	/* Check if the route object includes route handle */
 	maps_route_h route_handle = NULL;
-	int error = map_object_route_get_content(route_object,
+	int error = maps_view_object_route_get_content(route_object,
 						      &route_handle);
 	g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
 	g_assert(route_handle);
@@ -99,14 +99,14 @@ void utc_construct_route_p(void)
 	error = maps_route_destroy(route_handle);
 	g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
 
-	error = map_object_destroy(route_object);
+	error = maps_view_object_destroy(route_object);
 	g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
 }
 
 void utc_construct_route_n(void)
 {
 	view::route_constructor rc;
-	map_object_h route_object = rc.construct(NULL, NULL);
+	maps_view_object_h route_object = rc.construct(NULL, NULL);
 	g_assert_cmpint(rc.get_error(), ==, MAPS_ERROR_INVALID_PARAMETER);
 	g_assert(!route_object);
 }
@@ -116,7 +116,7 @@ void utc_construct_route_n(void)
 	/* !!! The old marker constructor will be deleted soom!!! */
 #if 0
 static bool __utc_map_object_group_object_cb(int index, int total,
-						  map_object_h object,
+						  maps_view_object_h object,
 						  void *user_data)
 {
 	if(user_data) {
@@ -135,7 +135,7 @@ void utc_construct_route_p(void)
 
 	/* Construct route view object */
 	view::route_constructor rc;
-	map_object_h route_object = rc.construct(r.route);
+	maps_view_object_h route_object = rc.construct(r.route);
 	g_assert_cmpint(rc.get_error(), ==, MAPS_ERROR_NONE);
 	g_assert(route_object);
 
@@ -157,14 +157,14 @@ void utc_construct_route_p(void)
 	g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
 	g_assert_cmpint(iterations, >, 0);
 
-	error = map_object_destroy(route_object);
+	error = maps_view_object_destroy(route_object);
 	g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
 }
 
 void utc_construct_route_n(void)
 {
 	view::route_constructor rc;
-	map_object_h route_object = rc.construct(NULL);
+	maps_view_object_h route_object = rc.construct(NULL);
 	g_assert_cmpint(rc.get_error(), ==, MAPS_ERROR_INVALID_PARAMETER);
 	g_assert(!route_object);
 }
@@ -192,15 +192,15 @@ void utc_get_default_marker_p(void)
 /*----------------------------------------------------------------------------*/
 class utc_route_constructor : public view::route_constructor {
 public:
-	static int utc_add_marker(map_object_h route_object,
+	static int utc_add_marker(maps_view_object_h route_object,
 				  const maps_coordinates_h coords,
-				  map_marker_type_e type);
-	void utc_add_start_marker(map_object_h route_object,
+				  maps_view_marker_type_e type);
+	void utc_add_start_marker(maps_view_object_h route_object,
 				  maps_route_h route);
-	void utc_add_finish_marker(map_object_h route_object,
+	void utc_add_finish_marker(maps_view_object_h route_object,
 				   maps_route_h route);
 
-	static int utc_add_trajectory(map_object_h route_object,
+	static int utc_add_trajectory(maps_view_object_h route_object,
 				      maps_item_list_h route_points);
 
 	static bool utc_add_trajectory_markers(int index,
@@ -208,40 +208,40 @@ public:
 					       void *data,
 					       void *user_data);
 
-	void utc_add_route_path(map_object_h route_object,
+	void utc_add_route_path(maps_view_object_h route_object,
 				maps_route_h route);
 	static bool utc_collect_path_points(int index, int total,
 					    maps_coordinates_h coordinates,
 					    void *user_data);
 
-	void utc_add_route_segments(map_object_h route_object,
+	void utc_add_route_segments(maps_view_object_h route_object,
 				    maps_route_h route);
 	static bool utc_collect_segments(int index, int total,
 					 maps_route_segment_h segment,
 					 void *user_data);
 };
 
-int utc_route_constructor::utc_add_marker(map_object_h route_object,
+int utc_route_constructor::utc_add_marker(maps_view_object_h route_object,
 					  const maps_coordinates_h coords,
-					  map_marker_type_e type)
+					  maps_view_marker_type_e type)
 {
 	return add_marker(route_object, coords, type);
 }
 
-void utc_route_constructor::utc_add_start_marker(map_object_h route_object,
+void utc_route_constructor::utc_add_start_marker(maps_view_object_h route_object,
 						 maps_route_h route)
 {
 	add_start_marker(route_object, route);
 }
 
-void utc_route_constructor::utc_add_finish_marker(map_object_h
+void utc_route_constructor::utc_add_finish_marker(maps_view_object_h
 						  route_object,
 						  maps_route_h route)
 {
 	add_finish_marker(route_object, route);
 }
 
-int utc_route_constructor::utc_add_trajectory(map_object_h route_object,
+int utc_route_constructor::utc_add_trajectory(maps_view_object_h route_object,
 					      maps_item_list_h route_points)
 {
 	return add_trajectory(route_object, route_points);
@@ -255,7 +255,7 @@ bool utc_route_constructor::utc_add_trajectory_markers(int index,
 	return add_trajectory_markers(index, total, data, user_data);
 }
 
-void utc_route_constructor::utc_add_route_path(map_object_h route_object,
+void utc_route_constructor::utc_add_route_path(maps_view_object_h route_object,
 					       maps_route_h route)
 {
 	add_route_path(route_object, route);
@@ -269,7 +269,7 @@ bool utc_route_constructor::utc_collect_path_points(int index, int total,
 	return collect_path_points(index, total, coordinates, user_data);
 }
 
-void utc_route_constructor::utc_add_route_segments(map_object_h
+void utc_route_constructor::utc_add_route_segments(maps_view_object_h
 						   route_object,
 						   maps_route_h route)
 {
@@ -287,7 +287,7 @@ bool utc_route_constructor::utc_collect_segments(int index, int total,
 class test_env
 {
  public:
-	map_object_h o;
+	maps_view_object_h o;
 	int iterations;
  public:
 	test_env() : o(NULL), iterations(0)
@@ -300,16 +300,16 @@ class test_env
 	~test_env()
 	{
 		/* Destroy a test view object */
-		const int error = map_object_destroy(o);
+		const int error = maps_view_object_destroy(o);
 		g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
 	}
 };
 
 
 /*----------------------------------------------------------------------------*/
-/*static int add_marker(map_object_h route_object,
+/*static int add_marker(maps_view_object_h route_object,
 				       const maps_coordinates_h coords,
-				       map_marker_type_e type);*/
+				       maps_view_marker_type_e type);*/
 void utc_add_marker_p(void)
 {
 	test_env e;
@@ -317,7 +317,7 @@ void utc_add_marker_p(void)
 
 	int error = rc.utc_add_marker(e.o,
 				      maps::coordinates(-85.0, 60.0),
-				      MAP_MARKER_POI);
+				      MAP_MARKER_PIN);
 	g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
 
 	error = map_object_group_foreach_object(e.o,
@@ -334,13 +334,13 @@ void utc_add_marker_n(void)
 	/* Negative test 1 */
 	int error = rc.utc_add_marker(NULL,
 				      maps::coordinates(-85.0, 60.0),
-				      MAP_MARKER_POI);
+				      MAP_MARKER_PIN);
 	g_assert_cmpint(error, ==, MAPS_ERROR_INVALID_PARAMETER);
 
 	/* Negative test 2 */
 	error = rc.utc_add_marker(e.o,
 				  NULL,
-				  MAP_MARKER_POI);
+				  MAP_MARKER_PIN);
 	g_assert_cmpint(error, ==, MAPS_ERROR_INVALID_PARAMETER);
 
 	error = map_object_group_foreach_object(e.o,
@@ -350,7 +350,7 @@ void utc_add_marker_n(void)
 	g_assert_cmpint(e.iterations, ==, 0);
 }
 
-/*void add_start_marker(map_object_h route_object,
+/*void add_start_marker(maps_view_object_h route_object,
 		      maps_route_h route);*/
 void utc_add_start_marker_p(void)
 {
@@ -387,7 +387,7 @@ void utc_add_start_marker_n(void)
 
 }
 
-/*void add_finish_marker(map_object_h route_object,
+/*void add_finish_marker(maps_view_object_h route_object,
 		       maps_route_h route);*/
 void utc_add_finish_marker_p(void)
 {
@@ -423,7 +423,7 @@ void utc_add_finish_marker_n(void)
 	g_assert_cmpint(e.iterations, ==, 0);
 }
 
-/*static int add_trajectory(map_object_h route_object,
+/*static int add_trajectory(maps_view_object_h route_object,
 			  maps_item_list_h route_points);*/
 void utc_add_trajectory_p(void)
 {
@@ -510,7 +510,7 @@ void utc_add_trajectory_markers_n(void)
 	g_assert_cmpint(e.iterations, ==, 0);
 }
 
-/*void add_route_path(map_object_h route_object,
+/*void add_route_path(maps_view_object_h route_object,
 		    maps_route_h route);*/
 void utc_add_route_path_p(void)
 {
@@ -566,7 +566,7 @@ void utc_collect_path_points_n(void)
 	g_assert(!ret);
 }
 
-/*void add_route_segments(map_object_h route_object,
+/*void add_route_segments(maps_view_object_h route_object,
 			maps_route_h route);*/
 void utc_add_route_segments_p(void)
 {

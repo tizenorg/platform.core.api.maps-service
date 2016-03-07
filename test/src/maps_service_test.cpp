@@ -104,9 +104,9 @@ typedef void (*test_funcvoid) (void);
 
 #include "maps_preference_test.h"
 
-#include "map_view_test.h"
-#include "map_object_test.h"
-#include "map_event_data_test.h"
+#include "maps_view_test.h"
+#include "maps_view_object_test.h"
+#include "maps_view_event_data_test.h"
 
 #include "poly_shape_hit_test_test.h"
 #include "marker_constructor_test.h"
@@ -271,7 +271,7 @@ static void __add_extra_data_structure_tests(int i)
 				     utc_maps_item_hashtable_set_macro_p, i);
 		__test_add_func_load("/api/item_hashtable/set_macro_n",
 				     utc_maps_item_hashtable_set_macro_n, i);
-		__test_add_func_load("/api/item_hashtable/set_overwrtd_macro_p",
+		__test_add_func_load("/api/item_hashtable/set_overwrited_macro_p",
 			utc_maps_item_hashtable_set_overwrited_macro_p, i);
 		__test_add_func_load("/api/item_hashtable/foreach_p",
 				     utc_maps_item_hashtable_foreach_p, i);
@@ -1009,302 +1009,302 @@ static void __add_maps_api_tests(int i)
 #endif
 }
 
-static void __add_map_view_api_tests(int i)
+static void __add_maps_view_api_tests(int i)
 {
 #ifndef SUPPRESS_VALGRIND_WARNINGS	/* Valgrind warnings!!! */
 
 	if (1) {		/* Create and destroy Maps View */
-		__test_add_func_load("/api/map_view/create_destroy_p",
-			utc_map_view_create_destroy_p, i);
-		__test_add_func_load("/api/map_view/create_destroy_n",
-			utc_map_view_create_destroy_n, i);
+		__test_add_func_load("/api/maps_view_/create_destroy_p",
+			utc_maps_view_create_destroy_p, i);
+		__test_add_func_load("/api/maps_view_/create_destroy_n",
+			utc_maps_view_create_destroy_n, i);
 	}
 
 
 	if (1) {		/* Maps View Basic Features */
-		__test_add_func_load("/api/map_view/show_location_p",
-			utc_map_view_show_location_p, i);
-		__test_add_func_load("/api/map_view/show_location_n",
-			utc_map_view_show_location_n, i);
-		__test_add_func_load("/api/map_view/screen_to_geography_p",
-			utc_map_view_screen_to_geography_p, i);
-		__test_add_func_load("/api/map_view/screen_to_geography_n",
-			utc_map_view_screen_to_geography_n, i);
-		__test_add_func_load("/api/map_view/geography_to_screen_p",
-			utc_map_view_geography_to_screen_p, i);
-		__test_add_func_load("/api/map_view/geography_to_screen_n",
-			utc_map_view_geography_to_screen_n, i);
+		__test_add_func_load("/api/maps_view_/show_location_p",
+			utc_maps_view_show_location_p, i);
+		__test_add_func_load("/api/maps_view_/show_location_n",
+			utc_maps_view_show_location_n, i);
+		__test_add_func_load("/api/maps_view_/screen_to_geography_p",
+			utc_maps_view_screen_to_geolocation_p, i);
+		__test_add_func_load("/api/maps_view_/screen_to_geography_n",
+			utc_maps_view_screen_to_geolocation_n, i);
+		__test_add_func_load("/api/maps_view_/geography_to_screen_p",
+			utc_maps_view_geolocation_to_screen_p, i);
+		__test_add_func_load("/api/maps_view_/geography_to_screen_n",
+			utc_maps_view_geolocation_to_screen_n, i);
 	}
 
 
 	if (1) {		/* Maps View Handling Features */
-		__test_add_func_load("/api/map_view/get_panel_p",
-			utc_map_view_get_panel_p, i);
-		__test_add_func_load("/api/map_view/get_panel_n",
-			utc_map_view_get_panel_n, i);
-		__test_add_func_load("/api/map_view/resize_p",
-			utc_map_view_resize_p, i);
-		__test_add_func_load("/api/map_view/resize_n",
-			utc_map_view_resize_n, i);
-		__test_add_func_load("/api/map_view/get_size_p",
-			utc_map_view_get_size_p, i);
-		__test_add_func_load("/api/map_view/get_size_n",
-			utc_map_view_get_size_n, i);
-		__test_add_func_load("/api/map_view/move_p",
-			utc_map_view_move_p, i);
-		__test_add_func_load("/api/map_view/move_n",
-			utc_map_view_move_n, i);
-		__test_add_func_load("/api/map_view/get_pos_p",
-			utc_map_view_get_pos_p, i);
-		__test_add_func_load("/api/map_view/get_pos_n",
-			utc_map_view_get_pos_n, i);
-		__test_add_func_load("/api/map_view/show_p",
-			utc_map_view_show_p, i);
-		__test_add_func_load("/api/map_view/show_n",
-			utc_map_view_show_n, i);
-		__test_add_func_load("/api/map_view/hide_p",
-			utc_map_view_hide_p, i);
-		__test_add_func_load("/api/map_view/hide_n",
-			utc_map_view_hide_n, i);
-		__test_add_func_load("/api/map_view/is_visible_p",
-			utc_map_view_is_visible_p, i);
-		__test_add_func_load("/api/map_view/is_visible_n",
-			utc_map_view_is_visible_n, i);
-		__test_add_func_load("/api/map_view/zoom_p",
-			utc_map_view_zoom_p, i);
-		__test_add_func_load("/api/map_view/zoom_n",
-			utc_map_view_zoom_n, i);
-		__test_add_func_load("/api/map_view/get_zoom_factor_p",
-			utc_map_view_get_zoom_factor_p, i);
-		__test_add_func_load("/api/map_view/get_zoom_factor_n",
-			utc_map_view_get_zoom_factor_n, i);
-		__test_add_func_load("/api/map_view/rotate_p",
-			utc_map_view_rotate_p, i);
-		__test_add_func_load("/api/map_view/rotate_n",
-			utc_map_view_rotate_n, i);
-		__test_add_func_load("/api/map_view/get_rotation_angle_p",
-			utc_map_view_get_rotation_angle_p, i);
-		__test_add_func_load("/api/map_view/get_rotation_angle_n",
-			utc_map_view_get_rotation_angle_n, i);
+		__test_add_func_load("/api/maps_view_/get_panel_p",
+			utc_maps_view_get_panel_p, i);
+		__test_add_func_load("/api/maps_view_/get_panel_n",
+			utc_maps_view_get_panel_n, i);
+		__test_add_func_load("/api/maps_view_/resize_p",
+			utc_maps_view_resize_p, i);
+		__test_add_func_load("/api/maps_view_/resize_n",
+			utc_maps_view_resize_n, i);
+		__test_add_func_load("/api/maps_view_/get_size_p",
+			utc_maps_view_get_size_p, i);
+		__test_add_func_load("/api/maps_view_/get_size_n",
+			utc_maps_view_get_size_n, i);
+		__test_add_func_load("/api/maps_view_/move_p",
+			utc_maps_view_move_p, i);
+		__test_add_func_load("/api/maps_view_/move_n",
+			utc_maps_view_move_n, i);
+		__test_add_func_load("/api/maps_view_/get_pos_p",
+			utc_maps_view_get_pos_p, i);
+		__test_add_func_load("/api/maps_view_/get_pos_n",
+			utc_maps_view_get_pos_n, i);
+		__test_add_func_load("/api/maps_view_/show_p",
+			utc_maps_view_show_p, i);
+		__test_add_func_load("/api/maps_view_/show_n",
+			utc_maps_view_show_n, i);
+		__test_add_func_load("/api/maps_view_/hide_p",
+			utc_maps_view_hide_p, i);
+		__test_add_func_load("/api/maps_view_/hide_n",
+			utc_maps_view_hide_n, i);
+		__test_add_func_load("/api/maps_view_/is_visible_p",
+			utc_maps_view_is_visible_p, i);
+		__test_add_func_load("/api/maps_view_/is_visible_n",
+			utc_maps_view_is_visible_n, i);
+		__test_add_func_load("/api/maps_view_/zoom_p",
+			utc_maps_view_zoom_p, i);
+		__test_add_func_load("/api/maps_view_/zoom_n",
+			utc_maps_view_zoom_n, i);
+		__test_add_func_load("/api/maps_view_/get_zoom_factor_p",
+			utc_maps_view_get_zoom_factor_p, i);
+		__test_add_func_load("/api/maps_view_/get_zoom_factor_n",
+			utc_maps_view_get_zoom_factor_n, i);
+		__test_add_func_load("/api/maps_view_/rotate_p",
+			utc_maps_view_rotate_p, i);
+		__test_add_func_load("/api/maps_view_/rotate_n",
+			utc_maps_view_rotate_n, i);
+		__test_add_func_load("/api/maps_view_/get_rotation_angle_p",
+			utc_maps_view_get_rotation_angle_p, i);
+		__test_add_func_load("/api/maps_view_/get_rotation_angle_n",
+			utc_maps_view_get_rotation_angle_n, i);
 	}
 
 
 	if (1) {		/* Maps View Event Features */
-		__test_add_func_load("/api/map_view/set_on_gesture_callback_p",
-			utc_map_view_set_on_gesture_callback_p, i);
-		__test_add_func_load("/api/map_view/set_on_gesture_callback_n",
-			utc_map_view_set_on_gesture_callback_n, i);
-		__test_add_func_load("/api/map_view/set_on_zoom_callback_p",
-			utc_map_view_set_on_zoom_callback_p, i);
-		__test_add_func_load("/api/map_view/set_on_zoom_callback_n",
-			utc_map_view_set_on_zoom_callback_n, i);
-		__test_add_func_load("/api/map_view/set_on_rotate_callback_p",
-			utc_map_view_set_on_rotate_callback_p, i);
-		__test_add_func_load("/api/map_view/set_on_rotate_callback_n",
-			utc_map_view_set_on_rotate_callback_n, i);
-		__test_add_func_load("/api/map_view/set_on_object_callback_p",
-			utc_map_view_set_on_object_callback_p, i);
-		__test_add_func_load("/api/map_view/set_on_object_callback_n",
-			utc_map_view_set_on_object_callback_n, i);
-		__test_add_func_load("/api/map_view/set_on_ready_callback_n",
-			utc_map_view_set_on_ready_callback_n, i);
-		__test_add_func_load("/api/map_view/set_gesture_action_p",
-			utc_map_view_set_gesture_action_p, i);
-		__test_add_func_load("/api/map_view/set_gesture_action_n",
-			utc_map_view_set_gesture_action_n, i);
-		__test_add_func_load("/api/map_view/disabel_gesture_p",
-			utc_map_view_disable_gesture_p, i);
-		__test_add_func_load("/api/map_view/disabel_gesture_n",
-			utc_map_view_disable_gesture_n, i);
+		__test_add_func_load("/api/maps_view_/set_on_gesture_callback_p",
+			utc_maps_view_set_on_gesture_callback_p, i);
+		__test_add_func_load("/api/maps_view_/set_on_gesture_callback_n",
+			utc_maps_view_set_on_gesture_callback_n, i);
+		__test_add_func_load("/api/maps_view_/set_on_zoom_callback_p",
+			utc_maps_view_set_on_zoom_callback_p, i);
+		__test_add_func_load("/api/maps_view_/set_on_zoom_callback_n",
+			utc_maps_view_set_on_zoom_callback_n, i);
+		__test_add_func_load("/api/maps_view_/set_on_rotate_callback_p",
+			utc_maps_view_set_on_rotate_callback_p, i);
+		__test_add_func_load("/api/maps_view_/set_on_rotate_callback_n",
+			utc_maps_view_set_on_rotate_callback_n, i);
+		__test_add_func_load("/api/maps_view_/set_on_object_callback_p",
+			utc_maps_view_set_on_object_callback_p, i);
+		__test_add_func_load("/api/maps_view_/set_on_object_callback_n",
+			utc_maps_view_set_on_object_callback_n, i);
+		__test_add_func_load("/api/maps_view_/set_on_ready_callback_n",
+			utc_maps_view_set_on_ready_callback_n, i);
+		__test_add_func_load("/api/maps_view_/set_gesture_action_p",
+			utc_maps_view_set_gesture_action_p, i);
+		__test_add_func_load("/api/maps_view_/set_gesture_action_n",
+			utc_maps_view_set_gesture_action_n, i);
+		__test_add_func_load("/api/maps_view_/disabel_gesture_p",
+			utc_maps_view_disable_gesture_p, i);
+		__test_add_func_load("/api/maps_view_/disabel_gesture_n",
+			utc_maps_view_disable_gesture_n, i);
 	}
 
 
 	if (1) {		/* Maps View Visual Object Features */
-		__test_add_func_load("/api/map_view/add_marker_type_p",
-			utc_map_view_add_marker_type_p, i);
-		__test_add_func_load("/api/map_view/add_marker_type_n",
-			utc_map_view_add_marker_type_n, i);
-		__test_add_func_load("/api/map_view/add_marker_image_p",
-			utc_map_view_add_marker_image_p, i);
-		__test_add_func_load("/api/map_view/add_marker_image_n",
-			utc_map_view_add_marker_image_n, i);
-		__test_add_func_load("/api/map_view/add_route_p",
-			utc_map_view_add_route_p, i);
-		__test_add_func_load("/api/map_view/add_route_n",
-			utc_map_view_add_route_n, i);
-		__test_add_func_load("/api/map_view/add_image_p",
-			utc_map_view_add_image_p, i);
-		__test_add_func_load("/api/map_view/add_image_n",
-			utc_map_view_add_image_n, i);
-		__test_add_func_load("/api/map_view/add_polyline_p",
-			utc_map_view_add_polyline_p, i);
-		__test_add_func_load("/api/map_view/add_polyline_n",
-			utc_map_view_add_polyline_n, i);
-		__test_add_func_load("/api/map_view/add_polygon_p",
-			utc_map_view_add_polygon_p, i);
-		__test_add_func_load("/api/map_view/add_polygon_n",
-			utc_map_view_add_polygon_n, i);
-		__test_add_func_load("/api/map_view/add_circle_p",
-			utc_map_view_add_circle_p, i);
-		__test_add_func_load("/api/map_view/add_circle_n",
-			utc_map_view_add_circle_n, i);
-		__test_add_func_load("/api/map_view/add_text_p",
-			utc_map_view_add_text_p, i);
-		__test_add_func_load("/api/map_view/add_text_n",
-			utc_map_view_add_text_n, i);
-		__test_add_func_load("/api/map_view/add_object_p",
-			utc_map_view_add_object_p, i);
-		__test_add_func_load("/api/map_view/add_object_n",
-			utc_map_view_add_object_n, i);
-		__test_add_func_load("/api/map_view/add_objects_p",
-			utc_map_view_add_objects_p, i);
-		__test_add_func_load("/api/map_view/add_objects_n",
-			utc_map_view_add_objects_n, i);
-		__test_add_func_load("/api/map_view/remove_object_p",
-			utc_map_view_remove_object_p, i);
-		__test_add_func_load("/api/map_view/remove_object_n",
-			utc_map_view_remove_object_n, i);
-		__test_add_func_load("/api/map_view/foreach_object_p",
-			utc_map_view_foreach_object_p, i);
-		__test_add_func_load("/api/map_view/foreach_object_n",
-			utc_map_view_foreach_object_n, i);
+		__test_add_func_load("/api/maps_view_/add_marker_type_p",
+			utc_maps_view_add_marker_type_p, i);
+		__test_add_func_load("/api/maps_view_/add_marker_type_n",
+			utc_maps_view_add_marker_type_n, i);
+		__test_add_func_load("/api/maps_view_/add_marker_image_p",
+			utc_maps_view_add_marker_image_p, i);
+		__test_add_func_load("/api/maps_view_/add_marker_image_n",
+			utc_maps_view_add_marker_image_n, i);
+		__test_add_func_load("/api/maps_view_/add_route_p",
+			utc_maps_view_add_route_p, i);
+		__test_add_func_load("/api/maps_view_/add_route_n",
+			utc_maps_view_add_route_n, i);
+		__test_add_func_load("/api/maps_view_/add_image_p",
+			utc_maps_view_add_image_p, i);
+		__test_add_func_load("/api/maps_view_/add_image_n",
+			utc_maps_view_add_image_n, i);
+		__test_add_func_load("/api/maps_view_/add_polyline_p",
+			utc_maps_view_add_polyline_p, i);
+		__test_add_func_load("/api/maps_view_/add_polyline_n",
+			utc_maps_view_add_polyline_n, i);
+		__test_add_func_load("/api/maps_view_/add_polygon_p",
+			utc_maps_view_add_polygon_p, i);
+		__test_add_func_load("/api/maps_view_/add_polygon_n",
+			utc_maps_view_add_polygon_n, i);
+		__test_add_func_load("/api/maps_view_/add_circle_p",
+			utc_maps_view_add_circle_p, i);
+		__test_add_func_load("/api/maps_view_/add_circle_n",
+			utc_maps_view_add_circle_n, i);
+		__test_add_func_load("/api/maps_view_/add_text_p",
+			utc_maps_view_add_text_p, i);
+		__test_add_func_load("/api/maps_view_/add_text_n",
+			utc_maps_view_add_text_n, i);
+		__test_add_func_load("/api/maps_view_/add_object_p",
+			utc_maps_view_add_object_p, i);
+		__test_add_func_load("/api/maps_view_/add_object_n",
+			utc_maps_view_add_object_n, i);
+		__test_add_func_load("/api/maps_view_/add_objects_p",
+			utc_maps_view_add_objects_p, i);
+		__test_add_func_load("/api/maps_view_/add_objects_n",
+			utc_maps_view_add_objects_n, i);
+		__test_add_func_load("/api/maps_view_/remove_object_p",
+			utc_maps_view_remove_object_p, i);
+		__test_add_func_load("/api/maps_view_/remove_object_n",
+			utc_maps_view_remove_object_n, i);
+		__test_add_func_load("/api/maps_view_/foreach_object_p",
+			utc_maps_view_foreach_object_p, i);
+		__test_add_func_load("/api/maps_view_/foreach_object_n",
+			utc_maps_view_foreach_object_n, i);
 	}
 #endif
 }
 
-static void __add_map_object_tests(int i)
+static void __add_maps_view_object_tests(int i)
 {
 #ifndef SUPPRESS_VALGRIND_WARNINGS	/* Valgrind warnings!!! */
 
 		if(1) {		/* Maps View Object */
 
 			/* Common Features */
-		__test_add_func_load("/api/map_object/create_destroy_p",
-				     utc_map_object_create_p, i);
-		__test_add_func_load("/api/map_object/create_destroy_n",
-				     utc_map_object_create_n, i);
+		__test_add_func_load("/api/maps_view_object/create_destroy_p",
+				     utc_maps_view_object_create_p, i);
+		__test_add_func_load("/api/maps_view_object/create_destroy_n",
+				     utc_maps_view_object_create_n, i);
 		__test_add_func_load("/api/map_object/get_type_p",
-				     utc_map_object_get_type_p, i);
+				     utc_maps_view_object_get_type_p, i);
 		__test_add_func_load("/api/map_object/get_type_n",
-				     utc_map_object_get_type_n, i);
+				     utc_maps_view_object_get_type_n, i);
 		__test_add_func_load("/api/map_object/move_p",
-				     utc_map_object_move_p, i);
+				     utc_maps_view_object_move_p, i);
 		__test_add_func_load("/api/map_object/move_n",
-				     utc_map_object_move_n, i);
+				     utc_maps_view_object_move_n, i);
 		__test_add_func_load("/api/map_object/set_visible_p",
-				     utc_map_object_set_visible_p, i);
+				     utc_maps_view_object_set_visible_p, i);
 		__test_add_func_load("/api/map_object/set_visible_n",
-				     utc_map_object_set_visible_n, i);
+				     utc_maps_view_object_set_visible_n, i);
 		__test_add_func_load("/api/map_object/get_visible_p",
-				     utc_map_object_get_visible_p, i);
+				     utc_maps_view_object_get_visible_p, i);
 		__test_add_func_load("/api/map_object/get_visible_n",
-				     utc_map_object_get_visible_n, i);
+				     utc_maps_view_object_get_visible_n, i);
 		__test_add_func_load("/api/map_object/hit_test_p",
-				     utc_map_object_hit_test_p, i);
+				     utc_maps_view_object_hit_test_p, i);
 		__test_add_func_load("/api/map_object/hit_test_n",
-				     utc_map_object_hit_test_n, i);
+				     utc_maps_view_object_hit_test_n, i);
 
 		/* Layer */
 		__test_add_func_load("/api/map_object/group/add_object_p",
-				     utc_map_object_group_add_object_p, i);
+				     utc_maps_view_object_group_add_object_p, i);
 		__test_add_func_load("/api/map_object/group/add_object_n",
-				     utc_map_object_group_add_object_n, i);
+				     utc_maps_view_object_group_add_object_n, i);
 		__test_add_func_load("/api/map_object/group/set_objects_p",
-			     utc_map_object_group_set_objects_p, i);
+			     utc_maps_view_object_group_set_objects_p, i);
 		__test_add_func_load("/api/map_object/group/set_objects_n",
-			     utc_map_object_group_set_objects_n, i);
+			     utc_maps_view_object_group_set_objects_n, i);
 		__test_add_func_load("/api/map_object/group/rem_object_p",
-			     utc_map_object_group_remove_object_p, i);
+			     utc_maps_view_object_group_remove_object_p, i);
 		__test_add_func_load("/api/map_object/group/rem_object_n",
-			     utc_map_object_group_remove_object_n, i);
+			     utc_maps_view_object_group_remove_object_n, i);
 		__test_add_func_load("/api/map_object/group/foreach_p",
-			     utc_map_object_group_foreach_object_p, i);
+			     utc_maps_view_object_group_foreach_object_p, i);
 		__test_add_func_load("/api/map_object/group/foreach_n",
-			     utc_map_object_group_foreach_object_n, i);
+			     utc_maps_view_object_group_foreach_object_n, i);
 
 		/* Poly: common for polygon and polyline */
 		__test_add_func_load("/api/map_object/poly/add_point_p",
-				     utc_map_object_poly_add_point_p, i);
+				     utc_maps_view_object_poly_add_point_p, i);
 		__test_add_func_load("/api/map_object/poly/add_point_n",
-				     utc_map_object_poly_add_point_n, i);
+				     utc_maps_view_object_poly_add_point_n, i);
 		__test_add_func_load("/api/map_object/poly/set_points_p",
-				     utc_map_object_poly_set_points_p, i);
+				     utc_maps_view_object_poly_set_points_p, i);
 		__test_add_func_load("/api/map_object/poly/set_points_n",
-				     utc_map_object_poly_set_points_n, i);
+				     utc_maps_view_object_poly_set_points_n, i);
 		__test_add_func_load("/api/map_object/poly/foreach_p",
-				utc_map_object_poly_foreach_point_p, i);
+				utc_maps_view_object_poly_foreach_point_p, i);
 		__test_add_func_load("/api/map_object/poly/foreach_n",
-				utc_map_object_poly_foreach_point_n, i);
+				utc_maps_view_object_poly_foreach_point_n, i);
 
 		/* Polyline */
 		__test_add_func_load("/api/map_object/polyline/set_clr_p",
-				utc_map_object_polyline_set_color_p, i);
+				utc_maps_view_object_polyline_set_color_p, i);
 		__test_add_func_load("/api/map_object/polyline/set_clr_n",
-				utc_map_object_polyline_set_color_n, i);
+				utc_maps_view_object_polyline_set_color_n, i);
 		__test_add_func_load("/api/map_object/polyline/get_clr_p",
-				utc_map_object_polyline_get_color_p, i);
+				utc_maps_view_object_polyline_get_color_p, i);
 		__test_add_func_load("/api/map_object/polyline/get_clr_n",
-				utc_map_object_polyline_get_color_n, i);
+				utc_maps_view_object_polyline_get_color_n, i);
 		__test_add_func_load("/api/map_object/polyline/set_wdt_p",
-				utc_map_object_polyline_set_width_p, i);
+				utc_maps_view_object_polyline_set_width_p, i);
 		__test_add_func_load("/api/map_object/polyline/set_wdt_n",
-				utc_map_object_polyline_set_width_n, i);
+				utc_maps_view_object_polyline_set_width_n, i);
 		__test_add_func_load("/api/map_object/polyline/get_wdt_p",
-				utc_map_object_polyline_get_width_p, i);
+				utc_maps_view_object_polyline_get_width_p, i);
 		__test_add_func_load("/api/map_object/polyline/get_wdt_n",
-				utc_map_object_polyline_get_width_n, i);
+				utc_maps_view_object_polyline_get_width_n, i);
 
 		/* Polygon */
 		__test_add_func_load("/api/map_object/polygon/set_clr_p",
-			utc_map_object_polygon_set_fill_color_p, i);
+			utc_maps_view_object_polygon_set_fill_color_p, i);
 		__test_add_func_load("/api/map_object/polygon/set_clr_n",
-			utc_map_object_polygon_set_fill_color_n, i);
+			utc_maps_view_object_polygon_set_fill_color_n, i);
 		__test_add_func_load("/api/map_object/polygon/get_clr_p",
-			utc_map_object_polygon_get_fill_color_p, i);
+			utc_maps_view_object_polygon_get_fill_color_p, i);
 		__test_add_func_load("/api/map_object/polygon/get_clr_n",
-			utc_map_object_polygon_get_fill_color_n, i);
+			utc_maps_view_object_polygon_get_fill_color_n, i);
 
 		/* Marker */
 		__test_add_func_load("/api/map_object/marker/set_coords_p",
-			utc_map_object_marker_set_coordinates_p, i);
+			utc_maps_view_object_marker_set_coordinates_p, i);
 		__test_add_func_load("/api/map_object/marker/set_coords_n",
-			utc_map_object_marker_set_coordinates_n, i);
+			utc_maps_view_object_marker_set_coordinates_n, i);
 		__test_add_func_load("/api/map_object/marker/get_coords_p",
-			utc_map_object_marker_get_coordinates_p, i);
+			utc_maps_view_object_marker_get_coordinates_p, i);
 		__test_add_func_load("/api/map_object/marker/get_coords_n",
-			utc_map_object_marker_get_coordinates_n, i);
+			utc_maps_view_object_marker_get_coordinates_n, i);
 		__test_add_func_load("/api/map_object/marker/set_scrsz_p",
-			utc_map_object_marker_set_screen_size_p, i);
+			utc_maps_view_object_marker_set_screen_size_p, i);
 		__test_add_func_load("/api/map_object/marker/set_scrsz_n",
-			utc_map_object_marker_set_screen_size_n, i);
+			utc_maps_view_object_marker_set_screen_size_n, i);
 		__test_add_func_load("/api/map_object/marker/get_scrsz_p",
-			utc_map_object_marker_get_screen_size_p, i);
+			utc_maps_view_object_marker_get_screen_size_p, i);
 		__test_add_func_load("/api/map_object/marker/get_scrsz_n",
-			utc_map_object_marker_get_screen_size_n, i);
+			utc_maps_view_object_marker_get_screen_size_n, i);
 		__test_add_func_load("/api/map_object/marker/set_file_p",
-			utc_map_object_marker_set_file_path_p, i);
+			utc_maps_view_object_marker_set_file_path_p, i);
 		__test_add_func_load("/api/map_object/marker/set_file_n",
-			utc_map_object_marker_set_file_path_n, i);
+			utc_maps_view_object_marker_set_file_path_n, i);
 		__test_add_func_load("/api/map_object/marker/get_file_p",
-			utc_map_object_marker_get_image_file_p, i);
+			utc_maps_view_object_marker_get_image_file_p, i);
 		__test_add_func_load("/api/map_object/marker/get_file_n",
-			utc_map_object_marker_get_image_file_n, i);
+			utc_maps_view_object_marker_get_image_file_n, i);
 		__test_add_func_load("/api/map_object/marker/set_type_p",
-				     utc_map_object_marker_set_type_p, i);
+				     utc_maps_view_object_marker_set_type_p, i);
 		__test_add_func_load("/api/map_object/marker/set_type_n",
-				     utc_map_object_marker_set_type_n, i);
+				     utc_maps_view_object_marker_set_type_n, i);
 		__test_add_func_load("/api/map_object/marker/get_type_p",
-				     utc_map_object_marker_get_type_p, i);
+				     utc_maps_view_object_marker_get_type_p, i);
 		__test_add_func_load("/api/map_object/marker/get_type_n",
-				     utc_map_object_marker_get_type_n, i);
+				     utc_maps_view_object_marker_get_type_n, i);
 		__test_add_func_load("/api/map_object/marker/set_text_p",
-				     utc_map_object_marker_set_text_p, i);
+				     utc_maps_view_object_marker_set_text_p, i);
 		__test_add_func_load("/api/map_object/marker/set_text_n",
-				     utc_map_object_marker_set_text_n, i);
+				     utc_maps_view_object_marker_set_text_n, i);
 		__test_add_func_load("/api/map_object/marker/get_text_p",
-				     utc_map_object_marker_get_text_p, i);
+				     utc_maps_view_object_marker_get_text_p, i);
 		__test_add_func_load("/api/map_object/marker/get_text_n",
-				     utc_map_object_marker_get_text_n, i);
+				     utc_maps_view_object_marker_get_text_n, i);
 	}
 
 #endif
@@ -1351,9 +1351,9 @@ static void __add_map_event_data_tests(int i)
 				     utc_map_event_data_get_delta_n, i);
 
 		__test_add_func_load("/api/map_event_data/get_xy_p",
-				     utc_map_event_data_get_xy_p, i);
+				     utc_map_event_data_get_position_p, i);
 		__test_add_func_load("/api/map_event_data/get_xy_n",
-				     utc_map_event_data_get_xy_n, i);
+				     utc_map_event_data_get_position_n, i);
 
 		__test_add_func_load("/api/map_event_data/get_fingers_p",
 				     utc_map_event_data_get_fingers_p, i);
@@ -1573,11 +1573,11 @@ int main(int argc, char **argv)
 
 		/* API: Maps View */
 		if (1)
-			__add_map_view_api_tests(i);
+			__add_maps_view_api_tests(i);
 
 		/* API: Maps View Object */
 		if (1)
-			__add_map_object_tests(i);
+			__add_maps_view_object_tests(i);
 
 		/* API: Maps View Event Data */
 		if (1)
