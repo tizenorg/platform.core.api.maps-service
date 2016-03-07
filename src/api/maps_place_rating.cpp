@@ -28,7 +28,6 @@ typedef struct _maps_place_rating_s
 
 EXPORT_API int maps_place_rating_create(maps_place_rating_h *place)
 {
-	MAPS_LOG_API;
 	if (!place)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	*place = (maps_place_rating_h) g_slice_new0(maps_place_rating_s);
@@ -43,7 +42,6 @@ EXPORT_API int maps_place_rating_create(maps_place_rating_h *place)
 
 EXPORT_API int maps_place_rating_destroy(maps_place_rating_h place)
 {
-	MAPS_LOG_API;
 	if (!place)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	g_slice_free(maps_place_rating_s, place);
@@ -53,7 +51,6 @@ EXPORT_API int maps_place_rating_destroy(maps_place_rating_h place)
 EXPORT_API int maps_place_rating_clone(const maps_place_rating_h origin,
 				       maps_place_rating_h *cloned)
 {
-	MAPS_LOG_API;
 	if (!cloned || !origin)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -86,7 +83,6 @@ EXPORT_API int maps_place_rating_clone(const maps_place_rating_h origin,
 EXPORT_API int maps_place_rating_get_count(const maps_place_rating_h place,
 					   int *count)
 {
-	MAPS_LOG_API;
 	if (!place || !count)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	*count = ((maps_place_rating_s *) place)->count;
@@ -96,7 +92,6 @@ EXPORT_API int maps_place_rating_get_count(const maps_place_rating_h place,
 EXPORT_API int maps_place_rating_get_average(const maps_place_rating_h place,
 					     double *average)
 {
-	MAPS_LOG_API;
 	if (!place || !average)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	*average = ((maps_place_rating_s *) place)->average;
@@ -108,7 +103,6 @@ EXPORT_API int maps_place_rating_get_average(const maps_place_rating_h place,
 EXPORT_API int maps_place_rating_set_count(maps_place_rating_h place,
 					   const int count)
 {
-	MAPS_LOG_API;
 	if (!place || (count < 0))
 		return MAPS_ERROR_INVALID_PARAMETER;
 	((maps_place_rating_s *) place)->count = count;
@@ -118,7 +112,6 @@ EXPORT_API int maps_place_rating_set_count(maps_place_rating_h place,
 EXPORT_API int maps_place_rating_set_average(maps_place_rating_h place,
 					     const double average)
 {
-	MAPS_LOG_API;
 	if (!place || (average < 0))
 		return MAPS_ERROR_INVALID_PARAMETER;
 	((maps_place_rating_s *) place)->average = average;

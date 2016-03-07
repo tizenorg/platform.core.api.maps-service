@@ -24,9 +24,7 @@ volatile int session::command::command_request_id = 1;
 session::command session::command::empty_instance;
 
 session::command::command(maps_service_h ms)
-	: m(ms)
-	, my_req_id(0)
-	, is_merged(false)
+	: m(ms), my_req_id(0), error(MAPS_ERROR_NONE), is_merged(false)
 {
 }
 
@@ -44,6 +42,7 @@ session::command &session::command::operator =(const command &src)
 	if (this != (&src)) {
 		m = src.m;
 		my_req_id = src.my_req_id;
+		error = src.error;
 		is_merged = src.is_merged;
 	}
 	return *this;

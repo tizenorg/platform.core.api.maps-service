@@ -26,6 +26,11 @@ int maps_plugin_init_empty(maps_plugin_h *plugin)
 	return 0;
 }
 
+int maps_plugin_init_module_empty(maps_plugin_h *plugin, const char *module)
+{
+	return 0;
+}
+
 int maps_plugin_shutdown_empty(maps_plugin_h plugin)
 {
 	return 0;
@@ -57,14 +62,17 @@ int maps_plugin_get_preference_empty(maps_preference_h *preference)
 	return 0;
 }
 
-int maps_plugin_is_service_supported_empty(maps_service_e service,
-					   bool *supported)
+int maps_plugin_is_service_supported_empty(maps_service_e service, bool *supported)
 {
 	return 0;
 }
 
-int maps_plugin_is_data_supported_empty(maps_service_data_e data,
-					bool *supported)
+int maps_plugin_is_data_supported_empty(maps_service_data_e data, bool *supported)
+{
+	return 0;
+}
+
+int maps_plugin_is_widget_supported_empty(maps_service_widget_e data, bool *supported)
 {
 	return 0;
 }
@@ -147,6 +155,22 @@ int maps_plugin_search_place_by_address_empty(const char *address,
 	return 0;
 }
 
+int maps_plugin_search_place_list_empty(const maps_area_h boundary,
+				   const maps_place_filter_h filter,
+				   maps_preference_h preference,
+				   maps_service_search_place_list_cb callback,
+				   void *user_data, int *request_id)
+{
+	return 0;
+}
+
+int maps_plugin_get_place_details_empty(const char *url,
+						maps_service_get_place_details_cb callback,
+						void *user_data, int *request_id)
+{
+	return 0;
+}
+
 /* Route */
 int maps_plugin_search_route_empty(const maps_coordinates_h origin,
 				   const maps_coordinates_h destination,
@@ -174,7 +198,8 @@ int maps_plugin_cancel_request_empty(int request_id)
 }
 
 /* Mapping */
-int maps_plugin_set_map_view_empty(const map_view_h view)
+int maps_plugin_set_map_view_empty(const map_view_h view,
+				   maps_plugin_map_view_ready_cb callback)
 {
 	return 0;
 }
@@ -198,6 +223,16 @@ int maps_plugin_move_center_empty(const int delta_x,
 	return 0;
 }
 
+int maps_plugin_set_scalebar_empty(bool enable)
+{
+	return 0;
+}
+
+int maps_plugin_get_scalebar_empty(bool *enabled)
+{
+	return 0;
+}
+
 int maps_plugin_draw_map_empty(Evas* canvas, const int x, const int y,
 			       const int width, const int height)
 {
@@ -205,8 +240,7 @@ int maps_plugin_draw_map_empty(Evas* canvas, const int x, const int y,
 }
 
 int maps_plugin_on_object_empty(const map_object_h object,
-				     const map_object_operation_e
-				     operation)
+				const map_object_operation_e operation)
 {
 	return 0;
 }
@@ -244,6 +278,7 @@ plugin::interface_s empty_interface = {
 	maps_plugin_init_empty,
 	maps_plugin_shutdown_empty,
 	maps_plugin_get_info_empty,
+	maps_plugin_init_module_empty,
 
 	maps_plugin_set_provider_key_empty,
 	maps_plugin_get_provider_key_empty,
@@ -251,6 +286,7 @@ plugin::interface_s empty_interface = {
 	maps_plugin_get_preference_empty,
 	maps_plugin_is_service_supported_empty,
 	maps_plugin_is_data_supported_empty,
+	maps_plugin_is_widget_supported_empty,
 
 	/* Geocode */
 	maps_plugin_geocode_empty,
@@ -263,6 +299,8 @@ plugin::interface_s empty_interface = {
 	maps_plugin_search_place_empty,
 	maps_plugin_search_place_by_area_empty,
 	maps_plugin_search_place_by_address_empty,
+	maps_plugin_search_place_list_empty,
+	maps_plugin_get_place_details_empty,
 
 	/* Route */
 	maps_plugin_search_route_empty,
@@ -275,13 +313,15 @@ plugin::interface_s empty_interface = {
 	maps_plugin_set_map_view_empty,
 	maps_plugin_render_map_empty,
 	maps_plugin_move_center_empty,
+	maps_plugin_set_scalebar_empty,
+	maps_plugin_get_scalebar_empty,
 	maps_plugin_draw_map_empty,
 	maps_plugin_on_object_empty,
 	maps_plugin_screen_to_geography_empty,
 	maps_plugin_geography_to_screen_empty,
 	maps_plugin_get_min_zoom_level_empty,
 	maps_plugin_get_max_zoom_level_empty,
-	maps_plugin_get_center_empty
+	maps_plugin_get_center_empty,
 };
 
 

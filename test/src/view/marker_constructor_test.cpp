@@ -26,7 +26,7 @@ void utc_construct_marker_p(void)
 	view::marker_constructor mc;
 	map_object_h marker = mc.construct(maps::coordinates(10.1, 20.1),
 					   "test_marker.png",
-					   MAP_MARKER_POI);
+					   MAP_MARKER_PIN);
 	g_assert_cmpint(mc.get_error(), ==, MAPS_ERROR_NONE);
 	g_assert(marker);
 
@@ -55,7 +55,7 @@ void utc_construct_marker_p(void)
 	map_marker_type_e type = MAP_MARKER_NONE;
 	error = map_object_marker_get_type(marker, &type);
 	g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
-	g_assert_cmpint(type, ==, MAP_MARKER_POI);
+	g_assert_cmpint(type, ==, MAP_MARKER_PIN);
 
 	error = map_object_destroy(marker);
 	g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
@@ -68,14 +68,14 @@ void utc_construct_marker_n(void)
 	/* Negative Test 1 */
 	map_object_h marker = mc.construct(NULL,
 					   "test_marker.png",
-					   MAP_MARKER_POI);
+					   MAP_MARKER_PIN);
 	g_assert_cmpint(mc.get_error(), ==, MAPS_ERROR_INVALID_PARAMETER);
 	g_assert(!marker);
 
 	/* Negative Test 2 */
 	marker = mc.construct(maps::coordinates(10.1, 20.1),
 			      NULL,
-			      MAP_MARKER_POI);
+			      MAP_MARKER_PIN);
 	g_assert_cmpint(mc.get_error(), ==, MAPS_ERROR_INVALID_PARAMETER);
 	g_assert(!marker);
 

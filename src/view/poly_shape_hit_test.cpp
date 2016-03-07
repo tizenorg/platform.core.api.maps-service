@@ -26,9 +26,8 @@ void view::poly_shape_hit_test::add_point(const float x, const float y)
 	__y.push_back(y);
 }
 
-bool view::poly_shape_hit_test::hit_test(const float x,
-			       const float y,
-			       const bool polygon) const
+bool view::poly_shape_hit_test::hit_test(const float x, const float y,
+	const bool polygon, const int w) const
 {
 	if(__x.empty())
 		return false;
@@ -38,7 +37,7 @@ bool view::poly_shape_hit_test::hit_test(const float x,
 		return false;
 
 	/* 2. Check if the point near the polyline */
-	if(hit_test_polyline(x, y, polygon))
+	if(hit_test_polyline(x, y, polygon, w))
 		return true;
 
 	/* 3. Check if the point near the vertices */
@@ -53,8 +52,7 @@ bool view::poly_shape_hit_test::hit_test(const float x,
 	return false;
 }
 
-bool view::poly_shape_hit_test::hit_test_bounding_box(const float x,
-						      const float y) const
+bool view::poly_shape_hit_test::hit_test_bounding_box(const float x, const float y) const
 {
 	float x_min = 1. * FLT_MAX;
 	float x_max = 1. * FLT_MIN;
@@ -80,8 +78,7 @@ bool view::poly_shape_hit_test::hit_test_bounding_box(const float x,
 }
 
 bool view::poly_shape_hit_test::hit_test_segment(const float x1, const float y1,
-				       const float x2, const float y2,
-				       const float x, const float y) const
+	const float x2, const float y2, const float x, const float y, const int w) const
 {
 	float a = x2 - x1;
 	float b = y2 - y1;
@@ -97,14 +94,14 @@ bool view::poly_shape_hit_test::hit_test_segment(const float x1, const float y1,
 	float y_rotated = x_shifted * sina - y_shifted * cosa;
 
 	if((x_rotated >= 0) && (x_rotated <= c)
-	   && (y_rotated >= (-1. * accuracy))
-	   && (y_rotated <=  accuracy))
+	   && (y_rotated >= (-1. * (accuracy + w / 2)))
+	   && (y_rotated <=  (accuracy + w / 2)))
 		return true;
 	return false;
 }
 
 bool view::poly_shape_hit_test::hit_test_polyline(const float x, const float y,
-					const bool polygon) const
+					const bool polygon, const int w) const
 {
 	if(__x.size() < 1)
 		return false;
@@ -112,7 +109,7 @@ bool view::poly_shape_hit_test::hit_test_polyline(const float x, const float y,
 	for(unsigned int i = 1; i < __x.size(); i ++) {
 
 		if(hit_test_segment(__x[i - 1], __y[i - 1],
-				    __x[i], __y[i], x, y))
+				    __x[i], __y[i], x, y, w))
 			return true;
 	}
 
@@ -126,8 +123,7 @@ bool view::poly_shape_hit_test::hit_test_polyline(const float x, const float y,
 	return false;
 }
 
-bool view::poly_shape_hit_test::hit_test_vertices(const float x,
-						  const float y) const
+bool view::poly_shape_hit_test::hit_test_vertices(const float x, const float y) const
 {
 	for(unsigned int i = 0; i < __x.size(); i ++) {
 		float cur_x_min = __x[i] - accuracy;

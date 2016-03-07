@@ -22,20 +22,16 @@ SET(dependents
 	gmodule-2.0
 	capi-base-common
 	dlog
-	capi-appfw-app-manager
-	capi-appfw-package-manager
-	pkgmgr-info
-	privacy-manager-client
-	capi-system-info
+#	capi-appfw-app-manager
+#	capi-appfw-package-manager
+#	pkgmgr-info
+#	privacy-manager-client
+#	capi-system-info
 
 	# Mapping API dependencies
 	eina
 	evas
 	ecore
-#	capi-appfw-application
-#	ecore
-#	ecore-evas
-#	elementary
 	)
 SET(pc_dependents "capi-base-common")
 
