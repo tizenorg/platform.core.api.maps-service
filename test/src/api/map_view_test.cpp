@@ -69,29 +69,29 @@ void utc_map_view_show_location_n(void)
 }
 
 
-/*int map_view_screen_to_geography(const map_view_h view,
+/*int map_view_screen_to_geolocation(const map_view_h view,
 				  const int x, const int y,
 				  maps_coordinates_h *coordinates);*/
-void utc_map_view_screen_to_geography_p(void)
+void utc_map_view_screen_to_geolocation_p(void)
 {
 	/* TBD */
 }
 
-void utc_map_view_screen_to_geography_n(void)
+void utc_map_view_screen_to_geolocation_n(void)
 {
 	/* TBD */
 }
 
 
-/*int map_view_geography_to_screen(const map_view_h view,
+/*int map_view_geolocation_to_screen(const map_view_h view,
 				  const maps_coordinates_h coordinates,
 				  int *x, int *y);*/
-void utc_map_view_geography_to_screen_p(void)
+void utc_map_view_geolocation_to_screen_p(void)
 {
 	/* TBD */
 }
 
-void utc_map_view_geography_to_screen_n(void)
+void utc_map_view_geolocation_to_screen_n(void)
 {
 	/* TBD */
 }
@@ -194,7 +194,7 @@ void utc_map_view_is_visible_n(void)
 }
 
 
-/*int map_view_redraw(const map_view_h view);*/
+/*int _map_view_redraw(const map_view_h view);*/
 void utc_map_view_redraw_p(void)
 {
 	/* TBD */

@@ -86,9 +86,7 @@ void view::inertial_gesture::tap(int finger_no, const touch_point &tp)
 		reset();
 	}
 
-	#ifdef IMPROVEMENT_OF_GESTURES_AND_ACTIONS
 	_down[finger_no] = tp;
-	#endif
 	_last[finger_no] = tp;
 	_prev[finger_no] = tp;
 	_cur_x[finger_no] = tp._x;
@@ -123,11 +121,9 @@ void view::inertial_gesture::up(int finger_no, const touch_point &tp)
 	unsigned int dt =
 		_last[finger_no]._timestamp - _prev[finger_no]._timestamp;
 
-	#ifdef IMPROVEMENT_OF_GESTURES_AND_ACTIONS
 	int trajectory = get_trajectory_effective_length(_down[finger_no], tp);
 	MAPS_LOGD("trajectory=%d", trajectory);
 	if (trajectory <= 5) dt = 0;
-	#endif
 
 	if(dt == 0) {
 		_derivative_x[finger_no] = .0;

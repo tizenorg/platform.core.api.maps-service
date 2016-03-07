@@ -1,7 +1,7 @@
 Name:       capi-maps-service
 Summary:    Tizen Maps Service API
-Version:    0.5.4
-Release:    11
+Version:    0.6.0
+Release:    1
 Group:      Location/API
 License:    Apache-2.0
 Source0:    %{name}-%{version}.tar.gz
@@ -23,10 +23,7 @@ BuildRequires:  pkgconfig(capi-system-info)
 BuildRequires:  pkgconfig(eina)
 BuildRequires:  pkgconfig(evas)
 BuildRequires:  pkgconfig(ecore)
-#BuildRequires:  pkgconfig(capi-appfw-application)
 BuildRequires:  pkgconfig(evas)
-#BuildRequires:  pkgconfig(ecore-evas)
-#BuildRequires:  pkgconfig(elementary)
 
 Requires(post):  /sbin/ldconfig
 Requires(postun):  /sbin/ldconfig
@@ -114,14 +111,14 @@ This provides the Tizen Map Service APIs to access and handle map data for the M
 %files plugin-devel
 %defattr(-,root,root,-)
 %{_includedir}/maps/maps_plugin*.h
-%{_includedir}/maps/maps_*plugin.h
+%{_includedir}/maps/maps_*_plugin.h
 %{_includedir}/maps/maps_extra_types.h
 
 
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 # WARNING! FOR TESTING PURPOSES ONLY
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-#if you want to tesst code, please change %if 0 to %if 1
+#if you want to test code, please change %if 0 to %if 1
 %if 0
 %package test
 Summary:    Tizen Maps Service Library Test (Internal Dev)
@@ -146,7 +143,6 @@ READ ME
 %defattr(-,root,root,-)
 %manifest test/capi-maps-service-test.manifest
 /opt/usr/devel/capi-maps-service-test
-/etc/smack/accesses.d/capi-maps-service-test.efl
 /usr/share/packages/capi-maps-service-test.xml
 
 #################################################################################

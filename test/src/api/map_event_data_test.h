@@ -53,9 +53,9 @@ void utc_map_event_data_get_center_n(void);
 void utc_map_event_data_get_delta_p(void);
 void utc_map_event_data_get_delta_n(void);
 
-/*int map_event_data_get_xy(map_event_data_h event, int *x, int* y);*/
-void utc_map_event_data_get_xy_p(void);
-void utc_map_event_data_get_xy_n(void);
+/*int map_event_data_get_position(map_event_data_h event, int *x, int* y);*/
+void utc_map_event_data_get_position_p(void);
+void utc_map_event_data_get_position_n(void);
 
 /*int map_event_data_get_fingers(map_event_data_h event, int *fingers);*/
 void utc_map_event_data_get_fingers_p(void);

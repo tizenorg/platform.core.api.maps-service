@@ -41,7 +41,7 @@ extern "C" {
  * @brief Creates a new place editorial handle.
  * @details This function creates a new place editorial handle and allocates all
  * needed resources.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks @a editorial must be released using maps_place_editorial_destroy().
  * \n @a editorial may be cloned using maps_place_editorial_clone().
  *
@@ -59,7 +59,7 @@ int maps_place_editorial_create(maps_place_editorial_h *editorial);
 /**
  * @brief	Sets the place editorial description.
  * @details This function sets the place editorial description.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	editorial		The handle of place editorial
  * @param[in]	description	The place editorial description
@@ -78,7 +78,7 @@ int maps_place_editorial_set_description(maps_place_editorial_h editorial,
 /**
  * @brief	Sets the place editorial language.
  * @details This function sets the place editorial language.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	editorial	The handle of place editorial
  * @param[in]	language	The place editorial language
@@ -97,7 +97,7 @@ int maps_place_editorial_set_language(maps_place_editorial_h editorial,
 /**
  * @brief	Sets the place editorial media.
  * @details This function sets the place editorial media.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	editorial	The handle of place editorial
  * @param[in]	media		The place editorial media

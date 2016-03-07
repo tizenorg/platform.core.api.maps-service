@@ -312,185 +312,6 @@ void utc_map_object_hit_test_n(void)
 #endif
 }
 
-/*int map_object_group_add_object(map_object_h group,
-			       const map_object_h object);*/
-void utc_map_object_group_add_object_p(void)
-{
-	test_env e(MAP_OBJECT_GROUP);
-
-	map_object_h marker = NULL;
-	int error = _map_object_create(MAP_OBJECT_MARKER,
-					   &marker);
-	g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
-	g_assert(marker);
-
-	error = map_object_group_add_object(e.o, marker);
-	g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
-}
-
-void utc_map_object_group_add_object_n(void)
-{
-	test_env e(MAP_OBJECT_GROUP);
-
-	map_object_h marker = NULL;
-	int error = _map_object_create(MAP_OBJECT_MARKER,
-					   &marker);
-	g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
-	g_assert(marker);
-
-	error = map_object_group_add_object(NULL, marker);
-	g_assert_cmpint(error, ==, MAPS_ERROR_INVALID_PARAMETER);
-
-	error = map_object_group_add_object(e.o, NULL);
-	g_assert_cmpint(error, ==, MAPS_ERROR_INVALID_PARAMETER);
-
-	error = map_object_destroy(marker);
-	g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
-}
-
-/*int map_object_group_set_objects(map_object_h group,
-				     const maps_item_list_h objects);*/
-void utc_map_object_group_set_objects_p(void)
-{
-	/* TO BE REMOVED */
-#if 0
-	test_env e(MAP_OBJECT_GROUP);
-
-	map_object_h m1 = NULL;
-	int error = _map_object_create(MAP_OBJECT_MARKER, &m1);
-	g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
-	g_assert(m1);
-
-	map_object_h m2 = NULL;
-	error = _map_object_create(MAP_OBJECT_MARKER, &m2);
-	g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
-	g_assert(m2);
-
-	maps_item_list_h list = NULL;
-	error = maps_item_list_create(&list);
-	g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
-	g_assert(list);
-
-	error = maps_item_list_append(list, m1, maps_item_no_clone);
-	g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
-	error = maps_item_list_append(list, m2, maps_item_no_clone);
-	g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
-
-	error = map_object_group_set_objects(e.o, list);
-	g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
-
-	error = maps_item_list_destroy(list);
-	g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
-#endif
-}
-
-void utc_map_object_group_set_objects_n(void)
-{
-	/* TO BE REMOVED */
-#if 0
-	test_env e(MAP_OBJECT_GROUP);
-
-	maps_item_list_h list = NULL;
-	int error = maps_item_list_create(&list);
-	g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
-	g_assert(list);
-
-	error = map_object_group_set_objects(NULL, list);
-	g_assert_cmpint(error, ==, MAPS_ERROR_INVALID_PARAMETER);
-
-	error = map_object_group_set_objects(e.o, NULL);
-	g_assert_cmpint(error, ==, MAPS_ERROR_INVALID_PARAMETER);
-
-	error = maps_item_list_destroy(list);
-	g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
-#endif
-}
-
-
-/*int map_object_group_remove_object(map_object_h group,
-				  const map_object_h *object);*/
-void utc_map_object_group_remove_object_p(void)
-{
-	test_env e(MAP_OBJECT_GROUP);
-	/* TODO: */
-}
-
-void utc_map_object_group_remove_object_n(void)
-{
-	test_env e(MAP_OBJECT_GROUP);
-	/* TODO: */
-}
-
-
-/*int map_object_group_foreach_object(const map_object_h group,
-				   map_object_group_object_cb callback,
-typedef bool(*map_object_group_object_cb) (int index, int total,
-					      map_object_h object,
-					      void *user_data);*/
-static bool __utc_map_object_group_object_cb(int index, int total,
-						 map_object_h object,
-						 void *user_data)
-{
-	g_assert_cmpint(index, >=, 0);
-	g_assert_cmpint(total, >, 0);
-	g_assert(object);
-	g_assert(user_data);
-
-	map_object_type_e type = MAP_OBJECT_UNKNOWN;
-	map_object_get_type(object, &type);
-	g_assert_cmpint(type, ==, MAP_OBJECT_MARKER);
-
-	test_env *e = (test_env *)user_data;
-	e->iterations ++;
-
-	return true;
-}
-
-void utc_map_object_group_foreach_object_p(void)
-{
-	test_env e(MAP_OBJECT_GROUP);
-
-	map_object_h m1 = NULL;
-	int error = _map_object_create(MAP_OBJECT_MARKER, &m1);
-	g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
-	g_assert(m1);
-	error = map_object_group_add_object(e.o, m1);
-	g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
-
-	map_object_h m2 = NULL;
-	error = _map_object_create(MAP_OBJECT_MARKER, &m2);
-	g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
-	g_assert(m2);
-	error = map_object_group_add_object(e.o, m2);
-	g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
-
-
-	error = map_object_group_foreach_object(e.o,
-				   __utc_map_object_group_object_cb,
-				   &e);
-	g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
-	g_assert_cmpint(e.iterations, ==, 2);
-
-}
-
-void utc_map_object_group_foreach_object_n(void)
-{
-	test_env e(MAP_OBJECT_GROUP);
-
-	int error = map_object_group_foreach_object(NULL,
-				   __utc_map_object_group_object_cb,
-				   &e);
-	g_assert_cmpint(error, ==, MAPS_ERROR_INVALID_PARAMETER);
-	g_assert_cmpint(e.iterations, ==, 0);
-
-	error = map_object_group_foreach_object(e.o,
-				   NULL,
-				   &e);
-	g_assert_cmpint(error, ==, MAPS_ERROR_INVALID_PARAMETER);
-	g_assert_cmpint(e.iterations, ==, 0);
-}
-
-
 /*int map_object_polyline_add_point(map_object_h poly,
 					const maps_coordinates_h point);*/
 void utc_map_object_poly_add_point_p(void)
@@ -941,7 +762,7 @@ void utc_map_object_marker_set_type_p(void)
 #if 0
 	test_env e(MAP_OBJECT_MARKER);
 
-	int error = map_object_marker_set_type(e.o, MAP_MARKER_POI);
+	int error = map_object_marker_set_type(e.o, MAP_MARKER_PIN);
 	g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
 #endif
 }
@@ -952,11 +773,11 @@ void utc_map_object_marker_set_type_n(void)
 #if 0
 	test_env e(MAP_OBJECT_MARKER);
 
-	int error = map_object_marker_set_type(NULL, MAP_MARKER_POI);
+	int error = map_object_marker_set_type(NULL, MAP_MARKER_PIN);
 	g_assert_cmpint(error, ==, MAPS_ERROR_INVALID_PARAMETER);
 
 	error = map_object_marker_set_type(e.o,
-			map_marker_type_e(MAP_MARKER_POI - 100));
+			map_marker_type_e(MAP_MARKER_PIN - 100));
 	g_assert_cmpint(error, ==, MAPS_ERROR_INVALID_PARAMETER);
 #endif
 }
@@ -1091,14 +912,13 @@ void utc_map_object_marker_get_type_p(void)
 	test_env e(MAP_OBJECT_MARKER);
 
 #if 0
-	int error = map_object_marker_set_type(e.o, MAP_MARKER_POI);
+	int error = map_object_marker_set_type(e.o, MAP_MARKER_PIN);
 	g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
 #endif
 
 	map_marker_type_e type = MAP_MARKER_NONE;
 	int error = map_object_marker_get_type(e.o, &type);
 	g_assert_cmpint(error, ==, MAPS_ERROR_NONE);
-	/*g_assert_cmpint(type, ==, MAP_MARKER_POI);*/
 }
 
 void utc_map_object_marker_get_type_n(void)

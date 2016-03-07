@@ -71,9 +71,7 @@ void view::gesture_detector_statemachine::tap(int finger_no,
 		break;
 	}
 
-	#ifdef IMPROVEMENT_OF_GESTURES_AND_ACTIONS
 	stop_tap_timer();
-	#endif
 
 	MAPS_LOGI("%c[%d;%d;%dm"
 		  "Fingers pressed [after press]: %d"
@@ -190,7 +188,6 @@ void view::gesture_detector_statemachine::finish_panning(int finger_no)
 	is_panning[finger_no] = false;
 }
 
-#ifdef IMPROVEMENT_OF_GESTURES_AND_ACTIONS
 void view::gesture_detector_statemachine::on_tap_timer()
 {
 	/* TODO: think about concurent access to following member variables */
@@ -198,7 +195,6 @@ void view::gesture_detector_statemachine::on_tap_timer()
 	/* Run state machine */
 	state_machine_on_event(TAP_TIMER);
 }
-#endif
 
 void view::gesture_detector_statemachine::on_long_press_timer()
 {
@@ -250,11 +246,7 @@ void view::gesture_detector_statemachine::state_machine_on_event(view_event_e
 		case FINGER_UP: {
 			if(finger_pressed_enough(0, 0, __CLICK_DURATION)) {
 				_current_state = STATE_CLICKED;
-				#ifdef IMPROVEMENT_OF_GESTURES_AND_ACTIONS
 				start_tap_timer();
-				#else
-				detected_tap();	/* Tap */
-				#endif
 			} else
 				_current_state = STATE_NONE;
 			break;
@@ -294,13 +286,11 @@ void view::gesture_detector_statemachine::state_machine_on_event(view_event_e
 			start_long_press_timer();
 			break;
 		}
-		#ifdef IMPROVEMENT_OF_GESTURES_AND_ACTIONS
 		case TAP_TIMER:
 			stop_long_press_timer();
 			_current_state = STATE_NONE;
 			detected_tap();	/* Tap */
 			break;
-		#endif
 		default:
 			log_state(event, _current_state);
 			break;
@@ -362,22 +352,16 @@ void view::gesture_detector_statemachine::state_machine_on_event(view_event_e
 			} else {
 				/* Seems like it is a simple click */
 				_current_state = STATE_CLICKED;
-				#ifdef IMPROVEMENT_OF_GESTURES_AND_ACTIONS
 				stop_long_press_timer();
 				start_tap_timer();
-				#else
-				detected_tap();	/* Tap */
-				#endif
 			}
 
 			break;
 		}
-		#ifdef IMPROVEMENT_OF_GESTURES_AND_ACTIONS
 		case TAP_TIMER:
 			_current_state = STATE_NONE;
 			detected_tap();	/* Tap */
 			break;
-		#endif
 		case LONG_PRESS_TIMER:
 			_current_state = STATE_SECOND_LONG_PRESSED;
 			detected_second_long_press();	/* Second Long Press */
@@ -401,9 +385,7 @@ void view::gesture_detector_statemachine::state_machine_on_event(view_event_e
 
 			if(get_trajectory_effective_length(p1, p2)
 			   <= (4 * __CLICK_AREA)) {
-				#ifdef IMPROVEMENT_OF_GESTURES_AND_ACTIONS
-				map_view_screen_to_geography(_view, p1._x, p1._y, &_info._start_view_state._center);
-				#endif
+				map_view_screen_to_geolocation(_view, p1._x, p1._y, &_info._start_view_state._center);
 				_current_state = STATE_MOVING_AFTER_SECOND_PRESS;
 				detected_single_finger_zoom();	/* Single Finger Zoom */
 			} else {
@@ -455,9 +437,7 @@ void view::gesture_detector_statemachine::state_machine_on_event(view_event_e
 
 			if(get_trajectory_effective_length(p1, p2)
 			   <= (4 * __CLICK_AREA)) {
-				#ifdef IMPROVEMENT_OF_GESTURES_AND_ACTIONS
-				map_view_screen_to_geography(_view, p1._x, p1._y, &_info._start_view_state._center);
-				#endif
+				map_view_screen_to_geolocation(_view, p1._x, p1._y, &_info._start_view_state._center);
 				_current_state = STATE_MOVING_AFTER_SECOND_PRESS;
 				detected_single_finger_zoom();	/* Single Finger Zoom */
 			} else {
@@ -759,28 +739,13 @@ void view::gesture_detector_statemachine::detected_finger2_pan()	/* Pan (second 
 /* Zoom, Rotate etc */
 void view::gesture_detector_statemachine::detected_zoom_rotate()
 {
-#ifdef IMPROVEMENT_OF_GESTURES_AND_ACTIONS
-	if (!is_gesture_available(MAP_GESTURE_ZOOM))
-#else
 	if (!is_gesture_available(MAP_GESTURE_ZOOM)
 	    && !is_gesture_available(MAP_GESTURE_ROTATE))
-#endif
 		return;
 
 	log("GESTURE ZOOM ROTATE DETECTED", FG_GREEN);
 	_gp.on_zoom_rotate();
 }
-
-#ifdef IMPROVEMENT_OF_GESTURES_AND_ACTIONS
-void view::gesture_detector_statemachine::detected_flick()
-{
-	if (!is_gesture_available(MAP_GESTURE_FLICK))
-		return;
-
-	log("GESTURE FLICK DETECTED", FG_GREEN);
-	_gp.on_flick();
-}
-#endif
 
 void view::gesture_detector_statemachine::detected_2finger_tap()	/* 2Finger Tap */
 {
@@ -873,11 +838,9 @@ string view::gesture_detector_statemachine::get_event_str(view_event_e event)
 	case LONG_PRESS_TIMER:
 		e = "LONG_PRESS_TIMER";
 		break;
-	#ifdef IMPROVEMENT_OF_GESTURES_AND_ACTIONS
 	case TAP_TIMER:
 		e = "TAP_TIMER";
 		break;
-	#endif
 	default:
 		e = "UNKNOWN";
 		break;

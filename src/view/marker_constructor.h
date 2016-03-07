@@ -37,9 +37,6 @@ namespace view
 		{
 			return __error;
 		}
-	public:
-		static int get_size_x();
-		static int get_size_y();
 	};
 };
 
