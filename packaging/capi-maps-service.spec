@@ -100,7 +100,7 @@ This provides the Tizen Map Service APIs to access and handle map data for the M
 %files plugin-devel
 %defattr(-,root,root,-)
 %{_includedir}/maps/maps_plugin*.h
-%{_includedir}/maps/maps_*plugin.h
+%{_includedir}/maps/maps_*_plugin.h
 %{_includedir}/maps/maps_extra_types.h
 
 
