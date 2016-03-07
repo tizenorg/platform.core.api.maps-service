@@ -22,20 +22,11 @@ SET(dependents
 	gmodule-2.0
 	capi-base-common
 	dlog
-	capi-appfw-app-manager
-	capi-appfw-package-manager
-	pkgmgr-info
-	privacy-manager-client
-	capi-system-info
 
 	# Mapping API dependencies
 	eina
 	evas
 	ecore
-#	capi-appfw-application
-#	ecore
-#	ecore-evas
-#	elementary
 	)
 SET(pc_dependents "capi-base-common")
 
@@ -100,47 +91,3 @@ CONFIGURE_FILE(
 	@ONLY
 	)
 INSTALL(FILES ${CMAKE_CURRENT_SOURCE_DIR}/${fw_name}.pc DESTINATION ${LIBDIR}/pkgconfig)
-
-
-
-# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-# WARNING! FOR TESTING PURPOSES ONLY
-# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-#Please don't release the below comment when you submit.
-#Please release the below comment, if you want to test code in local.
-#It is not good for security and increases binary size.
-#SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${EXTRA_CFLAGS} -fPIC -Wall -Werror -fvisibility=default")
-#ADD_SUBDIRECTORY(test)
-
-IF(UNIX)
-
-	ADD_CUSTOM_TARGET (distclean @echo cleaning for source distribution)
-	ADD_CUSTOM_COMMAND(
-		DEPENDS clean
-		COMMENT "distribution clean"
-		COMMAND find
-		ARGS    .
-		-not -name config.cmake -and \(
-		-name tester.c -or
-		-name Testing -or
-		-name CMakeFiles -or
-		-name cmake.depends -or
-		-name cmake.check_depends -or
-		-name CMakeCache.txt -or
-		-name cmake.check_cache -or
-		-name *.cmake -or
-		-name Makefile -or
-		-name core -or
-		-name core.* -or
-		-name gmon.out -or
-		-name install_manifest.txt -or
-		-name *.pc -or
-		-name *~ \)
-		| grep -v TC | xargs rm -rf
-		TARGET  distclean
-		VERBATIM
-		)
-
-ENDIF(UNIX)
-

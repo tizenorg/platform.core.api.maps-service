@@ -17,6 +17,7 @@
 
 #include "runtime_data.h"
 #include "maps_util.h"
+#include "maps_view_plugin.h"
 #include <glib.h>
 
 
@@ -129,21 +130,21 @@ void view::map_state::reset()
 		  0x1B, 0, 0, 0);
 }
 
-void view::map_state::capture(map_view_h view)
+void view::map_state::capture(maps_view_h view)
 {
 	if(!view)
 		return;
 
 	reset();
 
-	map_view_get_center(view, &_center);
-	map_view_get_zoom_factor(view, &_zoom_factor);
-	map_view_get_orientation(view, &_rotation_angle);
+	maps_view_get_center(view, &_center);
+	maps_view_get_zoom_factor(view, &_zoom_factor);
+	maps_view_get_orientation(view, &_rotation_angle);
 
 
 	/* DEBUG */
 	maps_coordinates_h central_coords = NULL;
-	map_view_get_center(view, &central_coords);
+	maps_view_get_center(view, &central_coords);
 	double lat = .0, lon = .0;
 	maps_coordinates_get_latitude_longitude(central_coords, &lat, &lon);
 	maps_coordinates_destroy(central_coords);
@@ -172,7 +173,7 @@ void view::map_state::trace()
 
 view::runtime_touch_info::runtime_touch_info()
 	: _fingers_pressed(0)
-	  , _cur_gesture(MAP_GESTURE_NONE)
+	  , _cur_gesture(MAPS_VIEW_GESTURE_NONE)
 	  /*, _going(false)*/
 {
 	reset();
@@ -222,7 +223,7 @@ void view::runtime_touch_info::reset()
 		_is_finger_pressed[i] = false;
 	}
 
-	_cur_gesture = MAP_GESTURE_NONE;
+	_cur_gesture = MAPS_VIEW_GESTURE_NONE;
 
 	_start_view_state.reset();
 }

@@ -22,25 +22,26 @@
 
 namespace session
 {
-	typedef enum _command_type_e {
-		MAPS_DATA_COMMAND,
-		MAP_VIEW_SET_CENTER_COMMAND,
-		MAP_VIEW_MOVE_CENTER_COMMAND,
-		MAP_VIEW_ZOOM_COMMAND,
-		MAP_VIEW_ROTATE_COMMAND,
-		MAP_VIEW_ZOOM_ROTATE_COMMAND,
-		MAP_VIEW_READY_COMMAND,
-		MAPS_UNDEF_COOMAND = -1
-	} command_type_e;
+typedef enum _command_type_e {
+	MAPS_DATA_COMMAND,
+	MAP_VIEW_SET_CENTER_COMMAND,
+	MAP_VIEW_MOVE_CENTER_COMMAND,
+	MAP_VIEW_ZOOM_COMMAND,
+	MAP_VIEW_ROTATE_COMMAND,
+	MAP_VIEW_ZOOM_ROTATE_COMMAND,
+	MAP_VIEW_READY_COMMAND,
+	MAPS_UNDEF_COOMAND = -1
+} command_type_e;
 
 /*----------------------------------------------------------------------------*/
 
-	class command
-	{
+class command
+{
 	private:
 		maps_service_h m;
 	protected:
 		int my_req_id;
+		int error;
 		bool is_merged;
 	public:
 		static volatile int command_request_id;
@@ -48,6 +49,7 @@ namespace session
 		static command empty_instance;
 	private:
 		command()
+			: m(NULL), my_req_id(-1), error(0), is_merged(false)
 		{
 		}		/* Please, do not construct an empty object */
 	public:
@@ -76,12 +78,13 @@ namespace session
 		bool merged() const;
 	protected:
 		void set_merged();
-	};
+};
 
 /*----------------------------------------------------------------------------*/
 
-	class command_handler
-	{
+class command_handler
+{
+	private:
 		plugin::plugin_s *plg;
 	public:
 		void *user_data;
@@ -111,12 +114,12 @@ namespace session
 		}
 	public:
 		static void destroy(void *p);
-	};
+};
 
 /*----------------------------------------------------------------------------*/
 
-	class pending_request
-	{
+class pending_request
+{
 	private:
 		plugin::plugin_s *plg;
 	public:
@@ -143,7 +146,7 @@ namespace session
 		bool contains(const int user_req_id);
 	private:
 		int *int_dup(const int n);
-	};
+};
 }
 
 #endif				/* __MAPS_SERVICE_SESSION_COMMAND_H__ */

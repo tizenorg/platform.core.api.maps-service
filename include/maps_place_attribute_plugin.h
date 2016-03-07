@@ -41,7 +41,7 @@ extern "C" {
  * @brief Creates a new place attribute handle.
  * @details This function creates a new place attribute handle and allocates all
  * needed resources.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks @a place attribute must be released using
  * maps_place_attribute_destroy().
  * \n @a attribute may be cloned using maps_place_attribute_clone().
@@ -60,7 +60,7 @@ int maps_place_attribute_create(maps_place_attribute_h *attribute);
 /**
  * @brief	Sets the place attribute id.
  * @details This function sets the place attribute id.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	attribute	The handle to place attribute
  * @param[in]	id		The place attribute id
@@ -79,7 +79,7 @@ int maps_place_attribute_set_id(maps_place_attribute_h attribute,
 /**
  * @brief	Sets the place attribute label.
  * @details This function sets the place attribute label.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	attribute	The handle to place attribute
  * @param[in]	label		The place attribute label
@@ -98,7 +98,7 @@ int maps_place_attribute_set_label(maps_place_attribute_h attribute,
 /**
  * @brief	Sets the place attribute text.
  * @details This function sets the place attribute text.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	attribute	The handle to place attribute
  * @param[in]	text		The place attribute text
