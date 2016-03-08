@@ -925,7 +925,8 @@ typedef bool(*maps_service_search_place_cb) (maps_error_e error,
  * from the specified coordinates.
  * \n If search is failed, the value of @a total is 0 and @a place_list is NULL
  * @since_tizen 3.0
- * @remarks	This error code will be reported. \n
+ * @remarks	The parameter @a place_list must be released using maps_place_list_destroy().
+ * \n This error code will be reported. \n
  *			#MAPS_ERROR_NONE \n
  *			#MAPS_ERROR_OUT_OF_MEMORY \n
  *			#MAPS_ERROR_INVALID_PARAMETER \n
@@ -933,6 +934,7 @@ typedef bool(*maps_service_search_place_cb) (maps_error_e error,
  *
  * @param[in]	error		The result of request
  * @param[in]	request_id	The request id
+ * @param[in]	total		The total number of results
  * @param[in]	place_list	The resulting Place list data
  * @param[in]	uesr_data	The user data passed from maps_service_search_place_list()
  *
@@ -942,7 +944,7 @@ typedef bool(*maps_service_search_place_cb) (maps_error_e error,
  * @see maps_place_list_foreach()
  */
 typedef void(*maps_service_search_place_list_cb) (maps_error_e error,
-					     int request_id, maps_place_list_h place_list, void *user_data);
+					     int request_id, int total, maps_place_list_h place_list, void *user_data);
 
 /**
  * @brief	Called for Place datail information of Place Search request
@@ -950,7 +952,8 @@ typedef void(*maps_service_search_place_list_cb) (maps_error_e error,
  * obtained from the specified uri.
  * \n If search is failed, @a place is NULL
  * @since_tizen 3.0
- * @remarks	This error code will be reported. \n
+ * @remarks The parameter @a place must be released using maps_place_destroy().
+ * \n This error code will be reported. \n
  *			#MAPS_ERROR_NONE \n
  *			#MAPS_ERROR_OUT_OF_MEMORY \n
  *			#MAPS_ERROR_INVALID_PARAMETER \n

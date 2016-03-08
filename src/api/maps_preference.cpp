@@ -20,6 +20,8 @@
 #include "maps_preference.h"
 #include <glib.h>
 
+const int _DEFAULT_ALTERNATIVES_SIZE = 2;
+
 typedef struct _callback_data
 {
 	maps_preference_properties_cb callback;
@@ -53,7 +55,8 @@ static bool __isnamed_preference(const char *key)
 		g_str_hash("MAPS_PREFERENCE_ROUTE_OPTIMIZATION"),
 		g_str_hash("MAPS_PREFERENCE_ROUTE_TRANSPORT_MODE"),
 		g_str_hash("MAPS_PREFERENCE_ROUTE_FEATURE_WEIGHT"),
-		g_str_hash("MAPS_PREFERENCE_ROUTE_FEATURE")
+		g_str_hash("MAPS_PREFERENCE_ROUTE_FEATURE"),
+		g_str_hash("MAPS_PREFERENCE_ROUTE_ALTERNATIVES")
 	};
 	const int size = sizeof(names) / sizeof(names[0]);
 
@@ -95,18 +98,19 @@ EXPORT_API int maps_preference_create(maps_preference_h *preference)
 		return error;
 
 	do {
-		error = maps_item_hashtable_set_int(*preference,
-			"MAPS_PREFERENCE_DISTANCE_UNIT", MAPS_DISTANCE_UNIT_M);
+		error = maps_item_hashtable_set_int(*preference, "MAPS_PREFERENCE_DISTANCE_UNIT", MAPS_DISTANCE_UNIT_M);
 		if (error != MAPS_ERROR_NONE)
 			break;
 
-		error = maps_item_hashtable_set_string(*preference,
-			"MAPS_PREFERENCE_LANGUAGE", "en-US");
+		error = maps_item_hashtable_set_string(*preference, "MAPS_PREFERENCE_LANGUAGE", "en-US");
 		if (error != MAPS_ERROR_NONE)
 			break;
 
-		error = maps_item_hashtable_set_int(*preference,
-			"MAPS_PREFERENCE_MAX_RESULTS", 25);
+		error = maps_item_hashtable_set_int(*preference, "MAPS_PREFERENCE_MAX_RESULTS", 25);
+		if (error != MAPS_ERROR_NONE)
+			break;
+
+		error = maps_item_hashtable_set_int(*preference, "MAPS_PREFERENCE_ROUTE_ALTERNATIVES", 0);
 		if (error != MAPS_ERROR_NONE)
 			break;
 
@@ -214,6 +218,21 @@ EXPORT_API int maps_preference_get_route_feature(const maps_preference_h
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_item_hashtable_get_int(preference,
 		"MAPS_PREFERENCE_ROUTE_FEATURE", (int *) feature);
+}
+
+EXPORT_API int maps_preference_get_route_alternatives_enabled(const maps_preference_h preference, bool *enable)
+{
+	if (!preference)
+		return MAPS_ERROR_INVALID_PARAMETER;
+
+	int alternatives;
+	int error = maps_item_hashtable_get_int(preference, "MAPS_PREFERENCE_ROUTE_ALTERNATIVES", &alternatives);
+	if (error != MAPS_ERROR_NONE)
+		return error;
+
+	*enable = (alternatives == _DEFAULT_ALTERNATIVES_SIZE) ? true :false;
+
+	return MAPS_ERROR_NONE;
 }
 
 EXPORT_API int maps_preference_get(const maps_preference_h preference,
@@ -331,6 +350,18 @@ EXPORT_API int maps_preference_set_route_feature(maps_preference_h preference,
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_item_hashtable_set_int(preference,
 		"MAPS_PREFERENCE_ROUTE_FEATURE", feature);
+}
+
+EXPORT_API int maps_preference_set_route_alternatives_enabled(maps_preference_h preference, bool enable)
+{
+	if (!preference)
+		return MAPS_ERROR_INVALID_PARAMETER;
+
+	int alternatives = 0;
+	if (enable)
+		alternatives = _DEFAULT_ALTERNATIVES_SIZE;
+
+	return maps_item_hashtable_set_int(preference, "MAPS_PREFERENCE_ROUTE_ALTERNATIVES", alternatives);
 }
 
 EXPORT_API int maps_preference_set_property(maps_preference_h preference,

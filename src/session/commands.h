@@ -556,8 +556,8 @@ namespace session
 		{ return *this;
 		}
 	private:
-		static void foreach_place_around_cb(maps_error_e error, int request_id,
-						maps_place_list_h place, void *user_data);
+		static void foreach_place_list_cb(maps_error_e error, int request_id,
+						int total, maps_place_list_h place, void *user_data);
 		friend class command_search_place_list;
 	};
 
