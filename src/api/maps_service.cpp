@@ -15,6 +15,7 @@
  */
 
 #include <glib.h>
+#include <unistd.h>
 #include "maps_service.h"
 #include "maps_error.h"
 #include "maps_service.h"
@@ -24,12 +25,6 @@
 #include "commands.h"
 #include "discovery.h"
 #include "module.h"
-
-
-#ifdef _SIMPLE_PRIVILEGE_CHECK_AVAILABLE_
-	#include <privilege_checker.h>
-#endif /*_SIMPLE_PRIVILEGE_CHECK_AVAILABLE_ */
-
 
 /*----------------------------------------------------------------------------*/
 /* Structure of maps_service */
@@ -70,13 +65,9 @@ static bool __maps_provider_supported(maps_service_h maps,
 
 static bool __has_maps_service_privilege()
 {
-#ifdef _SIMPLE_PRIVILEGE_CHECK_AVAILABLE_
-	return (privilege_checker_check_privilege(
-		"http://tizen.org/privilege/mapservice")
-			== PRIVILEGE_CHECKER_ERR_NONE);
-#else
-	return true;
-#endif /* _SIMPLE_PRIVILEGE_CHECK_AVAILABLE_ */
+	extern const char *MAPS_PLUGINS_PATH_PREFIX;
+	return (access(MAPS_PLUGINS_PATH_PREFIX, F_OK) != 0) || /* not exist */
+	       (access(MAPS_PLUGINS_PATH_PREFIX, R_OK) == 0);   /* readable */
 }
 
 /*----------------------------------------------------------------------------*/
@@ -108,8 +99,7 @@ EXPORT_API int maps_service_foreach_provider(maps_service_provider_info_cb
 	return MAPS_ERROR_NONE;
 }
 
-EXPORT_API int maps_service_create(const char *maps_provider,
-				   maps_service_h *maps)
+EXPORT_API int maps_service_create(const char *maps_provider, maps_service_h *maps)
 {
 	/* Check if parameters are valid */
 	if (!maps || !maps_provider)
@@ -128,8 +118,7 @@ EXPORT_API int maps_service_create(const char *maps_provider,
 
 		/* 1. Check whether provider info is valid */
 		if (info.empty()) {
-			MAPS_LOGE("ERROR! Provider info not found for name: %s",
-				maps_provider);
+			MAPS_LOGE("ERROR! Provider info not found for name: %s", maps_provider);
 			error = MAPS_ERROR_NOT_SUPPORTED;
 			break;
 		}
@@ -138,8 +127,7 @@ EXPORT_API int maps_service_create(const char *maps_provider,
 		maps_service_s *maps_service = g_slice_new0(maps_service_s);
 
 		if (maps_service == NULL) {
-			MAPS_LOGE("OUT_OF_MEMORY(0x%08x)",
-				MAPS_ERROR_OUT_OF_MEMORY);
+			MAPS_LOGE("OUT_OF_MEMORY(0x%08x)", MAPS_ERROR_OUT_OF_MEMORY);
 			error = MAPS_ERROR_OUT_OF_MEMORY;
 			break;
 		}

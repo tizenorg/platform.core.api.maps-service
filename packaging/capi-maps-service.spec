@@ -47,6 +47,12 @@ mkdir -p %{buildroot}/usr/share/license
 cp LICENSE %{buildroot}/usr/share/license/%{name}
 
 %post
+mkdir -p %{_libdir}/maps/plugins
+# privilege mapping
+chgrp priv_mapservice %{_libdir}/maps/plugins
+chmod g+rw %{_libdir}/maps/plugins
+chmod o= %{_libdir}/maps/plugins
+chsmack -a "*" %{_libdir}/maps/plugins
 /sbin/ldconfig
 
 %postun
