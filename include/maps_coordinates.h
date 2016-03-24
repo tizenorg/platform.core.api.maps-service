@@ -36,7 +36,7 @@ extern "C" {
  * @brief	Handle of the Geographical Coordinates.
  * @details The Geographical Coordinates handle can be obtained via call of
  * maps_coordinates_create().
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks To release the handle use maps_coordinates_destroy().
  * \n To clone the handle use maps_coordinates_clone().
  */
@@ -48,7 +48,7 @@ typedef void *maps_coordinates_h;
  * a @a latitude and @a longitude values.
  * \n The @a latitude must be in range of [-90.0, 90.0].
  * \n The @a longitude must be in range of [-180.0, 180.0].
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks #maps_coordinates_h is a void pointer to the #maps_coordinates_h.
  * @warning Do not use #maps_coordinates_s directly if you are an application developer.
  * Using #maps_coordinates_h is recommanded.
@@ -76,7 +76,7 @@ typedef void *maps_coordinates_list_h;
  * Coordinates of type #maps_coordinates_h
  * with a specified @a latitude and @a longitude.
  * \n New handle is assigned with this instance.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks @a coordinates must be released using maps_coordinates_destroy().
  * \n @a coordinates may be cloned using maps_coordinates_clone().
  *
@@ -99,7 +99,7 @@ int maps_coordinates_create(const double latitude, const double longitude,
  * resources.
  * @details This function destroys the Geographical Coordinates
  * #maps_coordinates_h and releases all its resources.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	coordinates	The coordinate handle to destroy
  * @return	0 on coordinates, otherwise a negative error value
@@ -117,7 +117,7 @@ int maps_coordinates_destroy(maps_coordinates_h coordinates);
  * @brief	Clones the Geographical Coordinates.
  * @details This function makes a clone of the @a origin Geographical
  * Coordinates of type #maps_coordinates_h.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks @a cloned must be released using maps_coordinates_destroy().
  *
  * @param[in]	origin		The original coordinate handle
@@ -140,7 +140,7 @@ int maps_coordinates_clone(const maps_coordinates_h origin,
 /**
  * @brief	Gets the latitude of the coordinates.
  * @details This function gets the @a latitude value of the coordinates handle.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	coordinates	The coordinate handle
  * @param[out]	latitude	The latitude of the coordinate handle
@@ -159,7 +159,7 @@ int maps_coordinates_get_latitude(const maps_coordinates_h coordinates,
 /**
  * @brief	Gets the longitude of the coordinates.
  * @details This function gets the @a longitude value of the coordinates handle.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	coordinates	The coordinate handle
  * @param[out]	longitude	The longitude of the coordinate handle
@@ -201,7 +201,7 @@ int maps_coordinates_get_latitude_longitude(const maps_coordinates_h coordinates
 /**
  * @brief	Sets the latitude of the coordinates.
  * @details This function sets the @a latitude value of the coordinates handle.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	coordinates	The coordinate handle
  * @param[in]	latitude	The latitude of the coordinate handle
@@ -220,7 +220,7 @@ int maps_coordinates_set_latitude(maps_coordinates_h coordinates,
 /**
  * @brief	Sets the longitude of the coordinates.
  * @details This function sets the @a longitude value of the coordinates handle.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	coordinates	The coordinate handle
  * @param[out]	longitude	The longitude of the coordinate handle

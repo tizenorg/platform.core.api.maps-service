@@ -42,7 +42,7 @@ extern "C" {
 /**
  * @brief	The Maps Plugin handle.
  * @details The handle of Maps Plugin instance.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  */
 typedef void *maps_plugin_h;
 
@@ -54,7 +54,7 @@ typedef void *maps_plugin_h;
 /**
  * @brief	Initialize a new Maps Plugin.
  * @details A maps plugin handle can be used to access a specified plugin.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks @a plugin and it resources must be released in
  * maps_plugin_shutdown().
  *
@@ -73,7 +73,7 @@ int maps_plugin_init(maps_plugin_h *plugin);
  * @brief	Destroys the Maps Plugin handle.
  * @details This function destroys the maps plugin handle and releases all its
  * resources.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	plugin		The maps plugin handle to destroy
  * @return	0 on success, otherwise a negative error value
@@ -87,7 +87,7 @@ int maps_plugin_shutdown(maps_plugin_h plugin);
 /**
  * @brief	Returns a plugin info.
  * @details This function returns a plugin info.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[out]	info	A plugin info
  * @return	0 on success, otherwise a negative error value
@@ -109,7 +109,7 @@ int maps_plugin_get_info(maps_plugin_info_h *info);
  * @brief	Sets the Maps Key to be used in the Maps Plugin requests.
  * @details This function sets the Maps Key which will be used in each Maps
  * Plugin request to Maps Provider.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks To obtain the @a provider_key refer to corresponding Maps Provider
  * documentation.
  * \n For HERE Maps refer to https://developer.here.com/,
@@ -131,7 +131,7 @@ int maps_plugin_set_provider_key(const char *provider_key);
  * @details This function gets the Maps Key which is to be used in each Maps
  * Service request to Maps Provider.
  * \n Maps key can be set with maps_plugin_set_provider_key().
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks The string @a provider_key must be released using free().
  *
  * @param[out]	provider_key	The Maps Key
@@ -148,7 +148,7 @@ int maps_plugin_get_provider_key(char **provider_key);
  * @brief	Sets the Maps Preference.
  * @details This function sets the Maps Preferences which are used in each Maps
  * Plugin request to Maps Provider.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	preference	The handle of Maps Preference
  * @return	0 on success, otherwise a negative error value
@@ -166,7 +166,7 @@ int maps_plugin_set_preference(maps_item_hashtable_h preference);
  * @details This function gets the Maps Preferences which are used in each Maps
  * Plugin request to Maps Provider.
  * \n Preferences can be set with maps_plugin_set_preference().
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks @a preference must be released using maps_preference_destroy().
  *
  * @param[out]	preference	The handle of Maps Preference
@@ -183,7 +183,7 @@ int maps_plugin_get_preference(maps_item_hashtable_h *preference);
  * @brief	Checks if the Maps Plugin supports a request.
  * @details This function checks if the Maps Plugin supports a specified
  * request.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	service		The service to be checked
  * @param[out]	supported	Is the service supported
@@ -203,7 +203,7 @@ int maps_plugin_is_service_supported(maps_service_e service,
  * @brief	Checks if the Maps Plugin supports a data feature.
  * @details This function checks if the Maps Plugin supports a specified data
  * feature.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	data		The data feature to be checked
  * @param[out]	supported	Is the data feature supported
@@ -227,7 +227,7 @@ int maps_plugin_is_data_supported(maps_service_data_e data, bool *supported);
  * @brief	Gets the position coordinates for a given address.
  * @details This function obtains position coordinates for a given free-formed
  * address string.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @privlevel public
  * @privilege %http://tizen.org/privilege/mapservice
  * @remarks This function requires network access.
@@ -271,7 +271,7 @@ int maps_plugin_geocode(const char *address,
  * bounding box.
  * @details This function obtains position coordinates for a given free-formed
  * address string within the specified bounding box.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @privlevel public
  * @privilege %http://tizen.org/privilege/mapservice
  * @remarks This function requires network access.
@@ -321,7 +321,7 @@ int maps_plugin_geocode_inside_area(const char *address,
  * @brief	Gets the position coordinates for a given address.
  * @details This function obtains position coordinates for a given structured
  * address.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @privlevel public
  * @privilege %http://tizen.org/privilege/mapservice
  * @remarks This function requires network access.
@@ -367,7 +367,7 @@ int maps_plugin_geocode_by_structured_address(const maps_address_h address,
  * @brief	Gets the address for a given position coordinates.
  * @details This function obtains structured address information for a given
  * position coordinates.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @privlevel public
  * @privilege %http://tizen.org/privilege/mapservice
  * @remarks This function requires network access.
@@ -457,7 +457,7 @@ int maps_plugin_multi_reverse_geocode(const maps_coordinates_list_h geocode_list
  * distance.
  * @details This function obtains the Place information for a specified distance
  * around a given coordinates position.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @privlevel public
  * @privilege %http://tizen.org/privilege/mapservice
  * @remarks This function requires network access.
@@ -505,7 +505,7 @@ int maps_plugin_search_place(const maps_coordinates_h position, int distance,
  * @brief	Queries a Place information by a coordinates boundary.
  * @details This function obtains the Place information for a specified
  * coordinates boundary.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @privlevel public
  * @privilege %http://tizen.org/privilege/mapservice
  * @remarks This function requires network access.
@@ -553,7 +553,7 @@ int maps_plugin_search_place_by_area(const maps_area_h boundary,
  * @brief	Queries a Place information by a free-formed address string.
  * @details This function obtains the Place information for a specified free-
  * formed address string.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @privlevel public
  * @privilege %http://tizen.org/privilege/mapservice
  * @remarks This function requires network access.
@@ -695,7 +695,7 @@ int maps_plugin_get_place_details(const char *url,
  * @brief	Queries the Route from origin coordinate to a destination.
  * @details This function obtains the Route information for a specified origin
  * and destination coordinates.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @privlevel public
  * @privilege %http://tizen.org/privilege/mapservice
  * @remarks This function requires network access.
@@ -738,7 +738,7 @@ int maps_plugin_search_route(const maps_coordinates_h origin,
  * @brief	Queries the Route, passing through a specified way points.
  * @details This function obtains the Route information for the Route, passing
  * through a specified set of way points.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @privlevel public
  * @privilege %http://tizen.org/privilege/mapservice
  * @remarks This function requires network access.
@@ -786,7 +786,7 @@ int maps_plugin_search_route_waypoints(const maps_coordinates_h *waypoint_list,
  * @brief	Cancels the service request.
  * @details This function cancels the service request initiated by geocode,
  * route or place search.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @privlevel public
  * @privilege %http://tizen.org/privilege/mapservice
  * @remarks This function requires network access.

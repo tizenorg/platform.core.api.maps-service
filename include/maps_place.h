@@ -51,7 +51,7 @@ extern "C" {
  * @details The handle of Place instance.
  * @remarks To release the handle use maps_place_destroy().
  * \n To clone the handle use maps_place_clone().
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @see maps_place_destroy()
  * @see maps_place_clone()
@@ -74,7 +74,7 @@ typedef void *maps_place_list_h;
  * @brief	Called when requesting the list of Place Properties.
  * @details This callback is invoked while iterating through the list of Place
  * Properties.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks @a key and @a value must be released using free() and corresponding
  * release method for property value correspondingly.
  *
@@ -98,7 +98,7 @@ typedef bool(*maps_place_properties_cb) (int index, int total, char *key,
  * @brief	Called when requesting the list of Place Categories.
  * @details This callback is invoked while iterating through the list of Place
  * Categories.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks @a category is valid only in this function and must be released
  * using maps_place_category_destroy().
  * \n To use @a category outside this function, clone it with
@@ -125,7 +125,7 @@ typedef bool(*maps_place_categories_cb) (int index, int total,
  * @brief	Called when requesting the list of Place Attributes.
  * @details This callback is invoked while iterating through the list of Place
  * Attributes.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks @a attribute is valid only in this function and must be released
  * using maps_place_attribute_destroy().
  * \n To use @a attribute outside this function, clone it with
@@ -152,7 +152,7 @@ typedef bool(*maps_place_attributes_cb) (int index, int total,
  * @brief	Called when requesting the list of Place Contacts.
  * @details This callback is invoked while iterating through the list of Place
  * Contacts.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks @a contact is valid only in this function and must be released using
  * maps_place_contact_destroy().
  * \n To use @a contact outside this function, clone it with
@@ -179,7 +179,7 @@ typedef bool(*maps_place_contacts_cb) (int index, int total,
  * @brief	Called when requesting the list of Place Editorial.
  * @details This callback is invoked while iterating through the list of Place
  * Editorials.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks @a editorial is valid only in this function and must be released
  * using maps_place_editorial_destroy().
  * \n To use @a editorial outside this function, clone it with
@@ -206,7 +206,7 @@ typedef bool(*maps_place_editorials_cb) (int index, int total,
  * @brief	Called when requesting the list of Place Image.
  * @details This callback is invoked while iterating through the list of Place
  * Images.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks @a image is valid only in this function and must be released using
  * maps_place_image_destroy().
  * \n To use @a image outside this function, clone it with
@@ -233,7 +233,7 @@ typedef bool(*maps_place_images_cb) (int index, int total,
  * @brief	Called when requesting the list of Place Review.
  * @details This callback is invoked while iterating through the list of Place
  * Reviews.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks @a review is valid only in this function and must be released using
  * maps_place_review_destroy().
  * \n To use @a review outside this function, clone it with
@@ -286,7 +286,7 @@ typedef bool(*maps_place_cb) (int index, maps_place_h place, void *user_data);
  * @brief	Destroys the place handle and releases all its resources.
  * @details This function destroys the place handle and releases all its
  * resources.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	place		The place handle to destroy
  * @return	0 on success, otherwise a negative error value
@@ -301,7 +301,7 @@ int maps_place_destroy(maps_place_h place);
  * @brief	Clones the place handle.
  * @details This function clones the place handle @a origin and all its
  * resources.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks @a cloned must be released using maps_place_destroy().
  *
  * @param[in]	origin	The original place handle
@@ -320,7 +320,7 @@ int maps_place_clone(const maps_place_h origin, maps_place_h *cloned);
 /**
  * @brief	Gets the place id.
  * @details This function gets the place id.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks @a id must be released using free().
  *
  * @param[in]	place		The place handle
@@ -334,7 +334,7 @@ int maps_place_get_id(const maps_place_h place, char **id);
 /**
  * @brief	Gets the place name.
  * @details This function gets the place name.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks @a name must be released using free().
  *
  * @param[in]	place		The place handle
@@ -348,7 +348,7 @@ int maps_place_get_name(const maps_place_h place, char **name);
 /**
  * @brief	Gets the place view URI.
  * @details This function gets the place view URI.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks @a uri must be released using free().
  *
  * @param[in]	place		The place handle
@@ -362,7 +362,7 @@ int maps_place_get_uri(const maps_place_h place, char **uri);
 /**
  * @brief	Gets the place location.
  * @details This function gets the place location.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks @a location must be released using maps_coordinates_destroy().
  *
  * @param[in]	place			The place handle
@@ -378,7 +378,7 @@ int maps_place_get_location(const maps_place_h place,
  * @brief	Gets the place distance from the center of the location.
  * @details This function gets the place distance from the center of the
  * location.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	place			The place handle
  * @param[out]	distance		The place distance in meters
@@ -391,7 +391,7 @@ int maps_place_get_distance(const maps_place_h place, int *distance);
 /**
  * @brief	Gets the place address.
  * @details This function gets the place address.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks @a address must be released using maps_address_destroy().
  *
  * @param[in]	place			The place handle
@@ -407,7 +407,7 @@ int maps_place_get_address(const maps_place_h place,
 /**
  * @brief	Gets the place rating.
  * @details This function gets the place rating.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks @a rating must be released using maps_place_rating_destroy().
  *
  * @param[in]	place		The place handle
@@ -423,7 +423,7 @@ int maps_place_get_rating(const maps_place_h place,
 /**
  * @brief	Retrieves all properties.
  * @details This function retrieves all place properties.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks The properties will be delivered via maps_place_properties_cb().
  *
  * @param[in]	place		The place handle
@@ -447,7 +447,7 @@ int maps_place_foreach_property(const maps_place_h place,
 /**
  * @brief	Retrieves all categories
  * @details This function retrieves all place categories.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks The categories will be delivered via maps_place_categories_cb().
  *
  * @param[in]	place		The place handle
@@ -472,7 +472,7 @@ int maps_place_foreach_category(const maps_place_h place,
 /**
  * @brief	Retrieves all attributes.
  * @details This function retrieves all place attributes.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks The attributes will be delivered via maps_place_attributes_cb().
  *
  * @param[in]	place		The place handle
@@ -497,7 +497,7 @@ int maps_place_foreach_attribute(const maps_place_h place,
 /**
  * @brief	Retrieves all contacts.
  * @details This function retrieves all place contacts.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks The contacts will be delivered via maps_place_contacts_cb().
  *
  * @param[in]	place		The place handle
@@ -522,7 +522,7 @@ int maps_place_foreach_contact(const maps_place_h place,
 /**
  * @brief	Retrieves all editorials.
  * @details This function retrieves all place editorials.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks The editorials will be delivered via maps_place_editorials_cb().
  *
  * @param[in]	place		The place handle
@@ -547,7 +547,7 @@ int maps_place_foreach_editorial(const maps_place_h place,
 /**
  * @brief	Retrieves all images.
  * @details This function retrieves all place images.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks The images will be delivered via maps_place_images_cb().
  *
  * @param[in]	place		The place handle
@@ -571,7 +571,7 @@ int maps_place_foreach_image(const maps_place_h place,
 /**
  * @brief	Retrieves all reviews.
  * @details This function retrieves all place reviews.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks The reviews will be delivered via maps_place_reviews_cb().
  *
  * @param[in]	place		The place handle
@@ -596,7 +596,7 @@ int maps_place_foreach_review(const maps_place_h place,
 /**
  * @brief	Gets the place supplier link.
  * @details This function gets the place supplier link.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks @a supplier must be released using maps_place_link_object_destroy().
  *
  * @param[in]	place			The place handle image
@@ -612,7 +612,7 @@ int maps_place_get_supplier_link(const maps_place_image_h place,
 /**
  * @brief	Gets the place related link.
  * @details This function gets the place related link.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks @a related must be released using maps_place_link_object_destroy().
  *
  * @param[in]	place		The place handle image

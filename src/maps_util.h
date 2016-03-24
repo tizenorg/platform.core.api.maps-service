@@ -73,7 +73,7 @@
  * @brief	Copies one string to another and releases receiver if needed.
  * @details This function copies one string to another and releases receiver if
  * needed.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[out]	dst		The destination string pointer.
  * @param[in]	src		The original string pointer.
@@ -87,7 +87,7 @@ int maps_set_string(const char *src, const int max_length, char **dst);
 /*
  * @brief	Copies one string to another.
  * @details This function copies one string to another.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[out]	dst		The destination string pointer.
  * @param[in]	src		The original string pointer.

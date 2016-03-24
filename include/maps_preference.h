@@ -61,84 +61,84 @@ extern "C" {
 /**
  * @brief	The name of the preference indicating place type while searching
  * the place
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  */
 #define MAPS_PLACE_FILTER_TYPE	"MAPS_PLACE_FILTER_TYPE"
 
 /**
  * @brief	The name of the preference indicating sorting key while
  * searching the place
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  */
 #define MAPS_PLACE_FILTER_SORT_BY "MAPS_PLACE_FILTER_SORT_BY"
 
 /**
  * @brief	The name of the preference indicating free-form address to avoid
  * while computing the route
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  */
 #define MAPS_ROUTE_FREEFORM_ADDR_TO_AVOID "MAPS_ROUTE_FREEFORM_ADDR_TO_AVOID"
 
 /**
  * @brief	The name of the preference indicating structured address to
  * avoid while computing the route
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  */
 #define MAPS_ROUTE_STRUCTED_ADDR_TO_AVOID "MAPS_ROUTE_STRUCTED_ADDR_TO_AVOID"
 
 /**
  * @brief	The name of the preference indicating circular geographical area
  * to avoid while computing the route
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  */
 #define MAPS_ROUTE_CIRCLE_AREA_TO_AVOID "MAPS_ROUTE_CIRCLE_AREA_TO_AVOID"
 
 /**
  * @brief	The name of the preference indicating rectangular geographical
  * area to avoid while computing the route
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  */
 #define MAPS_ROUTE_RECT_AREA_TO_AVOID "MAPS_ROUTE_RECT_AREA_TO_AVOID"
 
 /**
  * @brief	The name of the preference indicating that route should be
  * computed within a specified bounding box
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  */
 #define MAPS_ROUTE_GEOMETRY_BOUNDING_BOX "MAPS_ROUTE_GEOMETRY_BOUNDING_BOX"
 
 /**
  * @brief	The name of the preference indicating that geometry parameters
  * should be retrieved while route processing
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  */
 #define MAPS_ROUTE_GEOMETRY_RETRIEVAL "MAPS_ROUTE_GEOMETRY_RETRIEVAL"
 
 /**
  * @brief	The name of the preference indicating that route should be
  * computed with geometry instructions
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  */
 #define MAPS_ROUTE_INSTRUCTION_GEOMETRY "MAPS_ROUTE_INSTRUCTION_GEOMETRY"
 
 /**
  * @brief	The name of the preference indicating that route should be
  * computed with bounding box instructions
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  */
 #define MAPS_ROUTE_INSTRUCTION_BOUNDING_BOX "MAPS_ROUTE_INSTRUCTION_BOUNDING_BOX"
 
 /**
  * @brief	The name of the preference indicating that route should be
  * computed correspondingly to retrieval instructions
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  */
 #define MAPS_ROUTE_INSTRUCTION_RETRIEVAL "MAPS_ROUTE_INSTRUCTION_RETRIEVAL"
 
 /**
  * @brief	The name of the preference indicating that route should be
  * computed in accordance to real time traffic
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  */
 #define MAPS_ROUTE_REALTIME_TRAFFIC "MAPS_ROUTE_REALTIME_TRAFFIC"
 
@@ -146,10 +146,10 @@ extern "C" {
  * @brief	The Maps Preference handle.
  * @details The Maps Preference handle can be obtained via call of
  * maps_preference_create().
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * \n To release the handle use maps_preference_destroy().
  * \n To clone the handle use maps_preference_clone().
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @see maps_preference_create()
  * @see maps_preference_destroy()
@@ -161,7 +161,7 @@ typedef void *maps_preference_h;
  * @brief	Enumeration of allowed distance units.
  * @details This enumeration represents allowed distance units used in Maps
  * Services.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @see #maps_preference_h
  */
@@ -176,7 +176,7 @@ typedef enum _maps_distance_unit_e {
  * @brief	Enumeration of allowed route optimization option.
  * @details This enumeration represents allowed route optimization option used
  * in Route Service.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @see #_maps_route_transport_mode_e
  * @see #_maps_route_feature_weight_e
@@ -204,7 +204,7 @@ typedef enum _maps_route_optimization_e {
  * @brief	Enumeration of preferable route types.
  * @details This enumeration represents allowed route types used in Route
  * Service.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @see #_maps_distance_unit_e
  * @see #_maps_route_feature_weight_e
@@ -233,7 +233,7 @@ typedef enum _maps_route_transport_mode_e {
  * @brief	Enumeration of route feature weights.
  * @details This enumeration represents allowed route feature weights used in
  * Route Service.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @see #_maps_distance_unit_e
  * @see #_maps_route_transport_mode_e
@@ -260,7 +260,7 @@ typedef enum _maps_route_feature_weight_e {
  * @brief	Enumeration of route features.
  * @details This enumeration represents allowed route features used in Route
  * Service.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @see #_maps_distance_unit_e
  * @see #_maps_route_transport_mode_e
@@ -300,7 +300,7 @@ typedef enum _maps_route_request_feature_e {
  * @brief	Called when requesting the list of Maps Properties.
  * @details This callback is invoked while iterating through the list of Maps
  * Properties.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks @a key and @a value must be released using free() and corresponding
  * release method for property value correspondingly.
  *
@@ -326,7 +326,7 @@ typedef bool(*maps_preference_properties_cb) (int index, int total, char *key,
  * @brief	Creates a new maps preference handle.
  * @details This function creates a new maps preference handle and allocates all
  * needed resources.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks @a preference must be released using maps_preference_destroy().
  * \n @a preference may be cloned using maps_preference_clone().
  *
@@ -346,7 +346,7 @@ int maps_preference_create(maps_preference_h *preference);
  * resources.
  * @details This function destroys the maps preference handle and releases all
  * its resources.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	preference	The preference handle
  * @return	0 on success, otherwise a negative error value
@@ -361,7 +361,7 @@ int maps_preference_destroy(maps_preference_h preference);
  * @brief	Clones the maps preference handle.
  * @details This function clones the maps preference handle @a origin and all
  * its resources.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks @a cloned must be released using maps_preference_destroy().
  *
  * @param[in]	origin		The original preference handle
@@ -381,7 +381,7 @@ int maps_preference_clone(const maps_preference_h origin,
 /**
  * @brief	Gets the distance unit.
  * @details This function gets the maps distance unit.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	preference	The preference handle
  * @param[out]	unit	The distance unit
@@ -395,7 +395,7 @@ int maps_preference_get_distance_unit(const maps_preference_h preference,
 /**
  * @brief	Gets the language.
  * @details This function gets the maps language.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks @a language must be released using free().
  *
  * @param[in]	preference	The preference handle
@@ -410,7 +410,7 @@ int maps_preference_get_language(const maps_preference_h preference,
 /**
  * @brief	Gets the max amount of results.
  * @details This function gets the max amount of results.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	preference	The preference handle
  * @param[out]	max_results	The max amount of results
@@ -424,7 +424,7 @@ int maps_preference_get_max_results(const maps_preference_h preference,
 /**
  * @brief	Gets the country code.
  * @details This function gets the country code.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks @a country_code must be released using free().
  *
  * @param[in]	preference	The preference handle
@@ -439,7 +439,7 @@ int maps_preference_get_country_code(const maps_preference_h preference,
 /**
  * @brief	Gets the route optimization.
  * @details This function gets the route optimization.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	preference		The preference handle
  * @param[out]	optimization	The route optimization
@@ -454,7 +454,7 @@ int maps_preference_get_route_optimization(const maps_preference_h preference,
 /**
  * @brief	Gets the route transport mode.
  * @details This function gets the route transport mode.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	preference	The preference handle
  * @param[out]	transport_mode	The transport mode
@@ -470,7 +470,7 @@ int maps_preference_get_route_transport_mode(const maps_preference_h
 /**
  * @brief	Gets the route feature weight.
  * @details This function gets the route feature weight.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	preference	The preference handle
  * @param[out]	feature_weight	The feature weight
@@ -486,7 +486,7 @@ int maps_preference_get_route_feature_weight(const maps_preference_h
 /**
  * @brief	Gets the route feature.
  * @details This function gets the route feature.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	preference	The preference handle
  * @param[out]	feature		The feature
@@ -513,7 +513,7 @@ int maps_preference_get_route_alternatives_enabled(const maps_preference_h prefe
 /**
  * @brief	Gets the maps preference value by key.
  * @details This function gets the maps preference value by key.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks @a value must be released using free().
  *
  * @param[in]	preference	The preference handle
@@ -529,7 +529,7 @@ int maps_preference_get(const maps_preference_h preference, const char *key,
 /**
  * @brief	Retrieves all maps properties.
  * @details This function retrieves all maps properties.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks The properties will be delivered via
  * maps_preference_properties_cb().
  *
@@ -556,7 +556,7 @@ int maps_preference_foreach_property(const maps_preference_h preference,
 /**
  * @brief	Sets the maps distance unit.
  * @details This function sets the maps distance unit.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	preference	The preference handle
  * @param[in]	unit		The distance unit
@@ -575,7 +575,7 @@ int maps_preference_set_distance_unit(maps_preference_h preference,
 /**
  * @brief	Sets the maps language.
  * @details This function sets the maps language.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	preference	The preference handle
  * @param[in]	language	The maps language
@@ -594,7 +594,7 @@ int maps_preference_set_language(maps_preference_h preference,
 /**
  * @brief	Sets the max amount of results.
  * @details This function sets the max amount of results.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	preference	The preference handle
  * @param[in]	max_results	The max amount of results
@@ -613,7 +613,7 @@ int maps_preference_set_max_results(maps_preference_h preference,
 /**
  * @brief	Sets the maps country code.
  * @details This function sets the maps country code.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	preference	The preference handle
  * @param[in]	country_code	The maps country code
@@ -632,7 +632,7 @@ int maps_preference_set_country_code(maps_preference_h preference,
 /**
  * @brief	Sets the route optimization.
  * @details This function sets the route optimization.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	preference	The preference handle
  * @param[in]	optimization	The route optimization
@@ -652,7 +652,7 @@ int maps_preference_set_route_optimization(maps_preference_h preference,
 /**
  * @brief	Sets the route transport mode.
  * @details This function sets the route transport mode.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	preference	The preference handle
  * @param[in]	transport_mode	The route transport mode
@@ -672,7 +672,7 @@ int maps_preference_set_route_transport_mode(maps_preference_h preference,
 /**
  * @brief	Sets the route feature weight.
  * @details This function sets the route feature weight.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	preference	The preference handle
  * @param[in]	feature_weight	The route feature weight
@@ -692,7 +692,7 @@ int maps_preference_set_route_feature_weight(maps_preference_h preference,
 /**
  * @brief	Sets the route feature.
  * @details This function sets the route feature.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	preference	The preference handle
  * @param[in]	feature		The route feature
@@ -730,7 +730,7 @@ int maps_preference_set_route_alternatives_enabled(maps_preference_h preference,
  * @brief	Sets the preference value by key.
  * @details This function sets the preference value assigned with a specified
  * key.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	preference	The preference handle
  * @param[in]	key		The key

@@ -47,7 +47,7 @@ extern "C" {
  * @brief	Creates a new place handle.
  * @details This function creates a new place handle and allocates all needed
  * resources.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks @a place must be released using maps_place_destroy().
  * \n @a place may be cloned using maps_place_clone().
  *
@@ -65,7 +65,7 @@ int maps_place_create(maps_place_h *place);
 /**
  * @brief	Sets the place id.
  * @details This function sets the place id.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	place		The handle to place
  * @param[in]	id		The place id
@@ -83,7 +83,7 @@ int maps_place_set_id(maps_place_h place, const char *id);
 /**
  * @brief	Sets the place name.
  * @details This function sets the place name.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	place		The handle to place
  * @param[in]	name		The place name
@@ -101,7 +101,7 @@ int maps_place_set_name(maps_place_h place, const char *name);
 /**
  * @brief	Sets the place location.
  * @details This function sets the place location.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	place		The handle to place
  * @param[in]	location	The place location
@@ -121,7 +121,7 @@ int maps_place_set_location(maps_place_h place,
  * @brief	Sets the place distance from the center of the location.
  * @details This function sets the place distance from the center of the
  * location.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	place		The handle to place
  * @param[in]	distance	The place distance in meters
@@ -139,7 +139,7 @@ int maps_place_set_distance(maps_place_h place, const int distance);
 /**
  * @brief	Sets the place address.
  * @details This function sets the place address.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	place		The handle to place
  * @param[in]	address		The place address
@@ -157,7 +157,7 @@ int maps_place_set_address(maps_place_h place, const maps_address_h address);
 /**
  * @brief	Sets the place categories.
  * @details This function sets the place categories.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	place		The handle to place
  * @param[in]	categories	The place category list
@@ -176,7 +176,7 @@ int maps_place_set_categories(maps_place_h place,
 /**
  * @brief	Sets the place view URI.
  * @details This function sets the place URI.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	place		The handle to place
  * @param[in]	uri		The place view uri
@@ -194,7 +194,7 @@ int maps_place_set_uri(maps_place_h place, const char *uri);
 /**
  * @brief	Sets the place attributes.
  * @details This function sets the place attributes.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	place		The handle to place
  * @param[in]	attributes	The place attribute list
@@ -213,7 +213,7 @@ int maps_place_set_attributes(maps_place_h place,
 /**
  * @brief	Sets the place contacts.
  * @details This function sets the place contacts.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	place		The handle to place
  * @param[in]	contacts	The place contact list
@@ -232,7 +232,7 @@ int maps_place_set_contacts(maps_place_h place,
 /**
  * @brief	Sets the place editorials.
  * @details This function sets the place editorials.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	place		The handle to place
  * @param[in]	editorials	The place editorial list
@@ -251,7 +251,7 @@ int maps_place_set_editorials(maps_place_h place,
 /**
  * @brief	Sets the place images.
  * @details This function sets the place images.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	place		The handle to place
  * @param[in]	images		The place image list
@@ -269,7 +269,7 @@ int maps_place_set_images(maps_place_h place, const maps_item_list_h images);
 /**
  * @brief	Sets the place review.
  * @details This function sets the place reviews.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	place		The handle to place
  * @param[in]	reviews		The place review list
@@ -288,7 +288,7 @@ int maps_place_set_reviews(maps_place_h place,
 /**
  * @brief	Sets the place properties.
  * @details This function sets the place properties.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	place		The handle to place
  * @param[in]	properties	The place properties list
@@ -307,7 +307,7 @@ int maps_place_set_properties(maps_place_h place,
 /**
  * @brief	Sets the place rating.
  * @details This function sets the place rating.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	place		The handle to place image
  * @param[in]	rating		The place rating
@@ -326,7 +326,7 @@ int maps_place_set_rating(maps_place_h place,
 /**
  * @brief	Sets the place supplier link.
  * @details This function sets the place supplier link.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	place		The handle to place image
  * @param[in]	supplier	The place supplier link
@@ -345,7 +345,7 @@ int maps_place_set_supplier_link(maps_place_h place,
 /**
  * @brief	Sets the place related link.
  * @details This function sets the place related link.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	place		The handle to place image
  * @param[in]	related		The place related link

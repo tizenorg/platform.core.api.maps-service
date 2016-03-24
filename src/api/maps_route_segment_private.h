@@ -41,7 +41,7 @@ extern "C" {
  * @internal
  * @brief	Checks if a segment data feature is supported.
  * @details This function checks if a segment data feature is supported.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	segment		The handle to segment
  * @param[in]	data		The feature to be checked
@@ -62,7 +62,7 @@ int _maps_route_segment_is_data_supported(const maps_route_segment_h segment,
  * @internal
  * @brief	Sets the supported segment data features.
  * @details This function sets the supported segment data features.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	segment		The handle to segment
  * @param[in]	supported_data	The supported segment data features

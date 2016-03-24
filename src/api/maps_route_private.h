@@ -41,7 +41,7 @@ extern "C" {
  * @internal
  * @brief	Checks if a route data feature is supported.
  * @details This function checks if a route data feature is supported.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	route		The handle to route
  * @param[in]	data		The feature to be checked
@@ -61,7 +61,7 @@ int _maps_route_is_data_supported(const maps_route_h route,
  * @internal
  * @brief	Sets the supported route data features.
  * @details This function sets the supported route data features.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	route		The handle to route
  * @param[in]	supported_data	The supported route data features

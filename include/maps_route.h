@@ -44,7 +44,7 @@ extern "C" {
  * @details The handle of Route instance.
  * @remarks To release the handle use maps_route_destroy().
  * \n To clone the handle use maps_route_clone().
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @see maps_route_destroy()
  * @see maps_route_clone()
@@ -57,7 +57,7 @@ typedef void *maps_route_h;
  * @brief	Called when requesting the path of the Route.
  * @details This callback is invoked while iterating through the list of
  * coordinates, composing the Route.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks @a coordinates must be released using maps_coordinates_destroy().
  * \n To use @a coordinates outside this function, clone it with
  * maps_coordinates_clone().
@@ -83,7 +83,7 @@ typedef bool(*maps_route_path_cb) (int index, int total,
  * @brief	Called when requesting the segments of the Route.
  * @details This callback is invoked while iterating through the list of
  * segments, composing the Route.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks @a segment is valid only in this function and must be released using
  * maps_route_segment_destroy().
  * \n To use @a segment outside this function, clone it with
@@ -110,7 +110,7 @@ typedef bool(*maps_route_segment_cb) (int index, int total,
  * @brief	Called when requesting the list of Route Properties.
  * @details This callback is invoked while iterating through the list of Route
  * Properties.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks @a key and @a value must be released using free() and corresponding
  * release method for property value correspondingly.
  * \n To use @a key and @a value outside this function, you should clone it.
@@ -137,7 +137,7 @@ typedef bool(*maps_route_properties_cb) (int index, int total, char *key,
  * @brief	Destroys the route handle and releases all its resources.
  * @details This function destroys the route handle and releases all its
  * resources.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	route		The route handle
  * @return	0 on success, otherwise a negative error value
@@ -152,7 +152,7 @@ int maps_route_destroy(maps_route_h route);
  * @brief	Clones the route handle.
  * @details This function clones the route handle @a origin and all its
  * resources.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks @a cloned must be released using maps_route_destroy().
  *
  * @param[in]	origin		The original route handle
@@ -171,7 +171,7 @@ int maps_route_clone(const maps_route_h origin, maps_route_h *cloned);
 /**
  * @brief	Gets the route id.
  * @details This function gets the route id.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks @a id must be released using free().
  *
  * @param[in]	route		The route handle
@@ -185,7 +185,7 @@ int maps_route_get_route_id(const maps_route_h route, char **route_id);
 /**
  * @brief	Gets the route origin.
  * @details This function gets the route origin.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks @a origin must be released using maps_coordinates_destroy().
  *
  * @param[in]	route		The route handle
@@ -203,7 +203,7 @@ int maps_route_get_origin(const maps_route_h route,
 /**
  * @brief	Gets the route destination.
  * @details This function gets the route destination.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks @a destination must be released using maps_coordinates_destroy().
  *
  * @param[in]	route		The route handle
@@ -221,7 +221,7 @@ int maps_route_get_destination(const maps_route_h route,
 /**
  * @brief	Gets the route bounding box.
  * @details This function gets the route bounding box.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks @a bounding_box must be released using maps_area_destroy().
  *
  * @param[in]	route			The route handle
@@ -238,7 +238,7 @@ int maps_route_get_bounding_box(const maps_route_h route,
 /**
  * @brief	Gets the route transport mode.
  * @details This function gets the route transport mode.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	route		The route handle
  * @param[out]	transport_mode	The transport mode
@@ -254,7 +254,7 @@ int maps_route_get_transport_mode(const maps_route_h route,
 /**
  * @brief	Gets the route total distance.
  * @details This function gets the route total distance.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	route		The route handle
  * @param[out]	total_distance	The distance of route. You can get the distance
@@ -271,7 +271,7 @@ int maps_route_get_total_distance(const maps_route_h route,
 /**
  * @brief	Gets the route total duration.
  * @details This function gets the route total duration.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	route		The route handle
  * @param[out]	total_duration	The duration
@@ -287,7 +287,7 @@ int maps_route_get_total_duration(const maps_route_h route,
 /**
  * @brief	Gets the route distance units.
  * @details This function gets the route distance units.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]		route	The route handle
  * @param[out]		distance_unit	The distance units
@@ -303,7 +303,7 @@ int maps_route_get_distance_unit(const maps_route_h route,
 /**
  * @brief	Retrieves all properties.
  * @details This function retrieves all route properties.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks The properties will be delivered via maps_route_properties_cb().
  *
  * @param[in]	route		The route handle
@@ -327,7 +327,7 @@ int maps_route_foreach_property(const maps_route_h route,
 /**
  * @brief	Retrieves all coordinates of the path.
  * @details This function retrieves all coordinates of the route path.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks The coordinates will be delivered via maps_route_path_cb().
  *
  * @param[in]	route		The route handle
@@ -351,7 +351,7 @@ int maps_route_foreach_path(const maps_route_h route,
 /**
  * @brief	Retrieves all segments of the route.
  * @details This function retrieves all segments of the route.
- * @since_tizen 2.4
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * @remarks The segments will be delivered via maps_route_path_cb().
  *
  * @param[in]	route		The route handle
