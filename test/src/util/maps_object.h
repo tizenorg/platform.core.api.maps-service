@@ -129,9 +129,7 @@ namespace maps
 
 	/* The list of objects */
 	template <class T> class item_list :
-		public object <maps_item_list_create,
-			maps_item_list_destroy,
-			empty_object::clone_empty>
+		public object <maps_item_list_create, maps_item_list_destroy, empty_object::clone_empty>
 	{
 	public:
 		virtual ~item_list()
@@ -152,9 +150,7 @@ namespace maps
 	/* Object Classes: */
 
 	/* Coordinates */
-	class coordinates : public object <empty_object::create_empty,
-				maps_coordinates_destroy,
-				maps_coordinates_clone>
+	class coordinates : public object <empty_object::create_empty, maps_coordinates_destroy, maps_coordinates_clone>
 	{
 	public:
 		coordinates();
@@ -175,9 +171,7 @@ namespace maps
 	};
 
 	/* Area */
-	class area : public object <empty_object::create_empty,
-			maps_area_destroy,
-			maps_area_clone >
+	class area : public object <empty_object::create_empty, maps_area_destroy, maps_area_clone >
 	{
 	public:
 		area();
