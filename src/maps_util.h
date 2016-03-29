@@ -33,11 +33,11 @@
 /*
 * Internal Macros
 */
-#define MAPS_LOGD(fmt,args...)  LOGD(fmt, ##args)
-#define MAPS_LOGW(fmt,args...)  LOGW(fmt, ##args)
-#define MAPS_LOGI(fmt,args...)  LOGI(fmt, ##args)
-#define MAPS_LOGE(fmt,args...)  LOGE(fmt, ##args)
-#define MAPS_SECLOG(fmt,args...)  SECURE_LOGD(fmt, ##args)
+#define MAPS_LOGD(fmt, args...)  LOGD(fmt, ##args)
+#define MAPS_LOGW(fmt, args...)  LOGW(fmt, ##args)
+#define MAPS_LOGI(fmt, args...)  LOGI(fmt, ##args)
+#define MAPS_LOGE(fmt, args...)  LOGE(fmt, ##args)
+#define MAPS_SECLOG(fmt, args...)  SECURE_LOGD(fmt, ##args)
 
 #define MAPS_CHECK_CONDITION(condition, error, msg)	\
 	do { \
@@ -50,17 +50,17 @@
 
 #define MAPS_NULL_ARG_CHECK_RETURN_FALSE(arg)\
 	do { \
-		if(arg != NULL) { \
+		if (arg != NULL) { \
 		} else	{ \
 			MAPS_LOGE("MAPS_ERROR_INVALID_PARAMETER");  \
 			return false; };	\
 	} while (0)
 
 #define MAPS_NULL_ARG_CHECK(arg)	\
-	MAPS_CHECK_CONDITION(arg != NULL,MAPS_ERROR_INVALID_PARAMETER,"MAPS_ERROR_INVALID_PARAMETER")
+	MAPS_CHECK_CONDITION(arg != NULL, MAPS_ERROR_INVALID_PARAMETER, "MAPS_ERROR_INVALID_PARAMETER")
 
 #define MAPS_PRINT_ERROR_CODE_RETURN(code) \
-	do{ \
+	do { \
 		MAPS_LOGE("%s(0x%08x)", #code, code); \
 		return code;	\
 	} while (0)
@@ -169,7 +169,7 @@ public:
 			g_free(pstring);
 			pstring = g_strdup(s.pstring);
 		}
-		return* this;
+		return *this;
 	}
 	bool operator==(const string &s) const
 	{

@@ -281,7 +281,7 @@ namespace session
 			 : command(NULL)
 		{
 		}
-		command_multi_reverse_geocode& operator=(
+		command_multi_reverse_geocode &operator=(
 			const command_multi_reverse_geocode &src)
 		{
 			return *this;
