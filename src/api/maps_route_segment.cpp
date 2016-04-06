@@ -44,8 +44,7 @@ typedef struct _maps_route_segment_s
 					  maps_route_maneuver_h */
 
 	/* The table of available data features */
-	maps_string_hashtable_h supported_data;
-	/* TODO: implement hashtable<int, int> */
+	maps_int_hashtable_h supported_data;
 } maps_route_segment_s;
 
 /*----------------------------------------------------------------------------*/
@@ -88,7 +87,7 @@ EXPORT_API int maps_route_segment_destroy(maps_route_segment_h segment)
 	}
 
 	if (p->supported_data)
-		maps_item_hashtable_destroy(p->supported_data);
+		maps_int_hashtable_destroy(p->supported_data);
 
 	g_slice_free(maps_route_segment_s, segment);
 	return MAPS_ERROR_NONE;
@@ -266,7 +265,8 @@ int _maps_route_segment_is_data_supported(const maps_route_segment_h segment,
 	if (!segment || !supported)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
-	if (!((maps_route_segment_s *) segment)->supported_data) {
+	maps_route_segment_s *s = (maps_route_segment_s *)segment;
+	if (!s->supported_data) {
 		/* This is a case when the "supported" flags are not set yet */
 		/* No need to limit access to fields */
 		*supported = true;
@@ -274,20 +274,7 @@ int _maps_route_segment_is_data_supported(const maps_route_segment_h segment,
 	}
 
 	*supported = false;
-	string data_feature;
-	switch (data) {
-	case MAPS_ROUTE_SEGMENTS_PATH:
-		data_feature = _S(MAPS_ROUTE_SEGMENTS_PATH);
-		break;
-	case MAPS_ROUTE_SEGMENTS_MANEUVERS:
-		data_feature = _S(MAPS_ROUTE_SEGMENTS_MANEUVERS);
-		break;
-	default:
-		return MAPS_ERROR_NOT_SUPPORTED;
-	}
-	return maps_string_hashtable_contains(((maps_route_segment_s *)
-			segment)->supported_data, data_feature.c_str(),
-		supported);
+	return maps_int_hashtable_contains(s->supported_data, data, supported);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -313,7 +300,6 @@ EXPORT_API int maps_route_segment_set_destination(maps_route_segment_h segment,
 	if (p->destination)
 		maps_coordinates_destroy(p->destination);
 	return maps_coordinates_clone(destination, &p->destination);
-
 }
 
 EXPORT_API int maps_route_segment_set_bounding_box(maps_route_segment_h segment,
@@ -378,14 +364,13 @@ EXPORT_API int maps_route_segment_set_maneuvers(maps_route_segment_h segment,
 }
 
 int _maps_route_segment_set_supported_data(maps_route_segment_h segment,
-					   const maps_string_hashtable_h
+					   const maps_int_hashtable_h
 					   supported_data)
 {
-
 	if (!segment || !supported_data)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_route_segment_s *p = (maps_route_segment_s *) segment;
 	if (p->supported_data)
-		maps_string_hashtable_destroy(p->supported_data);
-	return maps_string_hashtable_clone(supported_data, &p->supported_data);
+		maps_int_hashtable_destroy(p->supported_data);
+	return maps_int_hashtable_clone(supported_data, &p->supported_data);
 }

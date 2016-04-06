@@ -506,6 +506,7 @@ int maps_address_list_create(maps_address_list_h *address_list);
 /**
  * @brief	Appends an address to an address list.
  * @since_tizen 3.0
+ * @remarks	Don't release @a address before removed from the list using maps_address_list_remove().
  *
  * @param[in]	address_list	The address list handle
  * @param[in]	address	The address handle
@@ -516,12 +517,15 @@ int maps_address_list_create(maps_address_list_h *address_list);
  *
  * @see maps_address_list_create()
  * @see maps_address_list_destroy()
+ * @see maps_address_create()
  */
 int maps_address_list_append(maps_address_list_h address_list, maps_address_h address);
 
 /**
  * @brief	Removes an address from an address list.
  * @since_tizen 3.0
+ * @remarks	@a address is just excepted from the list.\n
+ * It must be released using maps_address_destroy().
  *
  * @param[in]	address_list	The address list handle
  * @param[in]	address	The address handle
@@ -531,6 +535,7 @@ int maps_address_list_append(maps_address_list_h address_list, maps_address_h ad
  *
  * @see maps_address_list_create()
  * @see maps_address_list_destroy()
+ * @see maps_address_destroy()
  */
 int maps_address_list_remove(maps_address_list_h address_list, maps_address_h address);
 
@@ -559,7 +564,9 @@ int maps_address_list_get_length(maps_address_list_h address_list, int *length);
  *
  * @return @c true to continue with the next iteration of the loop, \n
  *         @c false to break out of the loop
+ *
  * @see maps_address_list_foreach_address()
+ * @see maps_address_list_destroy()
  */
 typedef bool (*maps_address_cb)(int index, maps_address_h address, void *user_data);
 
@@ -583,6 +590,7 @@ int maps_address_list_foreach(maps_address_list_h address_list, maps_address_cb 
 /**
  * @brief	Frees all of the memory used by a address list.
  * @since_tizen 3.0
+ * @remarks	All of address handles in the list will be released automatically.
  *
  * @param[in]	address_list	The address list handle
  * @return	0 on success, otherwise a negative error value

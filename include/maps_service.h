@@ -57,40 +57,19 @@ extern "C" {
  * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  */
 typedef enum _maps_service_e {
-
-	MAPS_SERVICE_GEOCODE, /**< Indicates that maps_service_geocode()
-		service is allowed */
-
-	MAPS_SERVICE_GEOCODE_INSIDE_AREA, /**< Indicates that
-		maps_service_geocode_inside_area() service is allowed */
-
-	MAPS_SERVICE_GEOCODE_BY_STRUCTURED_ADDRESS, /**< Indicates that
-		maps_service_geocode_by_structured_address() service is
-		allowed */
-
-	MAPS_SERVICE_REVERSE_GEOCODE, /**< Indicates that
-		maps_service_reverse_geocode() service is allowed */
-
-	MAPS_SERVICE_SEARCH_PLACE, /**< Indicates that
-		maps_service_search_place() service is allowed */
-
-	MAPS_SERVICE_SEARCH_PLACE_BY_AREA, /**< Indicates that
-		maps_service_search_place_by_area() service is allowed */
-
-	MAPS_SERVICE_SEARCH_PLACE_BY_ADDRESS, /**< Indicates that
-		maps_service_search_place_by_address() service is allowed */
-
-	MAPS_SERVICE_SEARCH_ROUTE, /**< Indicates that
-		maps_service_search_route() service is allowed */
-
-	MAPS_SERVICE_SEARCH_ROUTE_WAYPOINTS, /**< Indicates that
-		maps_service_search_route_waypoints() service is allowed */
-	MAPS_SERVICE_CANCEL_REQUEST,			/**< Indicates that
-			maps_service_cancel_request() service is allowed */
-	MAPS_SERVICE_MULTI_REVERSE_GEOCODE,		/**< Indicates that
-	maps_service_multi_reverse_geocode() service is allowed (Since 3.0)*/
-	MAPS_SERVICE_SEARCH_PLACE_LIST			/** Indicates that
-	maps_service_search_place_list() service is allowed (Since 3.0) */
+	MAPS_SERVICE_GEOCODE,					/**< Indicates that maps_service_geocode() service is allowed */
+	MAPS_SERVICE_GEOCODE_INSIDE_AREA,		/**< Indicates that maps_service_geocode_inside_area() service is allowed */
+	MAPS_SERVICE_GEOCODE_BY_STRUCTURED_ADDRESS,	/**< Indicates that	maps_service_geocode_by_structured_address() service is	allowed */
+	MAPS_SERVICE_REVERSE_GEOCODE,			/**< Indicates that maps_service_reverse_geocode() service is allowed */
+	MAPS_SERVICE_SEARCH_PLACE,				/**< Indicates that maps_service_search_place() service is allowed */
+	MAPS_SERVICE_SEARCH_PLACE_BY_AREA,		/**< Indicates that maps_service_search_place_by_area() service is allowed */
+	MAPS_SERVICE_SEARCH_PLACE_BY_ADDRESS,	/**< Indicates that maps_service_search_place_by_address() service is allowed */
+	MAPS_SERVICE_SEARCH_ROUTE,				/**< Indicates that maps_service_search_route() service is allowed */
+	MAPS_SERVICE_SEARCH_ROUTE_WAYPOINTS, 	/**< Indicates that maps_service_search_route_waypoints() service is allowed */
+	MAPS_SERVICE_CANCEL_REQUEST,			/**< Indicates that maps_service_cancel_request() service is allowed */
+	MAPS_SERVICE_MULTI_REVERSE_GEOCODE,		/**< Indicates that maps_service_multi_reverse_geocode() service is allowed (Since 3.0)*/
+	MAPS_SERVICE_SEARCH_PLACE_LIST,			/**< Indicates that maps_service_search_place_list() service is allowed (Since 3.0) */
+	MAPS_SERVICE_SEARCH_GET_PLACE_DETAILS	/**< Indicates that maps_service_search_get_place_details() service is allowed (Since 3.0) */
 } maps_service_e;
 
 /**
@@ -98,48 +77,19 @@ typedef enum _maps_service_e {
  * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  */
 typedef enum _maps_service_data_e {
-
-	MAPS_PLACE_ADDRESS, /**< Indicates the availability of address value
-		in the Place data */
-
-	MAPS_PLACE_RATING, /**< Indicates the availability of rating value in
-		the Place data */
-
-	MAPS_PLACE_CATEGORIES, /**< Indicates the availability of place category
-		list in the Place data */
-
-	MAPS_PLACE_ATTRIBUTES, /**< Indicates the availability of place
-		attribute list in the Place data */
-
-	MAPS_PLACE_CONTACTS, /**< Indicates the availability of place contact
-		list in the Place data */
-
-	MAPS_PLACE_EDITORIALS, /**< Indicates the availability of place
-		editorial list in the Place data */
-
-	MAPS_PLACE_REVIEWS, /**< Indicates the availability of place review list
-		in the Place data */
-
-	MAPS_PLACE_IMAGE, /**< Indicates the availability of place image in
-		Place the data */
-
-	MAPS_PLACE_SUPPLIER, /**< Indicates the availability of place supplier
-		link value in the Place data */
-
-	MAPS_PLACE_RELATED, /**< Indicates the availability of related place
-		link in the Place data */
-
-	MAPS_ROUTE_PATH, /**< Indicates that the Route Data Structure is defined
-		as a Path (a list of geographical coordinates) */
-
-	MAPS_ROUTE_SEGMENTS_PATH, /**< Indicates that the Route Data Structure
-		is defined as a list of Segments while each segment is defined
-		as a Path */
-
-	MAPS_ROUTE_SEGMENTS_MANEUVERS /**< Indicates that the Route Data
-		Structure is defined as a list of Segments while each segment is
-		defined as a list of Maneuvers*/
-
+	MAPS_PLACE_ADDRESS,		/**< Indicates the availability of address value in the Place data */
+	MAPS_PLACE_RATING,		/**< Indicates the availability of rating value in the Place data */
+	MAPS_PLACE_CATEGORIES,	/**< Indicates the availability of place category list in the Place data */
+	MAPS_PLACE_ATTRIBUTES,	/**< Indicates the availability of place attribute list in the Place data */
+	MAPS_PLACE_CONTACTS,	/**< Indicates the availability of place contact list in the Place data */
+	MAPS_PLACE_EDITORIALS,	/**< Indicates the availability of place editorial list in the Place data */
+	MAPS_PLACE_REVIEWS,		/**< Indicates the availability of place review list in the Place data */
+	MAPS_PLACE_IMAGE,		/**< Indicates the availability of place image in Place the data */
+	MAPS_PLACE_SUPPLIER,	/**< Indicates the availability of place supplier link value in the Place data */
+	MAPS_PLACE_RELATED,		/**< Indicates the availability of related place link in the Place data */
+	MAPS_ROUTE_PATH,		/**< Indicates that the Route Data Structure is defined as a Path (a list of geographical coordinates) */
+	MAPS_ROUTE_SEGMENTS_PATH,		/**< Indicates that the Route Data Structure is defined as a list of Segments while each segment is defined as a Path */
+	MAPS_ROUTE_SEGMENTS_MANEUVERS	/**< Indicates that the Route Data Structure is defined as a list of Segments while each segment is defined as a list of Maneuvers*/
 } maps_service_data_e;
 
 /**
@@ -481,12 +431,12 @@ int maps_service_cancel_request(const maps_service_h maps, int request_id);
  * @addtogroup CAPI_MAPS_GEOCODER_MODULE
  * @{
  * @brief This provides APIs for Geocoder Service
- * @details The Maps Geocoding API allows mapping an address to its geographical
- * location defined in terms of latitude and longitude; the input can be a
- * qualified, structured address or a free form single search text with full
- * or partial address information.
- * \n The Maps Reverse Geocoding API allows to inverse mapping a geographical
- * location (longitude, latitude) to an address;
+ * @details The Maps Geocoding API allows translating an address to its
+ * geographical location defined in terms of latitude and longitude;
+ * the input can be a qualified, structured address or a free form single search
+ * text with full or partial address information.
+ * \n The Maps Reverse Geocoding API allows to inverse translating a
+ * geographical location (longitude, latitude) to an address;
  * it can be used to answer the question "Where am I?".
  *
  */
@@ -992,7 +942,7 @@ typedef void(*maps_service_get_place_details_cb) (maps_error_e error,
  *
  * @param[in]	maps		The Maps Service handle
  * @param[in]	position	The interested position
- * @param[in]	distance	The search area distance in meters
+ * @param[in]	distance	The search area distance
  * @param[in]	filter		The filter handle
  * @param[in]	preference	The place preference handle
  * @param[in]	callback	The result callback

@@ -32,7 +32,6 @@ static bool __is_supported(const maps_place_h place, maps_service_data_e data)
 
 typedef struct _maps_place_s
 {
-
 	char *id;
 	char *name;
 	char *uri;
@@ -84,8 +83,7 @@ typedef struct _maps_place_s
 	maps_place_link_object_h related;
 
 	/* The table of available data features */
-	maps_string_hashtable_h supported_data;
-	/* TODO: implement hashtable<int, int> */
+	maps_int_hashtable_h supported_data;
 
 } maps_place_s;
 
@@ -177,7 +175,7 @@ EXPORT_API int maps_place_destroy(maps_place_h place)
 		maps_place_link_object_destroy(p->related);
 
 	if (p->supported_data)
-		maps_item_hashtable_destroy(p->supported_data);
+		maps_int_hashtable_destroy(p->supported_data);
 
 	g_slice_free(maps_place_s, place);
 	return MAPS_ERROR_NONE;
@@ -566,7 +564,8 @@ int _maps_place_is_data_supported(const maps_place_h place,
 	if (!place || !supported)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
-	if (!((maps_place_s*) place)->supported_data) {
+	maps_place_s *p = (maps_place_s *)place;
+	if (!p->supported_data) {
 		/* This is a case when the "supported" flags are not set yet */
 		/* No need to limit access to fields */
 		*supported = true;
@@ -574,43 +573,7 @@ int _maps_place_is_data_supported(const maps_place_h place,
 	}
 
 	*supported = false;
-	string data_feature;
-	switch (data) {
-	case MAPS_PLACE_ADDRESS:
-		data_feature = _S(MAPS_PLACE_ADDRESS);
-		break;
-	case MAPS_PLACE_RATING:
-		data_feature = _S(MAPS_PLACE_RATING);
-		break;
-	case MAPS_PLACE_CATEGORIES:
-		data_feature = _S(MAPS_PLACE_CATEGORIES);
-		break;
-	case MAPS_PLACE_ATTRIBUTES:
-		data_feature = _S(MAPS_PLACE_ATTRIBUTES);
-		break;
-	case MAPS_PLACE_CONTACTS:
-		data_feature = _S(MAPS_PLACE_CONTACTS);
-		break;
-	case MAPS_PLACE_EDITORIALS:
-		data_feature = _S(MAPS_PLACE_EDITORIALS);
-		break;
-	case MAPS_PLACE_REVIEWS:
-		data_feature = _S(MAPS_PLACE_REVIEWS);
-		break;
-	case MAPS_PLACE_IMAGE:
-		data_feature = _S(MAPS_PLACE_IMAGE);
-		break;
-	case MAPS_PLACE_SUPPLIER:
-		data_feature = _S(MAPS_PLACE_SUPPLIER);
-		break;
-	case MAPS_PLACE_RELATED:
-		data_feature = _S(MAPS_PLACE_RELATED);
-		break;
-	default:
-		return MAPS_ERROR_NOT_SUPPORTED;
-	}
-	return maps_string_hashtable_contains(((maps_place_s *) place)->
-		supported_data, data_feature.c_str(), supported);
+	return maps_int_hashtable_contains(p->supported_data, data, supported);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -805,14 +768,14 @@ EXPORT_API int maps_place_set_related_link(maps_place_h place,
 }
 
 int _maps_place_set_supported_data(maps_place_h place,
-				   const maps_string_hashtable_h supported_data)
+				   const maps_int_hashtable_h supported_data)
 {
 	if (!place || !supported_data)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_place_s *p = (maps_place_s *) place;
 	if (p->supported_data)
-		maps_string_hashtable_destroy(p->supported_data);
-	return maps_string_hashtable_clone(supported_data, &p->supported_data);
+		maps_int_hashtable_destroy(p->supported_data);
+	return maps_int_hashtable_clone(supported_data, &p->supported_data);
 }
 
 EXPORT_API int maps_place_list_foreach(const maps_place_list_h place_list,

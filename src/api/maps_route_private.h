@@ -21,13 +21,10 @@
 #include <maps_extra_types.h>
 
 /**
- * @ingroup	CAPI_MAPS_PLACE_MODULE
- * @defgroup	CAPI_MAPS_PLACE_DATA_MODULE Place
- *
  * @file maps_route_private.h
- * @brief This file contains the functions related to Place information.
+ * @brief This file contains the functions related to Route information.
  *
- * @addtogroup CAPI_MAPS_PLACE_DATA_MODULE
+ * @addtogroup CAPI_MAPS_ROUTE_DATA_MODULE
  * @{
  * @brief This provides APIs related to Place information, used in Place
  * Discovery and Search.
@@ -74,8 +71,7 @@ int _maps_route_is_data_supported(const maps_route_h route,
  * @see maps_route_create()
  */
 int _maps_route_set_supported_data(maps_route_h route,
-				   const maps_string_hashtable_h
-				   supported_data);
+				   const maps_int_hashtable_h supported_data);
 
 #ifdef __cplusplus
 }
