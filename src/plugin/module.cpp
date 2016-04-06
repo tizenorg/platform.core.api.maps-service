@@ -316,7 +316,7 @@ void plugin::binary_extractor::shutdown(maps_plugin_h plugin_h)
 	gmod_free((GMod *) plugin->module);
 
 	/* 5. Destroying the table with plugin capabilities */
-	/*maps_string_hashtable_destroy(plugin->capabilities); */
+	/*maps_int_hashtable_destroy(plugin->capabilities); */
 
 	/* 6. Release memory used by plugin structure */
 	g_slice_free(plugin_s, plugin);
@@ -432,8 +432,7 @@ void plugin::binary_extractor::trace_dbg(const plugin_s *plugin) const
 		MAPS_LOGD("PLUGIN request queue is NULL");
 	}
 	else {
-		MAPS_LOGD("plugin request queue:\t\t\t%p",
-			plugin->request_queue);
+		MAPS_LOGD("plugin request queue:\t\t\t%p", plugin->request_queue);
 	}
 
 	const interface_s *itf = &plugin->interface;

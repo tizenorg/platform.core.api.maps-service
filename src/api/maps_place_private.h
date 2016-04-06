@@ -74,8 +74,7 @@ int _maps_place_is_data_supported(const maps_place_h place,
  * @see maps_place_create()
  */
 int _maps_place_set_supported_data(maps_place_h place,
-				   const maps_string_hashtable_h
-				   supported_data);
+				   const maps_int_hashtable_h supported_data);
 
 #ifdef __cplusplus
 }

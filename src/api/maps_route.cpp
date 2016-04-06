@@ -38,12 +38,6 @@ static bool __maps_route_set_supported_data_foreach_cb(int index, int total,
 	return true;
 }
 
-static int __maps_route_set_supported_data_clone_cb(void *origin, void **cloned)
-{
-	*cloned = origin;	/* No clonning, please */
-	return MAPS_ERROR_NONE;
-}
-
 /*----------------------------------------------------------------------------*/
 
 /*
@@ -66,7 +60,7 @@ typedef struct _maps_route_s
 	maps_item_hashtable_h properties;	/*< Key/Value> */
 
 	/* The table of available data features */
-	maps_string_hashtable_h supported_data;
+	maps_int_hashtable_h supported_data;
 	/* TODO: implement hashtable<int, int> */
 } maps_route_s;
 
@@ -118,7 +112,7 @@ EXPORT_API int maps_route_destroy(maps_route_h route)
 	}
 
 	if (p->supported_data)
-		maps_item_hashtable_destroy(p->supported_data);
+		maps_int_hashtable_destroy(p->supported_data);
 
 	g_slice_free(maps_route_s, route);
 	return MAPS_ERROR_NONE;
@@ -349,7 +343,9 @@ int _maps_route_is_data_supported(const maps_route_h route,
 	if (!route || !supported)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
-	if (!((maps_route_s *) route)->supported_data) {
+	maps_route_s *r = (maps_route_s *)route;
+
+	if (!r->supported_data) {
 		/* This is a case when the "supported" flags are not set yet */
 		/* No need to limit access to fields */
 		*supported = true;
@@ -357,22 +353,7 @@ int _maps_route_is_data_supported(const maps_route_h route,
 	}
 
 	*supported = false;
-	string data_feature;
-	switch (data) {
-	case MAPS_ROUTE_PATH:
-		data_feature = _S(MAPS_ROUTE_PATH);
-		break;
-	case MAPS_ROUTE_SEGMENTS_PATH:
-		data_feature = _S(MAPS_ROUTE_SEGMENTS_PATH);
-		break;
-	case MAPS_ROUTE_SEGMENTS_MANEUVERS:
-		data_feature = _S(MAPS_ROUTE_SEGMENTS_MANEUVERS);
-		break;
-	default:
-		return MAPS_ERROR_NOT_SUPPORTED;
-	}
-	return maps_string_hashtable_contains(((maps_route_s *) route)->
-		supported_data, data_feature.c_str(), supported);
+	return maps_int_hashtable_contains(r->supported_data, data, supported);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -504,23 +485,20 @@ EXPORT_API int maps_route_set_distance_unit(maps_route_h route,
 }
 
 int _maps_route_set_supported_data(maps_route_h route,
-				   const maps_string_hashtable_h supported_data)
+				   const maps_int_hashtable_h supported_data)
 {
 	if (!route || !supported_data)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_route_s *p = (maps_route_s *) route;
 	if (p->supported_data)
-		maps_string_hashtable_destroy(p->supported_data);
+		maps_int_hashtable_destroy(p->supported_data);
 	int error =
-		maps_string_hashtable_clone(supported_data, &p->supported_data);
+		maps_int_hashtable_clone(supported_data, &p->supported_data);
 	if (error != MAPS_ERROR_NONE)
 		return error;
 
-	if (!p->segments)
-		return error;
-
-	return maps_item_list_foreach(p->segments,
-		__maps_route_set_supported_data_clone_cb,
-		__maps_route_set_supported_data_foreach_cb, supported_data);
-
+	if (p->segments)
+		error = maps_item_list_foreach(p->segments, NULL,
+			__maps_route_set_supported_data_foreach_cb, supported_data);
+	return error;
 }

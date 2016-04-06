@@ -57,14 +57,12 @@ int maps_plugin_get_preference_empty(maps_preference_h *preference)
 	return 0;
 }
 
-int maps_plugin_is_service_supported_empty(maps_service_e service,
-					   bool *supported)
+int maps_plugin_is_service_supported_empty(maps_service_e service, bool *supported)
 {
 	return 0;
 }
 
-int maps_plugin_is_data_supported_empty(maps_service_data_e data,
-					bool *supported)
+int maps_plugin_is_data_supported_empty(maps_service_data_e data, bool *supported)
 {
 	return 0;
 }

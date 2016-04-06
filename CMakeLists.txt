@@ -15,9 +15,14 @@ SET(INTERNAL_INC_DIR
 	)
 INCLUDE_DIRECTORIES(${INC_DIR} ${INTERNAL_INC_DIR})
 
-#SET(dependents "glib-2.0 gmodule-2.0 dlog capi-base-common security-privilege-checker")
-SET(dependents "glib-2.0 gmodule-2.0 dlog capi-base-common")
+SET(dependents
+	# Maps API dependencies
+	glib-2.0
+	gmodule-2.0
+	capi-base-common
+	dlog
 
+	)
 SET(pc_dependents "capi-base-common")
 
 INCLUDE(FindPkgConfig)

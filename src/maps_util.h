@@ -139,6 +139,10 @@ public:
 	{
 		return current_size;
 	}
+	bool empty() const
+	{
+		return size() == 0;
+	}
 };
 
 class string

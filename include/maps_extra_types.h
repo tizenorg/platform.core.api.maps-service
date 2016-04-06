@@ -155,6 +155,7 @@ int maps_item_list_clone(const maps_item_list_h origin,
  * @details This function appends an item @a data to the list of item pointers
  * @a list.
  * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @remarks If @a clone_func is null, @a data will not be cloned.
  *
  * @param[in]	list		The handle of list
  * @param[in]	data		The item pointer to be pointed to the list
@@ -201,8 +202,6 @@ typedef bool(*maps_item_list_foreach_cb) (int index, int total, void *data,
  * @details This function delivers items of a specified list via
  * maps_item_list_foreach_cb() callback.
  * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
- * @remarks This function clones the list values during maps_item_list_foreach() procedure.
- * \n maps_item_list_foreach_noclone() is useful to reduce the memory consumption.
  *
  * @param[in]	list		The handle of list
  * @param[in]	clone_func	The function for cloning the list values
@@ -221,7 +220,6 @@ typedef bool(*maps_item_list_foreach_cb) (int index, int total, void *data,
  *
  * @see maps_item_list_foreach_cb()
  * @see maps_item_list_append()
- * @see maps_item_list_foreach_noclone()
  * @see maps_service_create()
  */
 int maps_item_list_foreach(maps_item_list_h list,
@@ -250,7 +248,34 @@ int maps_item_list_foreach(maps_item_list_h list,
 typedef int (*maps_item_list_free_cb) (void *data);
 
 /**
- * @brief	Removes and destroys all list items
+ * @brief	Removes and destroys list item.
+ * @details This function removes the given items from the @a list and releases
+ * resources, assigned with it.
+ * @since_tizen 3.0
+ * @remarks The @a item is destroyed with #maps_item_list_free_cb. If this
+ * callback is NULL, item will not be destroyed.
+ *
+ * @param[in]	list		The handle of list
+ * @param[in]	item		The to remove
+ * @param[in]	free_func	The callback to be invoked for destroying each
+ * list item
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ *
+ * @pre @a list is created using maps_item_list_create().
+ * @post #maps_item_list_free_cb is used to destroy the item of the list.
+ *
+ * @see maps_item_list_free_cb()
+ * @see maps_item_list_create()
+ * @see maps_item_list_remove_all()
+ */
+int maps_item_list_remove(maps_item_list_h list,
+			  void *item,
+			  maps_item_list_free_cb free_func);
+
+/**
+ * @brief	Removes and destroys all list items.
  * @details This function removes all items of the @a list and releases
  * resources, assigned with them.
  * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
@@ -563,6 +588,248 @@ int maps_string_hashtable_contains(maps_string_hashtable_h table,
 				   const char *key, bool *contains);
 
 /**
+ * @}
+ */
+
+/*----------------------------------------------------------------------------*/
+
+/*
+ * @ingroup	CAPI_MAPS_CONTAINERS_MODULE
+ * @defgroup	CAPI_MAPS_CONTAINERS_MODULE_INT_HASHTABLE Maps Integer Hash Tables
+ *
+ * @file maps_extra_types.h
+ * @brief This section contains API for using Hash Table of integers.
+ *
+ * @addtogroup CAPI_MAPS_CONTAINERS_MODULE_INT_HASHTABLE
+ * @{
+ * @brief This provides API for using Hash Table of integers.
+ */
+
+/*
+ * @brief	The handle of Hash Table of integers.
+ * @details The handle of Hash Table of integers can be obtained via call of
+ * maps_int_hashtable_create().
+ * @remarks To release the handle use maps_int_hashtable_destroy().
+ * \n To clone the handle use maps_int_hashtable_clone().
+ * \n To assign the value to a key use maps_int_hashtable_set().
+ * \n The value, assigned with a specified key may be obtained using maps_int_hashtable_get().
+ * \n All key-value pairs of the table may be iterated using maps_int_hashtable_foreach().
+ * \n The key-value pair may be removed form the table using maps_int_hashtable_remove().
+ * \n To check if key is added to the table use maps_int_hashtable_contains().
+ * @since_tizen 3.0
+ *
+ * @see maps_int_hashtable_create()
+ * @see maps_int_hashtable_destroy()
+ * @see maps_int_hashtable_clone()
+ */
+typedef void *maps_int_hashtable_h;
+
+/*
+ * @brief	Creates a new Hash Table of integers.
+ * @details This function creates a new instance of Hash Table of integers,
+ * associate a new handle with it and allocates all needed resources.
+ * @since_tizen 3.0
+ * @remarks @a table must be released using maps_int_hashtable_destroy().
+ * \n @a table may be cloned using maps_int_hashtable_clone().
+ *
+ * @param[out]	table		The handle of newly created table
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ *
+ * @see maps_int_hashtable_clone()
+ * @see maps_int_hashtable_destroy()
+ */
+int maps_int_hashtable_create(maps_int_hashtable_h *table);
+
+/*
+ * @brief	Destroys the Hash Table of integers and releases all its
+ * resources.
+ * @details This function destroys the Hash Table handle and releases all its
+ * resources.
+ * @since_tizen 3.0
+ * @remarks All integers stored in the table will be released.
+ *
+ * @param[in]	table		The handle of table to be destroyed
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ *
+ * @pre @a table is created using maps_int_hashtable_create().
+ *
+ * @see maps_int_hashtable_create()
+ * @see maps_int_hashtable_clone()
+ */
+int maps_int_hashtable_destroy(maps_int_hashtable_h table);
+
+/*
+ * @brief	Clones the Hash Table of integerss.
+ * @details This function clones the Hash Table of integers @a origin and all
+ * its resources.
+ * \n The list handle @a origin may be created using
+ * maps_int_hashtable_create().
+ * @since_tizen 3.0
+ * @remarks @a cloned must be released using maps_int_hashtable_destroy().
+ *
+ * @param[in]	origin		The handle of the table to be cloned
+ * @param[out]	cloned		The handle of the cloned table
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ *
+ * @pre @a table is created using maps_int_hashtable_create().
+ *
+ * @see maps_int_hashtable_create()
+ * @see maps_int_hashtable_destroy()
+ */
+int maps_int_hashtable_clone(const maps_int_hashtable_h origin,
+			     maps_int_hashtable_h *cloned);
+
+/*
+ * @brief	Sets the association between integer key and value in the table.
+ * @details This function sets the association between int key and value in
+ * the Hash Table.
+ * @since_tizen 3.0
+ *
+ * @param[in]	table		The handle of the table
+ * @param[in]	key		The integer value of "key"
+ * @param[in]	value		The integer value of "value"
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ *
+ * @pre @a table is created using maps_int_hashtable_create().
+ *
+ * @see maps_int_hashtable_get()
+ * @see maps_int_hashtable_remove()
+ * @see maps_int_hashtable_create()
+ */
+int maps_int_hashtable_set(maps_int_hashtable_h table, const int key,
+			   const int value);
+
+/*
+ * @brief	Gets the integer value associated with an integer key in the
+ * table.
+ * @details This function gets the integer value associated with a integer key
+ * in the Hash Table.
+ * @since_tizen 3.0
+ *
+ * @param[in]	table		The handle of the table
+ * @param[in]	key		The integer value of "key"
+ * @param[out]	value		The integer value of "value"
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ *
+ * @pre @a table is created using maps_int_hashtable_create().
+ *
+ * @see maps_int_hashtable_set()
+ * @see maps_int_hashtable_remove()
+ * @see maps_int_hashtable_create()
+ */
+int maps_int_hashtable_get(maps_int_hashtable_h table, const int key,
+			   int *value);
+
+/*
+ * @brief	Removes the key-value pair from the table.
+ * @details This function removes the key-value pair from the Hash Table.
+ * @since_tizen 3.0
+ * @remarks The resources, used by item will be released automatically.
+ *
+ * @param[in]	table		The handle of the table
+ * @param[in]	key		The integer value of "key"
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ *
+ * @pre @a table is created using maps_int_hashtable_create().
+ *
+ * @see maps_int_hashtable_set()
+ * @see maps_int_hashtable_get()
+ * @see maps_int_hashtable_create()
+ */
+int maps_int_hashtable_remove(maps_int_hashtable_h table,
+			      const int key);
+
+/*
+ * @brief	Called once for each key-value pair while iterating through
+ * the given table.
+ * @details This function is called once for each key-value pair of the given
+ * table while the table is being iterated
+ * during the maps_int_hashtable_foreach() procedure.
+ * @since_tizen 3.0
+ *
+ * @param[in]	index		The current index of item
+ * @param[in]	total		The total amount of items
+ * @param[in]	key		The integer value of "key"
+ * @param[in]	value		The integer value of "value"
+ * @param[in]	user_data	The user data passed from
+ * maps_int_hashtable_foreach()
+ * @return	@c true to continue with the next iteration of the loop, \n @c
+ * false to break out of the loop
+ *
+ * @pre maps_int_hashtable_foreach() will invoke this callback.
+ *
+ * @see maps_int_hashtable_foreach()
+ */
+typedef bool(*maps_int_hashtable_foreach_cb) (int index, int total,
+					      const int key, const int value,
+					      void *user_data);
+
+/*
+ * @brief	Gets the key-value pairs of the specified table.
+ * @details This function delivers key-value pairs of a specified table via
+ * maps_int_hashtable_foreach_cb() callback.
+ * @since_tizen 3.0
+ *
+ * @param[in]	table		The handle of table
+ * @param[in]	callback	The callback to be invoked for delivering each
+ * key-value pair
+ * @param[in]	user_data	The user data to be passed to the callback
+ * function
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_FOUND Result not found
+ *
+ * @pre @a table is created using maps_int_hashtable_create().
+ * @post This function invokes maps_int_hashtable_foreach_cb() to deliver
+ * key-value pairs.
+ *
+ * @see maps_int_hashtable_foreach_cb()
+ * @see maps_int_hashtable_set()
+ * @see maps_int_hashtable_get()
+ * @see maps_int_hashtable_create()
+ */
+int maps_int_hashtable_foreach(maps_int_hashtable_h table,
+				  maps_int_hashtable_foreach_cb callback,
+				  void *user_data);
+
+/*
+ * @brief	Checks if key is in hash_table.
+ * @details This function checks if the specified key is in the Hash Table of
+ * integers.
+ * @since_tizen 3.0
+ *
+ * @param[in]	table		The handle of the table
+ * @param[in]	key		The integer value of "key"
+ * @param[out]	contains	The flag of key presence
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ *
+ * @pre @a table is created using maps_int_hashtable_create().
+ *
+ * @see maps_int_hashtable_set()
+ * @see maps_int_hashtable_get()
+ * @see maps_int_hashtable_create()
+ */
+int maps_int_hashtable_contains(maps_int_hashtable_h table,
+				const int key, bool *contains);
+
+/*
  * @}
  */
 

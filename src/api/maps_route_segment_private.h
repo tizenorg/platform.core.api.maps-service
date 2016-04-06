@@ -75,8 +75,7 @@ int _maps_route_segment_is_data_supported(const maps_route_segment_h segment,
  * @see maps_route_segment_create()
  */
 int _maps_route_segment_set_supported_data(maps_route_segment_h segment,
-					   const maps_string_hashtable_h
-					   supported_data);
+					   const maps_int_hashtable_h supported_data);
 
 #ifdef __cplusplus
 }
