@@ -480,7 +480,6 @@ EXPORT_API int maps_view_create(maps_service_h maps, Evas_Image *obj, maps_view_
 	v->gesture_actions[MAPS_VIEW_GESTURE_TAP] = MAPS_VIEW_ACTION_NONE;
 	v->gesture_actions[MAPS_VIEW_GESTURE_DOUBLE_TAP] = MAPS_VIEW_ACTION_ZOOM_IN;
 	v->gesture_actions[MAPS_VIEW_GESTURE_2_FINGER_TAP] = MAPS_VIEW_ACTION_ZOOM_OUT;
-	v->gesture_actions[MAPS_VIEW_GESTURE_SINGLE_FINGER_ZOOM] = MAPS_VIEW_ACTION_ZOOM;
 	v->gesture_actions[MAPS_VIEW_GESTURE_ROTATE] = MAPS_VIEW_ACTION_ROTATE;
 	v->gesture_actions[MAPS_VIEW_GESTURE_LONG_PRESS] = MAPS_VIEW_ACTION_NONE;
 	v->gesture_actions[MAPS_VIEW_GESTURE_NONE] = MAPS_VIEW_ACTION_NONE;
@@ -491,7 +490,6 @@ EXPORT_API int maps_view_create(maps_service_h maps, Evas_Image *obj, maps_view_
 	v->gesture_available[MAPS_VIEW_GESTURE_TAP] = true;
 	v->gesture_available[MAPS_VIEW_GESTURE_DOUBLE_TAP] = true;
 	v->gesture_available[MAPS_VIEW_GESTURE_2_FINGER_TAP] = true;
-	v->gesture_available[MAPS_VIEW_GESTURE_SINGLE_FINGER_ZOOM] = true;
 	v->gesture_available[MAPS_VIEW_GESTURE_ROTATE] = true;
 	v->gesture_available[MAPS_VIEW_GESTURE_LONG_PRESS] = true;
 	v->gesture_available[MAPS_VIEW_GESTURE_NONE] = false;

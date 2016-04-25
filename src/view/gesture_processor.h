@@ -99,12 +99,9 @@ namespace view
 		void on_double_tap();
 		void on_tap();
 		void on_two_finger_tap();
-		void on_flick();
 		void on_pan(int finger_no);
 		void on_panning_finished(int finger_no);
 		void on_zoom_rotate();
-		void on_single_finger_zoom();
-		void on_pinch();
 	private:
 		session::command_queue *q();
 		void *get_maps();

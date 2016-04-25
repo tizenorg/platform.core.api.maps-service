@@ -367,33 +367,8 @@ void view::gesture_detector_statemachine::state_machine_on_event(view_event_e
 			detected_second_long_press();	/* Second Long Press */
 			break;
 		case FINGER_MOVE: {
-
-			/* First click position */
-			const touch_point p1 = _info_history._finger_down[0];
-
-			/* Second click position */
-			const touch_point p2 = _info._finger_down[0];
-
-			MAPS_LOGI("Checking double tap: [%d, %d] -> [%d, %d]",
-				  p1._x, p1._y, p2._x, p2._y);
-
-			/*
-			 * Check if tapped in the same point
-			 * Note: accuracy is decreased for the sake of user's
-			 * convenience
-			 */
-
-			if(get_trajectory_effective_length(p1, p2)
-			   <= (4 * __CLICK_AREA)) {
-				maps_view_screen_to_geolocation(_view, p1._x, p1._y, &_info._start_view_state._center);
-				_current_state = STATE_MOVING_AFTER_SECOND_PRESS;
-				detected_single_finger_zoom();	/* Single Finger Zoom */
-			} else {
-				/* Seems like it is a simple click */
-				_current_state = STATE_MOVING;
-
-				detected_pan();	/* Tap */
-			}
+			_current_state = STATE_MOVING;
+			detected_pan();	/* Tap */
 			break;
 		}
 		case FINGER2_DOWN:
@@ -419,33 +394,8 @@ void view::gesture_detector_statemachine::state_machine_on_event(view_event_e
 			_current_state = STATE_NONE;
 			break;
 		case FINGER_MOVE: {
-
-			/* First click position */
-			const touch_point p1 = _info_history._finger_down[0];
-
-			/* Second click position */
-			const touch_point p2 = _info._finger_down[0];
-
-			MAPS_LOGI("Checking double tap: [%d, %d] -> [%d, %d]",
-				  p1._x, p1._y, p2._x, p2._y);
-
-			/*
-			 * Check if tapped in the same point
-			 * Note: accuracy is decreased for the sake of user's
-			 * convenience
-			 */
-
-			if(get_trajectory_effective_length(p1, p2)
-			   <= (4 * __CLICK_AREA)) {
-				maps_view_screen_to_geolocation(_view, p1._x, p1._y, &_info._start_view_state._center);
-				_current_state = STATE_MOVING_AFTER_SECOND_PRESS;
-				detected_single_finger_zoom();	/* Single Finger Zoom */
-			} else {
-				/* Seems like it is a simple click */
-				_current_state = STATE_MOVING;
-
-				detected_pan();	/* Tap */
-			}
+			_current_state = STATE_MOVING;
+			detected_pan();
 			break;
 		}
 		case FINGER_DOWN:
@@ -642,7 +592,6 @@ void view::gesture_detector_statemachine::state_machine_on_event(view_event_e
 			break;
 		case FINGER_MOVE:
 			_current_state = STATE_MOVING_AFTER_SECOND_PRESS;
-			detected_single_finger_zoom();	/* Single Finger Zoom */
 			break;
 		default:
 			log_state(event, _current_state);
@@ -705,15 +654,6 @@ void view::gesture_detector_statemachine::detected_second_long_press()	/* Second
 
 	log("GESTURE SECOND LONG PRESS DETECTED", FG_GREEN);
 	_gp.on_long_press();
-}
-
-void view::gesture_detector_statemachine::detected_single_finger_zoom()	/* Single Finger Zoom */
-{
-	if (!is_gesture_available(MAPS_VIEW_GESTURE_SINGLE_FINGER_ZOOM))
-		return;
-
-	log("GESTURE SINGLE FINGER ZOOM DETECTED", FG_GREEN);
-	_gp.on_single_finger_zoom();
 }
 
 void view::gesture_detector_statemachine::detected_pan()		/* Pan */

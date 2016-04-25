@@ -358,10 +358,6 @@ void view::gesture_processor::on_two_finger_tap()
 	}
 }
 
-void view::gesture_processor::on_flick()
-{
-}
-
 void view::gesture_processor::on_panning_finished(int finger_no)
 {
 	/* Obtain fresh central coordinates of the map in the Plugin */
@@ -424,81 +420,6 @@ view::touch_point view::gesture_processor::calc_center(
 	return touch_point(tp1._x + (tp2._x - tp1._x) / 2,
 			   tp1._y + (tp2._y - tp1._y) / 2,
 			   timestamp);
-}
-
-void view::gesture_processor::on_single_finger_zoom()
-{
-	gesture_detector::log("view::gesture_processor::on_single_finger_zoom",
-			      gesture_detector::FG_YELLOW);
-
-	/* Assumed that we do the zoom using single finger */
-
-	/* First finger effective way by now */
-	const touch_point start_tp_f1 = _gd->_info._finger_down[0];
-	const touch_point cur_tp_f1 = _gd->_info._finger_move[0];
-
-
-	/***********************/
-	MAPS_LOGI("%c[%d;%d;%dm"
-		  "Finger1: start(%d, %d), cur(%d, %d)\t"
-		  "%c[%d;%d;%dm",
-		  0x1B, 1, 0, gesture_detector::FG_YELLOW,
-		  start_tp_f1._x, start_tp_f1._y, cur_tp_f1._x, cur_tp_f1._y,
-		  0x1B, 0, 0, 0);
-	/***********************/
-
-
-	/* Calculating the current zoom factor, accordingly to vertical way
-	 *  of finger */
-	const int vertical_way = cur_tp_f1._y - start_tp_f1._y;
-	if(vertical_way == 0)
-		return; /* No zoom happend */
-
-	int map_height = 0;
-	maps_view_get_screen_location(_gd->_view, NULL, NULL, NULL, &map_height);
-	const int half_height = map_height / 2;
-
-	const double delta_zoom = 1. * vertical_way / half_height;
-	double new_zoom_factor =
-		_gd->_info._start_view_state._zoom_factor + delta_zoom;
-
-
-	/* Correct the zoom factor accordingly to allowed limits */
-	/* TODO: it also may be cashed in the _info._start_view_state */
-	int min_zoom_level = 0;
-	int max_zoom_level = 0;
-	maps_view_get_min_zoom_level(_gd->_view, &min_zoom_level);
-	maps_view_get_max_zoom_level(_gd->_view, &max_zoom_level);
-	if(new_zoom_factor < min_zoom_level)
-		new_zoom_factor = min_zoom_level;
-	if(new_zoom_factor > max_zoom_level)
-		new_zoom_factor = max_zoom_level;
-
-	/* Invoke user registered event callback for ZOOM */
-	do {
-		maps_view_event_data_h ed =
-			_maps_view_create_event_data(MAPS_VIEW_EVENT_GESTURE);
-		if(!ed)
-			break;
-		_maps_view_event_data_set_gesture_type(ed, MAPS_VIEW_GESTURE_SINGLE_FINGER_ZOOM);
-		_maps_view_event_data_set_zoom_factor(ed, new_zoom_factor);
-		_maps_view_event_data_set_fingers(ed, 2);
-
-		/* Find the current center of the gesture */
-		const touch_point cur_center = cur_tp_f1;
-			/*_gd->_info._start_view_state._center;*/
-		_maps_view_event_data_set_position(ed, cur_center._x, cur_center._y);
-		_maps_view_invoke_event_callback(_gd->_view, ed);
-		maps_view_event_data_destroy(ed);
-	} while(false);
-
-	/* Enqueue the detected zomm command */
-	q()->push(construct_gesture_command(MAPS_VIEW_GESTURE_SINGLE_FINGER_ZOOM,
-					    _gd->_info._start_view_state._center,
-					    true,
-					    new_zoom_factor,
-					    false,
-					    .0));
 }
 
 void view::gesture_processor::on_zoom_rotate()
@@ -662,11 +583,6 @@ void view::gesture_processor::on_zoom_rotate()
 
 	maps_coordinates_destroy(new_center);
 }
-
-void view::gesture_processor::on_pinch()
-{
-}
-
 
 
 /* ---------------------------------------------------------------------------*/
