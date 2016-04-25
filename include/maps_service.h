@@ -67,9 +67,11 @@ typedef enum _maps_service_e {
 	MAPS_SERVICE_SEARCH_ROUTE,				/**< Indicates that maps_service_search_route() service is allowed */
 	MAPS_SERVICE_SEARCH_ROUTE_WAYPOINTS, 	/**< Indicates that maps_service_search_route_waypoints() service is allowed */
 	MAPS_SERVICE_CANCEL_REQUEST,			/**< Indicates that maps_service_cancel_request() service is allowed */
-	MAPS_SERVICE_MULTI_REVERSE_GEOCODE,		/**< Indicates that maps_service_multi_reverse_geocode() service is allowed (Since 3.0)*/
-	MAPS_SERVICE_SEARCH_PLACE_LIST,			/**< Indicates that maps_service_search_place_list() service is allowed (Since 3.0) */
-	MAPS_SERVICE_SEARCH_GET_PLACE_DETAILS	/**< Indicates that maps_service_search_get_place_details() service is allowed (Since 3.0) */
+	MAPS_SERVICE_MULTI_REVERSE_GEOCODE,		/**< Indicates that maps_service_multi_reverse_geocode() service is allowed @if MOBILE (Since 3.0) @endif */
+	MAPS_SERVICE_SEARCH_PLACE_LIST,			/**< Indicates that maps_service_search_place_list() service is allowed @if MOBILE (Since 3.0) @endif */
+	MAPS_SERVICE_SEARCH_GET_PLACE_DETAILS,	/**< Indicates that maps_service_search_get_place_details() service is allowed @if MOBILE (Since 3.0) @endif */
+
+	MAPS_SERVICE_VIEW = 0x100				/**< Indicates that maps view service is allowed @if MOBILE (Since 3.0) @endif */
 } maps_service_e;
 
 /**
@@ -89,7 +91,12 @@ typedef enum _maps_service_data_e {
 	MAPS_PLACE_RELATED,		/**< Indicates the availability of related place link in the Place data */
 	MAPS_ROUTE_PATH,		/**< Indicates that the Route Data Structure is defined as a Path (a list of geographical coordinates) */
 	MAPS_ROUTE_SEGMENTS_PATH,		/**< Indicates that the Route Data Structure is defined as a list of Segments while each segment is defined as a Path */
-	MAPS_ROUTE_SEGMENTS_MANEUVERS	/**< Indicates that the Route Data Structure is defined as a list of Segments while each segment is defined as a list of Maneuvers*/
+	MAPS_ROUTE_SEGMENTS_MANEUVERS,	/**< Indicates that the Route Data Structure is defined as a list of Segments while each segment is defined as a list of Maneuvers*/
+
+	MAPS_VIEW_TRAFFIC = 0x100,	/**< Indicates the availability of traffic information on the Map @if MOBILE (Since 3.0) @endif */
+	MAPS_VIEW_PUBLIC_TRANSIT,	/**< Indicates the availability of public transit information on the Map @if MOBILE (Since 3.0) @endif */
+	MAPS_VIEW_BUILDING,		/**< Indicates the availability of 3D building drawable on the Map @if MOBILE (Since 3.0) @endif */
+	MAPS_VIEW_SCALEBAR		/**< Indicates the availability of scale bar on the Map @if MOBILE (Since 3.0) @endif */
 } maps_service_data_e;
 
 /**
@@ -359,6 +366,7 @@ int maps_service_provider_is_service_supported(const maps_service_h maps,
 int maps_service_provider_is_data_supported(const maps_service_h maps,
 					    maps_service_data_e data,
 					    bool *supported);
+
 
 /*----------------------------------------------------------------------------*/
 /*
