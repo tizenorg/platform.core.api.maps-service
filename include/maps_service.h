@@ -93,6 +93,17 @@ typedef enum _maps_service_data_e {
 } maps_service_data_e;
 
 /**
+ * @brief Enumerations of maps features available in the Maps Service
+ * @since_tizen 3.0
+ */
+typedef enum _maps_service_widget_e {
+	MAPS_WIDGET_TRAFFIC,		/**< Indicates the availability of traffic information on the Map */
+	MAPS_WIDGET_PUBLIC_TRANSIT,	/**< Indicates the availability of public transit information on the Map */
+	MAPS_WIDGET_BUILDING,		/**< Indicates the availability of 3D building drawable on the Map */
+	MAPS_WIDGET_SCALEBAR,		/**< Indicates the availability of scale bar on the Map */
+} maps_service_widget_e;
+
+/**
  * @brief	The Maps Service handle
  * @details The Maps Service handle can be created by calling of maps_service_create().
  * \n To release the handle use maps_service_destroy().
@@ -319,7 +330,7 @@ int maps_service_get_preference(maps_service_h maps,
  * @param[in]	service		The service to be checked
  * @param[out]	supported	Is the service supported
  * @return	0 on success, otherwise a negative error value
- * @retval	#MAPS_ERROR_NONE Successful, the service is supported
+ * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
  * @retval	#MAPS_ERROR_SERVICE_NOT_AVAILABLE Service not available
  *
@@ -343,7 +354,7 @@ int maps_service_provider_is_service_supported(const maps_service_h maps,
  * @param[in]	data		The data feature to be checked
  * @param[out]	supported	Is the data feature supported
  * @return	0 on success, otherwise a negative error value
- * @retval	#MAPS_ERROR_NONE Successful, the data feature is supported
+ * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
  * @retval	#MAPS_ERROR_SERVICE_NOT_AVAILABLE Service not available
  *
@@ -353,6 +364,28 @@ int maps_service_provider_is_service_supported(const maps_service_h maps,
  */
 int maps_service_provider_is_data_supported(const maps_service_h maps,
 					    maps_service_data_e data,
+					    bool *supported);
+
+/**
+ * @brief	Checks if the Maps Service supports a widget feature.
+ * @details This function checks if the Maps Service supports a specified data feature.
+ * @since_tizen 3.0
+ * @remarks @a maps_service_provider_is_widget_supported is always synchronous function.
+ *
+ * @param[in]	maps		The handle of Maps Service
+ * @param[in]	data		The data feature to be checked
+ * @param[out]	supported	Is the widget feature supported
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_SERVICE_NOT_AVAILABLE Service not available
+ *
+ * @pre Call maps_service_create() to create Maps Service and get its handle.
+ *
+ * @see maps_service_create()
+ */
+int maps_service_provider_is_widget_supported(const maps_service_h maps,
+					    maps_service_widget_e data,
 					    bool *supported);
 
 /*----------------------------------------------------------------------------*/
