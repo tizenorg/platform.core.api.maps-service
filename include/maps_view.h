@@ -494,8 +494,9 @@ int maps_view_set_type(maps_view_h view, maps_view_type_e type);
 int maps_view_get_type(const maps_view_h view, maps_view_type_e *type);
 
 /**
- * @brief	Enables or disables 3D buildings.
- * @details This function enables or disables 3D buildings on the View.
+ * @brief	Indicates whether the map should show the 3D buildings layer.
+ * @details This function is called to indicate whether 3D buildings
+ * should be shown as a layer on the map.
  * @since_tizen 3.0
  * @privlevel public
  * @privilege %http://tizen.org/privilege/mapservice \n
@@ -520,8 +521,8 @@ int maps_view_get_type(const maps_view_h view, maps_view_type_e *type);
 int maps_view_set_buildings_enabled(maps_view_h view, bool enable);
 
 /**
- * @brief	Gets whether 3D buildings are enabled or not.
- * @details This function gets whether 3D buildings are enabled or not.
+ * @brief	Queries whether the map has the 3D buildings layer enabled.
+ * @details	This function checks whether the map is set to show the 3D buildings layer.
  * @since_tizen 3.0
  *
  * @param[in]	view	The view handle
@@ -539,8 +540,9 @@ int maps_view_set_buildings_enabled(maps_view_h view, bool enable);
 int maps_view_get_buildings_enabled(const maps_view_h view, bool *enable);
 
 /**
- * @brief	Turns the traffic layer on or off.
- * @details This function turns the traffic layer on or off.
+ * @brief	Indicates whether the map should show the traffic layer.
+ * @details This function is called to indicate whether traffic conditions
+ * should be shown as a layer on the map.
  * @since_tizen 3.0
  * @privlevel public
  * @privilege %http://tizen.org/privilege/mapservice \n
@@ -564,8 +566,8 @@ int maps_view_get_buildings_enabled(const maps_view_h view, bool *enable);
 int maps_view_set_traffic_enabled(maps_view_h view, bool enable);
 
 /**
- * @brief	Gets whether the map is drawing traffic data.
- * @details This function gets whether the map is drawing traffic data or not.
+ * @brief	Queries whether the map has the traffic layer enabled.
+ * @details	This function checks whether the map is set to show the traffic layer.
  * @since_tizen 3.0
  *
  * @param[in]	view	The view handle
@@ -580,6 +582,49 @@ int maps_view_set_traffic_enabled(maps_view_h view, bool enable);
  * @see maps_view_create()
  */
 int maps_view_get_traffic_enabled(const maps_view_h view, bool *enable);
+
+/**
+ * @brief	Indicates whether the map should show the public transit layer.
+ * @details This function is called to indicate whether public transit routes
+ * should be shown as a layer on the map.
+ * @since_tizen 3.0
+ * @privlevel public
+ * @privilege %http://tizen.org/privilege/mapservice \n
+ *            %http://tizen.org/privilege/internet \n
+ *            %http://tizen.org/privilege/network.get
+ *
+ * @param[in]	view		The view handle
+ * @param[in]	enable		The enable status
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
+ * @retval	#MAPS_ERROR_CONNECTION_TIME_OUT Timeout error, no answer
+ * @retval	#MAPS_ERROR_NETWORK_UNREACHABLE Network unavailable
+ *
+ * @pre @a view is created using maps_view_create().
+ *
+ * @see maps_view_create()
+ */
+int maps_view_set_public_transit_enabled(maps_view_h view, bool enable);
+
+/**
+ * @brief	Queries whether the map has the public transit layer enabled.
+ * @details	This function checks whether the map is set to show the public transit routes layer.
+ * @since_tizen 3.0
+ *
+ * @param[in]	view	The view handle
+ * @param[out]	enable	The pointer to a boolean in which to store the enable status
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ *
+ * @pre @a view is created using maps_view_create().
+ *
+ * @see maps_view_set_view_mode()
+ * @see maps_view_create()
+ */
+int maps_view_get_public_transit_enabled(const maps_view_h view, bool *enable);
 
 /**
  * @brief	Sets View language.

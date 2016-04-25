@@ -114,7 +114,6 @@ typedef enum _maps_view_gesture_e {
 	MAPS_VIEW_GESTURE_TAP,                /**< Indicates the tap user gesture */
 	MAPS_VIEW_GESTURE_DOUBLE_TAP,         /**< Indicates the double tap user gesture */
 	MAPS_VIEW_GESTURE_2_FINGER_TAP,       /**< Indicates the two-finger tap user gesture */
-	MAPS_VIEW_GESTURE_SINGLE_FINGER_ZOOM, /**< Indicates the single finger zoom user gesture*/
 	MAPS_VIEW_GESTURE_ROTATE,		/** Indicates the rotation user gesture */
 	MAPS_VIEW_GESTURE_LONG_PRESS,         /**< Indicates the long press user gesture */
 } maps_view_gesture_e;
