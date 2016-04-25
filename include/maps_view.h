@@ -583,6 +583,49 @@ int maps_view_set_traffic_enabled(maps_view_h view, bool enable);
 int maps_view_get_traffic_enabled(const maps_view_h view, bool *enable);
 
 /**
+ * @brief	Turns the public transit layer on or off.
+ * @details This function turns the public transit layer on or off.
+ * @since_tizen 3.0
+ * @privlevel public
+ * @privilege %http://tizen.org/privilege/mapservice \n
+ *            %http://tizen.org/privilege/internet \n
+ *            %http://tizen.org/privilege/network.get
+ *
+ * @param[in]	view		The view handle
+ * @param[in]	enable		The enable status
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
+ * @retval	#MAPS_ERROR_CONNECTION_TIME_OUT Timeout error, no answer
+ * @retval	#MAPS_ERROR_NETWORK_UNREACHABLE Network unavailable
+ * @retval  #MAPS_ERROR_NOT_SUPPORTED Not supported
+ *
+ * @pre @a view is created using maps_view_create().
+ *
+ * @see maps_view_create()
+ */
+int maps_view_set_public_transit_enabled(maps_view_h view, bool enable);
+
+/**
+ * @brief	Gets whether the map is drawing public transit.
+ * @details This function gets whether the map is drawing public transit.
+ * @since_tizen 3.0
+ *
+ * @param[in]	view	The view handle
+ * @param[out]	enable	The pointer to a boolean in which to store the enable status
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ *
+ * @pre @a view is created using maps_view_create().
+ *
+ * @see maps_view_set_view_mode()
+ * @see maps_view_create()
+ */
+int maps_view_get_public_transit_enabled(const maps_view_h view, bool *enable);
+
+/**
  * @brief	Sets View language.
  * @details This function sets the language to the given View.
  * \n Note that map display language is different from places and route
