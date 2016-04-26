@@ -439,7 +439,7 @@ session::command_multi_reverse_geocode::command_multi_reverse_geocode(
 			maps_service_multi_reverse_geocode_cb cb, void *ud, int *request_id)
  : command(ms)
  , maps_list(NULL)
- , preference(NULL)
+ , preference(pref)
  , callback(cb)
  , user_data(ud)
  , error(0)
@@ -1075,7 +1075,7 @@ session::command_search_route::command_search_route(maps_service_h ms,
 					maps_service_search_route_cb cb,
 					void *ud, int *request_id)
  : command(ms)
- , preference(NULL)
+ , preference(pref)
  , origin(NULL)
  , destination(NULL)
  , callback(cb)
@@ -1367,7 +1367,7 @@ int session::command_view_set_center::run()
 
 session::command_type_e session::command_view_set_center::get_type() const
 {
-	return MAP_VIEW_SET_CENTER_COMMAND;
+	return MAPS_VIEW_SET_CENTER_COMMAND;
 }
 
 int session::command_view_set_center::get_priority() const
@@ -1430,7 +1430,7 @@ int session::command_view_move_center::run()
 
 session::command_type_e session::command_view_move_center::get_type() const
 {
-	return MAP_VIEW_MOVE_CENTER_COMMAND;
+	return MAPS_VIEW_MOVE_CENTER_COMMAND;
 }
 
 int session::command_view_move_center::get_priority() const
@@ -1466,7 +1466,7 @@ int session::command_view_zoom::run()
 
 session::command_type_e session::command_view_zoom::get_type() const
 {
-	return MAP_VIEW_ZOOM_COMMAND;
+	return MAPS_VIEW_ZOOM_COMMAND;
 }
 
 int session::command_view_zoom::get_priority() const
@@ -1501,7 +1501,7 @@ int session::command_view_rotate::run()
 
 session::command_type_e session::command_view_rotate::get_type() const
 {
-	return MAP_VIEW_ROTATE_COMMAND;
+	return MAPS_VIEW_ROTATE_COMMAND;
 }
 
 int session::command_view_rotate::get_priority() const
@@ -1540,7 +1540,7 @@ int session::command_view_zoom_rotate::run()
 
 session::command_type_e session::command_view_zoom_rotate::get_type() const
 {
-	return MAP_VIEW_ZOOM_ROTATE_COMMAND;
+	return MAPS_VIEW_ZOOM_ROTATE_COMMAND;
 }
 
 int session::command_view_zoom_rotate::get_priority() const

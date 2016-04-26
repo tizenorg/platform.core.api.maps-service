@@ -278,7 +278,7 @@ EXPORT_API int maps_service_geocode(const maps_service_h maps,
 	session::command *cmd = new session::command_geocode(maps, address, preference,
 			callback, user_data, request_id);
 
-	int ret = (cmd || cmd->plugin()) ? cmd->run() : MAPS_ERROR_INVALID_PARAMETER;
+	int ret = (cmd && cmd->plugin()) ? cmd->run() : MAPS_ERROR_INVALID_PARAMETER;
 	if (ret) MAPS_LOGE("Failed to run command.(%d)", ret);
 	return ret;
 }
@@ -310,7 +310,7 @@ EXPORT_API int maps_service_geocode_inside_area(const maps_service_h maps,
 	session::command *cmd = new session::command_geocode_inside_bounds(maps,
 			address, bounds, preference, callback, user_data, request_id);
 
-	int ret = (cmd || cmd->plugin()) ? cmd->run() : MAPS_ERROR_INVALID_PARAMETER;
+	int ret = (cmd && cmd->plugin()) ? cmd->run() : MAPS_ERROR_INVALID_PARAMETER;
 	if (ret) MAPS_LOGE("Failed to run command.(%d)", ret);
 	return ret;
 }
@@ -341,7 +341,7 @@ EXPORT_API int maps_service_geocode_by_structured_address(const maps_service_h m
 	session::command *cmd = new session::command_geocode_by_structured_address(maps,
 			address, preference, callback, user_data, request_id);
 
-	int ret = (cmd || cmd->plugin()) ? cmd->run() : MAPS_ERROR_INVALID_PARAMETER;
+	int ret = (cmd && cmd->plugin()) ? cmd->run() : MAPS_ERROR_INVALID_PARAMETER;
 	if (ret) MAPS_LOGE("Failed to run command.(%d)", ret);
 	return ret;
 }
@@ -376,7 +376,7 @@ EXPORT_API int maps_service_reverse_geocode(const maps_service_h maps,
 	session::command *cmd = new session::command_reverse_geocode(maps, latitude,
 			longitude, preference, callback, user_data, request_id);
 
-	int ret = (cmd || cmd->plugin()) ? cmd->run() : MAPS_ERROR_INVALID_PARAMETER;
+	int ret = (cmd && cmd->plugin()) ? cmd->run() : MAPS_ERROR_INVALID_PARAMETER;
 	if (ret) MAPS_LOGE("Failed to run command.(%d)", ret);
 	return ret;
 }
