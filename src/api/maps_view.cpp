@@ -523,6 +523,9 @@ EXPORT_API int maps_view_create(maps_service_h maps, Evas_Image *obj, maps_view_
 	/* Link with Maps Service */
 	v->maps = maps;
 
+	/* Set up canvas and Ecore */
+	maps_view_set_language(v, "eng");
+
 	/* Add an idle handler */
 	v->idler = ecore_idler_add(__maps_view_on_idle_cb, v);
 
@@ -619,7 +622,6 @@ EXPORT_API int maps_view_destroy(maps_view_h view)
 
 	if(inertial_camera)
 		delete inertial_camera;
-
 
 	return MAPS_ERROR_NONE;
 }
