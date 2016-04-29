@@ -363,10 +363,6 @@ static void __on_canvas_multi_line(void *data, Evas *e, Evas_Object *obj, void *
 	v->finger_stream->multi_move((Evas_Event_Multi_Move *)event_info);
 }
 
-/*gesture_detector *__maps_view_gesture_detector_factory()
-{
-}*/
-
 void _maps_view_set_idle_listener(const maps_view_h view,
 	void (*callback)(void *user_data), void *user_data)
 {
@@ -970,7 +966,7 @@ EXPORT_API int maps_view_set_type(maps_view_h view, maps_view_type_e type)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_view_s *v = (maps_view_s *) view;
 	v->type = type;
-	return MAPS_ERROR_NONE;
+	return maps_view_set_center(view, v->center);
 }
 
 EXPORT_API int maps_view_get_type(const maps_view_h view, maps_view_type_e *type)
@@ -988,7 +984,7 @@ EXPORT_API int maps_view_set_buildings_enabled(maps_view_h view, bool enabled)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_view_s *v = (maps_view_s *) view;
 	v->buildings_enabled = enabled;
-	return MAPS_ERROR_NONE;
+	return maps_view_set_center(view, v->center);
 }
 
 EXPORT_API int maps_view_get_buildings_enabled(const maps_view_h view, bool *enabled)
@@ -1006,7 +1002,7 @@ EXPORT_API int maps_view_set_traffic_enabled(maps_view_h view, bool enabled)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_view_s *v = (maps_view_s *) view;
 	v->traffic_enabled = enabled;
-	return MAPS_ERROR_NONE;
+	return maps_view_set_center(view, v->center);
 }
 
 EXPORT_API int maps_view_get_traffic_enabled(const maps_view_h view, bool *enabled)
@@ -1024,7 +1020,7 @@ EXPORT_API int maps_view_set_public_transit_enabled(maps_view_h view, bool enabl
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_view_s *v = (maps_view_s *) view;
 	v->public_transit_enabled = enabled;
-	return MAPS_ERROR_NONE;
+	return maps_view_set_center(view, v->center);
 }
 
 EXPORT_API int maps_view_get_public_transit_enabled(const maps_view_h view, bool *enabled)
@@ -1119,9 +1115,11 @@ EXPORT_API int maps_view_set_language(maps_view_h view, const char *language)
 	if(!supported)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
-	return maps_set_string(language,
-			       _MAPS_VIEW_LANGUAGE_MAX_LENGTH,
-			       &((maps_view_s *) view)->language);
+	maps_view_s *v = (maps_view_s *) view;
+	int error = maps_set_string(language, _MAPS_VIEW_LANGUAGE_MAX_LENGTH, &v->language);
+	if (error == MAPS_ERROR_NONE)
+		error = maps_view_set_center(view, v->center);
+	return error;
 }
 
 EXPORT_API int maps_view_get_language(const maps_view_h view, char **language)
@@ -1157,7 +1155,7 @@ EXPORT_API int maps_view_set_screen_location(maps_view_h view, int x, int y, int
 
 EXPORT_API int maps_view_get_screen_location(const maps_view_h view, int *x, int *y, int *width, int *height)
 {
-	if (!view || !x || !y || !width || !height)
+	if (!view || (!x && !y && !width && !height))
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_view_s *v = (maps_view_s *) view;
 	evas_object_geometry_get(v->panel, x, y, width, height);

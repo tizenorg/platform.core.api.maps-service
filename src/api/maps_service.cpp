@@ -15,7 +15,6 @@
  */
 
 #include <glib.h>
-#include <unistd.h>
 #include "maps_service.h"
 #include "maps_error.h"
 #include "maps_service.h"
@@ -25,6 +24,10 @@
 #include "commands.h"
 #include "discovery.h"
 #include "module.h"
+
+#ifdef _SIMPLE_PRIVILEGE_CHECK_AVAILABLE_
+#include <privilege_checker.h>
+#endif /*_SIMPLE_PRIVILEGE_CHECK_AVAILABLE_ */
 
 /*----------------------------------------------------------------------------*/
 /* Structure of maps_service */
@@ -56,12 +59,14 @@ static bool __maps_provider_supported(maps_service_h maps, maps_service_e servic
 	return supported;
 }
 
-
 static bool __has_maps_service_privilege()
 {
-	extern const char *MAPS_PLUGINS_PATH_PREFIX;
-	return (access(MAPS_PLUGINS_PATH_PREFIX, F_OK) != 0) || /* not exist */
-	       (access(MAPS_PLUGINS_PATH_PREFIX, R_OK) == 0);   /* readable */
+#ifdef _SIMPLE_PRIVILEGE_CHECK_AVAILABLE_
+	return (privilege_checker_check_privilege("http://tizen.org/privilege/mapservice")
+			== PRIVILEGE_CHECKER_ERR_NONE);
+#else
+	return true;
+#endif /* _SIMPLE_PRIVILEGE_CHECK_AVAILABLE_ */
 }
 
 /*----------------------------------------------------------------------------*/
@@ -278,7 +283,7 @@ EXPORT_API int maps_service_geocode(const maps_service_h maps,
 	session::command *cmd = new session::command_geocode(maps, address, preference,
 			callback, user_data, request_id);
 
-	int ret = (cmd && cmd->plugin()) ? cmd->run() : MAPS_ERROR_INVALID_PARAMETER;
+	int ret = (cmd || cmd->plugin()) ? cmd->run() : MAPS_ERROR_INVALID_PARAMETER;
 	if (ret) MAPS_LOGE("Failed to run command.(%d)", ret);
 	return ret;
 }
@@ -310,7 +315,7 @@ EXPORT_API int maps_service_geocode_inside_area(const maps_service_h maps,
 	session::command *cmd = new session::command_geocode_inside_bounds(maps,
 			address, bounds, preference, callback, user_data, request_id);
 
-	int ret = (cmd && cmd->plugin()) ? cmd->run() : MAPS_ERROR_INVALID_PARAMETER;
+	int ret = (cmd || cmd->plugin()) ? cmd->run() : MAPS_ERROR_INVALID_PARAMETER;
 	if (ret) MAPS_LOGE("Failed to run command.(%d)", ret);
 	return ret;
 }
@@ -341,7 +346,7 @@ EXPORT_API int maps_service_geocode_by_structured_address(const maps_service_h m
 	session::command *cmd = new session::command_geocode_by_structured_address(maps,
 			address, preference, callback, user_data, request_id);
 
-	int ret = (cmd && cmd->plugin()) ? cmd->run() : MAPS_ERROR_INVALID_PARAMETER;
+	int ret = (cmd || cmd->plugin()) ? cmd->run() : MAPS_ERROR_INVALID_PARAMETER;
 	if (ret) MAPS_LOGE("Failed to run command.(%d)", ret);
 	return ret;
 }
@@ -376,7 +381,7 @@ EXPORT_API int maps_service_reverse_geocode(const maps_service_h maps,
 	session::command *cmd = new session::command_reverse_geocode(maps, latitude,
 			longitude, preference, callback, user_data, request_id);
 
-	int ret = (cmd && cmd->plugin()) ? cmd->run() : MAPS_ERROR_INVALID_PARAMETER;
+	int ret = (cmd || cmd->plugin()) ? cmd->run() : MAPS_ERROR_INVALID_PARAMETER;
 	if (ret) MAPS_LOGE("Failed to run command.(%d)", ret);
 	return ret;
 }
