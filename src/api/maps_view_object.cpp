@@ -115,7 +115,7 @@ static maps_view_h __get_view(const maps_view_object_h object)
 static maps_view_polyline_data_s *__get_polyline_data(const maps_view_object_h object)
 {
 	maps_view_object_s *o = (maps_view_object_s *)object;
-	if(!o || (o->type != MAPS_VIEW_OBJECT_POLYLINE))
+	if (!o || (o->type != MAPS_VIEW_OBJECT_POLYLINE))
 		return NULL;
 	return (maps_view_polyline_data_s *)o->shape_data;
 }
@@ -165,7 +165,7 @@ static int __maps_view_polyline_data_destroy(void *polyline)
 static maps_view_polygon_data_s *__get_polygon_data(const maps_view_object_h object)
 {
 	maps_view_object_s *o = (maps_view_object_s *)object;
-	if(!o || (o->type != MAPS_VIEW_OBJECT_POLYGON))
+	if (!o || (o->type != MAPS_VIEW_OBJECT_POLYGON))
 		return NULL;
 	return (maps_view_polygon_data_s *)o->shape_data;
 }
@@ -215,7 +215,7 @@ static int __maps_view_polygon_data_destroy(void *polygon)
 static maps_view_marker_data_s *__get_marker_data(const maps_view_object_h object)
 {
 	maps_view_object_s *o = (maps_view_object_s *)object;
-	if(!o || (o->type != MAPS_VIEW_OBJECT_MARKER))
+	if (!o || (o->type != MAPS_VIEW_OBJECT_MARKER))
 		return NULL;
 	return (maps_view_marker_data_s *)o->shape_data;
 }
@@ -307,11 +307,11 @@ int _maps_view_object_create(maps_view_object_type_e type, maps_view_object_h *o
 			break;
 		}
 
-		if((!o->shape_data) || (error != MAPS_ERROR_NONE))
+		if ((!o->shape_data) || (error != MAPS_ERROR_NONE))
 			break;
 
 		/* Notify view, that the object was constructed */
-		/*if(view)
+		/*if (view)
 		  _maps_view_on_object_operation(view,
 		  o,
 		  MAPS_VIEW_OBJECT_ADD);*/
@@ -338,13 +338,13 @@ EXPORT_API int maps_view_object_create_marker(maps_coordinates_h coordinates,
 {
 	if (!coordinates || !marker)
 		return MAPS_ERROR_INVALID_PARAMETER;
-	if((type < MAPS_VIEW_MARKER_PIN) || (type > MAPS_VIEW_MARKER_STICKER))
+	if (type < MAPS_VIEW_MARKER_PIN || type > MAPS_VIEW_MARKER_STICKER)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
 	/* Create a Marker Visual Object */
 	view::marker_constructor mc;
 	*marker = mc.construct(coordinates, image_file_path, type);
-	if(mc.get_error() == MAPS_ERROR_NONE)
+	if (mc.get_error() == MAPS_ERROR_NONE)
 		return mc.get_error();
 
 	/* Marker create failure */
@@ -363,7 +363,7 @@ EXPORT_API int maps_view_object_create_polyline(maps_coordinates_list_h coordina
 	/* Create a Polyline Visual Object */
 	view::polyline_constructor pc;
 	*polyline = pc.construct(coordinates, r, g, b, a, width);
-	if(pc.get_error() == MAPS_ERROR_NONE)
+	if (pc.get_error() == MAPS_ERROR_NONE)
 		return pc.get_error();
 
 	/* Polyline create failure */
@@ -381,7 +381,7 @@ EXPORT_API int maps_view_object_create_polygon(maps_coordinates_list_h coordinat
 	/* Create a Polygon Visual Object */
 	view::polygon_constructor pc;
 	*polygon = pc.construct(coordinates, r, g, b, a);
-	if(pc.get_error() == MAPS_ERROR_NONE)
+	if (pc.get_error() == MAPS_ERROR_NONE)
 		return pc.get_error();
 
 	/* Polygon create failure */
@@ -431,42 +431,6 @@ EXPORT_API int maps_view_object_get_type(maps_view_object_h object, maps_view_ob
 * Visual Object Operations
  */
 
-EXPORT_API int maps_view_object_move(maps_view_object_h object, maps_coordinates_h coordinates)
-{
-	if (!object || !coordinates)
-		return MAPS_ERROR_INVALID_PARAMETER;
-	maps_view_object_s *o = (maps_view_object_s *)object;
-
-	switch(o->type) {
-	case MAPS_VIEW_OBJECT_POLYLINE: {
-		g_print("TODO: implement moving of polyline\n");
-		break;
-	}
-	case MAPS_VIEW_OBJECT_POLYGON: {
-		g_print("TODO: implement moving of polygon\n");
-		break;
-	}
-	case MAPS_VIEW_OBJECT_MARKER: {
-		g_print("TODO: implement moving of polygon\n");
-		break;
-		/*maps_view_object_h marker_data =
-		  (maps_view_object_h)o->shape_data;
-		  return maps_view_object_marker_set_coordinates(marker_data,
-		  coordinates);*/
-	}
-	default:
-		return MAPS_ERROR_INVALID_PARAMETER;
-	}
-
-	/* Notify view, that the object is to be moved */
-	_maps_view_on_object_operation(o->view, o, MAPS_VIEW_OBJECT_MOVE);
-
-	/* TODO: if the object has parent group, it is neede to check
-	* if its geometry was affected by this object movement */
-
-	return MAPS_ERROR_NONE;
-}
-
 EXPORT_API int maps_view_object_set_visible(maps_view_object_h object, bool visible)
 {
 	if (!object)
@@ -502,7 +466,7 @@ EXPORT_API int maps_view_object_polyline_set_polyline(maps_view_object_h polylin
 
 	/* Get the polyline data pointer */
 	maps_view_polyline_data_s *p = __get_polyline_data(polyline);
-	if(!p)
+	if (!p)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
 	/* Set new polyline trajectory */
@@ -525,7 +489,7 @@ EXPORT_API int maps_view_object_polyline_foreach_point(maps_view_object_h polyli
 
 	/* Get the polyline data pointer */
 	maps_view_polyline_data_s *p = __get_polyline_data(polyline);
-	if(!p)
+	if (!p)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
 	/* Iterate over polyline trajectory */
@@ -541,7 +505,7 @@ EXPORT_API int maps_view_object_polyline_set_color(maps_view_object_h polyline,
 
 	/* Get the polyline data pointer */
 	maps_view_polyline_data_s *p = __get_polyline_data(polyline);
-	if(!p)
+	if (!p)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
 	/* Set new color */
@@ -566,7 +530,7 @@ EXPORT_API int maps_view_object_polyline_get_color(const maps_view_object_h poly
 
 	/* Get the polyline data pointer */
 	maps_view_polyline_data_s *p = __get_polyline_data(polyline);
-	if(!p)
+	if (!p)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
 	/* Retrieve the color */
@@ -591,7 +555,7 @@ EXPORT_API int maps_view_object_polyline_set_width(maps_view_object_h polyline, 
 
 	/* Get the polyline data pointer */
 	maps_view_polyline_data_s *p = __get_polyline_data(polyline);
-	if(!p)
+	if (!p)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
 	/* Update the width of polyline */
@@ -612,7 +576,7 @@ EXPORT_API int maps_view_object_polyline_get_width(const maps_view_object_h poly
 
 	/* Get the polyline data pointer */
 	maps_view_polyline_data_s *p = __get_polyline_data(polyline);
-	if(!p)
+	if (!p)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
 	/* Retrieve the width of the polyline */
@@ -632,7 +596,7 @@ EXPORT_API int maps_view_object_polygon_set_polygon(maps_view_object_h polygon, 
 
 	/* Get the polygon data pointer */
 	maps_view_polygon_data_s *p = __get_polygon_data(polygon);
-	if(!p)
+	if (!p)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
 	/* Set new polygon border */
@@ -655,7 +619,7 @@ EXPORT_API int maps_view_object_polygon_foreach_point(maps_view_object_h polygon
 
 	/* Get the polygon data pointer */
 	maps_view_polygon_data_s *p = __get_polygon_data(polygon);
-	if(!p)
+	if (!p)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
 	/* Iterate over polygon border */
@@ -671,7 +635,7 @@ EXPORT_API int maps_view_object_polygon_set_fill_color(maps_view_object_h polygo
 
 	/* Get the polygon data pointer */
 	maps_view_polygon_data_s *p = __get_polygon_data(polygon);
-	if(!p)
+	if (!p)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
 	/* Set new background color */
@@ -696,7 +660,7 @@ EXPORT_API int maps_view_object_polygon_get_fill_color(const maps_view_object_h 
 
 	/* Get the polygon data pointer */
 	maps_view_polygon_data_s *p = __get_polygon_data(polygon);
-	if(!p)
+	if (!p)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
 	/* Retrieve the background color */
@@ -727,16 +691,12 @@ EXPORT_API int maps_view_object_marker_set_coordinates(maps_view_object_h marker
 		return MAPS_ERROR_INVALID_PARAMETER;
 	if (m->coordinates)
 		maps_coordinates_destroy(m->coordinates);
-	const int error = maps_coordinates_clone(coordinates, &m->coordinates);
+	m->coordinates = coordinates;
 
 	/* Notify view, that the object specific preferences is changed */
-	if(error == MAPS_ERROR_NONE)
-		_maps_view_on_object_operation(__get_view(marker),
-					      marker,
-					      MAPS_VIEW_OBJECT_CHANGE);
+	_maps_view_on_object_operation(__get_view(marker), marker, MAPS_VIEW_OBJECT_CHANGE);
 
-	return error;
-
+	return MAPS_ERROR_NONE;
 }
 
 EXPORT_API int maps_view_object_marker_resize(maps_view_object_h marker, int width, int height)
@@ -752,9 +712,7 @@ EXPORT_API int maps_view_object_marker_resize(maps_view_object_h marker, int wid
 	m->height = height;
 
 	/* Notify view, that the object specific preferences is changed */
-	_maps_view_on_object_operation(__get_view(marker),
-				      marker,
-				      MAPS_VIEW_OBJECT_CHANGE);
+	_maps_view_on_object_operation(__get_view(marker), marker, MAPS_VIEW_OBJECT_CHANGE);
 
 	return MAPS_ERROR_NONE;
 }
@@ -769,7 +727,7 @@ EXPORT_API int maps_view_object_marker_set_image_file(maps_view_object_h marker,
 	const int error = maps_set_string(file_path, _MAPS_VIEW_MARKER_FILE_PATH_MAX_LENGTH, &m->file_path);
 
 	/* Notify view, that the object specific preferences is changed */
-	if(error == MAPS_ERROR_NONE)
+	if (error == MAPS_ERROR_NONE)
 		_maps_view_on_object_operation(__get_view(marker), marker, MAPS_VIEW_OBJECT_CHANGE);
 
 	return error;
