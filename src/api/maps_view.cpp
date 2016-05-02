@@ -535,7 +535,7 @@ EXPORT_API int maps_view_create(maps_service_h maps, Evas_Image *obj, maps_view_
 	*view = (maps_view_h) v;
 
 	/* Notify the Plugin, that the view is created */
-	__get_plugin_interface(v)->maps_plugin_set_map_view(*view, __maps_view_ready);
+	__get_plugin_interface(v)->maps_plugin_create_map_view(*view, __maps_view_ready);
 
 	/* Set up zoom and rotation */
 	__get_plugin_interface(v)->maps_plugin_get_min_zoom_level(&v->min_zoom_level);
@@ -595,7 +595,7 @@ EXPORT_API int maps_view_destroy(maps_view_h view)
 		ecore_animator_del(v->animator);
 
 	/* Notify the Plugin, that the view is to be destroyed */
-	__get_plugin_interface(view)->maps_plugin_set_map_view(NULL, NULL);
+	__get_plugin_interface(view)->maps_plugin_destroy_map_view(NULL, NULL);
 
 	/* Destroy a visual panel */
 	if (v->panel)
