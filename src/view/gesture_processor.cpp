@@ -805,7 +805,7 @@ void view::finger_event_stream::multi_tap(Evas_Event_Multi_Down *ev)
 		return;
 
 	const int finger_no = ev->device;
-	if(finger_no > MAX_FINGERS)
+	if(finger_no >= MAX_FINGERS)
 		return;
 
 	/* Current touch point info */
@@ -834,7 +834,7 @@ void view::finger_event_stream::multi_move(Evas_Event_Multi_Move *ev)
 		return;
 
 	const int finger_no = ev->device;
-	if(finger_no > MAX_FINGERS)
+	if(finger_no >= MAX_FINGERS)
 		return;
 
 	/* Current touch point info */
@@ -887,7 +887,7 @@ void view::finger_event_stream::multi_up(Evas_Event_Multi_Up *ev)
 		return;
 
 	const int finger_no = ev->device;
-	if(finger_no > MAX_FINGERS)
+	if(finger_no >= MAX_FINGERS)
 		return;
 
 	/* Process finger up */
