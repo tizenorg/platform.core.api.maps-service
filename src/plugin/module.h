@@ -110,32 +110,21 @@ typedef int (*maps_plugin_search_route_waypoints_f) (const maps_coordinates_h * 
 typedef int (*maps_plugin_cancel_request_f) (int request_id);
 
 /* Mapping */
-typedef int (*maps_plugin_set_map_view_f) (const maps_view_h view,
-						maps_plugin_map_view_ready_cb callback);
-typedef int (*maps_plugin_render_map_f) (const maps_coordinates_h coordinates,
-						const double zoom_factor,
-						const double rotation_angle,
-						maps_plugin_render_map_cb callback,
-						void* user_data,
-						int* request_id);
-typedef int (*maps_plugin_move_center_f) (const int delta_x,
-						const int delta_y,
-						maps_plugin_render_map_cb callback,
-						void* user_data,
-						int* request_id);
-typedef int (*maps_plugin_set_scalebar_f) (bool enable);
-typedef int (*maps_plugin_get_scalebar_f) (bool *enabled);
-typedef int (*maps_plugin_draw_map_f) (Evas* canvas, const int x, const int y,
-						const int width, const int height);
-typedef int (*maps_plugin_on_object_f) (const maps_view_object_h object,
-						const maps_view_object_operation_e operation);
-typedef int (*maps_plugin_screen_to_geography_f) (const int x, const int y,
-						maps_coordinates_h* coordinates);
-typedef int (*maps_plugin_geography_to_screen_f) (const maps_coordinates_h coordinates,
-						int* x, int* y);
-typedef int (*maps_plugin_get_min_zoom_level_f) (int *min_zoom_level);
-typedef int (*maps_plugin_get_max_zoom_level_f) (int *max_zoom_level);
-typedef int (*maps_plugin_get_center_f) (maps_coordinates_h *coordinates);
+typedef int (*maps_plugin_create_map_view_f) (maps_view_h hView, maps_plugin_map_view_ready_cb callback);
+typedef int (*maps_plugin_destroy_map_view_f) (maps_view_h hView);
+typedef int (*maps_plugin_render_map_f) (maps_view_h hView, const maps_coordinates_h coordinates, const double zoom_factor,
+						const double rotation_angle, maps_plugin_render_map_cb callback, void* user_data, int* request_id);
+typedef int (*maps_plugin_move_center_f) (maps_view_h hView, const int delta_x, const int delta_y, maps_plugin_render_map_cb callback,
+						void* user_data, int* request_id);
+typedef int (*maps_plugin_set_scalebar_f) (maps_view_h hView, bool enable);
+typedef int (*maps_plugin_get_scalebar_f) (maps_view_h hView, bool *enabled);
+typedef int (*maps_plugin_draw_map_f) (maps_view_h hView, Evas* canvas, const int x, const int y, const int width, const int height);
+typedef int (*maps_plugin_on_object_f) (maps_view_h hView, const maps_view_object_h object, const maps_view_object_operation_e operation);
+typedef int (*maps_plugin_screen_to_geography_f) (maps_view_h hView, const int x, const int y, maps_coordinates_h* coordinates);
+typedef int (*maps_plugin_geography_to_screen_f) (maps_view_h hView, const maps_coordinates_h coordinates, int* x, int* y);
+typedef int (*maps_plugin_get_min_zoom_level_f) (maps_view_h hView, int *min_zoom_level);
+typedef int (*maps_plugin_get_max_zoom_level_f) (maps_view_h hView, int *max_zoom_level);
+typedef int (*maps_plugin_get_center_f) (maps_view_h hView, maps_coordinates_h *coordinates);
 
 namespace plugin {
 
@@ -178,7 +167,8 @@ typedef struct _interface_s {
 	maps_plugin_cancel_request_f maps_plugin_cancel_request;
 
 	/* Mapping */
-	maps_plugin_set_map_view_f maps_plugin_set_map_view;
+	maps_plugin_create_map_view_f maps_plugin_create_map_view;
+	maps_plugin_destroy_map_view_f maps_plugin_destroy_map_view;
 	maps_plugin_render_map_f maps_plugin_render_map;
 	maps_plugin_move_center_f maps_plugin_move_center;
 	maps_plugin_set_scalebar_f maps_plugin_set_scalebar;
