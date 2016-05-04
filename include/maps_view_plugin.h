@@ -88,6 +88,38 @@ int maps_view_set_zoom_factor(maps_view_h view, double zoom_factor);
  */
 int maps_view_get_zoom_factor(const maps_view_h view, double *zoom_factor);
 
+/**
+ * @brief	Get the view handle of maps plugin.
+ * @details This function gets the view handle of maps plugin.
+ *
+ * @param[in]	hView					The view handle
+ * @param[in]	maps_plugin_view_handle	The view handle of maps plugin
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ *
+ * @pre @a hView is created using maps_view_create().
+ *
+ * @see maps_view_create()
+ */
+int maps_view_get_maps_plugin_view_handle(maps_view_h hView, void **maps_plugin_view_handle);
+
+/**
+ * @brief	Set the view handle of maps plugin.
+ * @details This function sets the view handle of maps plugin.
+ *
+ * @param[in]	hView					The view handle
+ * @param[in]	maps_plugin_view_handle	The view handle of maps plugin
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ *
+ * @pre @a hView is created using maps_view_create().
+ *
+ * @see maps_view_create()
+ */
+int maps_view_set_maps_plugin_view_handle(maps_view_h hView, void *maps_plugin_view_handle);
+
 #ifdef __cplusplus
 }
 #endif
