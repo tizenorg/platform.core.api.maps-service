@@ -106,7 +106,7 @@ static int __maps_view_marker_data_destroy(void *marker);
 
 static maps_view_h __get_view(const maps_view_object_h object)
 {
-	if(!object)
+	if (!object)
 		return NULL;
 	maps_view_object_s *o = (maps_view_object_s *)object;
 	return o->view;
