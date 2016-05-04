@@ -112,6 +112,7 @@ typedef struct _maps_view_s {
 	bool public_transit_enabled;
 	bool scalebar_enabled;
 
+	void *maps_plugin_view_handle;
 } maps_view_s;
 
 
@@ -224,7 +225,7 @@ int _maps_view_on_object_operation(maps_view_h view, maps_view_object_h object, 
 	if(!__get_plugin_interface(view)->maps_plugin_on_object)
 		return  MAPS_ERROR_INVALID_PARAMETER;
 
-	return __get_plugin_interface(view)->maps_plugin_on_object(object, operation);
+	return __get_plugin_interface(view)->maps_plugin_on_object(view, object, operation);
 }
 
 static void __on_canvas_tap(void *data, Evas *e, Evas_Object *obj, void *event_info)
@@ -304,10 +305,10 @@ static void __on_canvas_multi_up(void *data, Evas *e, Evas_Object *obj, void *ev
 	v->finger_stream->multi_up((Evas_Event_Multi_Up *)event_info);
 }
 
-static void __maps_plugin_render_map_cb(maps_error_e result, int request_id,
+static void __maps_plugin_render_map_cb(maps_view_h view, maps_error_e result, int request_id,
 	maps_coordinates_h center, maps_area_h area, void *user_data)
 {
-	if ((result != MAPS_ERROR_NONE) || !center || !area || !user_data)
+	if ((result != MAPS_ERROR_NONE) || !center || !area)
 		return;
 
 	/* Here we know that the Plugin has the rendered maps.
@@ -316,7 +317,6 @@ static void __maps_plugin_render_map_cb(maps_error_e result, int request_id,
 	*  There are three types of idlers: Enterers, Idlers(proper) and Exiters
 	*/
 
-	maps_view_h view = (maps_view_h)user_data;
 	if (!view)
 		return;
 
@@ -338,13 +338,8 @@ static int __maps_plugin_render_map(const maps_view_h view,
 		return MAPS_ERROR_INVALID_PARAMETER;
 
 	int request_id = 0;
-	return __get_plugin_interface(view)->maps_plugin_render_map(
-					     coordinates,
-					     zoom_factor,
-					     rotation_angle,
-					     __maps_plugin_render_map_cb,
-					     view,
-					     &request_id);
+	return __get_plugin_interface(view)->maps_plugin_render_map(view, coordinates, zoom_factor, rotation_angle,
+														__maps_plugin_render_map_cb, NULL, &request_id);
 
 }
 
@@ -466,6 +461,8 @@ EXPORT_API int maps_view_create(maps_service_h maps, Evas_Image *obj, maps_view_
 
 	v->panel = obj;
 
+	v->maps_plugin_view_handle = NULL;
+
 	evas_object_event_callback_add(v->panel, EVAS_CALLBACK_RESIZE, __maps_view_panel_resize_cb, v);
 
 	/* Set up event callbacks by default */
@@ -535,11 +532,11 @@ EXPORT_API int maps_view_create(maps_service_h maps, Evas_Image *obj, maps_view_
 	*view = (maps_view_h) v;
 
 	/* Notify the Plugin, that the view is created */
-	__get_plugin_interface(v)->maps_plugin_set_map_view(*view, __maps_view_ready);
+	__get_plugin_interface(v)->maps_plugin_create_map_view(*view, __maps_view_ready);
 
 	/* Set up zoom and rotation */
-	__get_plugin_interface(v)->maps_plugin_get_min_zoom_level(&v->min_zoom_level);
-	__get_plugin_interface(v)->maps_plugin_get_max_zoom_level(&v->max_zoom_level);
+	__get_plugin_interface(v)->maps_plugin_get_min_zoom_level(v, &v->min_zoom_level);
+	__get_plugin_interface(v)->maps_plugin_get_max_zoom_level(v, &v->max_zoom_level);
 
 	if(v->min_zoom_level <= 0)
 		v->min_zoom_level = 2;
@@ -595,7 +592,7 @@ EXPORT_API int maps_view_destroy(maps_view_h view)
 		ecore_animator_del(v->animator);
 
 	/* Notify the Plugin, that the view is to be destroyed */
-	__get_plugin_interface(view)->maps_plugin_set_map_view(NULL, NULL);
+	__get_plugin_interface(view)->maps_plugin_destroy_map_view(view);
 
 	/* Destroy a visual panel */
 	if (v->panel)
@@ -644,7 +641,7 @@ int _maps_view_get_plugin_center(const maps_view_h view,
 	if (!view || !center)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
-	return __get_plugin_interface(view)->maps_plugin_get_center(center);
+	return __get_plugin_interface(view)->maps_plugin_get_center(view, center);
 }
 
 /*----------------------MAP ZOOM, ROTATE, SET CENTER--------------------------*/
@@ -707,11 +704,7 @@ int _maps_view_move_center(maps_view_h view, const int delta_x, const int delta_
 	*  similarly as it is done in maps service */
 
 	int request_id = 0;
-	int error = __get_plugin_interface(view)->maps_plugin_move_center(
-						delta_x, delta_y,
-						__maps_plugin_render_map_cb,
-						view,
-						&request_id);
+	int error = __get_plugin_interface(view)->maps_plugin_move_center(view, delta_x, delta_y, __maps_plugin_render_map_cb, NULL, &request_id);
 
 	/* Invoke user registered event callback */
 	maps_view_event_data_h ed =
@@ -731,7 +724,7 @@ EXPORT_API int maps_view_set_scalebar_enabled(const maps_view_h view, bool enabl
 	if (!view)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
-	return __get_plugin_interface(view)->maps_plugin_set_scalebar(enable);
+	return __get_plugin_interface(view)->maps_plugin_set_scalebar(view, enable);
 }
 
 EXPORT_API int maps_view_get_scalebar_enabled(const maps_view_h view, bool *enabled)
@@ -739,7 +732,7 @@ EXPORT_API int maps_view_get_scalebar_enabled(const maps_view_h view, bool *enab
 	if (!view || !enabled)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
-	return __get_plugin_interface(view)->maps_plugin_get_scalebar(enabled);
+	return __get_plugin_interface(view)->maps_plugin_get_scalebar(view, enabled);
 }
 
 EXPORT_API int maps_view_get_center(const maps_view_h view, maps_coordinates_h *coordinates)
@@ -935,8 +928,7 @@ EXPORT_API int maps_view_screen_to_geolocation(maps_view_h view,
 	int posx = 0;
 	int posy = 0;
 	maps_view_get_screen_location(view, &posx, &posy, NULL, NULL);
-	return __get_plugin_interface(view)->
-		maps_plugin_screen_to_geography(x - posx, y - posy, coordinates);
+	return __get_plugin_interface(view)->maps_plugin_screen_to_geography(view, x - posx, y - posy, coordinates);
 }
 
 EXPORT_API int maps_view_geolocation_to_screen(const maps_view_h view,
@@ -947,8 +939,7 @@ EXPORT_API int maps_view_geolocation_to_screen(const maps_view_h view,
 	int posx = 0;
 	int posy = 0;
 	maps_view_get_screen_location(view, &posx, &posy, NULL, NULL);
-	const int error = __get_plugin_interface(view)->
-		maps_plugin_geography_to_screen(coordinates, x, y);
+	const int error = __get_plugin_interface(view)->maps_plugin_geography_to_screen(view, coordinates, x, y);
 	*x += posx;
 	*y += posy;
 	return error;
@@ -1544,3 +1535,28 @@ maps_view_object_h _maps_view_object_hit_test(maps_view_h view, int x, int y, ma
 	/* 2. Extract test result */
 	return htd.object;
 }
+
+EXPORT_API int maps_view_get_maps_plugin_view_handle(maps_view_h hView, void **maps_plugin_view_handle)
+{
+	if (!hView || !maps_plugin_view_handle)
+		return MAPS_ERROR_INVALID_PARAMETER;
+
+	maps_view_s *v = (maps_view_s *)hView;
+
+	*maps_plugin_view_handle = v->maps_plugin_view_handle;
+
+	return MAPS_ERROR_NONE;
+}
+
+EXPORT_API int maps_view_set_maps_plugin_view_handle(maps_view_h hView, void *maps_plugin_view_handle)
+{
+	if (!hView || !maps_plugin_view_handle)
+		return MAPS_ERROR_INVALID_PARAMETER;
+
+	maps_view_s *v = (maps_view_s *)hView;
+
+	v->maps_plugin_view_handle = maps_plugin_view_handle;
+
+	return MAPS_ERROR_NONE;
+}
+

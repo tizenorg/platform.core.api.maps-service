@@ -38,8 +38,8 @@
  * @par Features available by Event Type
  * The correspondence between the type of event and available event data
  * is following:
- * | Feature/Event Type                  | Gesture | Action | Object | Ready |
- * | :---------------------------------- | :-----: | :----: | :----: | :---: |
+ * | Feature/Event Type                        | Gesture | Action | Object | Ready |
+ * | :---------------------------------------- | :-----: | :----: | :----: | :---: |
  * | #maps_view_event_type_e                   | +       | +      | +      | +     |
  * | #maps_view_gesture_e                      | +       |        | +      |       |
  * | #maps_view_action_e                       |         | +      |        |       |

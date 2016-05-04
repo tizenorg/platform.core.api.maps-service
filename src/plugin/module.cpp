@@ -198,9 +198,12 @@ maps_plugin_h plugin::binary_extractor::init(const provider_info &info,
 			"maps_plugin_cancel_request");
 
 		/* Mapping */
-		new_plugin->interface.maps_plugin_set_map_view =
-			(maps_plugin_set_map_view_f) gmod_find_sym(plugin,
-			"maps_plugin_set_map_view");
+		new_plugin->interface.maps_plugin_create_map_view =
+			(maps_plugin_create_map_view_f) gmod_find_sym(plugin,
+			"maps_plugin_create_map_view");
+		new_plugin->interface.maps_plugin_destroy_map_view =
+			(maps_plugin_destroy_map_view_f) gmod_find_sym(plugin,
+			"maps_plugin_destroy_map_view");
 		new_plugin->interface.maps_plugin_render_map =
 			(maps_plugin_render_map_f) gmod_find_sym(plugin,
 			"maps_plugin_render_map");
