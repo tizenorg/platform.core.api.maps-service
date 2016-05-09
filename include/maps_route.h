@@ -338,7 +338,7 @@ int maps_route_foreach_property(const maps_route_h route,
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
  * @retval	#MAPS_ERROR_NOT_FOUND Result not found
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
+ * @retval	#MAPS_ERROR_SERVICE_NOT_AVAILABLE Service not available
  *
  * @post This function invokes maps_route_path_cb() repeatedly to retrieve each
  * coordinate point.
@@ -362,7 +362,7 @@ int maps_route_foreach_path(const maps_route_h route,
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
  * @retval	#MAPS_ERROR_NOT_FOUND Result not found
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
+ * @retval	#MAPS_ERROR_SERVICE_NOT_AVAILABLE Service not available
  *
  * @post This function invokes maps_route_segment_cb() repeatedly to retrieve
  * each segment.

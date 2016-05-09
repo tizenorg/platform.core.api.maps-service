@@ -102,8 +102,8 @@ int session::command_geocode::run()
 		/*
 		func = plugin::get_empty_interface().maps_plugin_geocode;
 		*/
-		MAPS_LOGE("MAPS_ERROR_NOT_SUPPORTED: Can't get any plugin");
-		error = MAPS_ERROR_NOT_SUPPORTED;
+		MAPS_LOGE("MAPS_ERROR_SERVICE_NOT_AVAILABLE: Can't get any plugin");
+		error = MAPS_ERROR_SERVICE_NOT_AVAILABLE;
 	}
 
 	const int ret = error;
@@ -226,8 +226,8 @@ int session::command_geocode_inside_bounds::run()
 		func = plugin::get_empty_interface().
 			maps_plugin_geocode_inside_area;
 		*/
-		MAPS_LOGE("MAPS_ERROR_NOT_SUPPORTED: Can't get any plugin");
-		error = MAPS_ERROR_NOT_SUPPORTED;
+		MAPS_LOGE("MAPS_ERROR_SERVICE_NOT_AVAILABLE: Can't get any plugin");
+		error = MAPS_ERROR_SERVICE_NOT_AVAILABLE;
 	}
 
 	const int ret = error;
@@ -307,8 +307,8 @@ int session::command_geocode_by_structured_address::run()
 		func = plugin::get_empty_interface().
 			maps_plugin_geocode_by_structured_address;
 		*/
-		MAPS_LOGE("MAPS_ERROR_NOT_SUPPORTED: Can't get any plugin");
-		error = MAPS_ERROR_NOT_SUPPORTED;
+		MAPS_LOGE("MAPS_ERROR_SERVICE_NOT_AVAILABLE: Can't get any plugin");
+		error = MAPS_ERROR_SERVICE_NOT_AVAILABLE;
 	}
 
 	const int ret = error;
@@ -379,8 +379,8 @@ int session::command_reverse_geocode::run()
 		func = plugin::get_empty_interface().
 			maps_plugin_reverse_geocode;
 		*/
-		MAPS_LOGE("MAPS_ERROR_NOT_SUPPORTED: Can't get any plugin");
-		error = MAPS_ERROR_NOT_SUPPORTED;
+		MAPS_LOGE("MAPS_ERROR_SERVICE_NOT_AVAILABLE: Can't get any plugin");
+		error = MAPS_ERROR_SERVICE_NOT_AVAILABLE;
 	}
 
 	const int ret = error;
@@ -496,8 +496,8 @@ int session::command_multi_reverse_geocode::run()
 		func = plugin::get_empty_interface().
 			maps_plugin_multi_reverse_geocode;
 		*/
-		MAPS_LOGE("MAPS_ERROR_NOT_SUPPORTED: Can't get any plugin");
-		error = MAPS_ERROR_NOT_SUPPORTED;
+		MAPS_LOGE("MAPS_ERROR_SERVICE_NOT_AVAILABLE: Can't get any plugin");
+		error = MAPS_ERROR_SERVICE_NOT_AVAILABLE;
 	}
 
 	const int ret = error;
@@ -610,8 +610,8 @@ int session::command_search_place::run()
 		/*
 		func = plugin::get_empty_interface().maps_plugin_search_place;
 		*/
-		MAPS_LOGE("MAPS_ERROR_NOT_SUPPORTED: Can't get any plugin");
-		error = MAPS_ERROR_NOT_SUPPORTED;
+		MAPS_LOGE("MAPS_ERROR_SERVICE_NOT_AVAILABLE: Can't get any plugin");
+		error = MAPS_ERROR_SERVICE_NOT_AVAILABLE;
 	}
 
 	const int ret = error;
@@ -761,8 +761,8 @@ int session::command_search_by_area_place::run()
 			maps_plugin_search_place_by_area;
 		*/
 
-		MAPS_LOGE("MAPS_ERROR_NOT_SUPPORTED: Can't get any plugin");
-		error = MAPS_ERROR_NOT_SUPPORTED;
+		MAPS_LOGE("MAPS_ERROR_SERVICE_NOT_AVAILABLE: Can't get any plugin");
+		error = MAPS_ERROR_SERVICE_NOT_AVAILABLE;
 	}
 
 	const int ret = error;
@@ -845,8 +845,8 @@ int session::command_search_by_address_place::run()
 		func = plugin::get_empty_interface().
 			maps_plugin_search_place_by_address;
 		*/
-		MAPS_LOGE("MAPS_ERROR_NOT_SUPPORTED: Can't get any plugin");
-		error = MAPS_ERROR_NOT_SUPPORTED;
+		MAPS_LOGE("MAPS_ERROR_SERVICE_NOT_AVAILABLE: Can't get any plugin");
+		error = MAPS_ERROR_SERVICE_NOT_AVAILABLE;
 	}
 
 	const int ret = error;
@@ -924,8 +924,8 @@ int session::command_search_place_list::run()
 		/*
 		func = plugin::get_empty_interface().maps_plugin_search_place_list;
 		*/
-		MAPS_LOGE("MAPS_ERROR_NOT_SUPPORTED: Can't get any plugin");
-		error = MAPS_ERROR_NOT_SUPPORTED;
+		MAPS_LOGE("MAPS_ERROR_SERVICE_NOT_AVAILABLE: Can't get any plugin");
+		error = MAPS_ERROR_SERVICE_NOT_AVAILABLE;
 	}
 
 	const int ret = error;
@@ -1020,8 +1020,8 @@ int session::command_get_place_details::run()
 		func = plugin::get_empty_interface().
 			maps_plugin_get_place_details;
 		*/
-		MAPS_LOGE("MAPS_ERROR_NOT_SUPPORTED: Can't get any plugin");
-		error = MAPS_ERROR_NOT_SUPPORTED;
+		MAPS_LOGE("MAPS_ERROR_SERVICE_NOT_AVAILABLE: Can't get any plugin");
+		error = MAPS_ERROR_SERVICE_NOT_AVAILABLE;
 	}
 
 	const int ret = error;
@@ -1145,8 +1145,8 @@ int session::command_search_route::run()
 		/*
 		func = plugin::get_empty_interface().maps_plugin_search_route;
 		*/
-		MAPS_LOGE("MAPS_ERROR_NOT_SUPPORTED: Can't get any plugin");
-		error = MAPS_ERROR_NOT_SUPPORTED;
+		MAPS_LOGE("MAPS_ERROR_SERVICE_NOT_AVAILABLE: Can't get any plugin");
+		error = MAPS_ERROR_SERVICE_NOT_AVAILABLE;
 	}
 
 	const int ret = error;
@@ -1234,8 +1234,8 @@ int session::command_search_route_waypoints::run()
 		func = plugin::get_empty_interface().
 			maps_plugin_search_route_waypoints;
 		*/
-		MAPS_LOGE("MAPS_ERROR_NOT_SUPPORTED: Can't get any plugin");
-		error = MAPS_ERROR_NOT_SUPPORTED;
+		MAPS_LOGE("MAPS_ERROR_SERVICE_NOT_AVAILABLE: Can't get any plugin");
+		error = MAPS_ERROR_SERVICE_NOT_AVAILABLE;
 	}
 
 	const int ret = error;

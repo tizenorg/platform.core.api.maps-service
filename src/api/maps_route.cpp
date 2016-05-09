@@ -287,7 +287,7 @@ EXPORT_API int maps_route_foreach_path(const maps_route_h route,
 
 	/* Check if this API feature available */
 	if (!__is_supported(route, MAPS_ROUTE_PATH))
-		return MAPS_ERROR_NOT_SUPPORTED;
+		return MAPS_ERROR_SERVICE_NOT_AVAILABLE;
 
 	/* Check if parameters are valid */
 	if (!callback)
@@ -308,7 +308,7 @@ EXPORT_API int maps_route_foreach_segment(const maps_route_h route,
 	/* Check if this API feature available */
 	if (!__is_supported(route, MAPS_ROUTE_SEGMENTS_PATH)
 		&& !__is_supported(route, MAPS_ROUTE_SEGMENTS_MANEUVERS))
-		return MAPS_ERROR_NOT_SUPPORTED;
+		return MAPS_ERROR_SERVICE_NOT_AVAILABLE;
 
 	/* Check if parameters are valid */
 	if (!callback)

@@ -103,7 +103,7 @@ EXPORT_API int maps_service_create(const char *maps_provider, maps_service_h *ma
 		return MAPS_ERROR_PERMISSION_DENIED;
 	}
 
-	int error = MAPS_ERROR_NOT_SUPPORTED;
+	int error = MAPS_ERROR_SERVICE_NOT_AVAILABLE;
 	char *provider = NULL, *module = NULL;
 
 	do {
@@ -114,7 +114,7 @@ EXPORT_API int maps_service_create(const char *maps_provider, maps_service_h *ma
 		/* 1. Check whether provider info is valid */
 		if (info.empty()) {
 			MAPS_LOGE("ERROR! Provider info not found for name: %s", maps_provider);
-			error = MAPS_ERROR_NOT_SUPPORTED;
+			error = MAPS_ERROR_SERVICE_NOT_AVAILABLE;
 			break;
 		}
 
@@ -228,7 +228,7 @@ EXPORT_API int maps_service_provider_is_service_supported(const maps_service_h m
 		return MAPS_ERROR_INVALID_PARAMETER;
 	const plugin::plugin_s *p = __extract_plugin(maps);
 	if (!p)
-		return MAPS_ERROR_NOT_SUPPORTED;
+		return MAPS_ERROR_SERVICE_NOT_AVAILABLE;
 	return p->interface.maps_plugin_is_service_supported(service, supported);
 }
 
@@ -244,7 +244,7 @@ EXPORT_API int maps_service_provider_is_data_supported(const maps_service_h maps
 
 	const plugin::plugin_s *p = __extract_plugin(maps);
 	if (!p)
-		return MAPS_ERROR_NOT_SUPPORTED;
+		return MAPS_ERROR_SERVICE_NOT_AVAILABLE;
 	return p->interface.maps_plugin_is_data_supported(data, supported);
 }
 
@@ -265,7 +265,7 @@ EXPORT_API int maps_service_geocode(const maps_service_h maps,
 
 	/* Check if this API feature available */
 	if (!__maps_provider_supported(maps, MAPS_SERVICE_GEOCODE))
-		return MAPS_ERROR_NOT_SUPPORTED;
+		return MAPS_ERROR_SERVICE_NOT_AVAILABLE;
 
 	/* Check if parameters are valid */
 	if (!address || !callback || !request_id)
@@ -297,7 +297,7 @@ EXPORT_API int maps_service_geocode_inside_area(const maps_service_h maps,
 	/* Check if this API feature available */
 	if (!__maps_provider_supported(maps,
 			MAPS_SERVICE_GEOCODE_INSIDE_AREA))
-		return MAPS_ERROR_NOT_SUPPORTED;
+		return MAPS_ERROR_SERVICE_NOT_AVAILABLE;
 
 	/* Check if parameters are valid */
 	if (!address || !bounds || !callback || !request_id)
@@ -328,7 +328,7 @@ EXPORT_API int maps_service_geocode_by_structured_address(const maps_service_h m
 	/* Check if this API feature available */
 	if (!__maps_provider_supported(maps,
 			MAPS_SERVICE_GEOCODE_BY_STRUCTURED_ADDRESS))
-		return MAPS_ERROR_NOT_SUPPORTED;
+		return MAPS_ERROR_SERVICE_NOT_AVAILABLE;
 
 	/* Check if parameters are valid */
 	if (!address || !callback || !request_id)
@@ -359,7 +359,7 @@ EXPORT_API int maps_service_reverse_geocode(const maps_service_h maps,
 
 	/* Check if this API feature available */
 	if (!__maps_provider_supported(maps, MAPS_SERVICE_REVERSE_GEOCODE))
-		return MAPS_ERROR_NOT_SUPPORTED;
+		return MAPS_ERROR_SERVICE_NOT_AVAILABLE;
 
 	/* Check if parameters are valid */
 	if (!callback || !request_id)
@@ -399,7 +399,7 @@ EXPORT_API int maps_service_search_place(const maps_service_h maps,
 
 	/* Check if this API feature available */
 	if (!__maps_provider_supported(maps, MAPS_SERVICE_SEARCH_PLACE))
-		return MAPS_ERROR_NOT_SUPPORTED;
+		return MAPS_ERROR_SERVICE_NOT_AVAILABLE;
 
 	/* Check if parameters are valid */
 	if (!position || !filter || !callback || !request_id)
@@ -432,7 +432,7 @@ EXPORT_API int maps_service_search_place_by_area(const maps_service_h maps,
 	/* Check if this API feature available */
 	if (!__maps_provider_supported(maps,
 			MAPS_SERVICE_SEARCH_PLACE_BY_AREA))
-		return MAPS_ERROR_NOT_SUPPORTED;
+		return MAPS_ERROR_SERVICE_NOT_AVAILABLE;
 
 	/* Check if parameters are valid */
 	if (!boundary || !filter || !callback || !request_id)
@@ -466,7 +466,7 @@ EXPORT_API int maps_service_search_place_by_address(const maps_service_h maps,
 	/* Check if this API feature available */
 	if (!__maps_provider_supported(maps,
 			MAPS_SERVICE_SEARCH_PLACE_BY_ADDRESS))
-		return MAPS_ERROR_NOT_SUPPORTED;
+		return MAPS_ERROR_SERVICE_NOT_AVAILABLE;
 
 	/* Check if parameters are valid */
 	if (!address || !boundary || !filter || !callback || !request_id)
@@ -495,7 +495,7 @@ EXPORT_API int maps_service_search_place_list(const maps_service_h maps,
 		return MAPS_ERROR_INVALID_PARAMETER;
 
 	if (!__maps_provider_supported(maps, MAPS_SERVICE_SEARCH_PLACE_LIST))
-		return MAPS_ERROR_NOT_SUPPORTED;
+		return MAPS_ERROR_SERVICE_NOT_AVAILABLE;
 
 	if (!boundary || !filter || !callback || !request_id)
 		return MAPS_ERROR_INVALID_PARAMETER;
@@ -519,7 +519,7 @@ EXPORT_API int maps_service_get_place_details(const maps_service_h maps,
 		return MAPS_ERROR_INVALID_PARAMETER;
 
 	if (!__maps_provider_supported(maps, MAPS_SERVICE_SEARCH_PLACE_LIST))
-		return MAPS_ERROR_NOT_SUPPORTED;
+		return MAPS_ERROR_SERVICE_NOT_AVAILABLE;
 
 	if (!url || !callback || !request_id)
 		return MAPS_ERROR_INVALID_PARAMETER;
@@ -552,7 +552,7 @@ EXPORT_API int maps_service_search_route(const maps_service_h maps,
 
 	/* Check if this API feature available */
 	if (!__maps_provider_supported(maps, MAPS_SERVICE_SEARCH_ROUTE))
-		return MAPS_ERROR_NOT_SUPPORTED;
+		return MAPS_ERROR_SERVICE_NOT_AVAILABLE;
 
 	/* Check if parameters are valid */
 	if (!origin || !destination || !callback || !request_id)
@@ -585,7 +585,7 @@ EXPORT_API int maps_service_search_route_waypoints(const maps_service_h maps,
 	/* Check if this API feature available */
 	if (!__maps_provider_supported(maps,
 			MAPS_SERVICE_SEARCH_ROUTE_WAYPOINTS))
-		return MAPS_ERROR_NOT_SUPPORTED;
+		return MAPS_ERROR_SERVICE_NOT_AVAILABLE;
 
 	/* Check if parameters are valid */
 	if (!waypoint_list || (waypoint_num < 2) || !callback || !request_id)
@@ -615,7 +615,7 @@ EXPORT_API int maps_service_cancel_request(const maps_service_h maps, int reques
 
 	/* Check if this API feature available */
 	if (!__maps_provider_supported(maps, MAPS_SERVICE_CANCEL_REQUEST))
-		return MAPS_ERROR_NOT_SUPPORTED;
+		return MAPS_ERROR_SERVICE_NOT_AVAILABLE;
 
 	/* Check if parameters are valid */
 	if (request_id < 0)
@@ -644,7 +644,7 @@ EXPORT_API int maps_service_multi_reverse_geocode(const maps_service_h maps,
 		return MAPS_ERROR_INVALID_PARAMETER;
 
 	if (!__maps_provider_supported(maps, MAPS_SERVICE_MULTI_REVERSE_GEOCODE))
-		return MAPS_ERROR_NOT_SUPPORTED;
+		return MAPS_ERROR_SERVICE_NOT_AVAILABLE;
 
 	if (!coordinates_list || !callback || !request_id)
 		return MAPS_ERROR_INVALID_PARAMETER;
