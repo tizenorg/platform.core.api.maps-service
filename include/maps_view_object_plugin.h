@@ -20,15 +20,15 @@
 #include <maps_view_object.h>
 
 /**
- * @ingroup	CAPI_MAP_VIEW_MODULE
- * @defgroup	CAPI_MAP_OBJECTS_MODULE Maps View Objects
+ * @ingroup	CAPI_MAPS_VIEW_MODULE
+ * @defgroup	CAPI_MAPS_VIEW_OBJECT_MODULE View Objects
  *
  * @file map_object.h
- * @brief This file contains the functions of Map Object API
+ * @brief This file contains the functions of View Object API
  *
- * @addtogroup CAPI_MAP_OBJECTS_MODULE
+ * @addtogroup CAPI_MAPS_VIEW_OBJECT_MODULE
  * @{
- * @brief This file contains the functions related to Map View Objects
+ * @brief This provides APIs related to operations, used in View Object.
  * @details Supported Object types are following:
  *  * Markers
  *  * Polygons

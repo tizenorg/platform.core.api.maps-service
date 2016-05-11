@@ -20,13 +20,13 @@
 #include <maps_view.h>
 
 /**
- * @ingroup	CAPI_MAP_VIEW_MODULE
- * @defgroup	CAPI_MAP_VIEW_MODULE Maps View
+ * @ingroup	CAPI_MAPS_VIEW_MODULE
+ * @defgroup	CAPI_MAPS_VIEW_MODULE View
  *
  * @file map_object.h
  * @brief This file contains the functions of Map View API
  *
- * @addtogroup CAPI_MAP_OBJECTS_MODULE
+ * @addtogroup CAPI_MAPS_VIEW_MODULE
  * @{
  * @brief This file contains the functions related to Map View
  */
@@ -70,7 +70,7 @@ int maps_view_set_zoom_factor(maps_view_h view, double zoom_factor);
  * @details This function gets the current zoom factor of View.
  * @since_tizen 3.0
  * @remarks zoom @a factor can be obtained also in maps_view_on_event_cb()
- * callback, assigned using map_view_set_event_cb() with the event
+ * callback, assigned using maps_view_set_event_cb() with the event
  * type #MAPS_VIEW_EVENT_ACTION specified.
  *
  * @param[in]	view		The view handle

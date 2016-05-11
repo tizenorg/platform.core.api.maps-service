@@ -20,7 +20,7 @@
 
 /**
  *
- * @ingroup	CAPI_MAPS_SERVICE_MODULE
+ * @ingroup	CAPI_MAPS_VIEW_MODULE
  * @defgroup	CAPI_MAPS_VIEW_EVENT_DATA_MODULE View Event Data
  *
  * @file maps_view_event_data.h
@@ -28,7 +28,7 @@
  *
  * @addtogroup CAPI_MAPS_VIEW_EVENT_DATA_MODULE
  * @{
- * @brief This provides APIs related to operations with View Event Data
+ * @brief This provides APIs related to operations, used in View Event Data.
  * @details Supported Event types are following:
  *  * User gesture over the Map
  *  * Map action, such as zooming or rotation
@@ -38,8 +38,8 @@
  * @par Features available by Event Type
  * The correspondence between the type of event and available event data
  * is following:
- * | Feature/Event Type                  | Gesture | Action | Object | Ready |
- * | :---------------------------------- | :-----: | :----: | :----: | :---: |
+ * | Feature/Event Type                        | Gesture | Action | Object | Ready |
+ * | :---------------------------------------- | :-----: | :----: | :----: | :---: |
  * | #maps_view_event_type_e                   | +       | +      | +      | +     |
  * | #maps_view_gesture_e                      | +       |        | +      |       |
  * | #maps_view_action_e                       |         | +      |        |       |

@@ -319,7 +319,7 @@ int maps_service_get_preference(maps_service_h maps,
  * @param[in]	service		The service to be checked
  * @param[out]	supported	Is the service supported
  * @return	0 on success, otherwise a negative error value
- * @retval	#MAPS_ERROR_NONE Successful, the service is supported
+ * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
  * @retval	#MAPS_ERROR_SERVICE_NOT_AVAILABLE Service not available
  *
@@ -343,7 +343,7 @@ int maps_service_provider_is_service_supported(const maps_service_h maps,
  * @param[in]	data		The data feature to be checked
  * @param[out]	supported	Is the data feature supported
  * @return	0 on success, otherwise a negative error value
- * @retval	#MAPS_ERROR_NONE Successful, the data feature is supported
+ * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
  * @retval	#MAPS_ERROR_SERVICE_NOT_AVAILABLE Service not available
  *

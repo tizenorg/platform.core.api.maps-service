@@ -32,7 +32,7 @@
  *
  * @addtogroup CAPI_MAPS_VIEW_MODULE
  * @{
- * @brief This provides APIs related to operations used in View
+ * @brief This provides APIs related to operations, used in View.
  * @details Supported View API features include:
  *  * Creating and destroying the View port, moving and resizing it
  *  * Changing zoom, and orientation
@@ -129,8 +129,7 @@ typedef void(*maps_view_on_event_cb) (maps_view_event_type_e type, maps_view_eve
  * zoom level and rotation angle use maps_view_set_center(),
  * maps_view_set_zoom_level() and maps_view_set_orientation() respectively.
  * \n To change View theme, size and visibility properties use
- * maps_view_set_type() and maps_view_set_visibility()
- * respectively.
+ * maps_view_set_type() and maps_view_set_visibility() respectively.
  * @since_tizen 3.0
  * @privlevel public
  * @privilege %http://tizen.org/privilege/mapservice

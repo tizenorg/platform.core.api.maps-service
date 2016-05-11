@@ -183,14 +183,13 @@ int maps_plugin_get_preference(maps_item_hashtable_h *preference);
 
 /**
  * @brief	Checks if the Maps Plugin supports a request.
- * @details This function checks if the Maps Plugin supports a specified
- * request.
+ * @details This function checks if the Maps Plugin supports a specified request.
  * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	service		The service to be checked
  * @param[out]	supported	Is the service supported
  * @return	0 on success, otherwise a negative error value
- * @retval	#MAPS_ERROR_NONE Successful, the service is supported
+ * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
  * @retval	#MAPS_ERROR_INVALID_OPERATION Invalid operation
  *
@@ -198,19 +197,17 @@ int maps_plugin_get_preference(maps_item_hashtable_h *preference);
  *
  * @see maps_service_create()
  */
-int maps_plugin_is_service_supported(maps_service_e service,
-				     bool *supported);
+int maps_plugin_is_service_supported(maps_service_e service, bool *supported);
 
 /**
  * @brief	Checks if the Maps Plugin supports a data feature.
- * @details This function checks if the Maps Plugin supports a specified data
- * feature.
+ * @details This function checks if the Maps Plugin supports a specified data feature.
  * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  *
  * @param[in]	data		The data feature to be checked
  * @param[out]	supported	Is the data feature supported
  * @return	0 on success, otherwise a negative error value
- * @retval	#MAPS_ERROR_NONE Successful, the data feature is supported
+ * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
  * @retval	#MAPS_ERROR_INVALID_OPERATION Invalid operation
  *

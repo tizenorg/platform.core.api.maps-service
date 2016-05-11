@@ -21,7 +21,7 @@
 #include <maps_coordinates.h>
 
 /**
- * @ingroup	CAPI_MAPS_SERVICE_MODULE
+ * @ingroup	CAPI_MAPS_VIEW_MODULE
  * @defgroup	CAPI_MAPS_VIEW_OBJECT_MODULE View Object
  *
  * @file maps_view_object.h
@@ -29,7 +29,7 @@
  *
  * @addtogroup CAPI_MAPS_VIEW_OBJECT_MODULE
  * @{
- * @brief This file contains the functions related to View Objects
+ * @brief This provides APIs related to operations, used in View Object.
  * @details Supported Object types are following:
  *  * Markers
  *  * Polygons
@@ -762,4 +762,4 @@ int maps_view_object_marker_get_z_order(const maps_view_object_h marker, int *z_
 /**
  * @}
  */
-#endif				/* __MAP_OBJECT_H__*/
+#endif				/* __MAPS_VIEW_OBJECT_H__ */
