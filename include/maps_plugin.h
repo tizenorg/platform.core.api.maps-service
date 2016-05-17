@@ -121,7 +121,7 @@ int maps_plugin_get_info(maps_plugin_info_h *info);
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_INVALID_OPERATION Invalid operation
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see maps_plugin_get_provider_key()
  */
@@ -140,7 +140,7 @@ int maps_plugin_set_provider_key(const char *provider_key);
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_INVALID_OPERATION Invalid operation
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see maps_plugin_set_provider_key()
  */
@@ -156,7 +156,7 @@ int maps_plugin_get_provider_key(char **provider_key);
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_INVALID_OPERATION Invalid operation
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
  *
  * @see maps_plugin_get_preference()
@@ -175,7 +175,7 @@ int maps_plugin_set_preference(maps_item_hashtable_h preference);
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_INVALID_OPERATION Invalid operation
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see maps_plugin_set_preference()
  */
@@ -192,7 +192,7 @@ int maps_plugin_get_preference(maps_item_hashtable_h *preference);
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful, the service is supported
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_INVALID_OPERATION Invalid operation
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre Call maps_service_create() to create Maps Service and obtain its handle.
  *
@@ -212,7 +212,7 @@ int maps_plugin_is_service_supported(maps_service_e service,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful, the data feature is supported
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_INVALID_OPERATION Invalid operation
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre Call maps_service_create() to create Maps Service and obtain its handle.
  *
@@ -245,6 +245,7 @@ int maps_plugin_is_data_supported(maps_service_data_e data, bool *supported);
  * @retval	#MAPS_ERROR_NETWORK_UNREACHABLE Network connection failed
  * @retval	#MAPS_ERROR_SERVICE_NOT_AVAILABLE Service not available
  * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  * @retval	#MAPS_ERROR_CONNECTION_TIME_OUT Timeout error, no answer
  * @retval	#MAPS_ERROR_INVALID_OPERATION Operation is not valid
  * @retval	#MAPS_ERROR_NOT_FOUND Result not found
@@ -290,6 +291,7 @@ int maps_plugin_geocode(const char *address,
  * @retval	#MAPS_ERROR_NETWORK_UNREACHABLE Network connection failed
  * @retval	#MAPS_ERROR_SERVICE_NOT_AVAILABLE Service not available
  * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  * @retval	#MAPS_ERROR_KEY_NOT_AVAILABLE Invalid key
  * @retval	#MAPS_ERROR_CONNECTION_TIME_OUT Timeout error, no answer
  * @retval	#MAPS_ERROR_INVALID_OPERATION Operation is not valid
@@ -334,6 +336,7 @@ int maps_plugin_geocode_inside_area(const char *address,
  * @retval	#MAPS_ERROR_NETWORK_UNREACHABLE Network connection failed
  * @retval	#MAPS_ERROR_SERVICE_NOT_AVAILABLE Service not available
  * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  * @retval	#MAPS_ERROR_CONNECTION_TIME_OUT Timeout error, no answer
  * @retval	#MAPS_ERROR_INVALID_OPERATION Operation is not valid
  * @retval	#MAPS_ERROR_NOT_FOUND Result not found
@@ -379,6 +382,7 @@ int maps_plugin_geocode_by_structured_address(const maps_address_h address,
  * @retval	#MAPS_ERROR_NETWORK_UNREACHABLE Network connection failed
  * @retval	#MAPS_ERROR_SERVICE_NOT_AVAILABLE Service not available
  * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  * @retval	#MAPS_ERROR_CONNECTION_TIME_OUT Timeout error, no answer
  * @retval	#MAPS_ERROR_INVALID_OPERATION Operation is not valid
  * @retval	#MAPS_ERROR_NOT_FOUND Result not found
@@ -418,6 +422,7 @@ int maps_plugin_reverse_geocode(double latitude, double longitude,
  * @retval	#MAPS_ERROR_NETWORK_UNREACHABLE Network connection failed
  * @retval	#MAPS_ERROR_SERVICE_NOT_AVAILABLE Service not available
  * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  * @retval	#MAPS_ERROR_CONNECTION_TIME_OUT Timeout error, no answer
  * @retval	#MAPS_ERROR_INVALID_OPERATION Operation is not valid
  * @retval	#MAPS_ERROR_NOT_FOUND Result not found
@@ -463,6 +468,7 @@ int maps_plugin_multi_reverse_geocode(const maps_coordinates_list_h geocode_list
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
  * @retval	#MAPS_ERROR_SERVICE_NOT_AVAILABLE Service not available
  * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  * @retval	#MAPS_ERROR_CONNECTION_TIME_OUT Timeout error, no answer
  * @retval	#MAPS_ERROR_INVALID_OPERATION Operation is not valid
  * @retval	#MAPS_ERROR_NOT_FOUND Result not found
@@ -508,6 +514,7 @@ int maps_plugin_search_place(const maps_coordinates_h position, int distance,
  * @retval	#MAPS_ERROR_INVALID_PARAMETER	Invalid parameter
  * @retval	#MAPS_ERROR_SERVICE_NOT_AVAILABLE Service not available
  * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  * @retval	#MAPS_ERROR_CONNECTION_TIME_OUT Timeout error, no answer
  * @retval	#MAPS_ERROR_INVALID_OPERATION Operation is not valid
  * @retval	#MAPS_ERROR_NOT_FOUND Result not found
@@ -554,6 +561,7 @@ int maps_plugin_search_place_by_area(const maps_area_h boundary,
  * @retval	#MAPS_ERROR_INVALID_PARAMETER	Invalid parameter
  * @retval	#MAPS_ERROR_SERVICE_NOT_AVAILABLE Service not available
  * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  * @retval	#MAPS_ERROR_CONNECTION_TIME_OUT Timeout error, no answer
  * @retval	#MAPS_ERROR_INVALID_OPERATION Operation is not valid
  * @retval	#MAPS_ERROR_NOT_FOUND Result not found
@@ -599,6 +607,7 @@ int maps_plugin_search_place_by_address(const char *address,
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
  * @retval	#MAPS_ERROR_SERVICE_NOT_AVAILABLE Service not available
  * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  * @retval	#MAPS_ERROR_CONNECTION_TIME_OUT Timeout error, no answer
  * @retval	#MAPS_ERROR_INVALID_OPERATION Operation is not valid
  * @retval	#MAPS_ERROR_NOT_FOUND Result not found
@@ -639,6 +648,7 @@ int maps_plugin_search_place_list(const maps_area_h boundary,
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
  * @retval	#MAPS_ERROR_SERVICE_NOT_AVAILABLE Service not available
  * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  * @retval	#MAPS_ERROR_CONNECTION_TIME_OUT Timeout error, no answer
  * @retval	#MAPS_ERROR_INVALID_OPERATION Operation is not valid
  * @retval	#MAPS_ERROR_NOT_FOUND Result not found
@@ -683,7 +693,7 @@ int maps_plugin_get_place_details(const char *url,
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_SERVICE_NOT_AVAILABLE Service unavailable
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Service unavailable
  * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
  * @retval	#MAPS_ERROR_CONNECTION_TIME_OUT Timeout error, no answer
  * @retval	#MAPS_ERROR_INVALID_OPERATION Operation is not valid
@@ -724,7 +734,7 @@ int maps_plugin_search_route(const maps_coordinates_h origin,
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_SERVICE_NOT_AVAILABLE Service unavailable
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Service unavailable
  * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
  * @retval	#MAPS_ERROR_CONNECTION_TIME_OUT Timeout error, no answer
  * @retval	#MAPS_ERROR_INVALID_OPERATION Operation is not valid
@@ -764,6 +774,7 @@ int maps_plugin_search_route_waypoints(const maps_coordinates_h *waypoint_list,
  * @retval	#MAPS_ERROR_NETWORK_UNREACHABLE Network connection failed
  * @retval	#MAPS_ERROR_SERVICE_NOT_AVAILABLE Service not available
  * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  * @retval	#MAPS_ERROR_CONNECTION_TIME_OUT Timeout error, no answer
  * @retval	#MAPS_ERROR_INVALID_OPERATION Operation is not valid
  * @retval	#MAPS_ERROR_NOT_FOUND Result not found
