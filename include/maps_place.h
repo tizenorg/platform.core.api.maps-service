@@ -399,7 +399,7 @@ int maps_place_get_distance(const maps_place_h place, int *distance);
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_SERVICE_NOT_AVAILABLE Service not available
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  */
 int maps_place_get_address(const maps_place_h place,
 			   maps_address_h *address);
@@ -415,7 +415,7 @@ int maps_place_get_address(const maps_place_h place,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_SERVICE_NOT_AVAILABLE Service not available
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  */
 int maps_place_get_rating(const maps_place_h place,
 			  maps_place_rating_h *rating);
@@ -458,7 +458,7 @@ int maps_place_foreach_property(const maps_place_h place,
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
  * @retval	#MAPS_ERROR_NOT_FOUND Result not found
- * @retval	#MAPS_ERROR_SERVICE_NOT_AVAILABLE Service not available
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @post This function invokes maps_place_categories_cb() repeatedly to retrieve
  * each category.
@@ -483,7 +483,7 @@ int maps_place_foreach_category(const maps_place_h place,
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
  * @retval	#MAPS_ERROR_NOT_FOUND Result not found
- * @retval	#MAPS_ERROR_SERVICE_NOT_AVAILABLE Service not available
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @post This function invokes maps_place_attributes_cb() repeatedly to retrieve
  * each attribute.
@@ -508,7 +508,7 @@ int maps_place_foreach_attribute(const maps_place_h place,
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
  * @retval	#MAPS_ERROR_NOT_FOUND Result not found
- * @retval	#MAPS_ERROR_SERVICE_NOT_AVAILABLE Service not available
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @post This function invokes maps_place_contacts_cb() repeatedly to retrieve
  * each contact.
@@ -533,7 +533,7 @@ int maps_place_foreach_contact(const maps_place_h place,
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
  * @retval	#MAPS_ERROR_NOT_FOUND Result not found
- * @retval	#MAPS_ERROR_SERVICE_NOT_AVAILABLE Service not available
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @post This function invokes maps_place_editorials_cb() repeatedly to retrieve
  * each editorial.
@@ -558,7 +558,7 @@ int maps_place_foreach_editorial(const maps_place_h place,
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
  * @retval	#MAPS_ERROR_NOT_FOUND Result not found
- * @retval	#MAPS_ERROR_SERVICE_NOT_AVAILABLE Service not available
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @post This function invokes maps_place_images_cb() repeatedly to retrieve
  * each image.
@@ -582,7 +582,7 @@ int maps_place_foreach_image(const maps_place_h place,
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
  * @retval	#MAPS_ERROR_NOT_FOUND Result not found
- * @retval	#MAPS_ERROR_SERVICE_NOT_AVAILABLE Service not available
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @post This function invokes maps_place_reviews_cb() repeatedly to retrieve
  * each review.
@@ -604,7 +604,7 @@ int maps_place_foreach_review(const maps_place_h place,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_SERVICE_NOT_AVAILABLE Service not available
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  */
 int maps_place_get_supplier_link(const maps_place_image_h place,
 				 maps_place_link_object_h *supplier);
@@ -620,7 +620,7 @@ int maps_place_get_supplier_link(const maps_place_image_h place,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_SERVICE_NOT_AVAILABLE Service not available
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  */
 int maps_place_get_related_link(const maps_place_image_h place,
 				maps_place_link_object_h *related);
@@ -639,6 +639,7 @@ int maps_place_get_related_link(const maps_place_image_h place,
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
  * @retval	#MAPS_ERROR_NOT_FOUND Result not found
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @post This function invokes maps_place_cb() repeatedly to retrieve each place.
  *
