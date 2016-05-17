@@ -362,7 +362,7 @@ EXPORT_API int maps_place_get_address(const maps_place_h place,
 
 	/* Check if this API feature available */
 	if (!__is_supported(place, MAPS_PLACE_ADDRESS))
-		return MAPS_ERROR_SERVICE_NOT_AVAILABLE;
+		return MAPS_ERROR_NOT_SUPPORTED;
 
 	/* Check if parameters are valid */
 	if (!address)
@@ -380,7 +380,7 @@ EXPORT_API int maps_place_get_rating(const maps_place_h place,
 
 	/* Check if this API feature available */
 	if (!__is_supported(place, MAPS_PLACE_RATING))
-		return MAPS_ERROR_SERVICE_NOT_AVAILABLE;
+		return MAPS_ERROR_NOT_SUPPORTED;
 
 	/* Check if parameters are valid */
 	if (!rating)
@@ -410,7 +410,7 @@ EXPORT_API int maps_place_foreach_category(const maps_place_h place,
 
 	/* Check if this API feature available */
 	if (!__is_supported(place, MAPS_PLACE_CATEGORIES))
-		return MAPS_ERROR_SERVICE_NOT_AVAILABLE;
+		return MAPS_ERROR_NOT_SUPPORTED;
 
 	/* Check if parameters are valid */
 	if (!callback)
@@ -430,7 +430,7 @@ EXPORT_API int maps_place_foreach_attribute(const maps_place_h place,
 
 	/* Check if this API feature available */
 	if (!__is_supported(place, MAPS_PLACE_ATTRIBUTES))
-		return MAPS_ERROR_SERVICE_NOT_AVAILABLE;
+		return MAPS_ERROR_NOT_SUPPORTED;
 
 	/* Check if parameters are valid */
 	if (!callback)
@@ -450,7 +450,7 @@ EXPORT_API int maps_place_foreach_contact(const maps_place_h place,
 
 	/* Check if this API feature available */
 	if (!__is_supported(place, MAPS_PLACE_CONTACTS))
-		return MAPS_ERROR_SERVICE_NOT_AVAILABLE;
+		return MAPS_ERROR_NOT_SUPPORTED;
 
 	/* Check if parameters are valid */
 	if (!callback)
@@ -470,7 +470,7 @@ EXPORT_API int maps_place_foreach_editorial(const maps_place_h place,
 
 	/* Check if this API feature available */
 	if (!__is_supported(place, MAPS_PLACE_EDITORIALS))
-		return MAPS_ERROR_SERVICE_NOT_AVAILABLE;
+		return MAPS_ERROR_NOT_SUPPORTED;
 
 	/* Check if parameters are valid */
 	if (!callback)
@@ -490,7 +490,7 @@ EXPORT_API int maps_place_foreach_image(const maps_place_h place,
 
 	/* Check if this API feature available */
 	if (!__is_supported(place, MAPS_PLACE_IMAGE))
-		return MAPS_ERROR_SERVICE_NOT_AVAILABLE;
+		return MAPS_ERROR_NOT_SUPPORTED;
 
 	/* Check if parameters are valid */
 	if (!callback)
@@ -510,7 +510,7 @@ EXPORT_API int maps_place_foreach_review(const maps_place_h place,
 
 	/* Check if this API feature available */
 	if (!__is_supported(place, MAPS_PLACE_REVIEWS))
-		return MAPS_ERROR_SERVICE_NOT_AVAILABLE;
+		return MAPS_ERROR_NOT_SUPPORTED;
 
 	/* Check if parameters are valid */
 	if (!callback)
@@ -529,7 +529,7 @@ EXPORT_API int maps_place_get_supplier_link(const maps_place_image_h place,
 
 	/* Check if this API feature available */
 	if (!__is_supported(place, MAPS_PLACE_SUPPLIER))
-		return MAPS_ERROR_SERVICE_NOT_AVAILABLE;
+		return MAPS_ERROR_NOT_SUPPORTED;
 
 	/* Check if parameters are valid */
 	if (!supplier)
@@ -548,7 +548,7 @@ EXPORT_API int maps_place_get_related_link(const maps_place_image_h place,
 
 	/* Check if this API feature available */
 	if (!__is_supported(place, MAPS_PLACE_RELATED))
-		return MAPS_ERROR_SERVICE_NOT_AVAILABLE;
+		return MAPS_ERROR_NOT_SUPPORTED;
 
 	/* Check if parameters are valid */
 	if (!related)

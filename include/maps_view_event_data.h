@@ -204,7 +204,6 @@ int maps_view_event_data_get_type(const maps_view_event_data_h event, maps_view_
  * @return	0, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_INVALID_OPERATION Operation is not valid
  *
  * @pre @a event may be obtained in maps_view_on_event_cb()
  *
@@ -227,7 +226,6 @@ int maps_view_event_data_get_gesture_type(const maps_view_event_data_h event, ma
  * @return	0, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_INVALID_OPERATION Operation is not valid
  *
  * @pre @a event may be obtained in maps_view_on_event_cb()
  *
@@ -251,7 +249,6 @@ int maps_view_event_data_get_action_type(const maps_view_event_data_h event, map
  * @return	0, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_INVALID_OPERATION Operation is not valid
  *
  * @pre @a event may be obtained in maps_view_on_event_cb()
  *
@@ -276,7 +273,6 @@ int maps_view_event_data_get_center(const maps_view_event_data_h event, maps_coo
  * @return	0, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_INVALID_OPERATION Operation is not valid
  *
  * @pre @a event may be obtained in maps_view_on_event_cb()
  *
@@ -300,7 +296,6 @@ int maps_view_event_data_get_delta(const maps_view_event_data_h event, int *delt
  * @return	0, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_INVALID_OPERATION Operation is not valid
  *
  * @pre @a event may be obtained in maps_view_on_event_cb()
  *
@@ -324,7 +319,6 @@ int maps_view_event_data_get_position(const maps_view_event_data_h event, int *x
  * @return	0, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_INVALID_OPERATION Operation is not valid
  *
  * @pre @a event may be obtained in maps_view_on_event_cb()
  *
@@ -347,7 +341,6 @@ int maps_view_event_data_get_fingers(const maps_view_event_data_h event, int *fi
  * @return	0, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_INVALID_OPERATION Operation is not valid
  *
  * @pre @a event may be obtained in maps_view_on_event_cb()
  *
@@ -370,7 +363,6 @@ int maps_view_event_data_get_zoom_factor(const maps_view_event_data_h event, dou
  * @return	0, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_INVALID_OPERATION Operation is not valid
  *
  * @pre @a event may be obtained in maps_view_on_event_cb()
  *
@@ -394,7 +386,6 @@ int maps_view_event_data_get_rotation_angle(const maps_view_event_data_h event, 
  * @return	0, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_INVALID_OPERATION Operation is not valid
  *
  * @pre @a event may be obtained in maps_view_on_event_cb()
  *

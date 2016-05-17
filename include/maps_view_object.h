@@ -504,6 +504,7 @@ int maps_view_object_polygon_set_polygon(maps_view_object_h polygon, maps_coordi
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
  * @retval	#MAPS_ERROR_NOT_FOUND Result not found
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a polygon is created using maps_view_object_create_polygon().
  * @post This function invokes maps_view_object_polygon_point_cb() repeatedly to

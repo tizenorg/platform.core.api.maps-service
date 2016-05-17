@@ -510,6 +510,7 @@ int maps_view_get_type(const maps_view_h view, maps_view_type_e *type);
  * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
  * @retval	#MAPS_ERROR_CONNECTION_TIME_OUT Timeout error, no answer
  * @retval	#MAPS_ERROR_NETWORK_UNREACHABLE Network unavailable
+ * @retval  #MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a view is created using maps_view_create().
  *
@@ -554,6 +555,7 @@ int maps_view_get_buildings_enabled(const maps_view_h view, bool *enable);
  * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
  * @retval	#MAPS_ERROR_CONNECTION_TIME_OUT Timeout error, no answer
  * @retval	#MAPS_ERROR_NETWORK_UNREACHABLE Network unavailable
+ * @retval  #MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a view is created using maps_view_create().
  *
@@ -656,6 +658,7 @@ int maps_view_get_language(const maps_view_h view, char **language);
  * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
  * @retval	#MAPS_ERROR_CONNECTION_TIME_OUT Timeout error, no answer
  * @retval	#MAPS_ERROR_NETWORK_UNREACHABLE Network unavailable
+ * @retval  #MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a view is created using maps_view_create().
  *
