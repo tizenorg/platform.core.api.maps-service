@@ -68,6 +68,9 @@ namespace view
 		double calc_next_step(const double &start,
 				     const double &finish,
 				     const double step_ratio) const;
+		double calc_next_step_lon(const double &start,
+				     const double &finish,
+				     const double step_ratio) const;
 		void set_cur_state();
 	};
 };
