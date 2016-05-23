@@ -162,6 +162,45 @@ double view::inertial_camera::calc_next_step(const double &start,
 	return new_pos;
 }
 
+double view::inertial_camera::calc_next_step_lon(const double &start,
+					     const double &finish,
+					     const double step_ratio) const
+{
+	if(start == finish)
+		return start;
+
+	double _f = finish;
+	double _s = start;
+	if (_f < 0) _f += 360;
+	if (_s < 0) _s += 360;
+
+	double gap, gap1, gap2;	
+	if (_f > _s) {
+		gap1 = _f - _s;
+		gap2 = (360 - _f) + _s;
+		if (gap1 < gap2)
+			gap = gap1;
+		else
+			gap = gap2 * -1;
+	} else {
+		gap1 = _s - _f;
+		gap2 = (360 - _s) + _f;
+		if (gap1 < gap2)
+			gap = gap1 * -1;
+		else
+			gap = gap2;
+	}
+
+	double step = gap * step_ratio;
+	double new_pos = start + step;
+	if (new_pos > 180)
+		new_pos -= 360;
+	else if (new_pos < -180)
+		new_pos += 360;
+
+	return new_pos;
+}
+
 bool view::inertial_camera::next_transition_step()
 {
 	if(!_view)
@@ -180,7 +219,7 @@ bool view::inertial_camera::next_transition_step()
 	double next_lat = calc_next_step(prev_lat, target_lat, .15);
 	if (next_lat != prev_lat) transiting = true;
 
-	double next_lon = calc_next_step(prev_lon, target_lon, .15);
+	double next_lon = calc_next_step_lon(prev_lon, target_lon, .15);
 	if (next_lon != prev_lon) transiting = true;
 
 	if (transiting)

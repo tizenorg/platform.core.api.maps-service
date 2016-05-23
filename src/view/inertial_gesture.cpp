@@ -72,12 +72,10 @@ void view::inertial_gesture::tap(int finger_no, const touch_point &tp)
 			if(!transiting_part[i])
 				continue;
 
-			unsigned int timestamp = _last[i]._timestamp
-				+ get_transition_time(i);
+			unsigned int timestamp = _last[i]._timestamp + get_transition_time(i);
 
 			const touch_point tp(_cur_x[i], _cur_y[i], timestamp);
-			MAPS_LOGI("TRANSITION finger %d up FAKE BRAKE time: %d",
-				  i, tp._timestamp);
+			MAPS_LOGI("TRANSITION finger %d up FAKE BRAKE time: %d", i, tp._timestamp);
 			_d->up(i, tp);
 		}
 
@@ -118,8 +116,7 @@ void view::inertial_gesture::up(int finger_no, const touch_point &tp)
 
 	const int delta_x = _last[finger_no]._x - _prev[finger_no]._x;
 	const int delta_y = _last[finger_no]._y - _prev[finger_no]._y;
-	unsigned int dt =
-		_last[finger_no]._timestamp - _prev[finger_no]._timestamp;
+	unsigned int dt = _last[finger_no]._timestamp - _prev[finger_no]._timestamp;
 
 	int trajectory = get_trajectory_effective_length(_down[finger_no], tp);
 	MAPS_LOGD("trajectory=%d", trajectory);
@@ -153,37 +150,25 @@ bool view::inertial_gesture::next_transition_step()
 		transiting_part[i] = false;
 
 		if(ABS(_derivative_x[i]) > __ACCURACY) {
-			_cur_x[i] = get_next_point(_cur_x[i],
-						   _derivative_x[i],
-						   _dt[i]);
-			_derivative_x[i] = get_next_derivative(_derivative_x[i],
-							       _dt[i]);
-			transiting_part[i] |=
-				ABS(_derivative_x[i]) > __ACCURACY;
+			_cur_x[i] = get_next_point(_cur_x[i], _derivative_x[i], _dt[i]);
+			_derivative_x[i] = get_next_derivative(_derivative_x[i], _dt[i]);
+			transiting_part[i] |= ABS(_derivative_x[i]) > __ACCURACY;
 		}
 
 		if(ABS(_derivative_y[i]) > __ACCURACY) {
-			_cur_y[i] = get_next_point(_cur_y[i],
-						   _derivative_y[i],
-						   _dt[i]);
-			_derivative_y[i] =
-				get_next_derivative(_derivative_y[i],
-						    _dt[i]);
-			transiting_part[i] |=
-				ABS(_derivative_y[i]) > __ACCURACY;
+			_cur_y[i] = get_next_point(_cur_y[i], _derivative_y[i], _dt[i]);
+			_derivative_y[i] = get_next_derivative(_derivative_y[i], _dt[i]);
+			transiting_part[i] |= ABS(_derivative_y[i]) > __ACCURACY;
 		}
 
-		unsigned int timestamp = _last[i]._timestamp
-			+ get_transition_time(i);
+		unsigned int timestamp = _last[i]._timestamp + get_transition_time(i);
 
 		const touch_point tp(_cur_x[i], _cur_y[i], timestamp);
 		if(transiting_part[i]) {
-			MAPS_LOGI("TRANSITION finger %d move FAKE time: %d",
-				  i, tp._timestamp);
+			MAPS_LOGI("TRANSITION finger %d move FAKE time: %d", i, tp._timestamp);
 			_d->move(i, tp);
 		} else {
-			MAPS_LOGI("TRANSITION finger %d up FAKE time: %d",
-				  i, tp._timestamp);
+			MAPS_LOGI("TRANSITION finger %d up FAKE time: %d", i, tp._timestamp);
 			_d->up(i, tp);
 		}
 
