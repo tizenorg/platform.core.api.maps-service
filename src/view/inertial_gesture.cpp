@@ -37,12 +37,12 @@ view::inertial_gesture::inertial_gesture(maps_view_h view)
 
 	_d = new gesture_detector_statemachine(view);
 
-	_maps_view_set_idle_listener(view, on_idle, this);
+	//_maps_view_set_idle_listener(view, on_idle, this);
 }
 
 view::inertial_gesture::~inertial_gesture()
 {
-	_maps_view_set_idle_listener(_view, NULL, NULL);
+	//_maps_view_set_idle_listener(_view, NULL, NULL);
 
 	if(_d)
 		delete _d;
@@ -140,7 +140,7 @@ void view::inertial_gesture::up(int finger_no, const touch_point &tp)
 	transiting = true;
 }
 
-void view::inertial_gesture::next_transition_step()
+bool view::inertial_gesture::next_transition_step()
 {
 	MAPS_LOGI("TRANSITION get next transition step");
 	transiting = false;
@@ -193,6 +193,8 @@ void view::inertial_gesture::next_transition_step()
 
 	if(!transiting)
 		reset();
+
+	return transiting;
 }
 
 double view::inertial_gesture::get_next_point(const double &start,
@@ -234,6 +236,7 @@ unsigned int view::inertial_gesture::get_transition_time(int finger_no) const
 	return get_cur_time() - transiting_start[finger_no];
 }
 
+/*
 void view::inertial_gesture::on_idle(void *data)
 {
 	inertial_gesture *ig = (inertial_gesture *)data;
@@ -243,6 +246,7 @@ void view::inertial_gesture::on_idle(void *data)
 		g_usleep(5*1000);
 	}
 }
+*/
 
 void view::inertial_gesture::reset()
 {

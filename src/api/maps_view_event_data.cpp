@@ -167,6 +167,8 @@ int _maps_view_event_data_set_center(maps_view_event_data_h event, maps_coordina
 	if (!event || !center)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_view_event_data_s *e = (maps_view_event_data_s *) event;
+	if (e->center)
+		maps_coordinates_destroy(e->center);
 	return maps_coordinates_clone(center, &e->center);
 }
 
@@ -287,8 +289,10 @@ EXPORT_API int maps_view_event_data_get_center(const maps_view_event_data_h even
 	if (!event || !center)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_view_event_data_s *e = (maps_view_event_data_s *) event;
-	if((e->event_type != MAPS_VIEW_EVENT_ACTION) && (e->event_type != MAPS_VIEW_EVENT_GESTURE))
+	if (e->event_type != MAPS_VIEW_EVENT_ACTION)
 		return MAPS_ERROR_INVALID_PARAMETER;
+	if (!e->center)
+		return MAPS_ERROR_NOT_FOUND;
 	return maps_coordinates_clone(e->center, center);
 }
 
@@ -309,7 +313,7 @@ EXPORT_API int maps_view_event_data_get_position(const maps_view_event_data_h ev
 	if (!event || !x || !y)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_view_event_data_s *e = (maps_view_event_data_s *) event;
-	if(e->event_type != MAPS_VIEW_EVENT_GESTURE)
+	if(e->event_type != MAPS_VIEW_EVENT_GESTURE && e->event_type != MAPS_VIEW_EVENT_OBJECT)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	*x = e->x;
 	*y = e->y;

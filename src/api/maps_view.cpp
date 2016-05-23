@@ -34,10 +34,6 @@
 #include "inertial_gesture.h"
 #include "gesture_detector_statemachine.h"
 
-
-/* TODO: remove useless or duplicative includes */
-
-
 /*
  * The structure of callbacks info, Maps View is invoking during events
  */
@@ -53,8 +49,6 @@ typedef struct _maps_view_idle_listener_info_s {
 	void (*callback)(void *user_data);
 	void *user_data;
 } maps_view_idle_listener_info_s;
-
-
 
 /*
  * The structure of Maps View internal data
@@ -72,6 +66,7 @@ typedef struct _maps_view_s {
 
 	/* Camera inertial transition data */
 	view::inertial_camera *inertial_camera;
+	view::inertial_gesture *inertial_gesture;
 	maps_view_idle_listener_info_s idle_listener;
 
 	/* We'd better to store that values in order to easily limit zoom level
@@ -388,20 +383,33 @@ static Eina_Bool __maps_view_on_idle_cb(void *data)
 	if(!v)
 		return ECORE_CALLBACK_RENEW; // same as EINA_TRUE
 
+	bool is_transiting = false;
+	bool is_continue = false;
+
+	view::inertial_gesture *ig = v->inertial_gesture;
+	if(ig && ig->is_transiting()) {
+		is_transiting |= true;
+		is_continue |= ig->next_transition_step();
+		g_usleep(5*1000);
+	}
+
 	view::inertial_camera *ic = v->inertial_camera;
-	if(!ic)
-		return ECORE_CALLBACK_RENEW; // same as EINA_TRUE
-
-	if(v->idle_listener.callback)
-		v->idle_listener.callback(v->idle_listener.user_data);
-
-	if(ic->is_transiting()) {
-		ic->next_transition_step();
+	if(ic && ic->is_transiting()) {
+		is_transiting |= true;
+		is_continue |= ic->next_transition_step();
 		__maps_plugin_render_map(v,
 					 ic->get_cur_center(),
 					 ic->get_cur_zoom_factor(),
 					 ic->get_cur_rotation_angle());
 		g_usleep(10*1000);
+	}
+
+	if (is_transiting && !is_continue) {
+		maps_view_event_data_h ed = _maps_view_create_event_data(MAPS_VIEW_EVENT_READY);
+		if(ed) {
+			_maps_view_invoke_event_callback(v, ed);
+			maps_view_event_data_destroy(ed);
+		}
 	}
 
 	return ECORE_CALLBACK_RENEW; // same as EINA_TRUE
@@ -1030,36 +1038,47 @@ int _maps_view_set_inertia_enabled(maps_view_h view, bool enabled)
 	maps_view_s *v = (maps_view_s *) view;
 
 	if(enabled) {
-		if(v->inertial_camera)
-			return MAPS_ERROR_NONE;
-
-		/* Set Inertial Gesture */
-		v->finger_stream->set_gesture_detector(
-					new view::inertial_gesture(view));
-
-		/* Set inertial Camera */
-		v->inertial_camera = new view::inertial_camera(view);
-		if (!v->inertial_camera) {
-			MAPS_LOGE("OUT_OF_MEMORY(0x%08x)",
-				  MAPS_ERROR_OUT_OF_MEMORY);
-			return MAPS_ERROR_OUT_OF_MEMORY;
+		if(!v->inertial_gesture) {	
+			v->inertial_gesture = new view::inertial_gesture(view);
+			if (!v->inertial_gesture) {
+				MAPS_LOGE("OUT_OF_MEMORY(0x%08x)", MAPS_ERROR_OUT_OF_MEMORY);
+				return MAPS_ERROR_OUT_OF_MEMORY;
+			}
 		}
+
+		if(!v->inertial_camera) {	
+			v->inertial_camera = new view::inertial_camera(view);
+			if (!v->inertial_camera) {
+				MAPS_LOGE("OUT_OF_MEMORY(0x%08x)", MAPS_ERROR_OUT_OF_MEMORY);
+				return MAPS_ERROR_OUT_OF_MEMORY;
+			}
+		}
+
+		v->finger_stream->set_gesture_detector(v->inertial_gesture);
 	} else {
-		if(!v->inertial_camera)
-			return MAPS_ERROR_NONE;
+		v->finger_stream->set_gesture_detector(new view::gesture_detector_statemachine(view));
 
-		/* Set Non-Inertial Gesture */
-		v->finger_stream->set_gesture_detector(
-			new view::gesture_detector_statemachine(view));
-
-		/* Unset Inertial Camera */
-		if(v->inertial_camera->is_transiting()) {
-			v->inertial_camera->set_transiting(false);
-			sleep(0);
+		if(v->inertial_gesture) {
+			/* Unset Inertial Camera */
+			if(v->inertial_gesture->is_transiting()) {
+				v->inertial_gesture->set_transiting(false);
+				sleep(0);
+			}
+			view::inertial_gesture *inertial_gesture = v->inertial_gesture;
+			v->inertial_gesture = NULL;
+			delete inertial_gesture;
 		}
-		view::inertial_camera *inertial_camera = v->inertial_camera;
-		v->inertial_camera = NULL;
-		delete inertial_camera;
+
+		if(v->inertial_camera) {
+			/* Unset Inertial Camera */
+			if(v->inertial_camera->is_transiting()) {
+				v->inertial_camera->set_transiting(false);
+				sleep(0);
+			}
+			view::inertial_camera *inertial_camera = v->inertial_camera;
+			v->inertial_camera = NULL;
+			delete inertial_camera;
+		}
 	}
 	return MAPS_ERROR_NONE;
 }

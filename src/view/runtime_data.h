@@ -53,6 +53,8 @@ namespace view
 		maps_coordinates_h _center;
 		double _zoom_factor;
 		double _rotation_angle;
+		double _prev_zoom_factor;
+		double _prev_rotation_angle;
 	public:
 		map_state();
 		map_state(const map_state &src);

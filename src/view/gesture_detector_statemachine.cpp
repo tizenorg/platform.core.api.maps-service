@@ -22,6 +22,8 @@
 view::gesture_detector_statemachine::gesture_detector_statemachine(maps_view_h v)
 	: gesture_detector(v)
 	, _current_state(STATE_NONE)
+	, is_rotating(false)
+	, is_zoomming(false)
 {
 	for(int i = 0; i < MAX_FINGERS; i ++)
 		is_panning[i] = false;
@@ -465,6 +467,11 @@ void view::gesture_detector_statemachine::state_machine_on_event(view_event_e ev
 	}
 
 	case STATE_2FINGERS_PRESSED: {
+		if(event != FINGER_MOVE && event != FINGER2_MOVE) {
+			finish_zoomming();
+			finish_rotating();
+		}
+
 		switch(event) {
 		case FINGER_UP:
 			_current_state = STATE_FINGER2_PRESSED;
@@ -554,10 +561,11 @@ void view::gesture_detector_statemachine::state_machine_on_event(view_event_e ev
 	}
 
 	case STATE_2FINGERS_MOVING: {
-
-		if((event != FINGER_MOVE) && (event != FINGER2_MOVE))
-			/* Finish zooming */
+		if(event != FINGER_MOVE && event != FINGER2_MOVE) {
+			finish_zoomming();
+			finish_rotating();
 			_info._start_view_state.capture(_view);
+		}
 
 		switch(event) {
 		case FINGER_MOVE:
@@ -683,7 +691,23 @@ void view::gesture_detector_statemachine::detected_zoom_rotate()
 		return;
 
 	log("GESTURE ZOOM ROTATE DETECTED", FG_GREEN);
+#if 1
+	bool zoom_changed = false;
+	bool rotation_changed = false;
+	double zoom_factor = .0;
+	double rotation_angle = .0;
+
+	zoom_changed = _gp.on_zoom(is_zoomming, zoom_factor);
+	if (zoom_changed)
+		start_zoomming();
+	rotation_changed = _gp.on_rotate(is_rotating, rotation_angle);
+	if (rotation_changed)
+		start_rotating();
+
+	_gp.on_zoom_rotate(zoom_changed, zoom_factor, rotation_changed, rotation_angle);
+#else
 	_gp.on_zoom_rotate();
+#endif
 }
 
 void view::gesture_detector_statemachine::detected_2finger_tap()	/* 2Finger Tap */

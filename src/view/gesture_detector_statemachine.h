@@ -89,6 +89,8 @@ namespace view
 		detector_states_e _current_state;
 
 		bool is_panning[MAX_FINGERS];
+		bool is_rotating;
+		bool is_zoomming;
 
 	public:
 		gesture_detector_statemachine(maps_view_h v);
@@ -115,6 +117,10 @@ namespace view
 	private:
 		void start_panning(int finger_no);
 		void finish_panning(int finger_no);
+		void start_rotating() { is_rotating = true; }
+		void finish_rotating() { is_rotating = false; }
+		void start_zoomming() { is_zoomming = true; }
+		void finish_zoomming() { is_zoomming = false; }
 
 	private:
 		void log_state(view_event_e event, detector_states_e state);

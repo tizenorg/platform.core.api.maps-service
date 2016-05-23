@@ -55,7 +55,7 @@ namespace view
 		void set_zoom_target(const double &zoom_factor);
 		void set_rotation_target(const double &rotation_angle);
 
-		void next_transition_step();
+		bool next_transition_step();
 
 		bool is_transiting() const { return transiting; }
 		void set_transiting(bool b) { transiting = b; }

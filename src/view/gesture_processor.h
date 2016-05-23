@@ -101,7 +101,9 @@ namespace view
 		void on_two_finger_tap();
 		void on_pan(int finger_no);
 		void on_panning_finished(int finger_no);
-		void on_zoom_rotate();
+		bool on_zoom(bool zoom_changed, double &zoom_factor);
+		bool on_rotate(bool rotation_changed, double &rotation_angle);
+		void on_zoom_rotate(bool zoom_changed, double zoom_factor, bool rotation_changed, double rotation_angle);
 	private:
 		session::command_queue *q();
 		void *get_maps();
@@ -115,6 +117,8 @@ namespace view
 	protected:
 		touch_point calc_center(const touch_point &tp1,
 						const touch_point &tp2) const;
+		double calc_angle(const double angle1,
+						const double angle2) const;
 	};
 
 

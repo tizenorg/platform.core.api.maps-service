@@ -41,7 +41,6 @@ extern int _maps_view_event_data_set_rotation_angle(maps_view_event_data_h event
 extern maps_view_event_data_h _maps_view_create_event_data(maps_view_event_type_e type);
 extern void _maps_view_invoke_event_callback(maps_view_h view, maps_view_event_data_h event_data);
 
-
 #ifdef _MOVE_CENTER_COMMAND_DEFINED_
 extern int _maps_view_set_center_directly(maps_view_h view, maps_coordinates_h coordinates);
 extern int _maps_view_get_plugin_center(const maps_view_h view, maps_coordinates_h *center);
@@ -257,12 +256,10 @@ void view::gesture_processor::on_long_press()
 	if(ed) {
 		_maps_view_event_data_set_gesture_type(ed, MAPS_VIEW_GESTURE_LONG_PRESS);
 		_maps_view_event_data_set_position(ed, tp._x, tp._y);
-		_maps_view_event_data_set_center(ed, c);
 		_maps_view_event_data_set_fingers(ed, 1);
 		_maps_view_invoke_event_callback(_gd->_view, ed);
 		maps_view_event_data_destroy(ed);
 	}
-
 	maps_coordinates_destroy(c);
 }
 
@@ -418,16 +415,32 @@ view::touch_point view::gesture_processor::calc_center(
 			   timestamp);
 }
 
-void view::gesture_processor::on_zoom_rotate()
+double view::gesture_processor::calc_angle(
+						const double angle1,
+						const double angle2) const
 {
-	gesture_detector::log("view::gesture_processor::on_zoom_rotate",
+	const double _angle1 = (angle1 >= 0 ? angle1 : angle1 + 360);
+	const double _angle2 = (angle2 >= 0 ? angle2 : angle2 + 360);
+
+	const double angle = (_angle1 > _angle2)
+		? MIN(_angle1 - _angle2, (360 - angle1) + _angle2)
+		: MIN(_angle2 - _angle1, (360 - angle2) + _angle1);
+	return angle;
+}
+
+bool view::gesture_processor::on_zoom(bool zoom_changed, double &zoom_factor)
+{
+	/* Check if the gesture is available */
+	if (!_maps_view_is_gesture_available(_gd->_view, MAPS_VIEW_GESTURE_ZOOM))
+		return false;
+
+	gesture_detector::log("view::gesture_processor::on_zoom",
 			      gesture_detector::FG_LITE_GREEN);
 	/* Assumed that we can zoom&rotate using only a pair of fingers */
 
 	/* First finger effective way by now */
 	const touch_point start_tp_f1 = _gd->_info._finger_down[0];
 	const touch_point cur_tp_f1 = _gd->_info._finger_move[0];
-
 
 	/* Second finger effective way by now */
 	const touch_point start_tp_f2 = _gd->_info._finger_down[1];
@@ -444,17 +457,16 @@ void view::gesture_processor::on_zoom_rotate()
 		  0x1B, 0, 0, 0);
 	/***********************/
 
+	/* Calcurating center position */
+	const touch_point start_center = calc_center(start_tp_f1, start_tp_f2);
+	const touch_point cur_center = calc_center(cur_tp_f1, cur_tp_f2);
 
-	/* Calculating the current zoom factor, accordingly to effecitve ways
-	 *  of fingers */
+	/* Calculating the current zoom factor, accordingly to effecitve ways of fingers */
 	zoom_calculator zc(start_tp_f1, cur_tp_f1, start_tp_f2, cur_tp_f2);
 	double new_zoom_factor = zc.get_zoom_factor();
-	double new_rotation_angle = zc.get_rotation_angle();
-
 
 	/* Analyse zoom factor changes */
-	bool zoom_changed = false;
-	if(zc.zoom_happend() && _maps_view_is_gesture_available(_gd->_view, MAPS_VIEW_GESTURE_ZOOM)) {
+	if(zc.zoom_happend()) {
 		/* Apply newly calculated zoom factor */
 		new_zoom_factor += _gd->_info._start_view_state._zoom_factor;
 
@@ -470,87 +482,197 @@ void view::gesture_processor::on_zoom_rotate()
 			new_zoom_factor = max_zoom_level;
 
 		/* Check if the zoom changed relatively to initial state */
-		zoom_changed = (_gd->_info._start_view_state._zoom_factor != new_zoom_factor);
+		double diff = _gd->_info._start_view_state._prev_zoom_factor - new_zoom_factor;
+		if ((!zoom_changed && (diff > 0.10 || diff < -0.10)) ||
+			( zoom_changed && (diff > 0.02 || diff < -0.02))) {
+			_gd->_info._start_view_state._prev_zoom_factor = new_zoom_factor;
+			zoom_changed = true;
+			MAPS_LOGD("[zoom_changed] %f, %f -> %f",
+				diff, _gd->_info._start_view_state._prev_zoom_factor, new_zoom_factor);
+		}
+		else
+			zoom_changed = false;
 	}
 
+	if(!zoom_changed)
+		return false;
+
+	zoom_factor = new_zoom_factor;
+	return true;
+}
+
+bool view::gesture_processor::on_rotate(bool rotation_changed, double &rotation_angle)
+{
+	/* Check if the gesture is available */
+	if (!_maps_view_is_gesture_available(_gd->_view, MAPS_VIEW_GESTURE_ROTATE))
+		return false;
+
+	gesture_detector::log("view::gesture_processor::on_zoom",
+			      gesture_detector::FG_LITE_GREEN);
+	/* Assumed that we can zoom&rotate using only a pair of fingers */
+
+	/* First finger effective way by now */
+	const touch_point start_tp_f1 = _gd->_info._finger_down[0];
+	const touch_point cur_tp_f1 = _gd->_info._finger_move[0];
+
+	/* Second finger effective way by now */
+	const touch_point start_tp_f2 = _gd->_info._finger_down[1];
+	const touch_point cur_tp_f2 = _gd->_info._finger_move[1];
+
+	/***********************/
+	MAPS_LOGI("%c[%d;%d;%dm"
+		  "Finger1: start(%d, %d), cur(%d, %d)\t"
+		  "Finger2: start(%d, %d), cur(%d, %d)\t"
+		  "%c[%d;%d;%dm",
+		  0x1B, 1, 0, gesture_detector::FG_YELLOW,
+		  start_tp_f1._x, start_tp_f1._y, cur_tp_f1._x, cur_tp_f1._y,
+		  start_tp_f2._x, start_tp_f2._y, cur_tp_f2._x, cur_tp_f2._y,
+		  0x1B, 0, 0, 0);
+	/***********************/
+
+	/* Calcurating center position */
+	const touch_point start_center = calc_center(start_tp_f1, start_tp_f2);
+	const touch_point cur_center = calc_center(cur_tp_f1, cur_tp_f2);
+
+	/* Calculating the current zoom factor, accordingly to effecitve ways of fingers */
+	zoom_calculator zc(start_tp_f1, cur_tp_f1, start_tp_f2, cur_tp_f2);
+	double new_rotation_angle = zc.get_rotation_angle();
+
 	/* Analyze rotation angle changes */
-	bool rotation_changed = false;
-	if(zc.rotation_happend() && _maps_view_is_gesture_available(_gd->_view, MAPS_VIEW_GESTURE_ROTATE)) {
+	if(zc.rotation_happend()) {
 		/* Apply newly calculated rotation angle */
-		new_rotation_angle =
-			_gd->_info._start_view_state._rotation_angle + new_rotation_angle;
+		new_rotation_angle += _gd->_info._start_view_state._rotation_angle;
 
 		/* Correct the rotation angle to normalize it
 		 *  inside the diapazone of 0..360 degree */
 		new_rotation_angle -= 360. * (int(new_rotation_angle) / 360);
 		new_rotation_angle += 360. * (int(new_rotation_angle) / 360);
 
-		/* Check if the angle changed relatively to initial state */
-		rotation_changed = (_gd->_info._start_view_state._rotation_angle != new_rotation_angle);
+		/* Check if the zoom changed relatively to initial state */
+		double diff = calc_angle(_gd->_info._start_view_state._prev_rotation_angle, new_rotation_angle);
+		if ((!rotation_changed && (diff > 4.0 || diff < -4.0)) ||
+			( rotation_changed && (diff > 0.5 || diff < -0.5))) {
+			_gd->_info._start_view_state._prev_rotation_angle = new_rotation_angle;
+			rotation_changed = true;
+			MAPS_LOGD("[rotation_changed] %f, %f -> %f",
+				diff, _gd->_info._start_view_state._prev_rotation_angle, new_rotation_angle);
+		}
+		else
+			rotation_changed = false;
 	}
 
-	/* Invoke user registered event callback for ZOOM */
-	do {
-		if(!zoom_changed)
-			break;
-		maps_view_event_data_h ed = _maps_view_create_event_data(MAPS_VIEW_EVENT_GESTURE);
-		if(!ed)
-			break;
-		_maps_view_event_data_set_gesture_type(ed, MAPS_VIEW_GESTURE_ZOOM);
-		_maps_view_event_data_set_zoom_factor(ed, new_zoom_factor);
-		_maps_view_event_data_set_fingers(ed, 2);
+	if(!rotation_changed)
+		return false; // Seems nothing changed, we can return
 
-		/* Find the current center of the gesture */
-		const touch_point cur_center = calc_center(cur_tp_f1, cur_tp_f2);
-		_maps_view_event_data_set_position(ed, cur_center._x, cur_center._y);
-		_maps_view_invoke_event_callback(_gd->_view, ed);
-		maps_view_event_data_destroy(ed);
-	} while(false);
+	rotation_angle = new_rotation_angle;
+	return true;
+}
 
-	/* Invoke user registered event callback for ROTATION */
-	do {
-		if(rotation_changed)
-			break;
-		maps_view_event_data_h ed = _maps_view_create_event_data(MAPS_VIEW_EVENT_GESTURE);
-		if(!ed)
-			break;
-		_maps_view_event_data_set_gesture_type(ed, MAPS_VIEW_GESTURE_ROTATE);
-		_maps_view_event_data_set_rotation_angle(ed, new_rotation_angle);
-		_maps_view_event_data_set_fingers(ed, 2);
+void view::gesture_processor::on_zoom_rotate(bool zoom_changed, double zoom_factor, bool rotation_changed, double rotation_angle)
+{
+#if 1
+	const touch_point start_tp_f1 = _gd->_info._finger_down[0];
+	const touch_point cur_tp_f1 = _gd->_info._finger_move[0];
 
-		/* Find the current center of the gesture */
-		const touch_point cur_center = calc_center(cur_tp_f1, cur_tp_f2);
-		_maps_view_event_data_set_position(ed, cur_center._x, cur_center._y);
-		_maps_view_invoke_event_callback(_gd->_view, ed);
-		maps_view_event_data_destroy(ed);
-	} while(false);
+	/* Second finger effective way by now */
+	const touch_point start_tp_f2 = _gd->_info._finger_down[1];
+	const touch_point cur_tp_f2 = _gd->_info._finger_move[1];
 
-
-	if(!zoom_changed && !rotation_changed)
-		return; // Seems nothing changed, we can return
-
-	/* Ignore center move if zoom is not available */
-	const bool movable_center =
-		_maps_view_is_gesture_available(_gd->_view, MAPS_VIEW_GESTURE_ZOOM);
-	if(!movable_center) {
-		q()->push(construct_gesture_command(MAPS_VIEW_GESTURE_ZOOM,
-			NULL, zoom_changed, new_zoom_factor, rotation_changed, new_rotation_angle));
-		return;
-	}
-
-
-	/* Shift center accordingly to performed zoom and/or rotation:
-	 *  - get the original gesture center coordinates
-	 *  - get the current gesture center coordinates
-	 *  - calculate the coordinates delta
-	 *  - move map center to the opposite value of this delta
-	 *  Now we have a map, perfectly responding to the
-	 *  double finger zoom and/or rotate action */
-
-
-	/* a. Find delta in screen coordinates */
+	/* Calcurating center position */
 	const touch_point start_center = calc_center(start_tp_f1, start_tp_f2);
 	const touch_point cur_center = calc_center(cur_tp_f1, cur_tp_f2);
+
+	/* a. Find delta in screen coordinates */
+	const int delta_x = cur_center._x - start_center._x;
+	const int delta_y = cur_center._y - start_center._y;
+
+	/* b. Get the initial screen coordinates of the center */
+	int center_x = 0;
+	int center_y = 0;
+	double lat, lon;
+	maps_coordinates_get_latitude_longitude(_gd->_info._start_view_state._center, &lat, &lon);
+	maps_view_geolocation_to_screen(_gd->_view, _gd->_info._start_view_state._center, &center_x, &center_y);
+
+	/* c. Apply the delta to the intital center coordinates */
+	center_x -= delta_x;
+	center_y -= delta_y;
+
+	/* d. Send event data */
+	maps_coordinates_h center = NULL;
+	maps_view_screen_to_geolocation(_gd->_view, center_x, center_y, &center);
+
+#if 1
+	if (zoom_changed || rotation_changed) {
+		maps_view_event_data_h ed = _maps_view_create_event_data(MAPS_VIEW_EVENT_GESTURE);
+		if (ed) {
+			_maps_view_event_data_set_position(ed, cur_center._x, cur_center._y);
+			_maps_view_event_data_set_fingers(ed, 2);
+
+			if (zoom_changed) {
+				_maps_view_event_data_set_gesture_type(ed, MAPS_VIEW_GESTURE_ZOOM);
+				_maps_view_event_data_set_zoom_factor(ed, zoom_factor);
+				_maps_view_event_data_set_rotation_angle(ed, 0.);
+				_maps_view_invoke_event_callback(_gd->_view, ed);
+			}
+			if (rotation_changed) {
+				_maps_view_event_data_set_gesture_type(ed, MAPS_VIEW_GESTURE_ROTATE);
+				_maps_view_event_data_set_zoom_factor(ed, 0.);
+				_maps_view_event_data_set_rotation_angle(ed, rotation_angle);
+				_maps_view_invoke_event_callback(_gd->_view, ed);
+			}
+			maps_view_event_data_destroy(ed);				
+		}
+	}
+#else
+	if (zoom_changed) {
+		maps_view_event_data_h ed = _maps_view_create_event_data(MAPS_VIEW_EVENT_GESTURE);
+		if (ed) {
+			_maps_view_event_data_set_gesture_type(ed, MAPS_VIEW_GESTURE_ZOOM);
+			_maps_view_event_data_set_position(ed, cur_center._x, cur_center._y);
+			_maps_view_event_data_set_fingers(ed, 2);
+			_maps_view_event_data_set_zoom_factor(ed, zoom_factor);
+			_maps_view_event_data_set_rotation_angle(ed, rotation_angle);
+			_maps_view_invoke_event_callback(_gd->_view, ed);
+			maps_view_event_data_destroy(ed);
+		}
+	}
+
+	if (rotation_changed) {
+		maps_view_event_data_h ed = _maps_view_create_event_data(MAPS_VIEW_EVENT_GESTURE);
+		if (ed) {
+			_maps_view_event_data_set_gesture_type(ed, MAPS_VIEW_GESTURE_ROTATE);
+			_maps_view_event_data_set_position(ed, cur_center._x, cur_center._y);
+			_maps_view_event_data_set_fingers(ed, 2);
+			_maps_view_event_data_set_zoom_factor(ed, zoom_factor);
+			_maps_view_event_data_set_rotation_angle(ed, rotation_angle);
+			_maps_view_invoke_event_callback(_gd->_view, ed);
+			maps_view_event_data_destroy(ed);
+		}
+	}
+#endif
+
+	/* e. Enque the command to move the center */
+	q()->push(new session::command_view_set_center(get_maps(), _gd->_view, center));
+
+	/* f. Enqueue the detected zomm command */
+	maps_view_gesture_e gesture = (zoom_changed ? MAPS_VIEW_GESTURE_ZOOM : MAPS_VIEW_GESTURE_ROTATE);
+	q()->push(construct_gesture_command(gesture, center,
+		zoom_changed, zoom_factor, rotation_changed, rotation_angle));
+
+	maps_coordinates_destroy(center);
+#else
+	const touch_point start_tp_f1 = _gd->_info._finger_down[0];
+	const touch_point cur_tp_f1 = _gd->_info._finger_move[0];
+
+	/* Second finger effective way by now */
+	const touch_point start_tp_f2 = _gd->_info._finger_down[1];
+	const touch_point cur_tp_f2 = _gd->_info._finger_move[1];
+
+	/* Calcurating center position */
+	const touch_point start_center = calc_center(start_tp_f1, start_tp_f2);
+	const touch_point cur_center = calc_center(cur_tp_f1, cur_tp_f2);
+
+	/* a. Find delta in screen coordinates */
 	const int delta_x = cur_center._x - start_center._x;
 	const int delta_y = cur_center._y - start_center._y;
 
@@ -574,10 +696,12 @@ void view::gesture_processor::on_zoom_rotate()
 	q()->push(new session::command_view_set_center(get_maps(), _gd->_view, new_center));
 
 	/* f. Enqueue the detected zomm command */
-	q()->push(construct_gesture_command(MAPS_VIEW_GESTURE_ZOOM,
-		new_center, zoom_changed, new_zoom_factor, rotation_changed, new_rotation_angle));
+	maps_view_gesture_e gesture = (zoom_changed ? MAPS_VIEW_GESTURE_ZOOM : MAPS_VIEW_GESTURE_ROTATE);
+	q()->push(construct_gesture_command(gesture, new_center,
+		zoom_changed, zoom_factor, rotation_changed, rotation_angle));
 
 	maps_coordinates_destroy(new_center);
+#endif
 }
 
 

@@ -84,6 +84,8 @@ view::map_state::map_state()
 	: _center(NULL)
 	, _zoom_factor(.1)
 	, _rotation_angle(.0)
+	, _prev_zoom_factor(.1)
+	, _prev_rotation_angle(.0)
 {
 	reset();
 }
@@ -99,6 +101,8 @@ view::map_state::map_state(const map_state &src)
 	: _center(NULL)
 	, _zoom_factor(.1)
 	, _rotation_angle(.0)
+	, _prev_zoom_factor(.1)
+	, _prev_rotation_angle(.0)
 {
 	*this = src;
 }
@@ -110,6 +114,8 @@ view::map_state &view::map_state::operator=(const map_state &src)
 		maps_coordinates_clone(src._center, &_center);
 		_zoom_factor = src._zoom_factor;
 		_rotation_angle = src._rotation_angle;
+		_prev_zoom_factor = src._prev_zoom_factor;
+		_prev_rotation_angle = src._prev_rotation_angle;
 	}
 	return *this;
 }
@@ -122,6 +128,8 @@ void view::map_state::reset()
 
 	_zoom_factor = .1;
 	_rotation_angle = .0;
+	_prev_zoom_factor = .1;
+	_prev_rotation_angle = .0;
 
 	MAPS_LOGI("%c[%d;%d;%dm"
 		  "central coordinates: RESET"
@@ -140,7 +148,8 @@ void view::map_state::capture(maps_view_h view)
 	maps_view_get_center(view, &_center);
 	maps_view_get_zoom_factor(view, &_zoom_factor);
 	maps_view_get_orientation(view, &_rotation_angle);
-
+	_prev_zoom_factor = _zoom_factor;
+	_prev_rotation_angle = _rotation_angle;
 
 	/* DEBUG */
 	maps_coordinates_h central_coords = NULL;

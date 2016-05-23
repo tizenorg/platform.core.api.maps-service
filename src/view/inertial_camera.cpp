@@ -162,10 +162,10 @@ double view::inertial_camera::calc_next_step(const double &start,
 	return new_pos;
 }
 
-void view::inertial_camera::next_transition_step()
+bool view::inertial_camera::next_transition_step()
 {
 	if(!_view)
-		return;
+		return false;
 
 	transiting = false;
 
@@ -216,4 +216,6 @@ void view::inertial_camera::next_transition_step()
 		transiting = true;
 	else
 		cur_rotation_angle = target_rotation_angle;
+
+	return transiting;
 }

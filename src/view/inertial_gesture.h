@@ -47,10 +47,13 @@ namespace view
 		virtual void tap(int finger_no, const touch_point &tp);
 		virtual void move(int finger_no, const touch_point &tp);
 		virtual void up(int finger_no, const touch_point &tp);
+
+		bool is_transiting() const { return transiting; }
+		void set_transiting(bool b) { transiting = b; }
+		bool next_transition_step();
 	public:
-		static void on_idle(void *data);
+		//static void on_idle(void *data);
 	protected:
-		void next_transition_step();
 		double get_next_point(const double &start,
 				      const double &derivative,
 				      const double &dt);
