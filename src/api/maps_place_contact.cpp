@@ -105,8 +105,7 @@ EXPORT_API int maps_place_contact_clone(const maps_place_contact_h origin,
 
 /*----------------------------------------------------------------------------*/
 
-EXPORT_API int maps_place_contact_get_label(const maps_place_contact_h place,
-					    char **label)
+EXPORT_API int maps_place_contact_get_label(const maps_place_contact_h place, char **label)
 {
 	if (!place || !label)
 		return MAPS_ERROR_INVALID_PARAMETER;
@@ -114,8 +113,7 @@ EXPORT_API int maps_place_contact_get_label(const maps_place_contact_h place,
 		_MAPS_PLACE_CONTACT_LABEL_MAX_LENGTH, label);
 }
 
-EXPORT_API int maps_place_contact_get_type(const maps_place_contact_h place,
-					   char **type)
+EXPORT_API int maps_place_contact_get_type(const maps_place_contact_h place, char **type)
 {
 	if (!place || !type)
 		return MAPS_ERROR_INVALID_PARAMETER;
@@ -123,8 +121,7 @@ EXPORT_API int maps_place_contact_get_type(const maps_place_contact_h place,
 		_MAPS_PLACE_CONTACT_TYPE_MAX_LENGTH, type);
 }
 
-EXPORT_API int maps_place_contact_get_value(const maps_place_contact_h place,
-					    char **value)
+EXPORT_API int maps_place_contact_get_value(const maps_place_contact_h place, char **value)
 {
 	if (!place || !value)
 		return MAPS_ERROR_INVALID_PARAMETER;
@@ -134,8 +131,7 @@ EXPORT_API int maps_place_contact_get_value(const maps_place_contact_h place,
 
 /*----------------------------------------------------------------------------*/
 
-EXPORT_API int maps_place_contact_set_label(maps_place_contact_h place,
-					    const char *label)
+EXPORT_API int maps_place_contact_set_label(maps_place_contact_h place, const char *label)
 {
 	if (!place || !label)
 		return MAPS_ERROR_INVALID_PARAMETER;
@@ -143,8 +139,7 @@ EXPORT_API int maps_place_contact_set_label(maps_place_contact_h place,
 		&((maps_place_contact_s *) place)->label);
 }
 
-EXPORT_API int maps_place_contact_set_type(maps_place_contact_h place,
-					   const char *type)
+EXPORT_API int maps_place_contact_set_type(maps_place_contact_h place, const char *type)
 {
 	if (!place || !type)
 		return MAPS_ERROR_INVALID_PARAMETER;
@@ -152,8 +147,7 @@ EXPORT_API int maps_place_contact_set_type(maps_place_contact_h place,
 		&((maps_place_contact_s *) place)->type);
 }
 
-EXPORT_API int maps_place_contact_set_value(maps_place_contact_h place,
-					    const char *value)
+EXPORT_API int maps_place_contact_set_value(maps_place_contact_h place, const char *value)
 {
 	if (!place || !value)
 		return MAPS_ERROR_INVALID_PARAMETER;

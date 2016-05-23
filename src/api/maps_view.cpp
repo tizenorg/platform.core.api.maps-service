@@ -622,7 +622,7 @@ EXPORT_API int maps_view_destroy(maps_view_h view)
 
 
 int _maps_view_set_center_directly(const maps_view_h view,
-				  const maps_coordinates_h coordinates)
+								const maps_coordinates_h coordinates)
 {
 	if (!view || !coordinates)
 		return MAPS_ERROR_INVALID_PARAMETER;
@@ -637,7 +637,7 @@ int _maps_view_set_center_directly(const maps_view_h view,
 }
 
 int _maps_view_get_plugin_center(const maps_view_h view,
-				maps_coordinates_h *center)
+								maps_coordinates_h *center)
 {
 	if (!view || !center)
 		return MAPS_ERROR_INVALID_PARAMETER;
@@ -805,10 +805,10 @@ EXPORT_API int maps_view_get_max_zoom_level(const maps_view_h view, int *max_zoo
 }
 
 int _maps_view_set_zoom_rotate(maps_view_h view,
-			      const bool zoom_changed,
-			      const double factor,
-			      const bool rotation_changed,
-			      const double angle)
+								const bool zoom_changed,
+								const double factor,
+								const bool rotation_changed,
+								const double angle)
 {
 	if (!view)
 		return MAPS_ERROR_INVALID_PARAMETER;
@@ -930,7 +930,8 @@ EXPORT_API int maps_view_screen_to_geolocation(maps_view_h view,
 	int posx = 0;
 	int posy = 0;
 	maps_view_get_screen_location(view, &posx, &posy, NULL, NULL);
-	return __get_plugin_interface(view)->maps_plugin_screen_to_geography(view, x - posx, y - posy, coordinates);
+	return __get_plugin_interface(view)->
+						maps_plugin_screen_to_geography(view, x - posx, y - posy, coordinates);
 }
 
 EXPORT_API int maps_view_geolocation_to_screen(const maps_view_h view,
@@ -941,7 +942,8 @@ EXPORT_API int maps_view_geolocation_to_screen(const maps_view_h view,
 	int posx = 0;
 	int posy = 0;
 	maps_view_get_screen_location(view, &posx, &posy, NULL, NULL);
-	const int error = __get_plugin_interface(view)->maps_plugin_geography_to_screen(view, coordinates, x, y);
+	const int error = __get_plugin_interface(view)->
+						maps_plugin_geography_to_screen(view, coordinates, x, y);
 	*x += posx;
 	*y += posy;
 	return error;

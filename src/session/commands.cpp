@@ -1558,4 +1558,3 @@ void session::command_view_zoom_rotate::merge(const command *c)
 		cmd->set_merged();
 	}
 }
-

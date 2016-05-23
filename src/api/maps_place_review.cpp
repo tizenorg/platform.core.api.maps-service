@@ -140,7 +140,7 @@ EXPORT_API int maps_place_review_clone(const maps_place_review_h origin,
 /*----------------------------------------------------------------------------*/
 
 EXPORT_API int maps_place_review_get_date(const maps_place_review_h place,
-					  char **date)
+								char **date)
 {
 	if (!place || !date)
 		return MAPS_ERROR_INVALID_PARAMETER;
@@ -149,7 +149,7 @@ EXPORT_API int maps_place_review_get_date(const maps_place_review_h place,
 }
 
 EXPORT_API int maps_place_review_get_title(const maps_place_review_h place,
-					   char **title)
+								char **title)
 {
 	if (!place || !title)
 		return MAPS_ERROR_INVALID_PARAMETER;
@@ -158,7 +158,7 @@ EXPORT_API int maps_place_review_get_title(const maps_place_review_h place,
 }
 
 EXPORT_API int maps_place_review_get_rating(const maps_place_review_h place,
-					    double *rating)
+								double *rating)
 {
 	if (!place || !rating)
 		return MAPS_ERROR_INVALID_PARAMETER;
@@ -166,9 +166,8 @@ EXPORT_API int maps_place_review_get_rating(const maps_place_review_h place,
 	return MAPS_ERROR_NONE;
 }
 
-EXPORT_API int maps_place_review_get_description(const maps_place_review_h
-						 place,
-						 char **description)
+EXPORT_API int maps_place_review_get_description(const maps_place_review_h place,
+								char **description)
 {
 	if (!place || !description)
 		return MAPS_ERROR_INVALID_PARAMETER;
@@ -177,7 +176,7 @@ EXPORT_API int maps_place_review_get_description(const maps_place_review_h
 }
 
 EXPORT_API int maps_place_review_get_language(const maps_place_review_h place,
-					      char ** language)
+								char ** language)
 {
 	if (!place || !language)
 		return MAPS_ERROR_INVALID_PARAMETER;
@@ -186,7 +185,7 @@ EXPORT_API int maps_place_review_get_language(const maps_place_review_h place,
 }
 
 EXPORT_API int maps_place_review_get_media(const maps_place_review_h place,
-					   maps_place_media_h *media)
+								maps_place_media_h *media)
 {
 	if (!place || !media)
 		return MAPS_ERROR_INVALID_PARAMETER;
@@ -195,7 +194,7 @@ EXPORT_API int maps_place_review_get_media(const maps_place_review_h place,
 }
 
 EXPORT_API int maps_place_review_get_user_link(const maps_place_review_h place,
-					       maps_place_link_object_h *user)
+								maps_place_link_object_h *user)
 {
 	if (!place || !user)
 		return MAPS_ERROR_INVALID_PARAMETER;
@@ -206,7 +205,7 @@ EXPORT_API int maps_place_review_get_user_link(const maps_place_review_h place,
 /*----------------------------------------------------------------------------*/
 
 EXPORT_API int maps_place_review_set_date(maps_place_review_h place,
-					  const char *date)
+								const char *date)
 {
 	if (!place || !date)
 		return MAPS_ERROR_INVALID_PARAMETER;
@@ -215,7 +214,7 @@ EXPORT_API int maps_place_review_set_date(maps_place_review_h place,
 }
 
 EXPORT_API int maps_place_review_set_title(maps_place_review_h place,
-					   const char *title)
+								const char *title)
 {
 	if (!place || !title)
 		return MAPS_ERROR_INVALID_PARAMETER;
@@ -224,7 +223,7 @@ EXPORT_API int maps_place_review_set_title(maps_place_review_h place,
 }
 
 EXPORT_API int maps_place_review_set_rating(maps_place_review_h place,
-					    const double rating)
+								const double rating)
 {
 	if (!place)
 		return MAPS_ERROR_INVALID_PARAMETER;
@@ -233,7 +232,7 @@ EXPORT_API int maps_place_review_set_rating(maps_place_review_h place,
 }
 
 EXPORT_API int maps_place_review_set_description(maps_place_review_h place,
-						 const char *description)
+								const char *description)
 {
 	if (!place || !description)
 		return MAPS_ERROR_INVALID_PARAMETER;
@@ -243,7 +242,7 @@ EXPORT_API int maps_place_review_set_description(maps_place_review_h place,
 }
 
 EXPORT_API int maps_place_review_set_language(maps_place_review_h place,
-					      const char *language)
+								const char *language)
 {
 	if (!place || !language)
 		return MAPS_ERROR_INVALID_PARAMETER;
@@ -252,7 +251,7 @@ EXPORT_API int maps_place_review_set_language(maps_place_review_h place,
 }
 
 EXPORT_API int maps_place_review_set_media(maps_place_review_h place,
-					   const maps_place_media_h media)
+								const maps_place_media_h media)
 {
 	if (!place || !media)
 		return MAPS_ERROR_INVALID_PARAMETER;
@@ -263,8 +262,7 @@ EXPORT_API int maps_place_review_set_media(maps_place_review_h place,
 }
 
 EXPORT_API int maps_place_review_set_user_link(maps_place_review_h place,
-					       const maps_place_link_object_h
-					       user)
+								const maps_place_link_object_h user)
 {
 	if (!place || !user)
 		return MAPS_ERROR_INVALID_PARAMETER;

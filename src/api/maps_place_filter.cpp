@@ -59,7 +59,7 @@ EXPORT_API int maps_place_filter_destroy(maps_place_filter_h filter)
 }
 
 EXPORT_API int maps_place_filter_clone(const maps_place_filter_h origin,
-				       maps_place_filter_h *cloned)
+								maps_place_filter_h *cloned)
 {
 	if (!cloned || !origin)
 		return MAPS_ERROR_INVALID_PARAMETER;
@@ -78,8 +78,7 @@ EXPORT_API int maps_place_filter_clone(const maps_place_filter_h origin,
 			if (f_cloned->table)
 				maps_item_hashtable_destroy(f_cloned->table);
 
-			error = maps_item_hashtable_clone(f->table,
-				&f_cloned->table);
+			error = maps_item_hashtable_clone(f->table, &f_cloned->table);
 			if (error != MAPS_ERROR_NONE)
 				break;
 		}
@@ -95,7 +94,7 @@ EXPORT_API int maps_place_filter_clone(const maps_place_filter_h origin,
 /*----------------------------------------------------------------------------*/
 
 EXPORT_API int maps_place_filter_get(const maps_place_filter_h filter,
-				     const char *key, char **value)
+								const char *key, char **value)
 {
 	if (!filter)
 		return MAPS_ERROR_INVALID_PARAMETER;
@@ -103,11 +102,9 @@ EXPORT_API int maps_place_filter_get(const maps_place_filter_h filter,
 		table, key, value);
 }
 
-EXPORT_API int maps_place_filter_foreach_property(const maps_place_filter_h
-						  filter,
-						 maps_place_filter_properties_cb
-						 callback,
-						 void *user_data)
+EXPORT_API int maps_place_filter_foreach_property(const maps_place_filter_h filter,
+								maps_place_filter_properties_cb callback,
+								void *user_data)
 {
 	if (!filter || !callback)
 		return MAPS_ERROR_INVALID_PARAMETER;
@@ -116,7 +113,7 @@ EXPORT_API int maps_place_filter_foreach_property(const maps_place_filter_h
 }
 
 EXPORT_API int maps_place_filter_get_keyword(const maps_place_filter_h filter,
-					     char **keyword)
+								char **keyword)
 {
 	if (!filter || !keyword)
 		return MAPS_ERROR_INVALID_PARAMETER;
@@ -124,9 +121,8 @@ EXPORT_API int maps_place_filter_get_keyword(const maps_place_filter_h filter,
 		table, "MAPS_PLACE_FILTER_KEYWORD", keyword);
 }
 
-EXPORT_API int maps_place_filter_get_place_name(const maps_place_filter_h
-						filter,
-						char **place_name)
+EXPORT_API int maps_place_filter_get_place_name(const maps_place_filter_h filter,
+								char **place_name)
 {
 	if (!filter || !place_name)
 		return MAPS_ERROR_INVALID_PARAMETER;
@@ -135,7 +131,7 @@ EXPORT_API int maps_place_filter_get_place_name(const maps_place_filter_h
 }
 
 EXPORT_API int maps_place_filter_get_category(const maps_place_filter_h filter,
-					      maps_place_category_h *category)
+								maps_place_category_h *category)
 {
 	if (!filter || !category)
 		return MAPS_ERROR_INVALID_PARAMETER;
@@ -144,7 +140,7 @@ EXPORT_API int maps_place_filter_get_category(const maps_place_filter_h filter,
 }
 
 EXPORT_API int maps_place_filter_get_place_address(const maps_place_filter_h filter,
-						char **place_address)
+								char **place_address)
 {
 	if (!filter || !place_address)
 		return MAPS_ERROR_INVALID_PARAMETER;
@@ -155,7 +151,7 @@ EXPORT_API int maps_place_filter_get_place_address(const maps_place_filter_h fil
 /*----------------------------------------------------------------------------*/
 
 EXPORT_API int maps_place_filter_set(maps_place_filter_h filter,
-				     const char *key, const char *value)
+								const char *key, const char *value)
 {
 	if (!filter)
 		return MAPS_ERROR_INVALID_PARAMETER;
@@ -164,7 +160,7 @@ EXPORT_API int maps_place_filter_set(maps_place_filter_h filter,
 }
 
 EXPORT_API int maps_place_filter_set_keyword(maps_place_filter_h filter,
-				  const char *keyword)
+								const char *keyword)
 {
 	if (!filter || !keyword)
 		return MAPS_ERROR_INVALID_PARAMETER;
@@ -173,7 +169,7 @@ EXPORT_API int maps_place_filter_set_keyword(maps_place_filter_h filter,
 }
 
 EXPORT_API int maps_place_filter_set_place_name(maps_place_filter_h filter,
-				     const char *place_name)
+								const char *place_name)
 {
 	if (!filter || !place_name)
 		return MAPS_ERROR_INVALID_PARAMETER;
@@ -182,7 +178,7 @@ EXPORT_API int maps_place_filter_set_place_name(maps_place_filter_h filter,
 }
 
 EXPORT_API int maps_place_filter_set_category(maps_place_filter_h filter,
-				   const maps_place_category_h category)
+								const maps_place_category_h category)
 {
 	if (!filter || !category)
 		return MAPS_ERROR_INVALID_PARAMETER;
@@ -192,7 +188,7 @@ EXPORT_API int maps_place_filter_set_category(maps_place_filter_h filter,
 }
 
 EXPORT_API int maps_place_filter_set_place_address(maps_place_filter_h filter,
-					const char *place_address)
+								const char *place_address)
 {
 	if (!filter || !place_address)
 		return MAPS_ERROR_INVALID_PARAMETER;

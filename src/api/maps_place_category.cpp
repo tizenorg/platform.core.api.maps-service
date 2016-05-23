@@ -109,8 +109,7 @@ EXPORT_API int maps_place_category_clone(const maps_place_category_h origin,
 
 /*----------------------------------------------------------------------------*/
 
-EXPORT_API int maps_place_category_get_name(const maps_place_category_h place,
-					    char **name)
+EXPORT_API int maps_place_category_get_name(const maps_place_category_h place, char **name)
 {
 	if (!place || !name)
 		return MAPS_ERROR_INVALID_PARAMETER;
@@ -118,8 +117,7 @@ EXPORT_API int maps_place_category_get_name(const maps_place_category_h place,
 		_MAPS_PLACE_CATEGORY_NAME_MAX_LENGTH, name);
 }
 
-EXPORT_API int maps_place_category_get_id(const maps_place_category_h place,
-					  char **id)
+EXPORT_API int maps_place_category_get_id(const maps_place_category_h place, char **id)
 {
 	if (!place || !id)
 		return MAPS_ERROR_INVALID_PARAMETER;
@@ -127,8 +125,7 @@ EXPORT_API int maps_place_category_get_id(const maps_place_category_h place,
 		_MAPS_PLACE_CATEGORY_ID_MAX_LENGTH, id);
 }
 
-EXPORT_API int maps_place_category_get_url(const maps_place_category_h place,
-					   char **url)
+EXPORT_API int maps_place_category_get_url(const maps_place_category_h place, char **url)
 {
 	if (!place || !url)
 		return MAPS_ERROR_INVALID_PARAMETER;
@@ -138,8 +135,7 @@ EXPORT_API int maps_place_category_get_url(const maps_place_category_h place,
 
 /*----------------------------------------------------------------------------*/
 
-EXPORT_API int maps_place_category_set_id(maps_place_category_h place,
-					  const char *id)
+EXPORT_API int maps_place_category_set_id(maps_place_category_h place, const char *id)
 {
 	if (!place || !id)
 		return MAPS_ERROR_INVALID_PARAMETER;
@@ -147,8 +143,7 @@ EXPORT_API int maps_place_category_set_id(maps_place_category_h place,
 		&((maps_place_category_s *) place)->id);
 }
 
-EXPORT_API int maps_place_category_set_name(maps_place_category_h place,
-					    const char *name)
+EXPORT_API int maps_place_category_set_name(maps_place_category_h place, const char *name)
 {
 	if (!place || !name)
 		return MAPS_ERROR_INVALID_PARAMETER;
@@ -156,8 +151,7 @@ EXPORT_API int maps_place_category_set_name(maps_place_category_h place,
 		&((maps_place_category_s *) place)->name);
 }
 
-EXPORT_API int maps_place_category_set_url(maps_place_category_h place,
-					   const char *url)
+EXPORT_API int maps_place_category_set_url(maps_place_category_h place, const char *url)
 {
 	if (!place || !url)
 		return MAPS_ERROR_INVALID_PARAMETER;
