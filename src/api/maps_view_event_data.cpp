@@ -116,9 +116,9 @@ EXPORT_API int maps_view_event_data_destroy(maps_view_event_data_h event)
 	return MAPS_ERROR_NONE;
 }
 
-EXPORT_API int maps_view_view_event_data_clone(const maps_view_event_data_h origin, maps_view_event_data_h *cloned)
+EXPORT_API int maps_view_event_data_clone(const maps_view_event_data_h origin, maps_view_event_data_h *cloned)
 {
-	if (!cloned || !origin)
+	if (!origin || !cloned)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
 	int error = MAPS_ERROR_NONE;
@@ -133,14 +133,15 @@ EXPORT_API int maps_view_view_event_data_clone(const maps_view_event_data_h orig
 		if (error != MAPS_ERROR_NONE)
 			break;
 
-		_maps_view_event_data_set_gesture_type(*cloned, e->gesture_type);
-		_maps_view_event_data_set_action_type(*cloned, e->action_type);
-		_maps_view_event_data_set_center(*cloned, e->center);
-		_maps_view_event_data_set_position(*cloned, e->x, e->y);
-		_maps_view_event_data_set_fingers(*cloned, e->fingers);
-		_maps_view_event_data_set_zoom_factor(*cloned, e->zoom_factor);
-		_maps_view_event_data_set_rotation_angle(*cloned, e->rotation_angle);
-		_maps_view_event_data_set_object(*cloned, e->object);
+		error = _maps_view_event_data_set_gesture_type(*cloned, e->gesture_type);
+		error = _maps_view_event_data_set_action_type(*cloned, e->action_type);
+		error = _maps_view_event_data_set_center(*cloned, e->center);
+		error = _maps_view_event_data_set_delta(*cloned, e->delta_x, e->delta_y);
+		error = _maps_view_event_data_set_position(*cloned, e->x, e->y);
+		error = _maps_view_event_data_set_fingers(*cloned, e->fingers);
+		error = _maps_view_event_data_set_zoom_factor(*cloned, e->zoom_factor);
+		error = _maps_view_event_data_set_rotation_angle(*cloned, e->rotation_angle);
+		error = _maps_view_event_data_set_object(*cloned, e->object);
 
 		return MAPS_ERROR_NONE;
 	} while (false);
@@ -249,43 +250,6 @@ int _maps_view_event_data_set_object(maps_view_event_data_h event, maps_view_obj
 
 
 /*----------------------------------------------------------------------------*/
-
-
-EXPORT_API int maps_view_event_data_clone(const maps_view_event_data_h origin, maps_view_event_data_h *cloned)
-{
-	if (!origin || !cloned)
-		return MAPS_ERROR_INVALID_PARAMETER;
-
-	int error = MAPS_ERROR_NONE;
-	do {
-		error = _maps_view_event_data_create(cloned);
-		if (!(*cloned) || (error != MAPS_ERROR_NONE))
-			break;
-
-		maps_view_event_data_s *e = (maps_view_event_data_s *) origin;
-
-		error = _maps_view_event_data_set_type(*cloned, e->event_type);
-		if (error != MAPS_ERROR_NONE)
-			break;
-
-		error = _maps_view_event_data_set_gesture_type(*cloned, e->gesture_type);
-		error = _maps_view_event_data_set_action_type(*cloned, e->action_type);
-		error = _maps_view_event_data_set_center(*cloned, e->center);
-		error = _maps_view_event_data_set_delta(*cloned, e->delta_x, e->delta_y);
-		error = _maps_view_event_data_set_position(*cloned, e->x, e->y);
-		error = _maps_view_event_data_set_fingers(*cloned, e->fingers);
-		error = _maps_view_event_data_set_zoom_factor(*cloned, e->zoom_factor);
-		error = _maps_view_event_data_set_rotation_angle(*cloned, e->rotation_angle);
-		error = _maps_view_event_data_set_object(*cloned, e->object);
-
-		return MAPS_ERROR_NONE;
-	} while (false);
-
-	maps_view_event_data_destroy(*cloned);
-	*cloned = NULL;
-	return error;
-
-}
 
 EXPORT_API int maps_view_event_data_get_type(const maps_view_event_data_h event, maps_view_event_type_e *event_type)
 {

@@ -128,8 +128,7 @@ EXPORT_API int maps_place_image_clone(const maps_place_image_h origin,
 
 /*----------------------------------------------------------------------------*/
 
-EXPORT_API int maps_place_image_get_url(const maps_place_image_h place,
-					char **url)
+EXPORT_API int maps_place_image_get_url(const maps_place_image_h place, char **url)
 {
 	if (!place || !url)
 		return MAPS_ERROR_INVALID_PARAMETER;
@@ -137,8 +136,7 @@ EXPORT_API int maps_place_image_get_url(const maps_place_image_h place,
 		_MAPS_PLACE_IMAGE_URL_MAX_LENGTH, url);
 }
 
-EXPORT_API int maps_place_image_get_id(const maps_place_image_h place,
-				       char **id)
+EXPORT_API int maps_place_image_get_id(const maps_place_image_h place, char **id)
 {
 	if (!place || !id)
 		return MAPS_ERROR_INVALID_PARAMETER;
@@ -146,8 +144,7 @@ EXPORT_API int maps_place_image_get_id(const maps_place_image_h place,
 		_MAPS_PLACE_IMAGE_ID_MAX_LENGTH, id);
 }
 
-EXPORT_API int maps_place_image_get_width(const maps_place_image_h place,
-					  int *width)
+EXPORT_API int maps_place_image_get_width(const maps_place_image_h place, int *width)
 {
 	if (!place || !width)
 		return MAPS_ERROR_INVALID_PARAMETER;
@@ -155,8 +152,7 @@ EXPORT_API int maps_place_image_get_width(const maps_place_image_h place,
 	return MAPS_ERROR_NONE;
 }
 
-EXPORT_API int maps_place_image_get_height(const maps_place_image_h place,
-					   int *height)
+EXPORT_API int maps_place_image_get_height(const maps_place_image_h place, int *height)
 {
 	if (!place || !height)
 		return MAPS_ERROR_INVALID_PARAMETER;
@@ -169,8 +165,7 @@ EXPORT_API int maps_place_image_get_user_link(const maps_place_image_h place,
 {
 	if (!place || !user)
 		return MAPS_ERROR_INVALID_PARAMETER;
-	return maps_place_link_object_clone(((maps_place_image_s *) place)->
-		user, user);
+	return maps_place_link_object_clone(((maps_place_image_s *) place)->user, user);
 }
 
 EXPORT_API int maps_place_image_get_media(const maps_place_image_h place,
@@ -178,8 +173,7 @@ EXPORT_API int maps_place_image_get_media(const maps_place_image_h place,
 {
 	if (!place || !media)
 		return MAPS_ERROR_INVALID_PARAMETER;
-	return maps_place_media_clone(((maps_place_image_s *) place)->media,
-		media);
+	return maps_place_media_clone(((maps_place_image_s *) place)->media, media);
 }
 
 /*----------------------------------------------------------------------------*/

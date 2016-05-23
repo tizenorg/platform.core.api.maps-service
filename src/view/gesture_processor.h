@@ -114,7 +114,7 @@ namespace view
 						const double angle);
 	protected:
 		touch_point calc_center(const touch_point &tp1,
-					const touch_point &tp2) const;
+						const touch_point &tp2) const;
 	};
 
 

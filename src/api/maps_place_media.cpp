@@ -63,7 +63,7 @@ EXPORT_API int maps_place_media_destroy(maps_place_media_h place)
 }
 
 EXPORT_API int maps_place_media_clone(const maps_place_media_h origin,
-				      maps_place_media_h *cloned)
+								maps_place_media_h *cloned)
 {
 	if (!cloned || !origin)
 		return MAPS_ERROR_INVALID_PARAMETER;
@@ -77,15 +77,13 @@ EXPORT_API int maps_place_media_clone(const maps_place_media_h origin,
 		maps_place_media_s *m = (maps_place_media_s *) origin;
 
 		if (m->attribution) {
-			error = maps_place_media_set_attribution(*cloned,
-				m->attribution);
+			error = maps_place_media_set_attribution(*cloned, m->attribution);
 			if (error != MAPS_ERROR_NONE)
 				break;
 		}
 
 		if (m->supplier) {
-			error = maps_place_media_set_supplier(*cloned,
-				m->supplier);
+			error = maps_place_media_set_supplier(*cloned, m->supplier);
 			if (error != MAPS_ERROR_NONE)
 				break;
 		}
@@ -107,7 +105,7 @@ EXPORT_API int maps_place_media_clone(const maps_place_media_h origin,
 /*----------------------------------------------------------------------------*/
 
 EXPORT_API int maps_place_media_get_attribution(const maps_place_media_h place,
-						char **attribution)
+								char **attribution)
 {
 	if (!place || !attribution)
 		return MAPS_ERROR_INVALID_PARAMETER;
@@ -116,27 +114,25 @@ EXPORT_API int maps_place_media_get_attribution(const maps_place_media_h place,
 }
 
 EXPORT_API int maps_place_media_get_supplier(const maps_place_media_h place,
-					     maps_place_link_object_h *supplier)
+								maps_place_link_object_h *supplier)
 {
 	if (!place || !supplier)
 		return MAPS_ERROR_INVALID_PARAMETER;
-	return maps_place_link_object_clone(((maps_place_media_s *) place)->
-		supplier, supplier);
+	return maps_place_link_object_clone(((maps_place_media_s *) place)->supplier, supplier);
 }
 
 EXPORT_API int maps_place_media_get_via(const maps_place_media_h place,
-					maps_place_link_object_h * via)
+								maps_place_link_object_h * via)
 {
 	if (!place || !via)
 		return MAPS_ERROR_INVALID_PARAMETER;
-	return maps_place_link_object_clone(((maps_place_media_s *) place)->via,
-		via);
+	return maps_place_link_object_clone(((maps_place_media_s *) place)->via, via);
 }
 
 /*----------------------------------------------------------------------------*/
 
 EXPORT_API int maps_place_media_set_attribution(maps_place_media_h place,
-						const char *attribution)
+								const char *attribution)
 {
 	if (!place || !attribution)
 		return MAPS_ERROR_INVALID_PARAMETER;
@@ -146,8 +142,7 @@ EXPORT_API int maps_place_media_set_attribution(maps_place_media_h place,
 }
 
 EXPORT_API int maps_place_media_set_supplier(maps_place_media_h place,
-					     const maps_place_link_object_h
-					     supplier)
+								const maps_place_link_object_h supplier)
 {
 	if (!place || !supplier)
 		return MAPS_ERROR_INVALID_PARAMETER;
@@ -158,7 +153,7 @@ EXPORT_API int maps_place_media_set_supplier(maps_place_media_h place,
 }
 
 EXPORT_API int maps_place_media_set_via(maps_place_media_h place,
-					const maps_place_link_object_h via)
+								const maps_place_link_object_h via)
 {
 	if (!place || !via)
 		return MAPS_ERROR_INVALID_PARAMETER;

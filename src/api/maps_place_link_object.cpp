@@ -121,8 +121,7 @@ EXPORT_API int maps_place_link_object_clone(const maps_place_link_object_h
 
 /*----------------------------------------------------------------------------*/
 
-EXPORT_API int maps_place_link_object_get_string(const maps_place_link_object_h
-						 place,
+EXPORT_API int maps_place_link_object_get_string(const maps_place_link_object_h place,
 						 char **string)
 {
 	if (!place || !string)
@@ -131,8 +130,7 @@ EXPORT_API int maps_place_link_object_get_string(const maps_place_link_object_h
 		_MAPS_PLACE_LINK_OBJECT_STRING_MAX_LENGTH, string);
 }
 
-EXPORT_API int maps_place_link_object_get_type(const maps_place_link_object_h
-					       place,
+EXPORT_API int maps_place_link_object_get_type(const maps_place_link_object_h place,
 					       char **type)
 {
 	if (!place || !type)
@@ -141,8 +139,7 @@ EXPORT_API int maps_place_link_object_get_type(const maps_place_link_object_h
 		_MAPS_PLACE_LINK_OBJECT_TYPE_MAX_LENGTH, type);
 }
 
-EXPORT_API int maps_place_link_object_get_id(const maps_place_link_object_h
-					     place,
+EXPORT_API int maps_place_link_object_get_id(const maps_place_link_object_h place,
 					     char **id)
 {
 	if (!place || !id)
@@ -151,8 +148,8 @@ EXPORT_API int maps_place_link_object_get_id(const maps_place_link_object_h
 		_MAPS_PLACE_LINK_OBJECT_ID_MAX_LENGTH, id);
 }
 
-EXPORT_API int maps_place_link_object_get_name(const maps_place_link_object_h
-					       place, char **name)
+EXPORT_API int maps_place_link_object_get_name(const maps_place_link_object_h place,
+					     char **name)
 {
 	if (!place || !name)
 		return MAPS_ERROR_INVALID_PARAMETER;

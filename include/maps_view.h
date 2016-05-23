@@ -135,9 +135,9 @@ typedef void(*maps_view_on_event_cb) (maps_view_event_type_e type, maps_view_eve
  * @privilege %http://tizen.org/privilege/mapservice
  * @remarks The @a View must be released using maps_view_destroy().
  *
- * @param[in]	maps		The maps service handle
+ * @param[in]	maps	The maps service handle
  * @param[in]	obj		The image object
- * @param[out]	view		The handle pointer to a maps_view_h,
+ * @param[out]	view	The handle pointer to a maps_view_h,
  * in which to store the newly created View handle
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful

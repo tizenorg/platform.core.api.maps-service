@@ -193,69 +193,75 @@ int maps_plugin_cancel_request_empty(int request_id)
 }
 
 /* Mapping */
-int maps_plugin_create_map_view_empty(maps_view_h hView, maps_plugin_map_view_ready_cb callback)
+int maps_plugin_create_map_view_empty(maps_view_h view, maps_plugin_map_view_ready_cb callback)
 {
 	return 0;
 }
 
-int maps_plugin_destroy_map_view_empty(maps_view_h hView)
+int maps_plugin_destroy_map_view_empty(maps_view_h view)
 {
 	return 0;
 }
 
-int maps_plugin_render_map_empty(maps_view_h hView, const maps_coordinates_h coordinates, const double zoom_factor,
-				 const double rotation_angle, maps_plugin_render_map_cb callback, void* user_data, int* request_id)
+int maps_plugin_render_map_empty(maps_view_h view, const maps_coordinates_h coordinates,
+								double zoom_factor, double rotation_angle,
+								maps_plugin_render_map_cb callback,
+								void* user_data, int* request_id)
 {
 	return 0;
 }
 
-int maps_plugin_move_center_empty(maps_view_h hView, const int delta_x, const int delta_y,
+int maps_plugin_move_center_empty(maps_view_h view, const int delta_x, const int delta_y,
 				  maps_plugin_render_map_cb callback, void* user_data, int* request_id)
 {
 	return 0;
 }
 
-int maps_plugin_set_scalebar_empty(maps_view_h hView, bool enable)
+int maps_plugin_set_scalebar_empty(maps_view_h view, bool enable)
 {
 	return 0;
 }
 
-int maps_plugin_get_scalebar_empty(maps_view_h hView, bool *enabled)
+int maps_plugin_get_scalebar_empty(maps_view_h view, bool *enabled)
 {
 	return 0;
 }
 
-int maps_plugin_draw_map_empty(maps_view_h hView, Evas* canvas, const int x, const int y, const int width, const int height)
+int maps_plugin_draw_map_empty(maps_view_h view, Evas* canvas, int x, int y,
+								int width, int height)
 {
 	return 0;
 }
 
-int maps_plugin_on_object_empty(maps_view_h hView, const maps_view_object_h object, const maps_view_object_operation_e operation)
+int maps_plugin_on_object_empty(maps_view_h view, const maps_view_object_h object,
+								maps_view_object_operation_e operation)
 {
 	return 0;
 }
 
-int maps_plugin_screen_to_geography_empty(maps_view_h hView, const int x, const int y, maps_coordinates_h *coordinates)
+int maps_plugin_screen_to_geography_empty(maps_view_h view, const int x, const int y,
+								maps_coordinates_h *coordinates)
 {
 	return 0;
 }
 
-int maps_plugin_geography_to_screen_empty(maps_view_h hView, const maps_coordinates_h coordinates, int* x, int* y)
+int maps_plugin_geography_to_screen_empty(maps_view_h view,
+								const maps_coordinates_h coordinates, int* x, int* y)
 {
 	return 0;
 }
 
-int maps_plugin_get_min_zoom_level_empty(maps_view_h hView, int *min_zoom_level)
+int maps_plugin_get_min_zoom_level_empty(maps_view_h view, int *min_zoom_level)
 {
 	return 0;
 }
 
-int maps_plugin_get_max_zoom_level_empty(maps_view_h hView, int *max_zoom_level)
+int maps_plugin_get_max_zoom_level_empty(maps_view_h view, int *max_zoom_level)
 {
 	return 0;
 }
 
-int maps_plugin_get_center_empty(maps_view_h hView, maps_coordinates_h *coordinates)
+int maps_plugin_get_center_empty(maps_view_h view, maps_coordinates_h *coordinates)
 {
 	return 0;
 }

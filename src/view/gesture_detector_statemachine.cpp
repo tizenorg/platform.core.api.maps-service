@@ -21,7 +21,7 @@
 
 view::gesture_detector_statemachine::gesture_detector_statemachine(maps_view_h v)
 	: gesture_detector(v)
-	  , _current_state(STATE_NONE)
+	, _current_state(STATE_NONE)
 {
 	for(int i = 0; i < MAX_FINGERS; i ++)
 		is_panning[i] = false;
@@ -211,8 +211,7 @@ void view::gesture_detector_statemachine::halt_gesture()
 	reset();
 }
 
-void view::gesture_detector_statemachine::state_machine_on_event(view_event_e
-								 event)
+void view::gesture_detector_statemachine::state_machine_on_event(view_event_e event)
 {
 	log_event(event);
 	detector_states_e old_state = _current_state;

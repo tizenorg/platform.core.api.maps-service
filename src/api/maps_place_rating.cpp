@@ -49,7 +49,7 @@ EXPORT_API int maps_place_rating_destroy(maps_place_rating_h place)
 }
 
 EXPORT_API int maps_place_rating_clone(const maps_place_rating_h origin,
-				       maps_place_rating_h *cloned)
+								maps_place_rating_h *cloned)
 {
 	if (!cloned || !origin)
 		return MAPS_ERROR_INVALID_PARAMETER;
@@ -81,7 +81,7 @@ EXPORT_API int maps_place_rating_clone(const maps_place_rating_h origin,
 /*----------------------------------------------------------------------------*/
 
 EXPORT_API int maps_place_rating_get_count(const maps_place_rating_h place,
-					   int *count)
+								int *count)
 {
 	if (!place || !count)
 		return MAPS_ERROR_INVALID_PARAMETER;
@@ -90,7 +90,7 @@ EXPORT_API int maps_place_rating_get_count(const maps_place_rating_h place,
 }
 
 EXPORT_API int maps_place_rating_get_average(const maps_place_rating_h place,
-					     double *average)
+								double *average)
 {
 	if (!place || !average)
 		return MAPS_ERROR_INVALID_PARAMETER;
@@ -101,7 +101,7 @@ EXPORT_API int maps_place_rating_get_average(const maps_place_rating_h place,
 /*----------------------------------------------------------------------------*/
 
 EXPORT_API int maps_place_rating_set_count(maps_place_rating_h place,
-					   const int count)
+								const int count)
 {
 	if (!place || (count < 0))
 		return MAPS_ERROR_INVALID_PARAMETER;
@@ -110,7 +110,7 @@ EXPORT_API int maps_place_rating_set_count(maps_place_rating_h place,
 }
 
 EXPORT_API int maps_place_rating_set_average(maps_place_rating_h place,
-					     const double average)
+								const double average)
 {
 	if (!place || (average < 0))
 		return MAPS_ERROR_INVALID_PARAMETER;

@@ -253,8 +253,7 @@ void view::gesture_processor::on_long_press()
 					    false, .0, false, .0));
 
 	/* Invoke user registered event callback */
-	maps_view_event_data_h ed =
-		_maps_view_create_event_data(MAPS_VIEW_EVENT_GESTURE);
+	maps_view_event_data_h ed = _maps_view_create_event_data(MAPS_VIEW_EVENT_GESTURE);
 	if(ed) {
 		_maps_view_event_data_set_gesture_type(ed, MAPS_VIEW_GESTURE_LONG_PRESS);
 		_maps_view_event_data_set_position(ed, tp._x, tp._y);
@@ -286,16 +285,15 @@ void view::gesture_processor::on_double_tap()
 					    false, .0, false, .0));
 
 	/* Invoke user registered event callback */
-	maps_view_event_data_h ed =
-		_maps_view_create_event_data(MAPS_VIEW_EVENT_GESTURE);
+	maps_view_event_data_h ed = _maps_view_create_event_data(MAPS_VIEW_EVENT_GESTURE);
 	if(ed) {
-		_maps_view_event_data_set_gesture_type(ed,
-						      MAPS_VIEW_GESTURE_DOUBLE_TAP);
+		_maps_view_event_data_set_gesture_type(ed, MAPS_VIEW_GESTURE_DOUBLE_TAP);
 		_maps_view_event_data_set_position(ed, tp._x, tp._y);
 		_maps_view_event_data_set_fingers(ed, 1);
 		_maps_view_invoke_event_callback(_gd->_view, ed);
 		maps_view_event_data_destroy(ed);
 	}
+	maps_coordinates_destroy(c);
 }
 
 void view::gesture_processor::on_tap()
@@ -315,11 +313,9 @@ void view::gesture_processor::on_tap()
 	maps_view_screen_to_geolocation(_gd->_view, tp._x, tp._y, &c);
 	q()->push(construct_gesture_command(MAPS_VIEW_GESTURE_TAP, c,
 					    false, .0, false, .0));
-	maps_coordinates_destroy(c);
 
 	/* Invoke user registered event callback */
-	maps_view_event_data_h ed =
-		_maps_view_create_event_data(MAPS_VIEW_EVENT_GESTURE);
+	maps_view_event_data_h ed = _maps_view_create_event_data(MAPS_VIEW_EVENT_GESTURE);
 	if(ed) {
 		_maps_view_event_data_set_gesture_type(ed, MAPS_VIEW_GESTURE_TAP);
 		_maps_view_event_data_set_position(ed, tp._x, tp._y);
@@ -327,6 +323,7 @@ void view::gesture_processor::on_tap()
 		_maps_view_invoke_event_callback(_gd->_view, ed);
 		maps_view_event_data_destroy(ed);
 	}
+	maps_coordinates_destroy(c);
 }
 
 void view::gesture_processor::on_two_finger_tap()
@@ -347,8 +344,7 @@ void view::gesture_processor::on_two_finger_tap()
 					    false, .0, false, .0));
 
 	/* Invoke user registered event callback */
-	maps_view_event_data_h ed =
-		_maps_view_create_event_data(MAPS_VIEW_EVENT_GESTURE);
+	maps_view_event_data_h ed = _maps_view_create_event_data(MAPS_VIEW_EVENT_GESTURE);
 	if(ed) {
 		_maps_view_event_data_set_gesture_type(ed, MAPS_VIEW_GESTURE_2_FINGER_TAP);
 		_maps_view_event_data_set_position(ed, gesture_center._x, gesture_center._y);
@@ -356,6 +352,7 @@ void view::gesture_processor::on_two_finger_tap()
 		_maps_view_invoke_event_callback(_gd->_view, ed);
 		maps_view_event_data_destroy(ed);
 	}
+	maps_coordinates_destroy(c);
 }
 
 void view::gesture_processor::on_panning_finished(int finger_no)
@@ -399,8 +396,7 @@ void view::gesture_processor::on_pan(int finger_no)
 							-delta_y));
 
 	/* Invoke user registered event callback */
-	maps_view_event_data_h ed =
-		_maps_view_create_event_data(MAPS_VIEW_EVENT_GESTURE);
+	maps_view_event_data_h ed = _maps_view_create_event_data(MAPS_VIEW_EVENT_GESTURE);
 	if(ed) {
 		_maps_view_event_data_set_gesture_type(ed, MAPS_VIEW_GESTURE_SCROLL);
 		_maps_view_event_data_set_position(ed, cur_tp._x, cur_tp._y);

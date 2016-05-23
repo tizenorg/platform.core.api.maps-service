@@ -72,8 +72,7 @@ EXPORT_API int maps_plugin_info_clone(const maps_plugin_info_h origin,
 		maps_plugin_info_s *c = (maps_plugin_info_s *) origin;
 
 		if (c->provider_name) {
-			error = maps_plugin_info_set_provider_name(*cloned,
-				c->provider_name);
+			error = maps_plugin_info_set_provider_name(*cloned, c->provider_name);
 			if (error != MAPS_ERROR_NONE)
 				break;
 		}

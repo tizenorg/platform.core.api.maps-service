@@ -258,7 +258,6 @@ static void __on_canvas_up(void *data, Evas *e, Evas_Object *obj, void *event_in
 	v->finger_stream->up((Evas_Event_Mouse_Up *)event_info);
 }
 
-
 static void __on_canvas_line(void *data, Evas *e, Evas_Object *obj, void *event_info)
 {
 	MAPS_LOGI("__on_canvas_line");
@@ -339,8 +338,9 @@ static int __maps_plugin_render_map(const maps_view_h view,
 		return MAPS_ERROR_INVALID_PARAMETER;
 
 	int request_id = 0;
-	return __get_plugin_interface(view)->maps_plugin_render_map(view, coordinates, zoom_factor, rotation_angle,
-														__maps_plugin_render_map_cb, view, &request_id);
+	return __get_plugin_interface(view)->maps_plugin_render_map(view,
+										coordinates, zoom_factor, rotation_angle,
+										__maps_plugin_render_map_cb, view, &request_id);
 
 }
 
@@ -420,13 +420,11 @@ void __maps_view_ready(const maps_view_h view)
 
 	/* Invoke user registered event callback */
 #if 1
-	do {
-		maps_view_event_data_h ed = _maps_view_create_event_data(MAPS_VIEW_EVENT_READY);
-		if(!ed)
-			break;
-		_maps_view_invoke_event_callback((maps_view_s *)view, ed);
+	maps_view_event_data_h ed = _maps_view_create_event_data(MAPS_VIEW_EVENT_READY);
+	if(ed) {
+		_maps_view_invoke_event_callback(view, ed);
 		maps_view_event_data_destroy(ed);
-	} while(false);
+	}
 #else	
 	_maps_view_invoke_event_callback((maps_view_s *)view,
 			_maps_view_create_event_data(MAP_EVENT_READY));
@@ -462,9 +460,9 @@ EXPORT_API int maps_view_create(maps_service_h maps, Evas_Image *obj, maps_view_
 
 	v->panel = obj;
 
-	v->maps_plugin_view_handle = NULL;
-
 	evas_object_event_callback_add(v->panel, EVAS_CALLBACK_RESIZE, __maps_view_panel_resize_cb, v);
+
+	v->maps_plugin_view_handle = NULL;
 
 	/* Set up event callbacks by default */
 	const int event_callback_cnt =
@@ -612,7 +610,7 @@ EXPORT_API int maps_view_destroy(maps_view_h view)
 
 	g_slice_free(maps_view_s, v);
 
-	if(inertial_camera)
+	if (inertial_camera)
 		delete inertial_camera;
 
 	return MAPS_ERROR_NONE;
@@ -620,7 +618,7 @@ EXPORT_API int maps_view_destroy(maps_view_h view)
 
 
 int _maps_view_set_center_directly(const maps_view_h view,
-				  const maps_coordinates_h coordinates)
+								const maps_coordinates_h coordinates)
 {
 	if (!view || !coordinates)
 		return MAPS_ERROR_INVALID_PARAMETER;
@@ -635,7 +633,7 @@ int _maps_view_set_center_directly(const maps_view_h view,
 }
 
 int _maps_view_get_plugin_center(const maps_view_h view,
-				maps_coordinates_h *center)
+								maps_coordinates_h *center)
 {
 	if (!view || !center)
 		return MAPS_ERROR_INVALID_PARAMETER;
@@ -803,10 +801,10 @@ EXPORT_API int maps_view_get_max_zoom_level(const maps_view_h view, int *max_zoo
 }
 
 int _maps_view_set_zoom_rotate(maps_view_h view,
-			      const bool zoom_changed,
-			      const double factor,
-			      const bool rotation_changed,
-			      const double angle)
+								const bool zoom_changed,
+								const double factor,
+								const bool rotation_changed,
+								const double angle)
 {
 	if (!view)
 		return MAPS_ERROR_INVALID_PARAMETER;
@@ -928,7 +926,8 @@ EXPORT_API int maps_view_screen_to_geolocation(maps_view_h view,
 	int posx = 0;
 	int posy = 0;
 	maps_view_get_screen_location(view, &posx, &posy, NULL, NULL);
-	return __get_plugin_interface(view)->maps_plugin_screen_to_geography(view, x - posx, y - posy, coordinates);
+	return __get_plugin_interface(view)->
+						maps_plugin_screen_to_geography(view, x - posx, y - posy, coordinates);
 }
 
 EXPORT_API int maps_view_geolocation_to_screen(const maps_view_h view,
@@ -939,7 +938,8 @@ EXPORT_API int maps_view_geolocation_to_screen(const maps_view_h view,
 	int posx = 0;
 	int posy = 0;
 	maps_view_get_screen_location(view, &posx, &posy, NULL, NULL);
-	const int error = __get_plugin_interface(view)->maps_plugin_geography_to_screen(view, coordinates, x, y);
+	const int error = __get_plugin_interface(view)->
+						maps_plugin_geography_to_screen(view, coordinates, x, y);
 	*x += posx;
 	*y += posy;
 	return error;
@@ -1123,7 +1123,6 @@ EXPORT_API int maps_view_get_language(const maps_view_h view, char **language)
 
 
 /* --------------------MAPS PANEL MANIPULATIONS-------------------------------*/
-
 
 EXPORT_API int maps_view_get_viewport(const maps_view_h view, Evas_Object **viewport)
 {
@@ -1379,8 +1378,7 @@ void _maps_view_invoke_event_callback(maps_view_h view, maps_view_event_data_h e
 	maps_view_event_type_e type = MAPS_VIEW_EVENT_GESTURE;
 	maps_view_event_data_get_type(event_data, &type);
 
-	v->event_callbacks[type].callback(type, event_data,
-					  v->event_callbacks[type].user_data);
+	v->event_callbacks[type].callback(type, event_data, v->event_callbacks[type].user_data);
 }
 
 /* ----------------------HIT TEST---------------------------------------------*/

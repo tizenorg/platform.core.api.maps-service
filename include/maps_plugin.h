@@ -823,7 +823,7 @@ typedef void(*maps_plugin_map_view_ready_cb) (maps_view_h hView);
  * @details This function create a maps view to the plugin.
  * @since_tizen 3.0
  *
- * @param[in]	hView		The maps view
+ * @param[in]	view		The maps view
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
@@ -831,14 +831,14 @@ typedef void(*maps_plugin_map_view_ready_cb) (maps_view_h hView);
  * @see #maps_view_h
  * @see maps_plugin_destroy_map_view()
  */
-int maps_plugin_create_map_view(maps_view_h hView, maps_plugin_map_view_ready_cb callback);
+int maps_plugin_create_map_view(maps_view_h view, maps_plugin_map_view_ready_cb callback);
 
 /**
  * @brief	Destroy a maps view.
  * @details This function destory a maps view to the plugin.
  * @since_tizen 3.0
  *
- * @param[in]	hView		The maps view
+ * @param[in]	view		The maps view
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
@@ -846,7 +846,7 @@ int maps_plugin_create_map_view(maps_view_h hView, maps_plugin_map_view_ready_cb
  * @see #maps_view_h
  * @see maps_plugin_create_map_view()
  */
-int maps_plugin_destroy_map_view(maps_view_h hView);
+int maps_plugin_destroy_map_view(maps_view_h view);
 
 /**
  * @brief	Called when the map rendering is finished.
@@ -873,8 +873,9 @@ int maps_plugin_destroy_map_view(maps_view_h hView);
  *
  * @see maps_plugin_render_map()
  */
-typedef void(*maps_plugin_render_map_cb) (maps_error_e result, int request_id, maps_coordinates_h center,
-					  maps_area_h area, void* user_data);
+typedef void(*maps_plugin_render_map_cb) (maps_error_e result, int request_id,
+								maps_coordinates_h center,
+								maps_area_h area, void* user_data);
 
 /**
  * @brief	Request a map rendering.
@@ -882,7 +883,7 @@ typedef void(*maps_plugin_render_map_cb) (maps_error_e result, int request_id, m
  * specified zoom factor and rotation angle.
  * @since_tizen 3.0
  *
- * @param[in]	hView		The handle of maps_view
+ * @param[in]	view		The handle of maps_view
  * @param[in]	coordinates	The coordinates of location to draw
  * @param[in]	zoom_factor	The zoom factor
  * @param[in]	rotation_angle	The rotation factor
@@ -900,8 +901,10 @@ typedef void(*maps_plugin_render_map_cb) (maps_error_e result, int request_id, m
  * @see maps_plugin_render_map_cb()
  * @see maps_plugin_draw_map()
  */
-int maps_plugin_render_map(maps_view_h hView, const maps_coordinates_h coordinates, const double zoom_factor,
-			   const double rotation_angle, maps_plugin_render_map_cb callback, void* user_data, int* request_id);
+int maps_plugin_render_map(maps_view_h view, const maps_coordinates_h coordinates,
+								double zoom_factor, double rotation_angle,
+								maps_plugin_render_map_cb callback,
+								void* user_data, int* request_id);
 
 /**
  * @brief	Request the Plugin to move a map on a given delta.
@@ -910,10 +913,10 @@ int maps_plugin_render_map(maps_view_h hView, const maps_coordinates_h coordinat
  * remaining same.
  * @since_tizen 3.0
  *
- * @param[in]	hView		The handle of maps_view
+ * @param[in]	view		The handle of maps_view
  * @param[in]	delta_x		The delta x
  * @param[in]	delta_y		The delta y
- * @param[in]	callback		The callback to notify that the rendering is finished
+ * @param[in]	callback	The callback to notify that the rendering is finished
  * @param[in]	user_data	The user data to be passed to the callback
  * @param[out]	request_id	The id of request
  * @return	0 on success, otherwise a negative error value
@@ -928,8 +931,9 @@ int maps_plugin_render_map(maps_view_h hView, const maps_coordinates_h coordinat
  * @see maps_plugin_render_map()
  * @see maps_plugin_draw_map()
  */
-int maps_plugin_move_center(maps_view_h hView, const int delta_x, const int delta_y, maps_plugin_render_map_cb callback,
-			    void* user_data, int* request_id);
+int maps_plugin_move_center(maps_view_h view, int delta_x, int delta_y,
+								maps_plugin_render_map_cb callback,
+								void* user_data, int* request_id);
 
 /**
  * @brief	Draw a map on the maps view panel.
@@ -937,7 +941,7 @@ int maps_plugin_move_center(maps_view_h hView, const int delta_x, const int delt
  * panel in accordance with the current maps settings.
  * @since_tizen 3.0
  *
- * @param[in]	hView		The handle of maps_view
+ * @param[in]	view		The handle of maps_view
  * @param[in]	canvas		The canvas to draw on
  * @param[in]	x			The x coordinate on the canvas top left
  * @param[in]	y			The y coordinate on the canvas top left
@@ -953,7 +957,7 @@ int maps_plugin_move_center(maps_view_h hView, const int delta_x, const int delt
  * @see maps_plugin_set_view()
  * @see maps_plugin_render_map()
  */
-int maps_plugin_draw_map(maps_view_h hView, Evas* canvas, const int x, const int y, const int width, const int height);
+int maps_plugin_draw_map(maps_view_h view, Evas* canvas, int x, int y, int width, int height);
 
 /**
  * @brief	Notifyes that the visual object is changed.
@@ -963,7 +967,7 @@ int maps_plugin_draw_map(maps_view_h hView, Evas* canvas, const int x, const int
  * visibility modificating or editing object specific properties.
  * @since_tizen 3.0
  *
- * @param[in]	hView		The handle of maps_view
+ * @param[in]	view		The handle of maps_view
  * @param[in]	object		The object handle
  * @param[in]	operation	The operation over the object
  * @return	0 on success, otherwise a negative error value
@@ -972,7 +976,8 @@ int maps_plugin_draw_map(maps_view_h hView, Evas* canvas, const int x, const int
  *
  * @see maps_plugin_create()
  */
-int maps_plugin_on_object(maps_view_h hView, const maps_view_object_h object, const maps_view_object_operation_e operation);
+int maps_plugin_on_object(maps_view_h view, const maps_view_object_h object,
+								maps_view_object_operation_e operation);
 
 /**
  * @brief	Converts screen coordinates to the geographical coordinates.
@@ -980,7 +985,7 @@ int maps_plugin_on_object(maps_view_h hView, const maps_view_object_h object, co
  * coordinates accordingly to the current maps settings.
  * @since_tizen 3.0
  *
- * @param[in]	hView	The handle of maps_view
+ * @param[in]	view	The handle of maps_view
  * @param[in]	x		The x coordinate on the screen
  * @param[in]	y		The y coordinate on the screen
  * @param[out]	coordinates	The corresponding geographical coordinates
@@ -992,7 +997,8 @@ int maps_plugin_on_object(maps_view_h hView, const maps_view_object_h object, co
  * @see maps_plugin_geography_to_screen()
  * @see #maps_coordinates_h
  */
-int maps_plugin_screen_to_geography(maps_view_h hView, const int x, const int y, maps_coordinates_h* coordinates);
+int maps_plugin_screen_to_geography(maps_view_h view, const int x, const int y,
+								maps_coordinates_h* coordinates);
 
 /**
  * @brief	Converts geographical coordinates to the screen coordinates.
@@ -1000,10 +1006,10 @@ int maps_plugin_screen_to_geography(maps_view_h hView, const int x, const int y,
  * coordinates accordingly to the current maps settings.
  * @since_tizen 3.0
  *
- * @param[in]	hView		The handle of maps_view
+ * @param[in]	view		The handle of maps_view
  * @param[in]	coordinates	The geographical coordinates
- * @param[out]x			The corresponding x coordinate on the screen
- * @param[out]y			The corresponding y coordinate on the screen
+ * @param[out]	x			The corresponding x coordinate on the screen
+ * @param[out]	y			The corresponding y coordinate on the screen
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
@@ -1012,33 +1018,34 @@ int maps_plugin_screen_to_geography(maps_view_h hView, const int x, const int y,
  * @see maps_plugin_screen_to_geography()
  * @see #maps_coordinates_h
  */
-int maps_plugin_geography_to_screen(maps_view_h hView, const maps_coordinates_h coordinates, int* x, int* y);
+int maps_plugin_geography_to_screen(maps_view_h view, const maps_coordinates_h coordinates,
+								int* x, int* y);
 
 /**
  * @brief	Gets the minimal zooms level of the Map.
  * @details This function gets the minimally available zoom level of the Map.
  * @since_tizen 3.0
  *
- * @param[in]	hView			The handle of maps_view
+ * @param[in]	view			The handle of maps_view
  * @param[out]min_zoom_level	The minimally available zoom level
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
  */
-int maps_plugin_get_min_zoom_level(maps_view_h hView, int *min_zoom_level);
+int maps_plugin_get_min_zoom_level(maps_view_h view, int *min_zoom_level);
 
 /**
  * @brief	Gets the maximal zooms level of the Map.
  * @details This function gets the maximally available zoom level of the Map.
  * @since_tizen 3.0
  *
- * @param[in]	hView			The handle of maps_view
+ * @param[in]	view			The handle of maps_view
  * @param[out]max_zoom_level	The maximally available zoom level
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
  */
-int maps_plugin_get_max_zoom_level(maps_view_h hView, int *max_zoom_level);
+int maps_plugin_get_max_zoom_level(maps_view_h view, int *max_zoom_level);
 
 /**
  * @brief	Get the central coordinates of a Map.
@@ -1046,7 +1053,7 @@ int maps_plugin_get_max_zoom_level(maps_view_h hView, int *max_zoom_level);
  * @since_tizen 3.0
  * @remarks @a coordinates must be released using maps_coordinates_destroy().
  *
- * @param[in]	hView		The handle of maps_view
+ * @param[in]	view		The handle of maps_view
  * @param[out]coordinates	The pointer to #maps_coordinates_h in which to
  * store the geographical coordinates of the central position of the Map
  * @return	0 on success, otherwise a negative error value
@@ -1056,7 +1063,7 @@ int maps_plugin_get_max_zoom_level(maps_view_h hView, int *max_zoom_level);
  * @see maps_plugin_get_min_zoom_level()
  * @see maps_plugin_get_max_zoom_level
  */
-int maps_plugin_get_center(maps_view_h hView, maps_coordinates_h *coordinates);
+int maps_plugin_get_center(maps_view_h view, maps_coordinates_h *coordinates);
 
 /**
  * @brief	Enables or disables the scalebar.
@@ -1064,7 +1071,7 @@ int maps_plugin_get_center(maps_view_h hView, maps_coordinates_h *coordinates);
  * @since_tizen 3.0
  * @remarks This function requires network access.
  *
- * @param[in]	hView		The handle of maps_view
+ * @param[in]	view		The handle of maps_view
  * @param[in]	enabled		The enable status
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
@@ -1073,14 +1080,14 @@ int maps_plugin_get_center(maps_view_h hView, maps_coordinates_h *coordinates);
  *
  * @see maps_plugin_get_scalebar()
  */
-int maps_plugin_set_scalebar(maps_view_h hView, bool enable);
+int maps_plugin_set_scalebar(maps_view_h view, bool enable);
 
 /**
  * @brief	Checks whether the scalebar is enabled or not.
  * @details This function checks whether the scalebar is enabled or not.
  * @since_tizen 3.0
  *
- * @param[in]	hView		The handle of maps_view
+ * @param[in]	view		The handle of maps_view
  * @param[out]enabled		The pointer to a boolean in which to store the enable status
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
@@ -1088,7 +1095,7 @@ int maps_plugin_set_scalebar(maps_view_h hView, bool enable);
  *
  * @see maps_plugin_set_scalebar()
  */
-int maps_plugin_get_scalebar(maps_view_h hView, bool *enabled);
+int maps_plugin_get_scalebar(maps_view_h view, bool *enabled);
 
 #ifdef __cplusplus
 }
