@@ -88,7 +88,7 @@ typedef struct _maps_view_object_s {
 
 } maps_view_object_s;
 
-extern int _maps_view_on_object_operation(maps_view_h view, maps_view_object_h object, maps_view_object_operation_e operation);
+int _maps_view_on_object_operation(maps_view_h view, maps_view_object_h object, maps_view_object_operation_e operation);
 
 static maps_view_h __get_view(const maps_view_object_h object);
 static maps_view_polyline_data_s *__get_polyline_data(const maps_view_object_h object);

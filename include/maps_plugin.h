@@ -350,10 +350,9 @@ int maps_plugin_geocode_inside_area(const char *address,
  * @see maps_plugin_reverse_geocode()
  */
 int maps_plugin_geocode_by_structured_address(const maps_address_h address,
-					      const maps_preference_h
-					      preference,
-					      maps_service_geocode_cb
-					      callback, void *user_data,
+					      const maps_preference_h preference,
+					      maps_service_geocode_cb callback,
+					      void *user_data,
 					      int *request_id);
 
 /**
@@ -997,7 +996,7 @@ int maps_plugin_on_object(maps_view_h view, const maps_view_object_h object,
  * @see maps_plugin_geography_to_screen()
  * @see #maps_coordinates_h
  */
-int maps_plugin_screen_to_geography(maps_view_h view, const int x, const int y,
+int maps_plugin_screen_to_geography(maps_view_h view, int x, int y,
 								maps_coordinates_h* coordinates);
 
 /**
