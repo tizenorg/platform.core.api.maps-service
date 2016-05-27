@@ -1047,7 +1047,7 @@ int maps_plugin_get_min_zoom_level(maps_view_h view, int *min_zoom_level);
 int maps_plugin_get_max_zoom_level(maps_view_h view, int *max_zoom_level);
 
 /**
- * @brief	Get the central coordinates of a Map.
+ * @brief	Gets the central coordinates of a Map.
  * @details This function gets the central coordinates of a Map.
  * @since_tizen 3.0
  * @remarks @a coordinates must be released using maps_coordinates_destroy().
