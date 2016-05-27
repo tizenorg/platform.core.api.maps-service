@@ -41,7 +41,7 @@ extern "C" {
  * @details The handle of Route Maneuver instance.
  * @remarks To release the handle use maps_route_maneuver_destroy().
  * \n To clone the handle use maps_route_maneuver_clone().
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  *
  * @see maps_route_maneuver_destroy()
  * @see maps_route_maneuver_clone()
@@ -50,7 +50,7 @@ typedef void *maps_route_maneuver_h;
 
 /**
  * @brief The enumeration of direction type.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  */
 typedef enum {
 
@@ -76,7 +76,7 @@ typedef enum {
 
 /**
  * @brief The enumeration of turn type.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  */
 typedef enum {
 
@@ -129,7 +129,7 @@ typedef enum {
  * resources.
  * @details This function destroys the route maneuver handle and releases all
  * its resources.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	maneuver	The maneuver handle to destroy
  * @return	0 on success, otherwise a negative error value
@@ -144,7 +144,7 @@ int maps_route_maneuver_destroy(maps_route_maneuver_h maneuver);
  * @brief	Clones the route maneuver handle.
  * @details This function clones the route maneuver handle @a origin and all its
  * resources.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks @a cloned must be released using maps_route_maneuver_destroy().
  *
  * @param[in]	origin		The original maneuver handle
@@ -164,7 +164,7 @@ int maps_route_maneuver_clone(const maps_route_maneuver_h origin,
 /**
  * @brief	Gets the route maneuver direction id.
  * @details This function gets the route maneuver direction id.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	maneuver	The maneuver handle
  * @param[out]	direction_id	The direction ID
@@ -180,7 +180,7 @@ int maps_route_maneuver_get_direction_id(const maps_route_maneuver_h maneuver,
 /**
  * @brief	Gets the route maneuver turn type.
  * @details This function gets the route maneuver turn type.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	maneuver	The maneuver handle
  * @param[out]	turn_type	The turn type
@@ -196,7 +196,7 @@ int maps_route_maneuver_get_turn_type(const maps_route_maneuver_h maneuver,
 /**
  * @brief	Gets the route maneuver position.
  * @details This function gets the route maneuver position.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks @a position must be released using maps_coordinates_destroy().
  *
  * @param[in]	maneuver	The maneuver handle
@@ -213,7 +213,7 @@ int maps_route_maneuver_get_position(const maps_route_maneuver_h maneuver,
 /**
  * @brief	Gets the road name of the route maneuver.
  * @details This function gets the road name of the route maneuver.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks @a road_name must be released using free().
  *
  * @param[in]	maneuver	The maneuver handle
@@ -230,7 +230,7 @@ int maps_route_maneuver_get_road_name(const maps_route_maneuver_h maneuver,
  * @brief	Gets the instruction text (narrative) of the route maneuver.
  * @details This function gets the instruction text (narrative) of the route
  * maneuver.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks @a instruction_text must be released using free().
  *
  * @param[in]	maneuver	The maneuver handle
@@ -246,7 +246,7 @@ int maps_route_maneuver_get_instruction_text(const maps_route_maneuver_h
 /**
  * @brief	Gets the route maneuver locale.
  * @details This function gets the route maneuver locale.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks @a locale must be released using free().
  *
  * @param[in]	maneuver	The maneuver handle
@@ -263,7 +263,7 @@ int maps_route_maneuver_get_locale(const maps_route_maneuver_h maneuver,
  * @brief	Gets the time to next instruction of the route maneuver.
  * @details This function gets the time to next instruction of the route
  * maneuver.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	maneuver	The maneuver handle
  * @param[out]	time_to_next_instruction	The time to next instruction on the
@@ -281,7 +281,7 @@ int maps_route_maneuver_get_time_to_next_instruction(const maps_route_maneuver_h
  * @brief	Gets the distance to next instruction of the route maneuver.
  * @details This function gets the distance to next instruction of the route
  * maneuver.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	maneuver	The maneuver handle
  * @param[out]	distance_to_next_instruction	The distance from the current
