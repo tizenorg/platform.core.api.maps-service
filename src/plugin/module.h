@@ -21,6 +21,7 @@
 #include "discovery.h"
 #include <glib.h>
 #include <gmodule.h>
+#include <image_util_type.h>
 
 /* ------------------------------------------------------------------------- */
 /*
@@ -128,6 +129,8 @@ typedef int (*maps_plugin_geography_to_screen_f) (maps_view_h view,
 typedef int (*maps_plugin_get_min_zoom_level_f) (maps_view_h view, int *min_zoom_level);
 typedef int (*maps_plugin_get_max_zoom_level_f) (maps_view_h view, int *max_zoom_level);
 typedef int (*maps_plugin_get_center_f) (maps_view_h view, maps_coordinates_h *coordinates);
+typedef int (*maps_plugin_capture_snapshot_f) (maps_view_h view, void **data,
+								int *width, int *height, maps_view_colorspace_type_e *cs);
 
 namespace plugin {
 
@@ -182,6 +185,7 @@ typedef struct _interface_s {
 	maps_plugin_get_min_zoom_level_f maps_plugin_get_min_zoom_level;
 	maps_plugin_get_max_zoom_level_f maps_plugin_get_max_zoom_level;
 	maps_plugin_get_center_f maps_plugin_get_center;
+	maps_plugin_capture_snapshot_f maps_plugin_capture_snapshot;
 } interface_s;
 
 /* Plugin structure */

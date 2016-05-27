@@ -18,11 +18,12 @@
 #define __MAPS_PLUGIN_H__
 
 #include <maps_service.h>
-#include <maps_view.h>
+#include <maps_view_plugin.h>
 #include <maps_plugin_info.h>
 #include <maps_extra_types.h>
 #include <maps_plugin_types.h>
 #include <maps_view_object_plugin.h>
+#include <image_util_type.h>
 
 /**
  *
@@ -1022,7 +1023,7 @@ int maps_plugin_get_min_zoom_level(maps_view_h view, int *min_zoom_level);
 int maps_plugin_get_max_zoom_level(maps_view_h view, int *max_zoom_level);
 
 /**
- * @brief	Get the central coordinates of a Map.
+ * @brief	Gets the central coordinates of a Map.
  * @details This function gets the central coordinates of a Map.
  * @since_tizen 3.0
  * @remarks @a coordinates must be released using maps_coordinates_destroy().
@@ -1038,6 +1039,23 @@ int maps_plugin_get_max_zoom_level(maps_view_h view, int *max_zoom_level);
  * @see maps_plugin_get_max_zoom_level
  */
 int maps_plugin_get_center(maps_view_h view, maps_coordinates_h *coordinates);
+
+/**
+ * @brief	Gets raw pixels of the Map.
+ * @details This function gets raw pixels of the Map.
+ * @since_tizen 3.0
+ *
+ * @param[in]	view		The view handle
+ * @param[out]	data		The pixels of the Map
+ * @param[out]	width		The width of @a data
+ * @param[out]	height		The height of @a data
+ * @param[out]	cs			The color space of @a data
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ */
+int maps_plugin_capture_snapshot(maps_view_h view, void **data, int *width, int *height,
+								maps_view_colorspace_type_e *cs);
 
 #ifdef __cplusplus
 }
