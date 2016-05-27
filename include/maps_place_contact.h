@@ -39,7 +39,7 @@ extern "C" {
  * @details The handle of Place Contact instance.
  * @remarks To release the handle use maps_place_contact_destroy().
  * \n To clone the handle use maps_place_contact_clone().
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  *
  * @see maps_place_contact_destroy()
  * @see maps_place_contact_clone()
@@ -53,7 +53,7 @@ typedef void *maps_place_contact_h;
  * resources.
  * @details This function destroys the place contact handle and releases all its
  * resources.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	contact		The place contact handle to destroy
  * @return	0 on success, otherwise a negative error value
@@ -68,7 +68,7 @@ int maps_place_contact_destroy(maps_place_contact_h contact);
  * @brief	Clones the place contact handle.
  * @details This function clones the place contact handle @a origin and all its
  * resources.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks @a cloned must be released using maps_place_contact_destroy().
  *
  * @param[in]	origin		The original place contact handle
@@ -88,7 +88,7 @@ int maps_place_contact_clone(const maps_place_contact_h origin,
 /**
  * @brief	Gets the place contact label.
  * @details This function gets the place contact label.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks @a label must be released using free().
  *
  * @param[in]	contact		The handle to place contact
@@ -103,7 +103,7 @@ int maps_place_contact_get_label(const maps_place_contact_h contact,
 /**
  * @brief	Gets the place contact type.
  * @details This function gets the place contact type.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks @a type must be released using free().
  *
  * @param[in]	contact		The handle to place contact
@@ -118,7 +118,7 @@ int maps_place_contact_get_type(const maps_place_contact_h contact,
 /**
  * @brief	Gets the place contact value.
  * @details This function gets the place contact value.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks @a value must be released using free().
  *
  * @param[in]	contact		The handle to place contact
