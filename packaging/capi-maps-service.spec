@@ -18,8 +18,8 @@ BuildRequires:  pkgconfig(dlog)
 BuildRequires:  pkgconfig(eina)
 BuildRequires:  pkgconfig(evas)
 BuildRequires:  pkgconfig(ecore)
-BuildRequires:  pkgconfig(evas)
-
+BuildRequires:	pkgconfig(cairo)
+BuildRequires:	pkgconfig(elementary)
 Requires(post):  /sbin/ldconfig
 Requires(postun):  /sbin/ldconfig
 Provides: capi-maps-service-plugin-devel

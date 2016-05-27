@@ -34,6 +34,7 @@ extern void *_maps_view_get_maps_service_ptr(maps_view_h view);
 extern maps_view_object_h _maps_view_object_hit_test(maps_view_h view, int x, int y, maps_view_gesture_e gesture);
 extern int _maps_view_event_data_set_gesture_type(maps_view_event_data_h event, maps_view_gesture_e gesture_type);
 extern int _maps_view_event_data_set_position(maps_view_event_data_h event, int x, int y);
+extern int _maps_view_event_data_set_coordinates(maps_view_event_data_h event, maps_coordinates_h coordinates);
 extern int _maps_view_event_data_set_center(maps_view_event_data_h event, maps_coordinates_h center);
 extern int _maps_view_event_data_set_fingers(maps_view_event_data_h event, int fingers);
 extern int _maps_view_event_data_set_zoom_factor(maps_view_event_data_h event, double zoom_factor);
@@ -256,6 +257,7 @@ void view::gesture_processor::on_long_press()
 	if(ed) {
 		_maps_view_event_data_set_gesture_type(ed, MAPS_VIEW_GESTURE_LONG_PRESS);
 		_maps_view_event_data_set_position(ed, tp._x, tp._y);
+		_maps_view_event_data_set_coordinates(ed, c);
 		_maps_view_event_data_set_fingers(ed, 1);
 		_maps_view_invoke_event_callback(_gd->_view, ed);
 		maps_view_event_data_destroy(ed);
@@ -286,6 +288,7 @@ void view::gesture_processor::on_double_tap()
 	if(ed) {
 		_maps_view_event_data_set_gesture_type(ed, MAPS_VIEW_GESTURE_DOUBLE_TAP);
 		_maps_view_event_data_set_position(ed, tp._x, tp._y);
+		_maps_view_event_data_set_coordinates(ed, c);
 		_maps_view_event_data_set_fingers(ed, 1);
 		_maps_view_invoke_event_callback(_gd->_view, ed);
 		maps_view_event_data_destroy(ed);
@@ -316,6 +319,7 @@ void view::gesture_processor::on_tap()
 	if(ed) {
 		_maps_view_event_data_set_gesture_type(ed, MAPS_VIEW_GESTURE_TAP);
 		_maps_view_event_data_set_position(ed, tp._x, tp._y);
+		_maps_view_event_data_set_coordinates(ed, c);
 		_maps_view_event_data_set_fingers(ed, 1);
 		_maps_view_invoke_event_callback(_gd->_view, ed);
 		maps_view_event_data_destroy(ed);
@@ -345,6 +349,7 @@ void view::gesture_processor::on_two_finger_tap()
 	if(ed) {
 		_maps_view_event_data_set_gesture_type(ed, MAPS_VIEW_GESTURE_2_FINGER_TAP);
 		_maps_view_event_data_set_position(ed, gesture_center._x, gesture_center._y);
+		_maps_view_event_data_set_coordinates(ed, c);
 		_maps_view_event_data_set_fingers(ed, 2);
 		_maps_view_invoke_event_callback(_gd->_view, ed);
 		maps_view_event_data_destroy(ed);
@@ -354,13 +359,29 @@ void view::gesture_processor::on_two_finger_tap()
 
 void view::gesture_processor::on_panning_finished(int finger_no)
 {
+	const touch_point cur_tp = _gd->_info._finger_move[finger_no];
+
 	/* Obtain fresh central coordinates of the map in the Plugin */
 	maps_coordinates_h c = NULL;
 	_maps_view_get_plugin_center(_gd->_view, &c);
 
 	/* Directly set the updated center of the map */
 	_maps_view_set_center_directly(_gd->_view, c);
+	maps_coordinates_destroy(c);
+	c = NULL;
 
+	maps_view_screen_to_geolocation(_gd->_view, cur_tp._x, cur_tp._y, &c);
+
+	/* Invoke user registered event callback */
+	maps_view_event_data_h ed = _maps_view_create_event_data(MAPS_VIEW_EVENT_GESTURE);
+	if(ed) {
+		_maps_view_event_data_set_gesture_type(ed, MAPS_VIEW_GESTURE_SCROLL);
+		_maps_view_event_data_set_position(ed, cur_tp._x, cur_tp._y);
+		_maps_view_event_data_set_coordinates(ed, c);
+		_maps_view_event_data_set_fingers(ed, 1);
+		_maps_view_invoke_event_callback(_gd->_view, ed);
+		maps_view_event_data_destroy(ed);
+	}
 	maps_coordinates_destroy(c);
 }
 
@@ -392,15 +413,21 @@ void view::gesture_processor::on_pan(int finger_no)
 							-delta_x,
 							-delta_y));
 
+	/* c. Get coordinates after delta_x and delta_y are updated */
+	maps_coordinates_h c = NULL;
+	maps_view_screen_to_geolocation(_gd->_view, cur_tp._x, cur_tp._y, &c);
+
 	/* Invoke user registered event callback */
 	maps_view_event_data_h ed = _maps_view_create_event_data(MAPS_VIEW_EVENT_GESTURE);
 	if(ed) {
 		_maps_view_event_data_set_gesture_type(ed, MAPS_VIEW_GESTURE_SCROLL);
 		_maps_view_event_data_set_position(ed, cur_tp._x, cur_tp._y);
+		_maps_view_event_data_set_coordinates(ed, c);
 		_maps_view_event_data_set_fingers(ed, 1);
 		_maps_view_invoke_event_callback(_gd->_view, ed);
 		maps_view_event_data_destroy(ed);
 	}
+	maps_coordinates_destroy(c);
 }
 
 view::touch_point view::gesture_processor::calc_center(
@@ -606,6 +633,7 @@ void view::gesture_processor::on_zoom_rotate(bool zoom_changed, double zoom_fact
 		maps_view_event_data_h ed = _maps_view_create_event_data(MAPS_VIEW_EVENT_GESTURE);
 		if (ed) {
 			_maps_view_event_data_set_position(ed, cur_center._x, cur_center._y);
+			_maps_view_event_data_set_coordinates(ed, center);
 			_maps_view_event_data_set_fingers(ed, 2);
 
 			if (zoom_changed) {
@@ -629,6 +657,7 @@ void view::gesture_processor::on_zoom_rotate(bool zoom_changed, double zoom_fact
 		if (ed) {
 			_maps_view_event_data_set_gesture_type(ed, MAPS_VIEW_GESTURE_ZOOM);
 			_maps_view_event_data_set_position(ed, cur_center._x, cur_center._y);
+			_maps_view_event_data_set_coordinates(ed, center);
 			_maps_view_event_data_set_fingers(ed, 2);
 			_maps_view_event_data_set_zoom_factor(ed, zoom_factor);
 			_maps_view_event_data_set_rotation_angle(ed, rotation_angle);
@@ -642,6 +671,7 @@ void view::gesture_processor::on_zoom_rotate(bool zoom_changed, double zoom_fact
 		if (ed) {
 			_maps_view_event_data_set_gesture_type(ed, MAPS_VIEW_GESTURE_ROTATE);
 			_maps_view_event_data_set_position(ed, cur_center._x, cur_center._y);
+			_maps_view_event_data_set_coordinates(ed, center);
 			_maps_view_event_data_set_fingers(ed, 2);
 			_maps_view_event_data_set_zoom_factor(ed, zoom_factor);
 			_maps_view_event_data_set_rotation_angle(ed, rotation_angle);
