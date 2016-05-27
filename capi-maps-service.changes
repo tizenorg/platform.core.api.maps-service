@@ -55,6 +55,11 @@
 [Title]     Added Mapping API.
 [Developer] Alexey Shulga <a.shulga@samsung.com>
 
+[Version]   capi-maps-service_0.4.7
+[Date]      5 January 2016
+[Title]     Fixed some mistakes in doxygen.
+[Developer] Young-Ae Kang <youngae.kang@samsung.com>
+
 [Version]   capi-maps-service_0.4.6
 [Date]      16 September 2015
 [Title]     Added -fvisibility=hidden to make EXPORT_API useful.
