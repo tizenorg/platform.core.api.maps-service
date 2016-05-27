@@ -51,6 +51,7 @@
  * | maps_view_event_data_get_center()         |         | +      |        |       |
  * | maps_view_event_data_get_delta()          |         | +      |        |       |
  * | maps_view_event_data_get_position()       | +       |        | +      |       |
+ * | maps_view_event_data_get_coordinates()    | +       |        |        |       |
  * | maps_view_event_data_get_fingers()        | +       |        | +      |       |
  * | maps_view_event_data_get_zoom_factor()    | +       | +      |        |       |
  * | maps_view_event_data_get_rotation_angle() | +       | +      |        |       |
@@ -304,6 +305,28 @@ int maps_view_event_data_get_delta(const maps_view_event_data_h event, int *delt
  * @see maps_view_on_event_cb()
  */
 int maps_view_event_data_get_position(const maps_view_event_data_h event, int *x, int *y);
+
+/**
+ * @brief	Gets the event geographic coordinates.
+ * @details This function gets the event geographic coordinates if the event type is #MAPS_VIEW_EVENT_GESTURE.
+ * Otherwise it returns #MAPS_ERROR_INVALID_PARAMETER.
+ * @since_tizen 3.0
+ *
+ * @param[in]	event	The event data handle
+ * @param[out]	center		The pointer to the #maps_coordinates_h in which to store the coordinates
+ * @return	0, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ *
+ * @pre @a event may be obtained in maps_view_on_event_cb()
+ *
+ * @see #maps_view_event_type_e
+ * @see #maps_view_event_data_h
+ * @see #maps_coordinates_h
+ * @see maps_view_event_data_get_type()
+ * @see maps_view_on_event_cb()
+ */
+int maps_view_event_data_get_coordinates(const maps_view_event_data_h event, maps_coordinates_h *coordinates);
 
 /**
  * @brief	Gets the number of fingers, detected in the event.

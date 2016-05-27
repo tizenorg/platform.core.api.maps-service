@@ -27,6 +27,8 @@ SET(dependents
 	eina
 	evas
 	ecore
+	cairo
+	elementary
 	)
 SET(pc_dependents "capi-base-common")
 
