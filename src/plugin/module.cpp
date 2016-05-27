@@ -228,6 +228,9 @@ maps_plugin_h plugin::binary_extractor::init(const provider_info &info,
 		new_plugin->interface.maps_plugin_get_center =
 			(maps_plugin_get_center_f) gmod_find_sym(plugin,
 			"maps_plugin_get_center");
+		new_plugin->interface.maps_plugin_capture_snapshot =
+			(maps_plugin_capture_snapshot_f) gmod_find_sym(plugin,
+			"maps_plugin_capture_snapshot");
 
 		/* 2.3 Check whether the plugin init function is valid */
 		if (!new_plugin->interface.maps_plugin_init) {
@@ -501,5 +504,7 @@ void plugin::binary_extractor::trace_dbg(const plugin_s *plugin) const
 
 	MAPS_LOGD("maps_plugin_cancel_request:\t\t%p",
 		itf->maps_plugin_cancel_request);
+	MAPS_LOGD("maps_plugin_capture_snapshot:\t\t%p",
+		itf->maps_plugin_capture_snapshot);
 	MAPS_LOGD("*********************************************");
 }

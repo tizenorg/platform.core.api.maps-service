@@ -71,7 +71,8 @@ typedef enum _maps_service_e {
 	MAPS_SERVICE_SEARCH_PLACE_LIST,			/**< Indicates that maps_service_search_place_list() service is allowed @if MOBILE (Since 3.0) @endif */
 	MAPS_SERVICE_SEARCH_GET_PLACE_DETAILS,	/**< Indicates that maps_service_search_get_place_details() service is allowed @if MOBILE (Since 3.0) @endif */
 
-	MAPS_SERVICE_VIEW = 0x100				/**< Indicates that maps view service is allowed @if MOBILE (Since 3.0) @endif */
+	MAPS_SERVICE_VIEW = 0x100,				/**< Indicates that maps view service is allowed @if MOBILE (Since 3.0) @endif */
+	MAPS_SERVICE_VIEW_SNAPSHOT				/**< Indicates that maps view snapshot service is allowed @if MOBILE (Since 3.0) @endif */
 } maps_service_e;
 
 /**
