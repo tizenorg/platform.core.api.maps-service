@@ -38,7 +38,7 @@ extern "C" {
 
 /**
  * @brief Enumerations of error codes for Maps Service and Plug-ins
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  */
 typedef enum _maps_error_e {
 	MAPS_ERROR_NONE = TIZEN_ERROR_NONE,	/**< Successful */

@@ -36,6 +36,16 @@ extern "C" {
 #endif
 
 /**
+ * @brief	Enumerations of color space types
+ * @since_tizen 3.0
+ */
+typedef enum _maps_view_colorspace_type_e
+{
+	MAPS_VIEW_COLORSPACE_RGBA8888,
+	MAPS_VIEW_COLORSPACE_BGRA8888,
+} maps_view_colorspace_type_e;
+
+/**
  * @brief	Zooms the map on the view.
  * @details This function zooms the map on the View with real value of zoom
  * factor.
