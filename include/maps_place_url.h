@@ -40,7 +40,7 @@ extern "C" {
  * @details The handle of Place URL instance.
  * @remarks To release the handle use maps_place_url_destroy().
  * \n To clone the handle use maps_place_url_clone().
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  *
  * @see maps_place_url_destroy()
  * @see maps_place_url_clone()
@@ -53,7 +53,7 @@ typedef void *maps_place_url_h;
  * @brief	Destroys the place URL handle and releases all its resources.
  * @details This function destroys the place URL handle and releases all its
  * resources.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	url	The place URL handle to destroy
  * @return	0 on success, otherwise a negative error value
@@ -68,7 +68,7 @@ int maps_place_url_destroy(maps_place_url_h url);
  * @brief	Clones the place URL handle.
  * @details This function clones the place URL handle @a origin and all its
  * resources.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks @a cloned must be released using maps_place_url_destroy().
  *
  * @param[in]	origin	The original place url handle
@@ -88,7 +88,7 @@ int maps_place_url_clone(const maps_place_url_h origin,
 /**
  * @brief	Gets the place URL path.
  * @details This function gets the place URL path.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks @a path must be released using free().
  *
  * @param[in]	url		The handle to place url handle
@@ -102,7 +102,7 @@ int maps_place_url_get_path(const maps_place_url_h url, char **path);
 /**
  * @brief	Gets the place URL description.
  * @details This function gets the place URL description.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks @a desc must be released using free().
  *
  * @param[in]	url		The handle to place url handle

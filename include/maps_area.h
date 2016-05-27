@@ -40,7 +40,7 @@ extern "C" {
  * @brief	Handle of the Geographical Area.
  * @details The Geographical Area handle can be obtained via call of
  * maps_area_create_rectangle() or maps_area_create_circle().
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * \n To release the handle use maps_area_destroy().
  * \n To clone the handle use maps_area_clone().
  *
@@ -55,7 +55,7 @@ typedef void *maps_area_h;
  * @brief	Enumeration of supported types of the Geographical Area.
  * @details This enumeration represents allowed geographical type of
  * Geographical Area: rectangular and circular.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  */
 typedef enum {
 	MAPS_AREA_NONE = 0,		/**< Undefined geographical area type. */
@@ -69,7 +69,7 @@ typedef enum {
  * specified with left top and right bottom coordinates.
  * @warning Do not use #maps_area_rectangle_s directly
  * if you are an application developer.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  */
 typedef struct _maps_area_rectangle_s {
 	maps_coordinates_s top_left;		/**< The top left position of rectangle. */
@@ -82,7 +82,7 @@ typedef struct _maps_area_rectangle_s {
  * @details This structure represents a circular Geographical Area.
  * @warning Do not use #maps_area_circle_s directly
  * if you are an application developer.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  */
 typedef struct _maps_area_circle_s {
 	maps_coordinates_s center;	/**< The center position of a circle. */
@@ -96,7 +96,7 @@ typedef struct _maps_area_circle_s {
  * @warning Do not use #maps_area_s directly
  * if you are an application developer.
  * Using #maps_area_h is recommanded.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  */
 typedef struct _maps_area_s {
 	maps_area_type_e type;	/**< The area type of this information. */
@@ -113,7 +113,7 @@ typedef struct _maps_area_s {
  * specified information.
  * @details This function creates a rectangular type of new #maps_area_h with a
  * specified left top and right bottom coordinates.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks @a area must be released using maps_area_destroy().
  * \n @a area may be cloned using maps_area_clone().
  * \n @a top_left and @a bottom_right must be released using
@@ -145,7 +145,7 @@ int maps_area_create_rectangle(const maps_coordinates_h top_left,
  * specified information.
  * @details This function creates a circular type of new #maps_area_h
  * Geographical Area with a specified center coordinates and a radius.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks @a area must be released using maps_area_destroy().
  * \n @a center must be released using maps_coordinates_destroy().
  * \n The @a radius is specified in units, listed in #maps_distance_unit_e.
@@ -177,7 +177,7 @@ int maps_area_create_circle(const maps_coordinates_h center,
  * @brief	Destroys the Geographical Area and releases all its resources.
  * @details This function destroys the Geographical Area #maps_area_h and
  * releases all its resources.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	area		The area #maps_area_h
  * @return	0 on success, otherwise a negative error value
@@ -197,7 +197,7 @@ int maps_area_destroy(maps_area_h area);
  * @brief	Clones the Geographical Area.
  * @details This function makes a clone of the @a origin Geographical Area of
  * type #maps_area_h.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks @a cloned must be released using maps_area_destroy().
  *
  * @param[in]	origin		The area #maps_area_h to be copied

@@ -20,6 +20,7 @@
 #include <Evas.h>
 #include <unistd.h>
 #include <glib.h>
+#include <Elementary.h>
 
 #include "maps_view.h"
 #include "maps_view_plugin.h"
@@ -33,6 +34,7 @@
 #include "inertial_camera.h"
 #include "inertial_gesture.h"
 #include "gesture_detector_statemachine.h"
+#include "maps_view_event_data.h"
 
 /*
  * The structure of callbacks info, Maps View is invoking during events
@@ -83,6 +85,8 @@ typedef struct _maps_view_s {
 	/* Evas basis */
 	Evas *canvas;
 	Evas_Object *panel;
+	Evas_Object *parent;
+	Evas_Object *clipper;
 
 	/* Gesture Support */
 	maps_view_action_e gesture_actions[MAPS_VIEW_GESTURE_LONG_PRESS + 1];
@@ -135,12 +139,14 @@ extern int _maps_view_object_set_view(const maps_view_object_h object, const map
 maps_view_event_data_h _maps_view_create_event_data(maps_view_event_type_e type);
 void _maps_view_invoke_event_callback(const maps_view_h view, const maps_view_event_data_h event_data);
 int _maps_view_set_inertia_enabled(const maps_view_h view, bool enabled);
+extern bool _maps_view_object_overlay_cb(int index, int total, maps_view_object_h object, void *user_data);
+extern int _maps_view_object_overlay_operation(maps_view_h view, maps_view_object_h object, maps_view_object_operation_e operation);
 
 /* ---------------------------------------------------------------------------*/
 
 
 /* TODO: Apply this approach for other cases, particularly, in maps_service.h*/
-static const plugin::interface_s *__get_plugin_interface(maps_view_h view)
+const plugin::interface_s *__get_plugin_interface(maps_view_h view)
 {
 	const plugin::plugin_s *p =
 		__extract_plugin(((maps_view_s *)view)->maps);
@@ -212,15 +218,30 @@ void *_maps_view_get_maps_service_ptr(maps_view_h view)
 	return v->maps;
 }
 
+int _maps_view_on_overlay_update_all(maps_view_h view)
+{
+	if (!view)
+		return MAPS_ERROR_INVALID_PARAMETER;
+
+	maps_view_s *v = (maps_view_s *)view;
+	return maps_item_list_foreach(v->view_objects, NULL, _maps_view_object_overlay_cb, v->clipper);
+}
+
 int _maps_view_on_object_operation(maps_view_h view, maps_view_object_h object, maps_view_object_operation_e operation)
 {
 	if(!view)
 		return  MAPS_ERROR_INVALID_PARAMETER;
 
-	if(!__get_plugin_interface(view)->maps_plugin_on_object)
-		return  MAPS_ERROR_INVALID_PARAMETER;
+	maps_view_object_type_e type;
+	maps_view_object_get_type(object, &type);
+	if (type == MAPS_VIEW_OBJECT_OVERLAY)
+		return _maps_view_object_overlay_operation(view, object, operation);
+	else {
+		if(!__get_plugin_interface(view)->maps_plugin_on_object)
+			return  MAPS_ERROR_INVALID_PARAMETER;
 
-	return __get_plugin_interface(view)->maps_plugin_on_object(view, object, operation);
+		return __get_plugin_interface(view)->maps_plugin_on_object(view, object, operation);
+	}
 }
 
 static void __on_canvas_tap(void *data, Evas *e, Evas_Object *obj, void *event_info)
@@ -372,6 +393,7 @@ static Eina_Bool __maps_view_on_idle_cb(void *data)
 					 ic->get_cur_center(),
 					 ic->get_cur_zoom_factor(),
 					 ic->get_cur_rotation_angle());
+		_maps_view_on_overlay_update_all(v);
 		g_usleep(10*1000);
 	}
 
@@ -408,6 +430,17 @@ void __maps_view_ready(const maps_view_h view)
 
 /* ----------------------CREATE AND DESTROY-----------------------------------*/
 
+static void __maps_view_parent_resize_cb(void *data, Evas *e, Evas_Object *obj, void *event_info)
+{
+	maps_view_s *v = (maps_view_s*)data;
+
+	int x, y, w, h;
+	evas_object_geometry_get(v->parent, &x, &y, &w, &h);
+	evas_object_move(v->panel, x, y);
+	maps_view_resize(v, w, h);
+	evas_object_resize(v->clipper, w, h);
+}
+
 static void __maps_view_panel_resize_cb(void *data, Evas *e, Evas_Object *obj, void *event_info)
 {
 	maps_view_s *v = (maps_view_s*)data;
@@ -415,10 +448,11 @@ static void __maps_view_panel_resize_cb(void *data, Evas *e, Evas_Object *obj, v
 	int w, h;
 	evas_object_geometry_get(v->panel, NULL, NULL, &w, &h);
 	maps_view_resize(v, w, h);
+	evas_object_resize(v->clipper, w, h);
 }
 
 /* Create the panel and link it to the instance of Maps Service */
-EXPORT_API int maps_view_create(maps_service_h maps, Evas_Image *obj, maps_view_h *view)
+EXPORT_API int maps_view_create(maps_service_h maps, Evas_Object *obj, maps_view_h *view)
 {
 	if (!maps || !obj || !view)
 		return MAPS_ERROR_INVALID_PARAMETER;
@@ -432,9 +466,20 @@ EXPORT_API int maps_view_create(maps_service_h maps, Evas_Image *obj, maps_view_
 	/* Initialize the list with visual objects */
 	maps_item_list_create(&v->view_objects);
 
-	v->panel = obj;
+	/* Initialize the panel */
+	if (!strncmp(evas_object_type_get(obj), "image", strlen("image"))) {
+		MAPS_LOGD("The panel is a Evas_Image");
+		v->panel = obj;
+		evas_object_event_callback_add(v->panel, EVAS_CALLBACK_RESIZE, __maps_view_panel_resize_cb, v);
+	} else {
+		MAPS_LOGD("The panel is not a Evas_Image");
+		v->parent = obj;
+		v->panel = evas_object_image_filled_add(evas_object_evas_get(v->parent));
+		evas_object_show(v->panel);
+		evas_object_smart_member_add(v->panel, v->parent);
 
-	evas_object_event_callback_add(v->panel, EVAS_CALLBACK_RESIZE, __maps_view_panel_resize_cb, v);
+		evas_object_event_callback_add(v->parent, EVAS_CALLBACK_RESIZE, __maps_view_parent_resize_cb, v);
+	}
 
 	v->maps_plugin_view_handle = NULL;
 
@@ -483,6 +528,8 @@ EXPORT_API int maps_view_create(maps_service_h maps, Evas_Image *obj, maps_view_
 	/* Set up canvas and Ecore */
 	v->canvas = evas_object_evas_get(v->panel);
 	/*v->ee = ecore_evas_ecore_evas_get(v->canvas);*/
+
+	v->clipper = evas_object_rectangle_add(v->canvas);
 
 	/* Link with Maps Service */
 	v->maps = maps;
@@ -569,6 +616,9 @@ EXPORT_API int maps_view_destroy(maps_view_h view)
 	if (v->panel)
 		evas_object_del(v->panel);
 
+	if (v->clipper)
+		evas_object_del(v->clipper);
+
 	if (v->center)
 		maps_coordinates_destroy(v->center);
 
@@ -652,6 +702,8 @@ EXPORT_API int maps_view_set_center(maps_view_h view, maps_coordinates_h coordin
 		maps_coordinates_clone(coordinates, &v->center);
 	}
 
+	_maps_view_on_overlay_update_all(view);
+
 	/* Invoke user registered event callback */
 	maps_view_event_data_h ed =
 		_maps_view_create_event_data(MAPS_VIEW_EVENT_ACTION);
@@ -671,6 +723,8 @@ int _maps_view_move_center(maps_view_h view, const int delta_x, const int delta_
 		return MAPS_ERROR_INVALID_PARAMETER;
 
 	int error = __get_plugin_interface(view)->maps_plugin_move_center(view, delta_x, delta_y);
+
+	_maps_view_on_overlay_update_all(view);
 
 	/* Invoke user registered event callback */
 	maps_view_event_data_h ed =
@@ -750,12 +804,46 @@ EXPORT_API int maps_view_get_zoom_level(const maps_view_h view, int *level)
 	return MAPS_ERROR_NONE;
 }
 
+EXPORT_API int maps_view_set_min_zoom_level(maps_view_h view, int level)
+{
+	if (!view)
+		return MAPS_ERROR_INVALID_PARAMETER;
+	maps_view_s *v = (maps_view_s *) view;
+	int min_zoom_level = -1;
+	__get_plugin_interface(v)->maps_plugin_get_min_zoom_level(view, &min_zoom_level);
+	if (min_zoom_level < 0)
+		return MAPS_ERROR_INVALID_OPERATION;
+	if ((level < min_zoom_level) || (level > v->max_zoom_level))
+		return MAPS_ERROR_INVALID_PARAMETER;
+	v->min_zoom_level = level;
+	if (v->min_zoom_level > v->zoom_level)
+		maps_view_set_zoom_level(view, v->min_zoom_level);
+	return MAPS_ERROR_NONE;
+}
+
 EXPORT_API int maps_view_get_min_zoom_level(const maps_view_h view, int *min_zoom_level)
 {
 	if (!view || !min_zoom_level)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_view_s *v = (maps_view_s *) view;
 	*min_zoom_level = v->min_zoom_level;
+	return MAPS_ERROR_NONE;
+}
+
+EXPORT_API int maps_view_set_max_zoom_level(maps_view_h view, int level)
+{
+	if (!view)
+		return MAPS_ERROR_INVALID_PARAMETER;
+	maps_view_s *v = (maps_view_s *) view;
+	int max_zoom_level = -1;
+	__get_plugin_interface(v)->maps_plugin_get_max_zoom_level(view, &max_zoom_level);
+	if (max_zoom_level < 0)
+		return MAPS_ERROR_INVALID_OPERATION;
+	if ((level < v->min_zoom_level) || (level > max_zoom_level))
+		return MAPS_ERROR_INVALID_PARAMETER;
+	v->max_zoom_level = level;
+	if (v->max_zoom_level < v->zoom_level)
+		maps_view_set_zoom_level(view, v->max_zoom_level);
 	return MAPS_ERROR_NONE;
 }
 
@@ -1112,6 +1200,24 @@ EXPORT_API int maps_view_get_viewport(const maps_view_h view, Evas_Object **view
 	return MAPS_ERROR_NONE;
 }
 
+int _maps_view_get_parent(const maps_view_h view, Evas_Object **parent)
+{
+	if (!view || !parent)
+		return MAPS_ERROR_INVALID_PARAMETER;
+	maps_view_s *v = (maps_view_s *) view;
+	*parent = v->parent;
+	return MAPS_ERROR_NONE;
+}
+
+int _maps_view_get_clipper(const maps_view_h view, Evas_Object **clipper)
+{
+	if (!view || !clipper)
+		return MAPS_ERROR_INVALID_PARAMETER;
+	maps_view_s *v = (maps_view_s *) view;
+	*clipper = v->clipper;
+	return MAPS_ERROR_NONE;
+}
+
 EXPORT_API int maps_view_set_screen_location(maps_view_h view, int x, int y, int width, int height)
 {
 	if (!view)
@@ -1137,6 +1243,7 @@ EXPORT_API int maps_view_move(maps_view_h view, int x, int y)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_view_s *v = (maps_view_s *) view;
 	evas_object_move(v->panel, x, y);
+	evas_object_move(v->clipper, x, y);
 	return MAPS_ERROR_NONE;
 }
 
@@ -1146,6 +1253,7 @@ EXPORT_API int maps_view_resize(maps_view_h view, int width, int height)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_view_s *v = (maps_view_s *) view;
 	evas_object_resize(v->panel, width, height);
+	evas_object_resize(v->clipper, width, height);
 	return maps_view_set_center(view, v->center);
 }
 
@@ -1356,6 +1464,26 @@ void _maps_view_invoke_event_callback(maps_view_h view, maps_view_event_data_h e
 
 	maps_view_event_type_e type = MAPS_VIEW_EVENT_GESTURE;
 	maps_view_event_data_get_type(event_data, &type);
+
+#if 0 // log
+	int maps_view_event_data_get_gesture_type(const maps_view_event_data_h event, maps_view_gesture_e *gesture_type);
+	int maps_view_event_data_get_action_type(const maps_view_event_data_h event, maps_view_action_e *action_type);
+	int maps_view_event_data_get_object(const maps_view_event_data_h event, maps_view_object_h *object);
+	int maps_view_object_get_type(maps_view_object_h object, maps_view_object_type_e *type);
+
+	int subtype = 0;
+	if (type == MAPS_VIEW_EVENT_GESTURE)
+		maps_view_event_data_get_gesture_type(event_data, (maps_view_gesture_e*)&subtype);
+	else if (type == MAPS_VIEW_EVENT_ACTION)
+		maps_view_event_data_get_action_type(event_data, (maps_view_action_e*)&subtype);
+	else if (type == MAPS_VIEW_EVENT_OBJECT) {
+		maps_view_object_h object;
+		maps_view_event_data_get_object(event_data, &object);
+		maps_view_object_get_type(object, (maps_view_object_type_e*)&subtype);
+	}
+	if (type == MAPS_VIEW_EVENT_READY)
+	MAPS_LOGD("[invoked event] type=%d, subtype=%d", type, subtype);
+#endif
 
 	v->event_callbacks[type].callback(type, event_data, v->event_callbacks[type].user_data);
 }

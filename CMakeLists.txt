@@ -27,6 +27,9 @@ SET(dependents
 	eina
 	evas
 	ecore
+	cairo
+	elementary
+	capi-media-image-util
 	)
 SET(pc_dependents "capi-base-common")
 
