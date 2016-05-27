@@ -43,7 +43,7 @@ extern "C" {
  * @details The handle of Route Segment instance.
  * @remarks To release the handle use maps_route_segment_destroy().
  * \n To clone the handle use maps_route_segment_clone().
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  *
  * @see maps_route_segment_destroy()
  * @see maps_route_segment_clone()
@@ -54,7 +54,7 @@ typedef void *maps_route_segment_h;
  * @brief	Called when requesting the path of the Route Segment.
  * @details This callback is invoked while iterating through the list of
  * coordinates, composing the Route Segment.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks @a coordinates must be released using maps_coordinates_destroy().
  * \n To use @a coordinates outside this function, clone it with
  * maps_coordinates_clone().
@@ -78,7 +78,7 @@ typedef bool(*maps_route_segment_path_cb) (int index, int total,
  * @brief	Called when requesting the maneuvers of the Route Segment.
  * @details This callback is invoked while iterating through the list of
  * maneuvers, composing the Route Segment.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks @a maneuver is valid only in this function and must be released
  * using maps_route_maneuver_destroy().
  * \n To use @a maneuver outside this function, clone it with
@@ -105,7 +105,7 @@ typedef bool(*maps_route_segment_maneuver_cb) (int index, int total,
  * @brief	Destroys the route segment handle and releases all its resources.
  * @details This function destroys the route segment handle and releases all its
  * resources.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	segment		The segment handle to destroy
  * @return	0 on success, otherwise a negative error value
@@ -120,7 +120,7 @@ int maps_route_segment_destroy(maps_route_segment_h segment);
  * @brief	Clones the route segment handle.
  * @details This function clones the route handle @a origin and all its
  * resources.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks @a cloned must be released using maps_route_segment_destroy().
  *
  * @param[in]	origin		The original segment handle
@@ -140,7 +140,7 @@ int maps_route_segment_clone(const maps_route_segment_h origin,
 /**
  * @brief	Gets the route segment origin.
  * @details This function gets the route segment origin.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks @a origin must be released using maps_coordinates_destroy().
  *
  * @param[in]	segment		The segment handle
@@ -157,7 +157,7 @@ int maps_route_segment_get_origin(const maps_route_segment_h segment,
 /**
  * @brief	Gets the route segment destination.
  * @details This function gets the route segment destination.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks @a destination must be released using maps_coordinates_destroy().
  *
  * @param[in]	segment		The segment handle
@@ -174,7 +174,7 @@ int maps_route_segment_get_destination(const maps_route_segment_h segment,
 /**
  * @brief	Gets the route segment bounding box.
  * @details This function gets the route segment bounding box.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks @a bounding_box must be released using maps_area_destroy().
  *
  * @param[in]	segment		The segment handle
@@ -191,7 +191,7 @@ int maps_route_segment_get_bounding_box(const maps_route_segment_h segment,
 /**
  * @brief	Gets the route segment distance.
  * @details This function gets the route segment distance.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	segment		The segment handle
  * @param[out]	distance	The distance of segment
@@ -205,7 +205,7 @@ int maps_route_segment_get_distance(const maps_route_segment_h segment,
 /**
  * @brief	Gets the route segment duration.
  * @details This function gets the route segment duration.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	segment		The segment handle
  * @param[out]	duration	The distance of segment
@@ -219,7 +219,7 @@ int maps_route_segment_get_duration(const maps_route_segment_h segment,
 /**
  * @brief	Retrieves all coordinates of the path.
  * @details This function retrieves all coordinates of the route segment path.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks The coordinates will be delivered via maps_route_segment_path_cb().
  *
  * @param[in]	segment		The segment handle
@@ -244,7 +244,7 @@ int maps_route_segment_foreach_path(const maps_route_segment_h segment,
 /**
  * @brief	Retrieves all maneuvers of the path.
  * @details This function retrieves all maneuvers of the route segment path.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks The coordinates will be delivered via
  * maps_route_segment_maneuver_cb().
  *

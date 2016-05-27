@@ -37,14 +37,14 @@ extern "C" {
 /**
  * @brief	The address handle.
  * @details The address handle can be obtained via calling of maps_address_create()
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  */
 typedef void *maps_address_h;
 
 /**
  * @brief The address list handle
  * @details The address list handle can be obtained via calling of maps_address_list_create().
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  */
 typedef void *maps_address_list_h;
 
@@ -54,7 +54,7 @@ typedef void *maps_address_list_h;
  * @brief	Creates a new address handle.
  * @details This function creates a new address handle and allocates all
  * needed resources.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks @a address must be released using maps_address_destroy().
  * \n @a address may be cloned using maps_address_clone().
  *
@@ -73,7 +73,7 @@ int maps_address_create(maps_address_h *address);
  * @brief	Destroys the address handle and releases all its resources.
  * @details This function destroys the address handle and releases all its
  * resources.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	address		The address handle to destroy
  * @return	0 on success, otherwise a negative error value
@@ -92,7 +92,7 @@ int maps_address_destroy(maps_address_h address);
  * @details This function clones the address handle @a origin and all its
  * resources.
  * \n Address handle @a origin may be created using maps_address_create().
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks @a cloned must be released using maps_address_destroy().
  *
  * @param[in]	origin		The original address handle
@@ -114,7 +114,7 @@ int maps_address_clone(const maps_address_h origin, maps_address_h *cloned);
 /**
  * @brief	Gets the building number of the address handle.
  * @details This function gets the building number of the address handle.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks @a building_number must be released using free().
  *
  * @param[in]	address		The address handle
@@ -134,7 +134,7 @@ int maps_address_get_building_number(const maps_address_h address,
 /**
  * @brief	Gets the street name of the address handle.
  * @details This function gets the street name of the address handle.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks @a street must be released using free().
  *
  * @param[in]	address	The address handle
@@ -153,7 +153,7 @@ int maps_address_get_street(const maps_address_h address, char **street);
 /**
  * @brief	Gets the district name of the address handle.
  * @details This function gets the district name of the address handle.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks @a district must be released using free().
  *
  * @param[in]	address		The address handle
@@ -172,7 +172,7 @@ int maps_address_get_district(const maps_address_h address, char **district);
 /**
  * @brief	Gets the city name of the address handle.
  * @details This function gets the city name of the address handle.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks @a city must be released using free().
  *
  * @param[in]	address		The address handle
@@ -191,7 +191,7 @@ int maps_address_get_city(const maps_address_h address, char **city);
 /**
  * @brief	Gets the state name of the address handle
  * @details This function gets the state name of the address handle.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks @a state must be released using free().
  *
  * @param[in]	address		The address handle
@@ -210,7 +210,7 @@ int maps_address_get_state(const maps_address_h address, char **state);
 /**
  * @brief	Gets the country name of the address handle.
  * @details This function gets the country name of the address handle.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks @a country must be released using free().
  *
  * @param[in]	address		The address handle
@@ -229,7 +229,7 @@ int maps_address_get_country(const maps_address_h address, char **country);
 /**
  * @brief	Gets the country code of the address handle.
  * @details This function gets the country code of the address handle.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks @a country_code must be released using free().
  *
  * @param[in]	address		The address handle
@@ -249,7 +249,7 @@ int maps_address_get_country_code(const maps_address_h address,
 /**
  * @brief	Gets the county of the address handle.
  * @details This function gets the county of the address handle.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks @a county must be released using free().
  *
  * @param[in]	address		The address handle
@@ -268,7 +268,7 @@ int maps_address_get_county(const maps_address_h address, char **county);
 /**
  * @brief	Gets the postal code of the address handle.
  * @details This function gets the postal code of the address handle.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks @a postal_code must be released using free().
  *
  * @param[in]	address		The address handle
@@ -288,7 +288,7 @@ int maps_address_get_postal_code(const maps_address_h address,
 /**
  * @brief	Gets the free text of the address handle.
  * @details This function gets the free text of the address handle.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks @a freetext must be released using free().
  *
  * @param[in]	address		The address handle
@@ -309,7 +309,7 @@ int maps_address_get_freetext(const maps_address_h address, char **freetext);
 /**
  * @brief	Sets the building number of the address handle.
  * @details This function sets the building number of the address handle.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	address		The address handle
  * @param[in]	building_number	The building number to be set
@@ -328,7 +328,7 @@ int maps_address_set_building_number(maps_address_h address,
 /**
  * @brief	Sets the street name of the address handle.
  * @details This function sets the street name of the address handle.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	address		The address handle
  * @param[in]	street		The street name to be set
@@ -346,7 +346,7 @@ int maps_address_set_street(maps_address_h address, const char *street);
 /**
  * @brief	Sets the district name of the address handle.
  * @details This function sets the district name of the address handle.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	address		The address handle
  * @param[in]	district	The district name to be set
@@ -364,7 +364,7 @@ int maps_address_set_district(maps_address_h address, const char *district);
 /**
  * @brief	Sets the city name of the address handle.
  * @details This function sets the city name of the address handle.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	address		The address handle
  * @param[in]	city		The city name to be set
@@ -382,7 +382,7 @@ int maps_address_set_city(maps_address_h address, const char *city);
 /**
  * @brief	Sets the state name of the address handle.
  * @details This function sets the state name of the address handle.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	address		The address handle
  * @param[in]	state		The state name to be set
@@ -400,7 +400,7 @@ int maps_address_set_state(maps_address_h address, const char *state);
 /**
  * @brief	Sets the country name of the address handle.
  * @details This function sets the country name of the address handle.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	address		The address handle
  * @param[in]	country		The country name to be set
@@ -418,7 +418,7 @@ int maps_address_set_country(maps_address_h address, const char *country);
 /**
  * @brief	Sets the country code of the address handle.
  * @details This function sets the country code of the address handle.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	address		The address handle
  * @param[in]	country_code	The country code to be set
@@ -437,7 +437,7 @@ int maps_address_set_country_code(maps_address_h address,
 /**
  * @brief	Sets the county of the address handle.
  * @details This function sets the county of the address handle.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	address		The address handle
  * @param[in]	county		The county to be set
@@ -455,7 +455,7 @@ int maps_address_set_county(maps_address_h address, const char *county);
 /**
  * @brief	Sets the postal code of the address handle.
  * @details This function sets the postal code of the address handle.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	address		The address handle
  * @param[in]	postal_code	The postal code to be set
@@ -474,7 +474,7 @@ int maps_address_set_postal_code(maps_address_h address,
 /**
  * @brief	Sets the free text of the address handle.
  * @details This function sets the free text of the address handle.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	address		The address handle
  * @param[in]	freetext	The free text to be set
@@ -491,7 +491,7 @@ int maps_address_set_freetext(maps_address_h address, const char *freetext);
 
 /**
  * @brief	Creates a address list having a set of addresses.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[out]	address_list	The address list handle
  * @return	0 on success, otherwise a negative error value
@@ -505,7 +505,7 @@ int maps_address_list_create(maps_address_list_h *address_list);
 
 /**
  * @brief	Appends an address to an address list.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  * @remarks	Don't release @a address before removed from the list using maps_address_list_remove().
  *
  * @param[in]	address_list	The address list handle
@@ -523,7 +523,7 @@ int maps_address_list_append(maps_address_list_h address_list, maps_address_h ad
 
 /**
  * @brief	Removes an address from an address list.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  * @remarks	@a address is just excepted from the list.\n
  * It must be released using maps_address_destroy().
  *
@@ -541,7 +541,7 @@ int maps_address_list_remove(maps_address_list_h address_list, maps_address_h ad
 
 /**
  * @brief	Gets the number of elements in an address list.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	address_list	The address list handle
  * @param[out]	length	The number of elements in the address list
@@ -556,7 +556,7 @@ int maps_address_list_get_length(maps_address_list_h address_list, int *length);
 
 /**
  * @brief	Called iteratively to get address information.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	index	The index of iteration
  * @param[in]	address	The address handle
@@ -572,7 +572,7 @@ typedef bool (*maps_address_cb)(int index, maps_address_h address, void *user_da
 
 /**
  * @brief Retrieves all addresses by invoking a specific callback for each address of address list.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	address_list	The address list handle
  * @param[in]	callback	The iteration callback
@@ -590,7 +590,7 @@ int maps_address_list_foreach(maps_address_list_h address_list,
 
 /**
  * @brief	Frees all of the memory used by a address list.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	address_list	The address list handle
  * @return	0 on success, otherwise a negative error value

@@ -16,6 +16,7 @@
 
 #include "discovery.h"
 #include "empty_module.h"
+#include <image_util_type.h>
 
 
 /* Set of empty functions */
@@ -257,6 +258,11 @@ int maps_plugin_get_center_empty(maps_view_h view, maps_coordinates_h *coordinat
 	return 0;
 }
 
+int maps_plugin_capture_snapshot_empty(maps_view_h view, void **data, int *width, int *height, image_util_colorspace_e *cs)
+{
+	return 0;
+}
+
 /* Interface of a plugin with all empty functions */
 plugin::interface_s empty_interface = {
 	/* Plugin dedicated functions */
@@ -306,6 +312,7 @@ plugin::interface_s empty_interface = {
 	maps_plugin_get_min_zoom_level_empty,
 	maps_plugin_get_max_zoom_level_empty,
 	maps_plugin_get_center_empty,
+	maps_plugin_capture_snapshot_empty,
 };
 
 
