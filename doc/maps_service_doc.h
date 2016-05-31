@@ -140,8 +140,8 @@
  *
  * @if WEARABLE
  * @section	CAPI_MAPS_SERVICE_MODULE_FEATURE Related Features
- * This API is related with the following features:
- *  - http://tizen.org/feature/network.internet
+ * This API is related with the following features:\n
+ *  - http://tizen.org/feature/network.internet\n
  *
  * It is recommended to design feature related codes in your application for
  * reliability.\n
@@ -155,7 +155,7 @@
  * editor in the SDK.\n
  *
  * More details on featuring your application can be found from
- * <a href="https://developer.tizen.org/development/tools/native-tools/manifest-text-editor#feature"><b>Feature Element</b>.</a>
+ * <a href="https://developer.tizen.org/development/getting-started/native-application/understanding-tizen-programming/application-filtering"><b>Feature List</b>.</a>
  * @endif
  */
 

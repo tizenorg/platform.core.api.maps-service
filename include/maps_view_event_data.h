@@ -51,6 +51,7 @@
  * | maps_view_event_data_get_center()         |         | +      |        |       |
  * | maps_view_event_data_get_delta()          |         | +      |        |       |
  * | maps_view_event_data_get_position()       | +       |        | +      |       |
+ * | maps_view_event_data_get_coordinates()    | +       |        |        |       |
  * | maps_view_event_data_get_fingers()        | +       |        | +      |       |
  * | maps_view_event_data_get_zoom_factor()    | +       | +      |        |       |
  * | maps_view_event_data_get_rotation_angle() | +       | +      |        |       |
@@ -76,7 +77,7 @@ extern "C" {
  * @details The handle of View Event Data instance.
  * @remarks To release the handle use maps_view_event_data_destroy().
  * \n To clone the handle use maps_view_event_data_clone().
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  *
  * @see maps_view_event_data_destroy()
  * @see maps_view_event_data_clone()
@@ -86,7 +87,7 @@ typedef void *maps_view_event_data_h;
 /**
  * @brief	Enumerations of View actions
  * @details This is an enumeration of View actions is capable to perform.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  * @remarks The View performs actions in response on user gestures, such as tap,
  * zoom, long press, or APIs, such as set center or change zoom level.
  * \n To re-assign View actions to user gestures use maps_view_set_gesture_action().
@@ -105,7 +106,7 @@ typedef enum _maps_view_action_e {
 
 /**
  * @brief	Enumeration of user gestures over View
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  */
 typedef enum _maps_view_gesture_e {
 	MAPS_VIEW_GESTURE_NONE,               /**< Indicates the empty gesture */
@@ -114,26 +115,26 @@ typedef enum _maps_view_gesture_e {
 	MAPS_VIEW_GESTURE_TAP,                /**< Indicates the tap user gesture */
 	MAPS_VIEW_GESTURE_DOUBLE_TAP,         /**< Indicates the double tap user gesture */
 	MAPS_VIEW_GESTURE_2_FINGER_TAP,       /**< Indicates the two-finger tap user gesture */
-	MAPS_VIEW_GESTURE_ROTATE,		/** Indicates the rotation user gesture */
+	MAPS_VIEW_GESTURE_ROTATE,             /**< Indicates the rotation user gesture */
 	MAPS_VIEW_GESTURE_LONG_PRESS,         /**< Indicates the long press user gesture */
 } maps_view_gesture_e;
 
 /**
  * @brief	Enumerations of map event types
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  */
 typedef enum _maps_view_event_type_e {
-	MAPS_VIEW_EVENT_GESTURE, /** Indicates the gesture event callback */
-	MAPS_VIEW_EVENT_ACTION,  /** Indicates the action callback */
-	MAPS_VIEW_EVENT_OBJECT,  /** Indicates the object event callback */
-	MAPS_VIEW_EVENT_READY    /** Indicates the View readiness callback */
+	MAPS_VIEW_EVENT_GESTURE, /**< Indicates the gesture event callback */
+	MAPS_VIEW_EVENT_ACTION,  /**< Indicates the action callback */
+	MAPS_VIEW_EVENT_OBJECT,  /**< Indicates the object event callback */
+	MAPS_VIEW_EVENT_READY    /**< Indicates the View readiness callback */
 } maps_view_event_type_e;
 
 /**
  * @brief	Destroys the event data handle.
  * @details This function destroys the event data handle and releases all its
  * resources.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	event		The event data handle to destroy
  * @return	0 on success, otherwise a negative error value
@@ -151,7 +152,7 @@ int maps_view_event_data_destroy(maps_view_event_data_h event);
  * @brief	Clones the event handle.
  * @details This function clones the event handle @a origin and all its
  * resources.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  * @remarks @a cloned must be released using maps_view_event_data_destroy().
  *
  * @param[in]	origin		The original event handle
@@ -172,7 +173,7 @@ int maps_view_event_data_clone(const maps_view_event_data_h origin, maps_view_ev
 /**
  * @brief	Gets the event type.
  * @details This function gets the event type.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	event		The event data handle
  * @param[out]	event_type	The pointer to the #maps_view_event_type_e in which
@@ -195,7 +196,7 @@ int maps_view_event_data_get_type(const maps_view_event_data_h event, maps_view_
  * @details This function gets the event gesture type if the event type is #MAPS_VIEW_EVENT_GESTURE
  * or #MAPS_VIEW_EVENT_OBJECT.
  * Otherwise it returns #MAPS_ERROR_INVALID_PARAMETER.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	event		The event data handle
  * @param[out]	gesture_type	The pointer to the #maps_view_gesture_e in which to
@@ -217,7 +218,7 @@ int maps_view_event_data_get_gesture_type(const maps_view_event_data_h event, ma
  * @brief	Gets the event action type.
  * @details This function gets the event action type if the event type is #MAPS_VIEW_EVENT_ACTION.
  * Otherwise it returns #MAPS_ERROR_INVALID_PARAMETER.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	event		The event data handle
  * @param[out]	action_type	The pointer to the #maps_view_action_e in which to
@@ -240,7 +241,8 @@ int maps_view_event_data_get_action_type(const maps_view_event_data_h event, map
  * @details This function gets the new map center coordinates if the event type is
  * #MAPS_VIEW_EVENT_ACTION.
  * Otherwise it returns #MAPS_ERROR_INVALID_PARAMETER.
- * @since_tizen 3.0
+ * @remarks The @a center should be freed using maps_coordinates_destroy().
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	event		The event data handle
  * @param[out]	center		The pointer to the #maps_coordinates_h in which
@@ -264,7 +266,7 @@ int maps_view_event_data_get_center(const maps_view_event_data_h event, maps_coo
  * @details This function gets the screen coordinates delta of map center
  * movement if the event type is #MAPS_VIEW_EVENT_ACTION.
  * Otherwise it returns #MAPS_ERROR_INVALID_PARAMETER.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	event		The event data handle
  * @param[out]	delta_x		The pointer to an integer in which to store the delta x
@@ -287,7 +289,7 @@ int maps_view_event_data_get_delta(const maps_view_event_data_h event, int *delt
  * @details This function gets the event screen coordinates if the event type is
  * #MAPS_VIEW_EVENT_GESTURE or #MAPS_VIEW_EVENT_OBJECT.
  * Otherwise it returns #MAPS_ERROR_INVALID_PARAMETER.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	event	The event data handle
  * @param[out]	x		The pointer to an integer in which to store the x position of the event
@@ -306,11 +308,34 @@ int maps_view_event_data_get_delta(const maps_view_event_data_h event, int *delt
 int maps_view_event_data_get_position(const maps_view_event_data_h event, int *x, int *y);
 
 /**
+ * @brief	Gets the event geographic coordinates.
+ * @details This function gets the event geographic coordinates if the event type is #MAPS_VIEW_EVENT_GESTURE.
+ * Otherwise it returns #MAPS_ERROR_INVALID_PARAMETER.
+ * @remarks The @a coordinates should be freed using maps_coordinates_destroy().
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
+ *
+ * @param[in]	event	The event data handle
+ * @param[out]	coordinates	The pointer to the #maps_coordinates_h in which to store the coordinates
+ * @return	0, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ *
+ * @pre @a event may be obtained in maps_view_on_event_cb()
+ *
+ * @see #maps_view_event_type_e
+ * @see #maps_view_event_data_h
+ * @see #maps_coordinates_h
+ * @see maps_view_event_data_get_type()
+ * @see maps_view_on_event_cb()
+ */
+int maps_view_event_data_get_coordinates(const maps_view_event_data_h event, maps_coordinates_h *coordinates);
+
+/**
  * @brief	Gets the number of fingers, detected in the event.
  * @details This function gets the number of user's fingers, detected in the
  * event if the event type is #MAPS_VIEW_EVENT_GESTURE or #MAPS_VIEW_EVENT_OBJECT.
  * Otherwise it returns #MAPS_ERROR_INVALID_PARAMETER.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	event		The event data handle
  * @param[out]	fingers		The pointer to an integer in which to store the
@@ -333,7 +358,7 @@ int maps_view_event_data_get_fingers(const maps_view_event_data_h event, int *fi
  * @details This function gets the corresponding zoom factor if the event type is
  * #MAPS_VIEW_EVENT_GESTURE or #MAPS_VIEW_EVENT_ACTION.
  * Otherwise it returns the #MAPS_ERROR_INVALID_PARAMETER.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	event		The event data handle
  * @param[out]	zoom_factor	The pointer to a double in which to store the zoom factor
@@ -355,7 +380,7 @@ int maps_view_event_data_get_zoom_factor(const maps_view_event_data_h event, dou
  * @details This function gets the corresponding rotation angle if the event type is
  * #MAPS_VIEW_EVENT_GESTURE or #MAPS_VIEW_EVENT_ACTION.
  * Otherwise it returns #MAPS_ERROR_INVALID_PARAMETER.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	event		The event data handle
  * @param[out]	rotation_angle	The pointer to a double in which to store the rotation angle
@@ -377,7 +402,7 @@ int maps_view_event_data_get_rotation_angle(const maps_view_event_data_h event, 
  * @details When the event type is #MAPS_VIEW_EVENT_OBJECT, this function gets
  * the corresponding object handle.
  * Otherwise it returns #MAPS_ERROR_INVALID_PARAMETER.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  * @remarks The @a object must not be released.
  *
  * @param[in]	event		The event data handle
