@@ -54,7 +54,7 @@ extern "C" {
 
 /**
  * @brief	Enumerations of maps requests available in the Maps Service
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  */
 typedef enum _maps_service_e {
 	MAPS_SERVICE_GEOCODE,					/**< Indicates that maps_service_geocode() service is allowed */
@@ -71,7 +71,8 @@ typedef enum _maps_service_e {
 	MAPS_SERVICE_SEARCH_PLACE_LIST,			/**< Indicates that maps_service_search_place_list() service is allowed @if MOBILE (Since 3.0) @endif */
 	MAPS_SERVICE_SEARCH_GET_PLACE_DETAILS,	/**< Indicates that maps_service_search_get_place_details() service is allowed @if MOBILE (Since 3.0) @endif */
 
-	MAPS_SERVICE_VIEW = 0x100				/**< Indicates that maps view service is allowed @if MOBILE (Since 3.0) @endif */
+	MAPS_SERVICE_VIEW = 0x100,				/**< Indicates that maps view service is allowed @if MOBILE (Since 3.0) @endif */
+	MAPS_SERVICE_VIEW_SNAPSHOT				/**< Indicates that maps view snapshot service is allowed @if MOBILE (Since 3.0) @endif */
 } maps_service_e;
 
 /**
@@ -214,6 +215,7 @@ int maps_service_create(const char *maps_provider, maps_service_h *maps);
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
  * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
+ * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
  *
  * @pre Call maps_service_create() to create Maps Service and get its handle.
  *
