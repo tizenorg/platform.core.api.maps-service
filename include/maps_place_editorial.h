@@ -42,7 +42,7 @@ extern "C" {
  * @details The handle of Place Editorial instance.
  * @remarks To release the handle use maps_place_editorial_destroy().
  * \n To clone the handle use maps_place_editorial_clone().
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  *
  * @see maps_place_editorial_destroy()
  * @see maps_place_editorial_clone()
@@ -56,7 +56,7 @@ typedef void *maps_place_editorial_h;
  * resources.
  * @details This function destroys the place editorial handle and releases all
  * its resources.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	editorial	The place editorial handle to destroy
  * @return	0 on success, otherwise a negative error value
@@ -71,7 +71,7 @@ int maps_place_editorial_destroy(maps_place_editorial_h editorial);
  * @brief	Clones the place editorial handle.
  * @details This function clones the place editorial handle @a origin and all
  * its resources.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks @a cloned must be released using maps_place_editorial_destroy().
  *
  * @param[in]	origin		The original place editorial handle
@@ -91,7 +91,7 @@ int maps_place_editorial_clone(const maps_place_editorial_h origin,
 /**
  * @brief	Gets the place editorial description.
  * @details This function gets the place editorial description.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks @a description must be released using free().
  *
  * @param[in]	editorial	The handle of place editorial
@@ -106,7 +106,7 @@ int maps_place_editorial_get_description(const maps_place_editorial_h
 /**
  * @brief	Gets the place editorial language.
  * @details This function gets the place editorial language.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks @a language must be released using free().
  *
  * @param[in]	editorial	The handle of place editorial
@@ -121,7 +121,7 @@ int maps_place_editorial_get_language(const maps_place_editorial_h editorial,
 /**
  * @brief	Gets the place editorial media.
  * @details This function gets the place editorial media.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks @a media must be released using maps_place_media_destroy().
  *
  * @param[in]	editorial	The handle of place editorial
