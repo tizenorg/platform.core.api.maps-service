@@ -67,6 +67,7 @@ typedef enum _maps_view_object_type_e {
 	MAPS_VIEW_OBJECT_POLYLINE,	/** Indicates the polyline */
 	MAPS_VIEW_OBJECT_POLYGON,		/** Indicates the polygon */
 	MAPS_VIEW_OBJECT_MARKER,		/** Indicates the marker */
+	MAPS_VIEW_OBJECT_OVERLAY,		/** Indicates the overlay */
 } maps_view_object_type_e;
 
 /**
@@ -77,6 +78,16 @@ typedef enum _maps_view_marker_type_e {
 	MAPS_VIEW_MARKER_PIN,			/** Indicates the pin marker type*/
 	MAPS_VIEW_MARKER_STICKER,		/** Indicates the sticker marker type*/
 } maps_view_marker_type_e;
+
+/**
+ * @brief	Enumerations of overlay types
+ * @since_tizen 3.0
+ */
+typedef enum _maps_view_overlay_type_e {
+	MAPS_VIEW_OVERLAY_NORMAL,
+	MAPS_VIEW_OVERLAY_BUBBLE,
+	MAPS_VIEW_OVERLAY_BOX,
+} maps_view_overlay_type_e;
 
 /**
  * @brief	Called when requesting the list of points of the polyline.
@@ -238,6 +249,37 @@ int maps_view_object_create_polyline(maps_coordinates_list_h coordinates,
 int maps_view_object_create_polygon(maps_coordinates_list_h coordinates,
 	unsigned char r, unsigned char g, unsigned char b, unsigned char a,
 	maps_view_object_h *polygon);
+
+/**
+ * @brief	Create a overlay object.
+ * @details This function creates a overlay object to contain Evas objects.
+ * @since_tizen 3.0
+ * @remarks @a overlay can be released by using maps_view_object_destroy().
+ * \n If added to the View using maps_view_add_object(), @a overlay will be
+ * released automatically when the View is destroyed.
+ *
+ * @param[in]	coordinates	The list of geographical coordinates
+ * @param[in]	object		The Evas object to be contained
+ * @param[in]	type		The type of boxing the @a object
+ * @param[out]	overlay		The handle of newly created polygon
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ *
+ * @pre @a coordinates is created using maps_coordinates_list_create().
+ *
+ * @see #maps_view_object_h
+ * @see maps_view_object_create_marker()
+ * @see maps_view_object_create_polyline()
+ * @see maps_view_object_create_polygon()
+ * @see maps_view_add_object()
+ * @see maps_view_object_destroy()
+ * @see #maps_coordinates_h
+ * @see maps_coordinates_create()
+ */
+int maps_view_object_create_overlay(maps_coordinates_h coordinates,
+	Evas_Object *object, maps_view_overlay_type_e type, maps_view_object_h *overlay);
 
 /**
  * @brief	Destroys the object.
@@ -756,6 +798,157 @@ int maps_view_object_marker_set_z_order(maps_view_object_h marker, int z_order);
  * @see maps_view_object_marker_set_z_order()
  */
 int maps_view_object_marker_get_z_order(const maps_view_object_h marker, int *z_order);
+
+
+
+/*----------------------------------------------------------------------------*/
+/*
+ * Overlay
+ */
+
+/**
+ * @brief	Gets the Evas object.
+ * @details This function gets the Evas object.
+ * @since_tizen 3.0
+ *
+ * @param[in]	overlay		The overlay object handle
+ * @param[out]	object		The Evas object handle
+ * @return	0, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ *
+ * @pre @a marker is created using maps_view_object_create_overlay().
+ *
+ * @see maps_view_object_create_overlay()
+ */
+int maps_view_object_overlay_get_object(maps_view_object_h overlay, Evas_Object **object);
+
+/**
+ * @brief	Sets the overlay coordinates.
+ * @details This function sets the overlay geographical coordinates.
+ * @since_tizen 3.0
+ *
+ * @param[in]	overlay		The overlay object handle
+ * @param[in]	coordinates	The overlay geographical coordinates handle
+ * @return	0, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ *
+ * @pre @a overlay is created using maps_view_object_create_overlay().
+ * @pre @a coordinates are created using maps_coordinates_create().
+ *
+ * @see maps_view_object_create_overlay()
+ * @see maps_view_object_overlay_get_coordinates()
+ * @see #maps_coordinates_h
+ * @see maps_coordinates_create()
+ */
+int maps_view_object_overlay_set_coordinates(maps_view_object_h overlay, maps_coordinates_h coordinates);
+
+/**
+ * @brief	Gets the overlay coordinates.
+ * @details This function gets the overlay geographical coordinates.
+ * @remarks The @a coordinates should be freed using maps_coordinates_destroy().
+ * @since_tizen 3.0
+ *
+ * @param[in]	overlay		The marker object handle
+ * @param[out]	coordinates	The pointer to #maps_coordinates_h in which to
+ * store the overlay geographical coordinates
+ * @return	0, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ *
+ * @pre @a overlay is created using maps_view_object_create_overlay().
+ * @pre @a coordinates may be set previously using maps_view_object_overlay_set_coordinates().
+ *
+ * @see maps_view_object_create_overlay()
+ * @see maps_view_object_overlay_set_coordinates()
+ * @see #maps_coordinates_h
+ * @see maps_coordinates_destroy()
+ */
+int maps_view_object_overlay_get_coordinates(const maps_view_object_h overlay, maps_coordinates_h *coordinates);
+
+/**
+ * @brief	Sets the minimal zoom level for overlay.
+ * @details This function sets the minimally allowed zoom level of the map to show the overlay.
+ * @since_tizen 3.0
+ *
+ * @param[in]	overlay		The overlay object handle
+ * @param[in]	zoom		The new minimal zoom level
+ * @return	0, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ *
+ * @pre @a overlay is created using maps_view_object_create_overlay().
+ *
+ * @see maps_view_object_create_overlay()
+ * @see maps_view_object_overlay_get_min_zoom_level()
+ * @see maps_view_object_overlay_set_max_zoom_level()
+ * @see maps_view_object_overlay_get_max_zoom_level()
+ */
+int maps_view_object_overlay_set_min_zoom_level(maps_view_object_h overlay, int zoom);
+
+/**
+ * @brief	Gets the minimal zoom level for overlay.
+ * @details This function gets the minimally allowed zoom level of the map to show the overlay.
+ * @since_tizen 3.0
+ *
+ * @param[in]	overlay		The overlay object handle
+ * @param[out]	zoom		The pointer to an integer in which to store
+ * the minimally allowed zoom level.
+ * @return	0, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ *
+ * @pre @a overlay is created using maps_view_object_create_overlay().
+ *
+ * @see maps_view_object_create_overlay()
+ * @see maps_view_object_overlay_set_min_zoom_level()
+ * @see maps_view_object_overlay_set_max_zoom_level()
+ * @see maps_view_object_overlay_get_max_zoom_level()
+ */
+int maps_view_object_overlay_get_min_zoom_level(const maps_view_object_h overlay, int *zoom);
+
+/**
+ * @brief	Sets the minimal zoom level for overlay.
+ * @details This function sets the minimally allowed zoom level of the map to show the overlay.
+ * @since_tizen 3.0
+ *
+ * @param[in]	overlay		The overlay object handle
+ * @param[in]	zoom		The new minimal zoom level
+ * @return	0, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ *
+ * @pre @a overlay is created using maps_view_object_create_overlay().
+ *
+ * @see maps_view_object_create_overlay()
+ * @see maps_view_object_overlay_get_min_zoom_level()
+ * @see maps_view_object_overlay_set_min_zoom_level()
+ * @see maps_view_object_overlay_get_max_zoom_level()
+ */
+int maps_view_object_overlay_set_max_zoom_level(maps_view_object_h overlay, int zoom);
+
+/**
+ * @brief	Gets the minimal zoom level for overlay.
+ * @details This function gets the minimally allowed zoom level of the map to show the overlay.
+ * @since_tizen 3.0
+ *
+ * @param[in]	overlay		The overlay object handle
+ * @param[out]	zoom		The pointer to an integer in which to store
+ * the minimally allowed zoom level.
+ * @return	0, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ *
+ * @pre @a overlay is created using maps_view_object_create_overlay().
+ *
+ * @see maps_view_object_create_overlay()
+ * @see maps_view_object_overlay_get_min_zoom_level()
+ * @see maps_view_object_overlay_set_min_zoom_level()
+ * @see maps_view_object_overlay_set_max_zoom_level()
+ */
+int maps_view_object_overlay_get_max_zoom_level(const maps_view_object_h overlay, int *zoom);
 
 #ifdef __cplusplus
 }
