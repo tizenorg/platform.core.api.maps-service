@@ -42,7 +42,7 @@ extern "C" {
  * @details The handle of Place Review instance.
  * @remarks To release the handle use maps_place_review_destroy().
  * \n To clone the handle use maps_place_review_clone().
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  *
  * @see maps_place_review_destroy()
  * @see maps_place_review_clone()
@@ -55,7 +55,7 @@ typedef void *maps_place_review_h;
  * @brief	Destroys the place review handle and releases all its resources.
  * @details This function destroys the place review handle and releases all its
  * resources.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	review		The place review handle to destroy
  * @return	0 on success, otherwise a negative error value
@@ -70,7 +70,7 @@ int maps_place_review_destroy(maps_place_review_h review);
  * @brief	Clones the place review handle.
  * @details This function clones the place review handle @a origin and all its
  * resources.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks @a cloned must be released using maps_place_review_destroy().
  *
  * @param[in]	origin		The original place review handle
@@ -90,7 +90,7 @@ int maps_place_review_clone(const maps_place_review_h origin,
 /**
  * @brief	Gets the place review date.
  * @details This function gets the place review date.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks @a date must be released using free().
  *
  * @param[in]	review		The handle to place review
@@ -104,7 +104,7 @@ int maps_place_review_get_date(const maps_place_review_h review, char **date);
 /**
  * @brief	Gets the place review title.
  * @details This function gets the place review title.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks @a title must be released using free().
  *
  * @param[in]	review		The handle to place review
@@ -119,7 +119,7 @@ int maps_place_review_get_title(const maps_place_review_h review,
 /**
  * @brief	Gets the place review rating.
  * @details This function gets the place review rating.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	review		The handle to place review
  * @param[out]	rating		The place review rating
@@ -133,7 +133,7 @@ int maps_place_review_get_rating(const maps_place_review_h review,
 /**
  * @brief	Gets the place review description.
  * @details This function gets the place review description.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks @a description must be released using free().
  *
  * @param[in]	review		The handle to place review
@@ -148,7 +148,7 @@ int maps_place_review_get_description(const maps_place_review_h review,
 /**
  * @brief	Gets the place review language.
  * @details This function gets the place review language.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks @a language must be released using free().
  *
  * @param[in]	review		The handle to place review
@@ -163,7 +163,7 @@ int maps_place_review_get_language(const maps_place_review_h review,
 /**
  * @brief	Gets the place review media.
  * @details This function gets the place review media.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks @a media must be released using maps_place_media_destroy().
  *
  * @param[in]	review		The handle to place review
@@ -180,7 +180,7 @@ int maps_place_review_get_media(const maps_place_review_h review,
 /**
  * @brief	Gets the place review user link.
  * @details This function gets the place review user link.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks @a user must be released using maps_place_link_object_destroy().
  *
  * @param[in]	review		The handle to place review
