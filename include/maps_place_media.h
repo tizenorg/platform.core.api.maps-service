@@ -41,7 +41,7 @@ extern "C" {
  * @details The handle of Place Media instance.
  * @remarks To release the handle use maps_place_media_destroy().
  * \n To clone the handle use maps_place_media_clone().
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  *
  * @see maps_place_media_destroy()
  * @see maps_place_media_clone()
@@ -54,7 +54,7 @@ typedef void *maps_place_media_h;
  * @brief	Destroys the place media handle and releases all its resources.
  * @details This function destroys the place media handle and releases all its
  * resources.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	media		The place media handle to destroy
  * @return	0 on success, otherwise a negative error value
@@ -69,7 +69,7 @@ int maps_place_media_destroy(maps_place_media_h media);
  * @brief	Clones the place media handle.
  * @details This function clones the place media handle @a origin and all its
  * resources.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks @a cloned must be released using maps_place_media_destroy().
  *
  * @param[in]	origin		The original place media handle
@@ -89,7 +89,7 @@ int maps_place_media_clone(const maps_place_media_h origin,
 /**
  * @brief	Gets the place media attribution.
  * @details This function gets the place media attribution.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks @a attribution must be released using free().
  *
  * @param[in]	media		The handle of place media
@@ -104,7 +104,7 @@ int maps_place_media_get_attribution(const maps_place_media_h media,
 /**
  * @brief	Gets the place media supplier link.
  * @details This function gets the place media supplier link.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks @a supplier must be released using maps_place_link_object_destroy().
  *
  * @param[in]	media		The handle of place media
@@ -121,7 +121,7 @@ int maps_place_media_get_supplier(const maps_place_media_h media,
 /**
  * @brief	Gets the place media "via" link.
  * @details This function gets the place media "via" link.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks @a via must be released using maps_place_link_object_destroy().
  *
  * @param[in]	media		The handle of place media

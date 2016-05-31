@@ -40,7 +40,7 @@ extern "C" {
  * @details The handle of Place Category instance.
  * @remarks To release the handle use maps_place_category_destroy().
  * \n To clone the handle use maps_place_category_clone().
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  *
  * @see maps_place_category_destroy()
  * @see maps_place_category_clone()
@@ -53,7 +53,7 @@ typedef void *maps_place_category_h;
  * @brief	Clones the place category handle.
  * @details This function clones the place category handle @a origin and all its
  * resources.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks @a cloned must be released using maps_place_category_destroy().
  *
  * @param[in]	origin		The original place category handle
@@ -74,7 +74,7 @@ int maps_place_category_clone(const maps_place_category_h origin,
  * resources.
  * @details This function destroys the place category handle and releases all
  * its resources.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	category	The place category handle to destroy
  * @return	0 on success, otherwise a negative error value
@@ -91,7 +91,7 @@ int maps_place_category_destroy(maps_place_category_h category);
 /**
  * @brief	Gets the place category id.
  * @details This function gets the place category id.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks @a id must be released using free().
  *
  * @param[in]	category	The handle of place category
@@ -105,7 +105,7 @@ int maps_place_category_get_id(const maps_place_category_h category, char **id);
 /**
  * @brief	Gets the place category name.
  * @details This function gets the place category name.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks @a name must be released using free().
  *
  * @param[in]	category	The handle of place category
@@ -119,7 +119,7 @@ int maps_place_category_get_name(const maps_place_category_h category, char **na
 /**
  * @brief	Gets the place category URL.
  * @details This function gets the place category URL.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks @a url must be released using free().
  *
  * @param[in]	category	The handle of place category
