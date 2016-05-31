@@ -41,7 +41,7 @@ extern "C" {
  * @details The handle of Place Filter instance.
  * @remarks To release the handle use maps_place_filter_destroy().
  * \n To clone the handle use maps_place_filter_clone().
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  *
  * @see maps_place_filter_destroy()
  * @see maps_place_filter_clone()
@@ -54,7 +54,7 @@ typedef void *maps_place_filter_h;
  * @brief	Called when requesting the list of Place Filter Properties.
  * @details This callback is invoked while iterating through the list of Place
  * Filter Properties.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks @a key and @a value must be released using free() and corresponding
  * release method for property value correspondingly.
  *
@@ -81,7 +81,7 @@ typedef bool(*maps_place_filter_properties_cb) (int index, int total,
  * @brief	Creates a new place filter handle.
  * @details This function creates a new place filter handle and allocates all
  * needed resources.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks @a filter must be released using maps_place_filter_destroy().
  * \n @a filter may be cloned using maps_place_filter_clone().
  *
@@ -100,7 +100,7 @@ int maps_place_filter_create(maps_place_filter_h *filter);
  * @brief	Destroys the place filter handle and releases all its resources.
  * @details This function destroys the place filter handle and releases all its
  * resources.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	filter		The place filter handle to destroy
  * @return	0 on success, otherwise a negative error value
@@ -120,7 +120,7 @@ int maps_place_filter_destroy(maps_place_filter_h filter);
  * resources.
  * \n Place filter handle @a origin may be created using
  * maps_place_filter_create().
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks @a cloned must be released using maps_place_filter_destroy().
  *
  * @param[in]	origin	The place filter handle to be cloned
@@ -144,7 +144,7 @@ int maps_place_filter_clone(const maps_place_filter_h origin,
  * @brief	Gets the value of the specified key in the place filter.
  * @details This function gets the value of the specified key in the place
  * filter.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks @a value must be released using free().
  *
  * @param[in]	filter		The handle of the place filter
@@ -165,7 +165,7 @@ int maps_place_filter_get(const maps_place_filter_h filter, const char *key,
 /**
  * @brief	Gets the value of keyword.
  * @details This function gets the value of keyword.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks @a keyword must be released using free().
  *
  * @param[in]	filter		The handle of the place filter
@@ -185,7 +185,7 @@ int maps_place_filter_get_keyword(const maps_place_filter_h filter,
 /**
  * @brief	Gets the place name.
  * @details This function gets the place name.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks @a place_name must be released using free().
  *
  * @param[in]	filter		The handle of the place filter
@@ -206,7 +206,7 @@ int maps_place_filter_get_place_name(const maps_place_filter_h filter,
  * @brief	Gets the category.
  * @details This function gets the category.
  * \n For allowed values of keys, see the macros above.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks @a category must be released using maps_place_category_destroy().
  *
  * @param[in]	filter		The handle of the place filter
@@ -226,7 +226,7 @@ int maps_place_filter_get_category(const maps_place_filter_h filter,
 /**
  * @brief Retrieves all filter properties.
  * @details This function retrieves all place filter properties.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	filter		The handle of the place filter
  * @param[in]	callback	The callback function to invoke
@@ -254,7 +254,7 @@ int maps_place_filter_foreach_property(const maps_place_filter_h filter,
 /**
  * @brief	Gets the place address.
  * @details This function gets the place address.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  * @remarks @a place_address must be released using free().
  *
  * @param[in]	filter			The handle of the place filter
@@ -277,7 +277,7 @@ int maps_place_filter_get_place_address(const maps_place_filter_h filter,
  * @brief	Sets the filter value.
  * @details This function sets the filter value in an assignment with a
  * specified string key.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	filter		The handle of the place filter
  * @param[in]	key		The key of filter
@@ -298,7 +298,7 @@ int maps_place_filter_set(maps_place_filter_h filter, const char *key,
 /**
  * @brief	Sets the keyword.
  * @details This function sets the keyword.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	filter		The handle of the place filter
  * @param[in]	keyword		The keyword
@@ -317,7 +317,7 @@ int maps_place_filter_set_keyword(maps_place_filter_h filter,
 /**
  * @brief	Sets the place name.
  * @details This function sets the place name.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	filter		The handle of the place filter
  * @param[in]	place_name	The place name
@@ -336,7 +336,7 @@ int maps_place_filter_set_place_name(maps_place_filter_h filter,
 /**
  * @brief	Sets the category.
  * @details This function sets the place name.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	filter		The handle of the place filter
  * @param[in]	category	The category
@@ -355,7 +355,7 @@ int maps_place_filter_set_category(maps_place_filter_h filter,
 /**
  * @brief	Sets the place address.
  * @details This function sets the place address.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	filter			The handle of the place filter
  * @param[in]	place_address	The place address

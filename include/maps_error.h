@@ -22,12 +22,11 @@
 
 /**
  * @ingroup	CAPI_MAPS_SERVICE_MODULE
- * @defgroup	CAPI_MAPS_ERROR_MODULE Errors
  *
  * @file maps_error.h
  * @brief This file contains the list of errors of Maps API
  *
- * @addtogroup CAPI_MAPS_ERROR_MODULE
+ * @addtogroup CAPI_MAPS_SERVICE_AND_PREFERENCE_MODULE
  * @{
  * @brief This provides a list of Maps API errors
  */
@@ -38,7 +37,7 @@ extern "C" {
 
 /**
  * @brief Enumerations of error codes for Maps Service and Plug-ins
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  */
 typedef enum _maps_error_e {
 

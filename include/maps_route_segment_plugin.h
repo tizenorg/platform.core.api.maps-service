@@ -26,7 +26,7 @@
  * @file maps_route_segment_plugin.h
  * @brief This file contains the functions related to Route Segment
  * information, needed in plug-in development.
- * @addtogroup CAPI_MAPS_ROUTE_SEGMENT_MODULE
+ * @addtogroup CAPI_MAPS_PLUGIN_ROUTE_SEGMENT_MODULE
  * @{
  * @brief This provides APIs related to Route Segment information, used
  * in Route Search, needed in plug-in development.
