@@ -41,7 +41,7 @@ extern "C" {
  * @details The handle of Place Rating instance.
  * @remarks To release the handle use maps_place_rating_destroy().
  * \n To clone the handle use maps_place_rating_clone().
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  *
  * @see maps_place_rating_destroy()
  * @see maps_place_rating_clone()
@@ -54,7 +54,7 @@ typedef void *maps_place_rating_h;
  * @brief	Destroys the place rating handle and releases all its resources.
  * @details This function destroys the place rating handle and releases all its
  * resources.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	rating		The place rating handle to destroy
  * @return	0 on success, otherwise a negative error value
@@ -69,7 +69,7 @@ int maps_place_rating_destroy(maps_place_rating_h rating);
  * @brief	Clones the place rating handle.
  * @details This function clones the place rating handle @a origin and all its
  * resources.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks @a cloned must be released using maps_place_rating_destroy().
  *
  * @param[in]	origin		The original place rating handle
@@ -89,7 +89,7 @@ int maps_place_rating_clone(const maps_place_rating_h origin,
 /**
  * @brief	Gets the place rating count.
  * @details This function gets the place rating count.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	rating		The handle to place rating handle
  * @param[out]	count		The place rating count
@@ -102,7 +102,7 @@ int maps_place_rating_get_count(const maps_place_rating_h rating, int *count);
 /**
  * @brief	Gets the place rating average.
  * @details This function gets the place rating average.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	rating		The handle to place rating handle
  * @param[out]	average	The place average rating

@@ -122,7 +122,7 @@ EXPORT_API int maps_area_clone(const maps_area_h origin, maps_area_h *cloned)
 		maps_area_circle_s cir = origin_handle->circle;
 		maps_coordinates_s center = cir.center;
 		double radius = cir.radius;
-		maps_area_create_circle((maps_coordinates_h) & center, radius, &new_circle);
+		maps_area_create_circle((maps_coordinates_h)&center, radius, &new_circle);
 		if (new_circle) {
 			*cloned = new_circle;
 		} else {

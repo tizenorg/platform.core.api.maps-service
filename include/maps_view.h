@@ -27,6 +27,23 @@
  * @ingroup	CAPI_MAPS_SERVICE_MODULE
  * @defgroup	CAPI_MAPS_VIEW_MODULE View
  *
+ * @if WEARABLE
+ * @section	CAPI_MAPS_SERVICE_MODULE_FEATURE Related Features
+ * This API is related with the following features:\n
+ *  - http://tizen.org/feature/network.internet\n
+ *
+ * It is recommended to design feature related codes in your application for reliability.\n
+ *
+ * You can check if a device supports the related features for this API by using
+ * @ref CAPI_SYSTEM_SYSTEM_INFO_MODULE, thereby controlling the procedure of your application.\n
+ *
+ * To ensure your application is only running on the device with specific features,
+ * please define the features in your manifest file using the manifest editor in the SDK.\n
+ *
+ * More details on featuring your application can be found from
+ * <a href="https://developer.tizen.org/development/getting-started/native-application/understanding-tizen-programming/application-filtering"><b>Feature List</b>.</a>
+ * @endif
+ *
  * @file maps_view.h
  * @brief This file contains the top level functions of View API
  *
@@ -55,7 +72,7 @@ extern "C" {
  * @brief	The View handle
  * @details The handle of View instance.
  * @remarks To release the handle use maps_view_destroy().
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  *
  * @see maps_view_create()
  * @see maps_view_destroy()
@@ -64,20 +81,20 @@ typedef void *maps_view_h;
 
 /**
  * @brief	Enumeration of View types (themes)
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  */
 typedef enum _maps_view_type_e {
-	MAPS_VIEW_TYPE_NORMAL,    /** Indicates the normal street theme */
-	MAPS_VIEW_TYPE_SATELLITE, /** Indicates the satellite theme */
-	MAPS_VIEW_TYPE_TERRAIN,   /** Indicates the terrain theme */
-	MAPS_VIEW_TYPE_HYBRID,    /** Indicates the hybrid theme which is the satellite and normal street theme */
+	MAPS_VIEW_TYPE_NORMAL,    /**< Indicates the normal street theme */
+	MAPS_VIEW_TYPE_SATELLITE, /**< Indicates the satellite theme */
+	MAPS_VIEW_TYPE_TERRAIN,   /**< Indicates the terrain theme */
+	MAPS_VIEW_TYPE_HYBRID,    /**< Indicates the hybrid theme which is the satellite and normal street theme */
 } maps_view_type_e;
 
 /**
  * @brief	Called when requesting the list of visual objects of the View.
  * @details This callback is invoked while iterating through the list of
  * visual objects, added to the View.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	index		The current index of the visual object, start from 0
  * @param[in]	total		The total amount of visual objects
@@ -96,7 +113,7 @@ typedef bool(*maps_view_object_cb) (int index, int total, maps_view_object_h obj
 /**
  * @brief	Called when the View event occurs.
  * @details The View Panel invokes this callback when the map event occurs.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  * @remarks @a event_data will be released automatically after this callback is terminated.
  * \n To use @a event_data outside this function, clone it with maps_view_event_data_clone().
  *
@@ -130,13 +147,13 @@ typedef void(*maps_view_on_event_cb) (maps_view_event_type_e type, maps_view_eve
  * maps_view_set_zoom_level() and maps_view_set_orientation() respectively.
  * \n To change View theme, size and visibility properties use
  * maps_view_set_type() and maps_view_set_visibility() respectively.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  * @privlevel public
  * @privilege %http://tizen.org/privilege/mapservice
  * @remarks The @a View must be released using maps_view_destroy().
  *
  * @param[in]	maps	The maps service handle
- * @param[in]	obj		The image object
+ * @param[in]	obj		The evas object to be drawn
  * @param[out]	view	The handle pointer to a maps_view_h,
  * in which to store the newly created View handle
  * @return	0 on success, otherwise a negative error value
@@ -146,6 +163,7 @@ typedef void(*maps_view_on_event_cb) (maps_view_event_type_e type, maps_view_eve
  * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
  *
  * @pre @a maps is created using maps_service_create().
+ * @pre @a obj is recommended using a smart object.
  *
  * @see maps_view_destroy()
  * @see maps_service_create()
@@ -154,14 +172,15 @@ typedef void(*maps_view_on_event_cb) (maps_view_event_type_e type, maps_view_eve
  * @see maps_view_set_orientation()
  * @see maps_view_set_type()
  * @see maps_view_set_visibility()
+ * @see elm_layout_add()
  */
-int maps_view_create(maps_service_h maps, Evas_Image *obj, maps_view_h *view);
+int maps_view_create(maps_service_h maps, Evas_Object *obj, maps_view_h *view);
 
 /**
  * @brief	Destroys the View.
  * @details This function destroys the View, releases its handle and
  * all allocated resources, unlinks the View from the instance of maps service.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  * @privlevel public
  * @privilege %http://tizen.org/privilege/mapservice
  *
@@ -185,7 +204,7 @@ int maps_view_destroy(maps_view_h view);
  * @brief	Centers the map on a given geographical coordinates.
  * @details This function centers the map on a given geographical coordinates
  * using current zoom and orientation.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  * @privlevel public
  * @privilege %http://tizen.org/privilege/mapservice \n
  *            %http://tizen.org/privilege/internet \n
@@ -200,6 +219,7 @@ int maps_view_destroy(maps_view_h view);
  * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
  * @retval	#MAPS_ERROR_CONNECTION_TIME_OUT Timeout error, no answer
  * @retval	#MAPS_ERROR_NETWORK_UNREACHABLE Network unavailable
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a view is created using maps_view_create().
  * @pre @a coordinates are created using maps_coordinates_create().
@@ -215,7 +235,7 @@ int maps_view_set_center(maps_view_h view, maps_coordinates_h coordinates);
 /**
  * @brief	Gets the central coordinates of a map.
  * @details This function gets the current central coordinates of a map.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  * @remarks The @a coordinates must be released using maps_coordinates_destroy().
  *
  * @param[in]	view		The view handle
@@ -243,7 +263,7 @@ int maps_view_get_center(const maps_view_h view, maps_coordinates_h *coordinates
  * the function returns #MAPS_ERROR_INVALID_PARAMETER error.
  * \n To check the range of allowed zoom level use maps_view_get_min_zoom_level()
  * and maps_view_get_max_zoom_level().
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  * @privlevel public
  * @privilege %http://tizen.org/privilege/mapservice \n
  *            %http://tizen.org/privilege/internet \n
@@ -257,6 +277,7 @@ int maps_view_get_center(const maps_view_h view, maps_coordinates_h *coordinates
  * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
  * @retval	#MAPS_ERROR_CONNECTION_TIME_OUT Timeout error, no answer
  * @retval	#MAPS_ERROR_NETWORK_UNREACHABLE Network unavailable
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a view is created using maps_view_create().
  *
@@ -271,7 +292,7 @@ int maps_view_set_zoom_level(maps_view_h view, int level);
 /**
  * @brief	Gets zoom level of the map.
  * @details This function gets the current integer zoom level of the map.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	view		The view handle
  * @param[out]	level		The pointer to an integer in which to store the
@@ -290,9 +311,35 @@ int maps_view_set_zoom_level(maps_view_h view, int level);
 int maps_view_get_zoom_level(const maps_view_h view, int *level);
 
 /**
+ * @brief	Sets the minimal zoom level of the map.
+ * @details This function sets the minimally allowed zoom level of the map.
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
+ * @privlevel public
+ * @privilege %http://tizen.org/privilege/mapservice
+ *
+ * @param[in]	view	The view handle
+ * @param[out]	level	The new minimal zoom level
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_INVALID_OPERATION Operation is not valid
+ * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
+ *
+ * @pre @a view is created using maps_view_create().
+ *
+ * @see maps_view_get_min_zoom_level()
+ * @see maps_view_set_max_zoom_level()
+ * @see maps_view_get_max_zoom_level()
+ * @see maps_view_get_zoom_level()
+ * @see maps_view_set_zoom_level()
+ * @see maps_view_create()
+ */
+int maps_view_set_min_zoom_level(maps_view_h view, int level);
+
+/**
  * @brief	Gets the minimal zoom level of the map.
  * @details This function gets the minimally allowed zoom level of the map.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	view		The view handle
  * @param[out]	min_zoom_level	The pointer to an integer in which to store the
@@ -312,9 +359,35 @@ int maps_view_get_zoom_level(const maps_view_h view, int *level);
 int maps_view_get_min_zoom_level(const maps_view_h view, int *min_zoom_level);
 
 /**
+ * @brief	Sets the maximal zoom level of the map.
+ * @details This function sets the maximally allowed zoom level of the map.
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
+ * @privlevel public
+ * @privilege %http://tizen.org/privilege/mapservice
+ *
+ * @param[in]	view	The view handle
+ * @param[out]	level	The new maximal zoom level
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_INVALID_OPERATION Operation is not valid
+ * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
+ *
+ * @pre @a view is created using maps_view_create().
+ *
+ * @see maps_view_set_min_zoom_level()
+ * @see maps_view_get_min_zoom_level()
+ * @see maps_view_get_max_zoom_level()
+ * @see maps_view_get_zoom_level()
+ * @see maps_view_set_zoom_level()
+ * @see maps_view_create()
+ */
+int maps_view_set_max_zoom_level(maps_view_h view, int level);
+
+/**
  * @brief	Gets the maximal zoom level of the map.
  * @details This function gets the maximally allowed zoom level of the map.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	view		The view handle
  * @param[out]	max_zoom_level	The pointer to an integer in which to store the
@@ -338,7 +411,7 @@ int maps_view_get_max_zoom_level(const maps_view_h view, int *max_zoom_level);
  * @details This function sets the rotation angle of the View.
  * \n If the specified rotation angle exceeds the [0..360] range, the
  * function returns #MAPS_ERROR_INVALID_PARAMETER error.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  * @privlevel public
  * @privilege %http://tizen.org/privilege/mapservice \n
  *            %http://tizen.org/privilege/internet \n
@@ -352,6 +425,7 @@ int maps_view_get_max_zoom_level(const maps_view_h view, int *max_zoom_level);
  * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
  * @retval	#MAPS_ERROR_CONNECTION_TIME_OUT Timeout error, no answer
  * @retval	#MAPS_ERROR_NETWORK_UNREACHABLE Network unavailable
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a view is created using maps_view_create().
  *
@@ -364,7 +438,7 @@ int maps_view_set_orientation(maps_view_h view, double angle);
 /**
  * @brief	Gets the orientation.
  * @details This function gets the current map rotation angle on the View.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	view		The view handle
  * @param[out]	rotation_angle	The pointer to a double in which to store the
@@ -388,7 +462,9 @@ int maps_view_get_orientation(const maps_view_h view, double *rotation_angle);
  * @brief	Converts screen coordinates to the geographical coordinates.
  * @details This function converts screen coordinates to the geographical
  * coordinates accordingly to the current map zoom and orientation.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
+ * @privlevel public
+ * @privilege %http://tizen.org/privilege/mapservice
  * @remarks The @a coordinates must be released using maps_coordinates_destroy().
  *
  * @param[in]	view		The view handle
@@ -401,6 +477,7 @@ int maps_view_get_orientation(const maps_view_h view, double *rotation_angle);
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
  *
  * @pre @a view is created using maps_view_create().
  *
@@ -416,7 +493,9 @@ int maps_view_screen_to_geolocation(maps_view_h view,
  * @brief	Converts geographical coordinates to the screen coordinates.
  * @details This function converts geographical coordinates to the screen
  * coordinates accordingly to the current map zoom and orientation.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
+ * @privlevel public
+ * @privilege %http://tizen.org/privilege/mapservice
  *
  * @param[in]	view		The view handle
  * @param[in]	coordinates	The geographical coordinates
@@ -427,6 +506,7 @@ int maps_view_screen_to_geolocation(maps_view_h view,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
  *
  * @pre @a view is created using maps_view_create().
  * @pre @a coordinates is created using maps_coordinates_create().
@@ -447,7 +527,7 @@ int maps_view_geolocation_to_screen(maps_view_h view,
  * @brief	Sets View type.
  * @details This function switches the View to a specified type, one of
  * listed in #maps_view_type_e enumeration.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  * @privlevel public
  * @privilege %http://tizen.org/privilege/mapservice \n
  *            %http://tizen.org/privilege/internet \n
@@ -461,6 +541,7 @@ int maps_view_geolocation_to_screen(maps_view_h view,
  * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
  * @retval	#MAPS_ERROR_CONNECTION_TIME_OUT Timeout error, no answer
  * @retval	#MAPS_ERROR_NETWORK_UNREACHABLE Network unavailable
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a view is created using maps_view_create().
  *
@@ -475,7 +556,7 @@ int maps_view_set_type(maps_view_h view, maps_view_type_e type);
  * @brief	Gets View type.
  * @details This function gets the type of the given View.
  * \n The type options are defined in the #maps_view_type_e enumeration.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	view		The view handle
  * @param[out]	type		The pointer to a #maps_view_type_e in which to
@@ -497,7 +578,7 @@ int maps_view_get_type(const maps_view_h view, maps_view_type_e *type);
  * @brief	Indicates whether the map should show the 3D buildings layer.
  * @details This function is called to indicate whether 3D buildings
  * should be shown as a layer on the map.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  * @privlevel public
  * @privilege %http://tizen.org/privilege/mapservice \n
  *            %http://tizen.org/privilege/internet \n
@@ -527,7 +608,7 @@ int maps_view_set_buildings_enabled(maps_view_h view, bool enable);
 /**
  * @brief	Queries whether the map has the 3D buildings layer enabled.
  * @details	This function checks whether the map is set to show the 3D buildings layer.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	view	The view handle
  * @param[out]	enable	The pointer to a boolean in which to store the enable status
@@ -547,7 +628,7 @@ int maps_view_get_buildings_enabled(const maps_view_h view, bool *enable);
  * @brief	Indicates whether the map should show the traffic layer.
  * @details This function is called to indicate whether traffic conditions
  * should be shown as a layer on the map.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  * @privlevel public
  * @privilege %http://tizen.org/privilege/mapservice \n
  *            %http://tizen.org/privilege/internet \n
@@ -577,7 +658,7 @@ int maps_view_set_traffic_enabled(maps_view_h view, bool enable);
 /**
  * @brief	Queries whether the map has the traffic layer enabled.
  * @details	This function checks whether the map is set to show the traffic layer.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	view	The view handle
  * @param[out]	enable	The pointer to a boolean in which to store the enable status
@@ -597,7 +678,7 @@ int maps_view_get_traffic_enabled(const maps_view_h view, bool *enable);
  * @brief	Indicates whether the map should show the public transit layer.
  * @details This function is called to indicate whether public transit routes
  * should be shown as a layer on the map.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  * @privlevel public
  * @privilege %http://tizen.org/privilege/mapservice \n
  *            %http://tizen.org/privilege/internet \n
@@ -627,7 +708,7 @@ int maps_view_set_public_transit_enabled(maps_view_h view, bool enable);
 /**
  * @brief	Queries whether the map has the public transit layer enabled.
  * @details	This function checks whether the map is set to show the public transit routes layer.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	view	The view handle
  * @param[out]	enable	The pointer to a boolean in which to store the enable status
@@ -648,7 +729,7 @@ int maps_view_get_public_transit_enabled(const maps_view_h view, bool *enable);
  * @details This function sets the language to the given View.
  * \n Note that map display language is different from places and route
  * language.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  * @privlevel public
  * @privilege %http://tizen.org/privilege/mapservice \n
  *            %http://tizen.org/privilege/internet \n
@@ -671,6 +752,7 @@ int maps_view_get_public_transit_enabled(const maps_view_h view, bool *enable);
  * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
  * @retval	#MAPS_ERROR_CONNECTION_TIME_OUT Timeout error, no answer
  * @retval	#MAPS_ERROR_NETWORK_UNREACHABLE Network unavailable
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a view is created using maps_view_create().
  *
@@ -685,7 +767,7 @@ int maps_view_set_language(maps_view_h view, const char *language);
  * @details This function gets the language set to the View.
  * \n Note that map display language is different from places and route language.
  * @remarks The @a language should be freed using free().
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	view		The view handle
  * @param[out]	language	The pointer to a char* in which to store the
@@ -706,7 +788,7 @@ int maps_view_get_language(const maps_view_h view, char **language);
 /**
  * @brief	Enables or disables scalebar.
  * @details This function enables or disables scalebar.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  * @privlevel public
  * @privilege %http://tizen.org/privilege/mapservice \n
  *            %http://tizen.org/privilege/internet \n
@@ -732,7 +814,7 @@ int maps_view_set_scalebar_enabled(maps_view_h view, bool enable);
 /**
  * @brief	Gets whether the scalebar is enabled or not.
  * @details This function gets whether the scale bar is enabled or not.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	view	The view handle
  * @param[out]	enabled	The pointer to a boolean in which to store the enable status
@@ -753,11 +835,11 @@ int maps_view_get_scalebar_enabled(const maps_view_h view, bool *enabled);
 
 /**
  * @brief	Gets the View port.
- * @details This function gets the View port as a pointer on Evas_Image.
- * @since_tizen 3.0
+ * @details This function gets the View port as a pointer on Evas_Object.
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	view		The view handle
- * @param[out]	viewport	The pointer to Evas_Image in which to store
+ * @param[out]	viewport	The pointer to Evas_Object in which to store
  * the View port
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
@@ -768,7 +850,7 @@ int maps_view_get_scalebar_enabled(const maps_view_h view, bool *enabled);
  * @see maps_view_create()
  * @see Evas_Object
  */
-int maps_view_get_viewport(const maps_view_h view, Evas_Image **viewport);
+int maps_view_get_viewport(const maps_view_h view, Evas_Object **viewport);
 
 /**
  * @brief	Sets geometry of View port.
@@ -776,7 +858,7 @@ int maps_view_get_viewport(const maps_view_h view, Evas_Image **viewport);
  * View.
  * \n The position, naturally, will be relative to the top left corner of the
  * parent window.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  * @privlevel public
  * @privilege %http://tizen.org/privilege/mapservice \n
  *            %http://tizen.org/privilege/internet \n
@@ -793,6 +875,7 @@ int maps_view_get_viewport(const maps_view_h view, Evas_Image **viewport);
  * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
  * @retval	#MAPS_ERROR_CONNECTION_TIME_OUT Timeout error, no answer
  * @retval	#MAPS_ERROR_NETWORK_UNREACHABLE Network unavailable
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a view is created using maps_view_create().
  *
@@ -809,7 +892,7 @@ int maps_view_set_screen_location(maps_view_h view, int x, int y, int width, int
  * \n The position, naturally, will be relative to the top left corner of the parent window.
  * @remarks Use NULL pointers on the geometry components you're not
  * interested in.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	view	The view handle
  * @param[out]	x	X screen coordinate for the top left corner of View
@@ -833,7 +916,7 @@ int maps_view_get_screen_location(const maps_view_h view, int *x, int *y, int *w
  * @brief	Moves the View.
  * @details This function moves View.
  * @remarks Newly created View port has the size of its parent.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	view		The view handle
  * @param[in]	width		The new new width, in screen units
@@ -855,7 +938,7 @@ int maps_view_move(maps_view_h view, int x, int y);
  * @brief	Resizes the View.
  * @details This function changes the size of the given View.
  * @remarks Newly created View port has the size of its parent.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  * @privlevel public
  * @privilege %http://tizen.org/privilege/mapservice \n
  *            %http://tizen.org/privilege/internet \n
@@ -870,6 +953,7 @@ int maps_view_move(maps_view_h view, int x, int y);
  * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
  * @retval	#MAPS_ERROR_CONNECTION_TIME_OUT Timeout error, no answer
  * @retval	#MAPS_ERROR_NETWORK_UNREACHABLE Network unavailable
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a view is created using maps_view_create().
  *
@@ -883,20 +967,13 @@ int maps_view_resize(maps_view_h view, int width, int height);
 /**
  * @brief	Shows or hides the View.
  * @details This function changes the visibility of View on the screen.
- * @since_tizen 3.0
- * @privlevel public
- * @privilege %http://tizen.org/privilege/mapservice \n
- *            %http://tizen.org/privilege/internet \n
- *            %http://tizen.org/privilege/network.get
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	view		The view handle
  * @param[in]	visible		The new visibility of the View
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
- * @retval	#MAPS_ERROR_CONNECTION_TIME_OUT Timeout error, no answer
- * @retval	#MAPS_ERROR_NETWORK_UNREACHABLE Network unavailable
  *
  * @pre @a view is created using maps_view_create().
  *
@@ -909,7 +986,7 @@ int maps_view_set_visibility(maps_view_h view, bool visible);
 /**
  * @brief	Gets the View visibility.
  * @details This function retrieves whether or not the given View is visible.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	view		The view handle
  * @param[out]	visible		The pointer to a boolean in which to store the
@@ -933,7 +1010,7 @@ int maps_view_get_visibility(const maps_view_h view, bool *visible);
  * @brief	Sets the event callback.
  * @details This function sets the callback which will be invoked every time the
  * View processes the user's gesture, action and objects over the map.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  * @remarks To unregister the callback use maps_view_unset_event_cb().
  *
  * @param[in]	view		The view handle
@@ -957,7 +1034,7 @@ int maps_view_set_event_cb(maps_view_h view, maps_view_event_type_e type,
 /**
  * @brief	Unsets the event callback.
  * @details This function unsets the event callback.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	view		The view handle
  * @param[in]	type		The event type
@@ -977,7 +1054,7 @@ int maps_view_unset_event_cb(maps_view_h view, maps_view_event_type_e type);
 /**
  * @brief	Enables or disables the map gesture.
  * @details This function enables or disables the map gesture.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	view		The view handle
  * @param[in]	gesture		The user gesture, one of listed in #maps_gesture_e
@@ -997,7 +1074,7 @@ int maps_view_set_gesture_enabled(maps_view_h view, maps_view_gesture_e gesture,
 /**
  * @brief	Checks whether the map gesture is enabled or not.
  * @details This function checks whether the map gesture is enabled or not.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	view		The view handle
  * @param[in]	gesture		The user gesture, one of listed in #maps_gesture_e
@@ -1022,7 +1099,9 @@ int maps_view_get_gesture_enabled(const maps_view_h view, maps_view_gesture_e ge
 /**
  * @brief	Adds a visual object on the map.
  * @details This function adds a visual object on the map.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
+ * @privlevel public
+ * @privilege %http://tizen.org/privilege/mapservice
  * @remarks The @a object handle will be released automatically when the view is
  * destroyed in the maps_view_destroy().
  *
@@ -1031,6 +1110,7 @@ int maps_view_get_gesture_enabled(const maps_view_h view, maps_view_gesture_e ge
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
  *
  * @pre @a view is created using maps_view_create().
  * @pre @a object is created using #maps_view_object_create_marker(),
@@ -1050,7 +1130,9 @@ int maps_view_add_object(maps_view_h view, maps_view_object_h object);
 /**
  * @brief	Removes a visual object from the map.
  * @details This function removes a visual object from the map.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
+ * @privlevel public
+ * @privilege %http://tizen.org/privilege/mapservice
  * @remarks The @a object handle will be released automatically by the View.
  *
  * @param[in]	view		The view handle
@@ -1058,6 +1140,7 @@ int maps_view_add_object(maps_view_h view, maps_view_object_h object);
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
  *
  * @pre @a view is created using maps_view_create().
  * @pre @a object is added using maps_view_add_object().
@@ -1072,13 +1155,16 @@ int maps_view_remove_object(maps_view_h view, maps_view_object_h object);
 /**
  * @brief	Removes all visual objects from the map.
  * @details This function removes all visual object from the map.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
+ * @privlevel public
+ * @privilege %http://tizen.org/privilege/mapservice
  * @remarks All object handles will be released automatically by the View.
  *
  * @param[in]	view		The view handle
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
  *
  * @pre @a view is created using maps_view_create().
  * @pre objects are added using maps_view_add_object().
@@ -1093,7 +1179,7 @@ int maps_view_remove_all_objects(maps_view_h view);
 /**
  * @brief	Retrieves all visual objects on the map.
  * @details This function retrieves all visual objects, previously added to the map.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  * @remarks The objects will be delivered via maps_view_object_cb().
  *
  * @param[in]	view		The view handle
@@ -1117,6 +1203,16 @@ int maps_view_remove_all_objects(maps_view_h view);
  * @see maps_view_create()
  */
 int maps_view_foreach_object(const maps_view_h view, maps_view_object_cb callback, void *user_data);
+
+
+
+/*----------------------------------------------------------------------------*/
+/*
+ * Snapshot Capture Service
+ */
+
+#include <maps_view_snapshot.h>
+
 
 /**
  * @}

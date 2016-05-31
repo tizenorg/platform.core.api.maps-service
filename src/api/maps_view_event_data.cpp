@@ -31,6 +31,7 @@ typedef struct _maps_view_event_data_s {
 	/* Applicable for gesture */
 	int x;
 	int y;
+ 	maps_coordinates_h coordinates;
 
 	/* Applicable for center move */
 	int delta_x;
@@ -190,6 +191,16 @@ int _maps_view_event_data_set_position(maps_view_event_data_h event, int x, int 
 	return MAPS_ERROR_NONE;
 }
 
+int _maps_view_event_data_set_coordinates(maps_view_event_data_h event, maps_coordinates_h coordinates)
+{
+	if (!event || !coordinates)
+		return MAPS_ERROR_INVALID_PARAMETER;
+	maps_view_event_data_s *e = (maps_view_event_data_s *) event;
+	if (e->coordinates)
+		maps_coordinates_destroy(e->coordinates);
+	return maps_coordinates_clone(coordinates, &e->coordinates);
+}
+
 int _maps_view_event_data_set_fingers(maps_view_event_data_h event, int fingers)
 {
 	if (!event)
@@ -316,6 +327,18 @@ EXPORT_API int maps_view_event_data_get_position(const maps_view_event_data_h ev
 	*x = e->x;
 	*y = e->y;
 	return MAPS_ERROR_NONE;
+}
+
+EXPORT_API int maps_view_event_data_get_coordinates(const maps_view_event_data_h event, maps_coordinates_h *coordinates)
+{
+	if (!event || !coordinates)
+		return MAPS_ERROR_INVALID_PARAMETER;
+	maps_view_event_data_s *e = (maps_view_event_data_s *) event;
+	if (e->event_type != MAPS_VIEW_EVENT_GESTURE)
+		return MAPS_ERROR_INVALID_OPERATION;
+	if (!e->coordinates)
+		return MAPS_ERROR_NOT_FOUND;
+	return maps_coordinates_clone(e->coordinates, coordinates);
 }
 
 EXPORT_API int maps_view_event_data_get_fingers(const maps_view_event_data_h event, int *fingers)
