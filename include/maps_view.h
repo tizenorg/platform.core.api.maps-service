@@ -136,7 +136,7 @@ typedef void(*maps_view_on_event_cb) (maps_view_event_type_e type, maps_view_eve
  * @remarks The @a View must be released using maps_view_destroy().
  *
  * @param[in]	maps	The maps service handle
- * @param[in]	obj		The image object
+ * @param[in]	obj		The evas object to be drawn
  * @param[out]	view	The handle pointer to a maps_view_h,
  * in which to store the newly created View handle
  * @return	0 on success, otherwise a negative error value
@@ -146,6 +146,7 @@ typedef void(*maps_view_on_event_cb) (maps_view_event_type_e type, maps_view_eve
  * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
  *
  * @pre @a maps is created using maps_service_create().
+ * @pre @a obj is recommended using a smart object.
  *
  * @see maps_view_destroy()
  * @see maps_service_create()
@@ -154,8 +155,9 @@ typedef void(*maps_view_on_event_cb) (maps_view_event_type_e type, maps_view_eve
  * @see maps_view_set_orientation()
  * @see maps_view_set_type()
  * @see maps_view_set_visibility()
+ * @see elm_layout_add()
  */
-int maps_view_create(maps_service_h maps, Evas_Image *obj, maps_view_h *view);
+int maps_view_create(maps_service_h maps, Evas_Object *obj, maps_view_h *view);
 
 /**
  * @brief	Destroys the View.
@@ -200,6 +202,7 @@ int maps_view_destroy(maps_view_h view);
  * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
  * @retval	#MAPS_ERROR_CONNECTION_TIME_OUT Timeout error, no answer
  * @retval	#MAPS_ERROR_NETWORK_UNREACHABLE Network unavailable
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a view is created using maps_view_create().
  * @pre @a coordinates are created using maps_coordinates_create().
@@ -257,6 +260,7 @@ int maps_view_get_center(const maps_view_h view, maps_coordinates_h *coordinates
  * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
  * @retval	#MAPS_ERROR_CONNECTION_TIME_OUT Timeout error, no answer
  * @retval	#MAPS_ERROR_NETWORK_UNREACHABLE Network unavailable
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a view is created using maps_view_create().
  *
@@ -290,6 +294,31 @@ int maps_view_set_zoom_level(maps_view_h view, int level);
 int maps_view_get_zoom_level(const maps_view_h view, int *level);
 
 /**
+ * @brief	Sets the minimal zoom level of the map.
+ * @details This function sets the minimally allowed zoom level of the map.
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
+ * @privlevel public
+ * @privilege %http://tizen.org/privilege/mapservice
+ *
+ * @param[in]	view	The view handle
+ * @param[out]	level	The new minimal zoom level
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_INVALID_OPERATION Operation is not valid
+ *
+ * @pre @a view is created using maps_view_create().
+ *
+ * @see maps_view_get_min_zoom_level()
+ * @see maps_view_set_max_zoom_level()
+ * @see maps_view_get_max_zoom_level()
+ * @see maps_view_get_zoom_level()
+ * @see maps_view_set_zoom_level()
+ * @see maps_view_create()
+ */
+int maps_view_set_min_zoom_level(maps_view_h view, int level);
+
+/**
  * @brief	Gets the minimal zoom level of the map.
  * @details This function gets the minimally allowed zoom level of the map.
  * @since_tizen 3.0
@@ -310,6 +339,31 @@ int maps_view_get_zoom_level(const maps_view_h view, int *level);
  * @see maps_view_create()
  */
 int maps_view_get_min_zoom_level(const maps_view_h view, int *min_zoom_level);
+
+/**
+ * @brief	Sets the maximal zoom level of the map.
+ * @details This function sets the maximally allowed zoom level of the map.
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
+ * @privlevel public
+ * @privilege %http://tizen.org/privilege/mapservice
+ *
+ * @param[in]	view	The view handle
+ * @param[out]	level	The new maximal zoom level
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_INVALID_OPERATION Operation is not valid
+ *
+ * @pre @a view is created using maps_view_create().
+ *
+ * @see maps_view_set_min_zoom_level()
+ * @see maps_view_get_min_zoom_level()
+ * @see maps_view_get_max_zoom_level()
+ * @see maps_view_get_zoom_level()
+ * @see maps_view_set_zoom_level()
+ * @see maps_view_create()
+ */
+int maps_view_set_max_zoom_level(maps_view_h view, int level);
 
 /**
  * @brief	Gets the maximal zoom level of the map.
@@ -352,6 +406,7 @@ int maps_view_get_max_zoom_level(const maps_view_h view, int *max_zoom_level);
  * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
  * @retval	#MAPS_ERROR_CONNECTION_TIME_OUT Timeout error, no answer
  * @retval	#MAPS_ERROR_NETWORK_UNREACHABLE Network unavailable
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a view is created using maps_view_create().
  *
@@ -461,6 +516,7 @@ int maps_view_geolocation_to_screen(maps_view_h view,
  * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
  * @retval	#MAPS_ERROR_CONNECTION_TIME_OUT Timeout error, no answer
  * @retval	#MAPS_ERROR_NETWORK_UNREACHABLE Network unavailable
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a view is created using maps_view_create().
  *
@@ -671,6 +727,7 @@ int maps_view_get_public_transit_enabled(const maps_view_h view, bool *enable);
  * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
  * @retval	#MAPS_ERROR_CONNECTION_TIME_OUT Timeout error, no answer
  * @retval	#MAPS_ERROR_NETWORK_UNREACHABLE Network unavailable
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a view is created using maps_view_create().
  *
@@ -793,6 +850,7 @@ int maps_view_get_viewport(const maps_view_h view, Evas_Image **viewport);
  * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
  * @retval	#MAPS_ERROR_CONNECTION_TIME_OUT Timeout error, no answer
  * @retval	#MAPS_ERROR_NETWORK_UNREACHABLE Network unavailable
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a view is created using maps_view_create().
  *
@@ -870,6 +928,7 @@ int maps_view_move(maps_view_h view, int x, int y);
  * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
  * @retval	#MAPS_ERROR_CONNECTION_TIME_OUT Timeout error, no answer
  * @retval	#MAPS_ERROR_NETWORK_UNREACHABLE Network unavailable
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a view is created using maps_view_create().
  *
@@ -897,6 +956,7 @@ int maps_view_resize(maps_view_h view, int width, int height);
  * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
  * @retval	#MAPS_ERROR_CONNECTION_TIME_OUT Timeout error, no answer
  * @retval	#MAPS_ERROR_NETWORK_UNREACHABLE Network unavailable
+  * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a view is created using maps_view_create().
  *
@@ -1117,6 +1177,16 @@ int maps_view_remove_all_objects(maps_view_h view);
  * @see maps_view_create()
  */
 int maps_view_foreach_object(const maps_view_h view, maps_view_object_cb callback, void *user_data);
+
+
+
+/*----------------------------------------------------------------------------*/
+/*
+ * Snapshot Capture Service
+ */
+
+#include <maps_view_snapshot.h>
+
 
 /**
  * @}
