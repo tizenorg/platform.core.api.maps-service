@@ -59,10 +59,10 @@ view::inertial_camera::~inertial_camera()
 
 void view::inertial_camera::set_cur_state()
 {
-	if(!_view)
+	if (!_view)
 		return;
 
-	if(!cur_center)
+	if (!cur_center)
 		maps_coordinates_destroy(cur_center);
 	maps_view_get_center(_view, &cur_center);
 	maps_view_get_zoom_factor(_view, &cur_zoom_factor);
@@ -73,11 +73,11 @@ void view::inertial_camera::set_targets(const maps_coordinates_h center,
 					const double &zoom_factor,
 					const double &rotation_angle)
 {
-	if(!_view)
+	if (!_view)
 		return;
 
 	/* Store the targets */
-	if(!target_center)
+	if (!target_center)
 		maps_coordinates_destroy(target_center);
 	maps_coordinates_clone(center, &target_center);
 
@@ -85,7 +85,7 @@ void view::inertial_camera::set_targets(const maps_coordinates_h center,
 	target_rotation_angle = rotation_angle;
 
 	/* Store current state */
-	if(!transiting)
+	if (!transiting)
 		set_cur_state();
 
 	/* Start transition */
@@ -94,16 +94,16 @@ void view::inertial_camera::set_targets(const maps_coordinates_h center,
 
 void view::inertial_camera::set_center_target(const maps_coordinates_h center)
 {
-	if(!_view)
+	if (!_view)
 		return;
 
 	/* Store the target */
-	if(!target_center)
+	if (!target_center)
 		maps_coordinates_destroy(target_center);
 	maps_coordinates_clone(center, &target_center);
 
 	/* Store current state */
-	if(!transiting)
+	if (!transiting)
 		set_cur_state();
 
 	/* Start transition */
@@ -112,14 +112,14 @@ void view::inertial_camera::set_center_target(const maps_coordinates_h center)
 
 void view::inertial_camera::set_zoom_target(const double &zoom_factor)
 {
-	if(!_view)
+	if (!_view)
 		return;
 
 	/* Store the target */
 	target_zoom_factor = zoom_factor;
 
 	/* Store current state */
-	if(!transiting)
+	if (!transiting)
 		set_cur_state();
 
 	/* Start transition */
@@ -128,14 +128,14 @@ void view::inertial_camera::set_zoom_target(const double &zoom_factor)
 
 void view::inertial_camera::set_rotation_target(const double &rotation_angle)
 {
-	if(!_view)
+	if (!_view)
 		return;
 
 	/* Store the target */
 	target_rotation_angle = rotation_angle;
 
 	/* Store current state */
-	if(!transiting)
+	if (!transiting)
 		set_cur_state();
 
 	/* Start transition */
@@ -146,13 +146,13 @@ double view::inertial_camera::calc_next_step(const double &start,
 					     const double &finish,
 					     const double step_ratio) const
 {
-	if(start == finish)
+	if (start == finish)
 		return start;
 
 	/* Expanential transition */
 	double step = (finish - start) * step_ratio;
 	double new_pos = start + step;
-	if(finish > start) {
+	if (finish > start) {
 		new_pos = MAX(new_pos, start);
 		new_pos = MIN(new_pos, finish);
 	} else {
@@ -166,7 +166,7 @@ double view::inertial_camera::calc_next_step_lon(const double &start,
 					     const double &finish,
 					     const double step_ratio) const
 {
-	if(start == finish)
+	if (start == finish)
 		return start;
 
 	double _f = finish;
@@ -203,7 +203,7 @@ double view::inertial_camera::calc_next_step_lon(const double &start,
 
 bool view::inertial_camera::next_transition_step()
 {
-	if(!_view)
+	if (!_view)
 		return false;
 
 	transiting = false;
@@ -239,19 +239,19 @@ bool view::inertial_camera::next_transition_step()
 
 	/* Transiting zoom */
 	cur_zoom_factor = calc_next_step(cur_zoom_factor, target_zoom_factor, .2);
-	if(ABS(cur_zoom_factor - target_zoom_factor) > __ZOOM_ACCURACY)
+	if (ABS(cur_zoom_factor - target_zoom_factor) > __ZOOM_ACCURACY)
 		transiting = true;
 	else
 		cur_zoom_factor = target_zoom_factor;
 
 	/* Transizint orientation */
-	if(target_rotation_angle - cur_rotation_angle > 180.)
+	if (target_rotation_angle - cur_rotation_angle > 180.)
 		target_rotation_angle -= 360.;
-	else if(target_rotation_angle - cur_rotation_angle < -180.)
+	else if (target_rotation_angle - cur_rotation_angle < -180.)
 		target_rotation_angle += 360.;
 
 	cur_rotation_angle = calc_next_step(cur_rotation_angle, target_rotation_angle, .5);
-	if(ABS(cur_rotation_angle - target_rotation_angle) > __ROTATE_ACCURACY)
+	if (ABS(cur_rotation_angle - target_rotation_angle) > __ROTATE_ACCURACY)
 		transiting = true;
 	else
 		cur_rotation_angle = target_rotation_angle;

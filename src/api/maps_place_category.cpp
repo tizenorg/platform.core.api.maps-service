@@ -99,7 +99,6 @@ EXPORT_API int maps_place_category_clone(const maps_place_category_h origin,
 		}
 
 		return MAPS_ERROR_NONE;
-
 	} while (false);
 
 	maps_place_category_destroy(*cloned);

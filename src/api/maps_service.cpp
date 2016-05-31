@@ -56,7 +56,6 @@ static bool __maps_provider_supported(maps_service_h maps, maps_service_e servic
 	return supported;
 }
 
-
 static bool __has_maps_service_privilege()
 {
 	extern const char *MAPS_PLUGINS_PATH_PREFIX;

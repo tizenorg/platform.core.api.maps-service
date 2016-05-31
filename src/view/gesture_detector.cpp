@@ -111,7 +111,7 @@ void view::gesture_detector::stop_tap_timer()
 Eina_Bool view::gesture_detector::__on_tap_timer(void *data)
 {
 	gesture_detector *d = (gesture_detector *)data;
-	if(!d)
+	if (!d)
 		return ECORE_CALLBACK_CANCEL;
 
 	d->log("------- TAP TIMER EVENT -------", FG_MAGENTA);
@@ -146,7 +146,7 @@ void view::gesture_detector::stop_long_press_timer()
 Eina_Bool view::gesture_detector::__on_long_press_timer(void *data)
 {
 	gesture_detector *d = (gesture_detector *)data;
-	if(!d)
+	if (!d)
 		return ECORE_CALLBACK_CANCEL;
 
 	d->log("------- LONG PRESS TIMER EVENT -------", FG_MAGENTA);
@@ -182,7 +182,7 @@ bool view::gesture_detector::finger_pressed_enough(int finger_no,
 	if(up_time < press_time)
 		return false; /* Not yet unpressed */
 	unsigned int press_duration = up_time - press_time;
-	if((press_duration >= duration_min) && (press_duration <= duration_max))
+	if ((press_duration >= duration_min) && (press_duration <= duration_max))
 		return true;
 	return false;
 }

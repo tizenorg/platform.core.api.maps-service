@@ -242,6 +242,6 @@ int view::runtime_touch_info::calc_finger_pressed()
 	int cnt = 0;
 	for(unsigned int i = 0; i < MAX_FINGERS; i ++)
 		if(_is_finger_pressed[i])
-			cnt ++;
+			cnt++;
 	return cnt;
 }

@@ -29,24 +29,24 @@ void view::poly_shape_hit_test::add_point(const float x, const float y)
 bool view::poly_shape_hit_test::hit_test(const float x, const float y,
 	const bool polygon, const int w) const
 {
-	if(__x.empty())
+	if (__x.empty())
 		return false;
 
 	/* 1. Check if the point in the bounding box of a poly-figure */
-	if(!hit_test_bounding_box(x, y))
+	if (!hit_test_bounding_box(x, y))
 		return false;
 
 	/* 2. Check if the point near the polyline */
-	if(hit_test_polyline(x, y, polygon, w))
+	if (hit_test_polyline(x, y, polygon, w))
 		return true;
 
 	/* 3. Check if the point near the vertices */
-	if(hit_test_vertices(x, y))
+	if (hit_test_vertices(x, y))
 		return true;
 
 	/* 4. Check if the point inside the polygon (for polygon only) */
-	if(polygon)
-		if(pnpoly(x, y))
+	if (polygon)
+		if (pnpoly(x, y))
 			return true;
 
 	return false;
@@ -58,14 +58,14 @@ bool view::poly_shape_hit_test::hit_test_bounding_box(const float x, const float
 	float x_max = 1. * FLT_MIN;
 	float y_min = 1. * FLT_MAX;
 	float y_max = 1. * FLT_MIN;
-	for(unsigned int i = 0; i < __x.size(); i ++) {
-		if(__x[i] < x_min)
+	for (unsigned int i = 0; i < __x.size(); i ++) {
+		if (__x[i] < x_min)
 			x_min = __x[i];
-		if(__x[i] > x_max)
+		if (__x[i] > x_max)
 			x_max = __x[i];
-		if(__y[i] < y_min)
+		if (__y[i] < y_min)
 			y_min = __y[i];
-		if(__y[i] > y_max)
+		if (__y[i] > y_max)
 			y_max = __y[i];
 	}
 	x_min -= accuracy;
@@ -83,7 +83,7 @@ bool view::poly_shape_hit_test::hit_test_segment(const float x1, const float y1,
 	float a = x2 - x1;
 	float b = y2 - y1;
 	float c = sqrt(a * a + b * b);
-	if(c == 0)
+	if (c == 0)
 		return false;
 	float sina = b / c;
 	float cosa = a / c;
@@ -93,7 +93,7 @@ bool view::poly_shape_hit_test::hit_test_segment(const float x1, const float y1,
 	float x_rotated = x_shifted * cosa + y_shifted * sina;
 	float y_rotated = x_shifted * sina - y_shifted * cosa;
 
-	if((x_rotated >= 0) && (x_rotated <= c)
+	if ((x_rotated >= 0) && (x_rotated <= c)
 	   && (y_rotated >= (-1. * (accuracy + w / 2)))
 	   && (y_rotated <=  (accuracy + w / 2)))
 		return true;
@@ -103,19 +103,18 @@ bool view::poly_shape_hit_test::hit_test_segment(const float x1, const float y1,
 bool view::poly_shape_hit_test::hit_test_polyline(const float x, const float y,
 					const bool polygon, const int w) const
 {
-	if(__x.size() < 1)
+	if (__x.size() < 1)
 		return false;
 
-	for(unsigned int i = 1; i < __x.size(); i ++) {
-
-		if(hit_test_segment(__x[i - 1], __y[i - 1],
+	for (unsigned int i = 1; i < __x.size(); i ++) {
+		if (hit_test_segment(__x[i - 1], __y[i - 1],
 				    __x[i], __y[i], x, y, w))
 			return true;
 	}
 
-	if(polygon) {
+	if (polygon) {
 		/* Final section */
-		if(hit_test_segment(__x[__x.size() - 1], __y[__x.size() - 1],
+		if (hit_test_segment(__x[__x.size() - 1], __y[__x.size() - 1],
 				    __x[0], __y[0], x, y))
 			return true;
 	}
@@ -125,12 +124,12 @@ bool view::poly_shape_hit_test::hit_test_polyline(const float x, const float y,
 
 bool view::poly_shape_hit_test::hit_test_vertices(const float x, const float y) const
 {
-	for(unsigned int i = 0; i < __x.size(); i ++) {
+	for (unsigned int i = 0; i < __x.size(); i ++) {
 		float cur_x_min = __x[i] - accuracy;
 		float cur_x_max = __x[i] + accuracy;
 		float cur_y_min = __y[i] - accuracy;
 		float cur_y_max = __y[i] + accuracy;
-		if((x >= cur_x_min) && (x <= cur_x_max)
+		if ((x >= cur_x_min) && (x <= cur_x_max)
 		    && (y >= cur_y_min) && (y <= cur_y_max))
 			return true;
 	}

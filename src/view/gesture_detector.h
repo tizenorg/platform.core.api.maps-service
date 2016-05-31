@@ -113,7 +113,6 @@ namespace view
 			FG_LITE_MAGENTA	= 95,
 			FG_LITE_CYAN	= 96,
 			FG_LITE_WHITE	= 97
-
 		};
 		static void log(const char *str, log_colors color = FG_WHITE);
 		void log_map_center(int color = FG_LITE_BLUE);

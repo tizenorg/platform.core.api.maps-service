@@ -15,54 +15,52 @@
  */
 
 
-#include "marker_constructor.h"
+#include "overlay_constructor.h"
 
 extern int _maps_view_object_create(const maps_view_object_type_e type, maps_view_object_h *object);
 
-extern int _maps_view_object_marker_set_type(maps_view_object_h marker, maps_view_marker_type_e type);
+extern int _maps_view_object_overlay_set_object(maps_view_object_h overlay, Evas_Object *object);
 
-maps_view_object_h view::marker_constructor::construct(maps_coordinates_h coordinates,
-						const char *image_file_path, maps_view_marker_type_e type)
+extern int _maps_view_object_overlay_set_type(maps_view_object_h overlay, maps_view_overlay_type_e type);
+
+maps_view_object_h view::overlay_constructor::construct(maps_coordinates_h coordinates,
+	Evas_Object *object, maps_view_overlay_type_e type)
 {
-	if (!coordinates || !image_file_path) {
-		__error = MAPS_ERROR_INVALID_PARAMETER;
-		return NULL;
-	}
-
-	if ((type < MAPS_VIEW_MARKER_PIN) || (type > MAPS_VIEW_MARKER_STICKER)) {
+	if (!coordinates || !object) {
 		__error = MAPS_ERROR_INVALID_PARAMETER;
 		return NULL;
 	}
 
 	__error = MAPS_ERROR_NONE;
 
-	maps_view_object_h marker = NULL;
+	maps_view_object_h overlay = NULL;
 	do {
 		/* 1. Create a visual object for marker */
-		__error = _maps_view_object_create(MAPS_VIEW_OBJECT_MARKER, &marker);
+		__error = _maps_view_object_create(MAPS_VIEW_OBJECT_OVERLAY, &overlay);
 		if (__error != MAPS_ERROR_NONE)
 			break;
 
-		/* 2. Set the marker image file pathe */
-		__error = maps_view_object_marker_set_image_file(marker, image_file_path);
+		/* 2. Set the overlay type */
+		__error = _maps_view_object_overlay_set_type(overlay, type);
 		if (__error != MAPS_ERROR_NONE)
 			break;
 
-		/* 3. Set the marker type */
-		__error = _maps_view_object_marker_set_type(marker, type);
+		/* 3. Set the evas object to the overlay */
+		__error = _maps_view_object_overlay_set_object(overlay, object);
 		if (__error != MAPS_ERROR_NONE)
 			break;
 
-		/* 4 Move the marker to the given coordinates */
-		__error = maps_view_object_marker_set_coordinates(marker, coordinates);
+		/* 4. Move the overlay to the given coordinates */
+		__error = maps_view_object_overlay_set_coordinates(overlay, coordinates);
 		if (__error != MAPS_ERROR_NONE)
 			break;
 
 		/* SUCCESS */
-		return marker;
-	} while (false);
+		return overlay;
+
+	} while(false);
 
 	/* FAILURE: Releasing objects */
-	maps_view_object_destroy(marker);
+	maps_view_object_destroy(overlay);
 	return NULL;
 }

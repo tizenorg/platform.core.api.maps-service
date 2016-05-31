@@ -21,18 +21,15 @@
 
 session::thread::thread()
 {
-
 }
 
 session::thread::~thread()
 {
-
 }
 
 /* Thread function: pops the item from the queue and performs the command */
 void *session::thread::queue_thread(void *data)
 {
-
 	sleep(0);		/* Just switch the thread to accomplish previous
 				   initialization routines */
 
@@ -49,12 +46,10 @@ void *session::thread::queue_thread(void *data)
 
 void session::thread::run(plugin::plugin_s *p)
 {
-
 	if (!p)
 		return;
 	if (p->thread)
-		return;		/* Check whether the thread is already
-				   started, */
+		return;		/* Check whether the thread is already started, */
 	/* Start if needed */
 
 	p->is_working = true;

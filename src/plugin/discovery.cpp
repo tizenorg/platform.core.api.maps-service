@@ -104,26 +104,20 @@ vector<string> plugin::discovery::get_module_file_list() const
 	MAPS_LOGD("START PLUGIN FILES DISCOVERY:");
 	dir = g_dir_open(MAPS_PLUGINS_PATH_PREFIX, 0, &error);
 	if (dir) {
-
 		GPatternSpec *plugin_name_pattern = g_pattern_spec_new("*?.so");
 
 		while ((filename = g_dir_read_name(dir))) {
 			MAPS_LOGD("found plugin binary: %s", filename);
-			if (g_pattern_match_string(plugin_name_pattern,
-					filename)) {
-				MAPS_LOGD("\tadded plugin binary: %s",
-					filename);
+			if (g_pattern_match_string(plugin_name_pattern, filename)) {
+				MAPS_LOGD("\tadded plugin binary: %s", filename);
 				l.push_back(string(filename));
 			}
 		}
 
 		g_pattern_spec_free(plugin_name_pattern);
-
 		g_dir_close(dir);
-	}
-	else if (error) {
-		MAPS_LOGE("%d: Can not open directory: %s\n", error->code,
-			  error->message);	/* g_error */
+	} else if (error) {
+		MAPS_LOGE("%d: Can not open directory: %s\n", error->code, error->message);
 	}
 
 	return l;

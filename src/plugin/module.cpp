@@ -41,7 +41,6 @@ plugin::binary_extractor::binary_extractor()
 plugin::provider_info plugin::binary_extractor::get_plugin_info(const
 							string &file_name) const
 {
-
 	if (file_name.empty())
 		return provider_info::empty_instance;
 
@@ -96,7 +95,6 @@ maps_plugin_h plugin::binary_extractor::init(const provider_info &info,
 
 	/* 2. Perform steps to completely initialize a plugin */
 	do {
-
 		if (!new_plugin) {
 			MAPS_LOGE("OUT_OF_MEMORY(0x%08x)",
 				MAPS_ERROR_OUT_OF_MEMORY);
@@ -228,6 +226,9 @@ maps_plugin_h plugin::binary_extractor::init(const provider_info &info,
 		new_plugin->interface.maps_plugin_get_center =
 			(maps_plugin_get_center_f) gmod_find_sym(plugin,
 			"maps_plugin_get_center");
+		new_plugin->interface.maps_plugin_capture_snapshot =
+			(maps_plugin_capture_snapshot_f) gmod_find_sym(plugin,
+			"maps_plugin_capture_snapshot");
 
 		/* 2.3 Check whether the plugin init function is valid */
 		if (!new_plugin->interface.maps_plugin_init) {
@@ -298,7 +299,6 @@ maps_plugin_h plugin::binary_extractor::init(const provider_info &info,
 
 		/* 2.5 Return newly initialized plugin */
 		return new_plugin;
-
 	} while (FALSE);
 
 	MAPS_LOGE("Shut down the plugin becuause of error");
@@ -349,7 +349,6 @@ void plugin::binary_extractor::shutdown(maps_plugin_h plugin_h)
 plugin::GMod *plugin::binary_extractor::gmod_new(const string &module_file,
 						 gboolean is_resident) const
 {
-
 	if (!g_module_supported()) {
 		MAPS_LOGE("ERROR! g_module_supported is false\n\n");
 		return NULL;
@@ -432,7 +431,6 @@ gpointer plugin::binary_extractor::gmod_find_sym(GMod *gmod,
 
 void plugin::binary_extractor::trace_dbg(const plugin_s *plugin) const
 {
-
 	MAPS_LOGD("*********************************************");
 	MAPS_LOGD("PLUGIN INFO");
 	if (!plugin) {
@@ -444,8 +442,7 @@ void plugin::binary_extractor::trace_dbg(const plugin_s *plugin) const
 	const GMod *mod = (const GMod *) plugin->module;
 	if (!mod) {
 		MAPS_LOGD("PLUGIN module is NULL");
-	}
-	else {
+	} else {
 		MAPS_LOGD("module address:\t\t\t%p", mod->module);
 		MAPS_LOGD("module name:\t\t\t%s", mod->name);
 		MAPS_LOGD("module path:\t\t\t%s", mod->path);
@@ -453,8 +450,7 @@ void plugin::binary_extractor::trace_dbg(const plugin_s *plugin) const
 
 	if (!plugin->request_queue) {
 		MAPS_LOGD("PLUGIN request queue is NULL");
-	}
-	else {
+	} else {
 		MAPS_LOGD("plugin request queue:\t\t\t%p", plugin->request_queue);
 	}
 
@@ -501,5 +497,7 @@ void plugin::binary_extractor::trace_dbg(const plugin_s *plugin) const
 
 	MAPS_LOGD("maps_plugin_cancel_request:\t\t%p",
 		itf->maps_plugin_cancel_request);
+	MAPS_LOGD("maps_plugin_capture_snapshot:\t\t%p",
+		itf->maps_plugin_capture_snapshot);
 	MAPS_LOGD("*********************************************");
 }

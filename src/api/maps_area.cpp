@@ -43,8 +43,7 @@ EXPORT_API int maps_area_create_rectangle(const maps_coordinates_h top_left,
 	if (lon_interval < 180 && lon_interval > -180) {
 		if (rb_lon <= tf_lon || rb_lat >= tf_lat)
 			return MAPS_ERROR_INVALID_PARAMETER;
-	}
-	else {
+	} else {
 		if (rb_lon >= tf_lon || rb_lat >= tf_lat)
 			return MAPS_ERROR_INVALID_PARAMETER;
 	}
@@ -118,14 +117,12 @@ EXPORT_API int maps_area_clone(const maps_area_h origin, maps_area_h *cloned)
 		} else {
 			return MAPS_ERROR_INVALID_PARAMETER;
 		}
-	}
-	else if (origin_handle->type == MAPS_AREA_CIRCLE) {
+	} else if (origin_handle->type == MAPS_AREA_CIRCLE) {
 		maps_area_h new_circle = NULL;
 		maps_area_circle_s cir = origin_handle->circle;
 		maps_coordinates_s center = cir.center;
 		double radius = cir.radius;
-		maps_area_create_circle((maps_coordinates_h) & center, radius,
-			&new_circle);
+		maps_area_create_circle((maps_coordinates_h)&center, radius, &new_circle);
 		if (new_circle) {
 			*cloned = new_circle;
 		} else {
@@ -162,8 +159,7 @@ bool __is_valid_rect(maps_coordinates_h top_left, maps_coordinates_h bottom_righ
 		if (lon_interval < 180 && lon_interval > -180) {
 			if (rb_lon <= tf_lon || rb_lat >= tf_lat)
 				ret = false;
-		}
-		else {
+		} else {
 			if (rb_lon >= tf_lon || rb_lat >= tf_lat)
 				ret = false;
 		}
@@ -187,8 +183,7 @@ bool maps_area_is_valid(const maps_area_h area)
 				ret = false;
 				break;
 			}
-		}
-		else if (handle->type == MAPS_AREA_CIRCLE) {
+		} else if (handle->type == MAPS_AREA_CIRCLE) {
 			maps_area_circle_s cir = handle->circle;
 			maps_coordinates_s center = cir.center;
 
@@ -200,8 +195,7 @@ bool maps_area_is_valid(const maps_area_h area)
 				ret = false;
 				break;
 			}
-		}
-		else {
+		} else {
 			ret = false;
 		}
 	} while (false);

@@ -84,7 +84,6 @@ typedef struct _maps_place_s
 
 	/* The table of available data features */
 	maps_int_hashtable_h supported_data;
-
 } maps_place_s;
 
 /* TODO: extract all such constants to the dedcated header file */
