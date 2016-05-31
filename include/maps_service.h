@@ -54,7 +54,7 @@ extern "C" {
 
 /**
  * @brief	Enumerations of maps requests available in the Maps Service
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  */
 typedef enum _maps_service_e {
 	MAPS_SERVICE_GEOCODE,					/**< Indicates that maps_service_geocode() service is allowed */
@@ -71,39 +71,40 @@ typedef enum _maps_service_e {
 	MAPS_SERVICE_SEARCH_PLACE_LIST,			/**< Indicates that maps_service_search_place_list() service is allowed @if MOBILE (Since 3.0) @endif */
 	MAPS_SERVICE_SEARCH_GET_PLACE_DETAILS,	/**< Indicates that maps_service_search_get_place_details() service is allowed @if MOBILE (Since 3.0) @endif */
 
-	MAPS_SERVICE_VIEW = 0x100				/**< Indicates that maps view service is allowed @if MOBILE (Since 3.0) @endif */
+	MAPS_SERVICE_VIEW = 0x100,				/**< Indicates that maps view service is allowed @if MOBILE (Since 3.0) @endif */
+	MAPS_SERVICE_VIEW_SNAPSHOT				/**< Indicates that maps view snapshot service is allowed @if MOBILE (Since 3.0) @endif */
 } maps_service_e;
 
 /**
  * @brief Enumerations of maps features available in the Maps Service
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  */
 typedef enum _maps_service_data_e {
-	MAPS_PLACE_ADDRESS,		/**< Indicates the availability of address value in the Place data */
-	MAPS_PLACE_RATING,		/**< Indicates the availability of rating value in the Place data */
-	MAPS_PLACE_CATEGORIES,	/**< Indicates the availability of place category list in the Place data */
-	MAPS_PLACE_ATTRIBUTES,	/**< Indicates the availability of place attribute list in the Place data */
-	MAPS_PLACE_CONTACTS,	/**< Indicates the availability of place contact list in the Place data */
-	MAPS_PLACE_EDITORIALS,	/**< Indicates the availability of place editorial list in the Place data */
-	MAPS_PLACE_REVIEWS,		/**< Indicates the availability of place review list in the Place data */
-	MAPS_PLACE_IMAGE,		/**< Indicates the availability of place image in Place the data */
-	MAPS_PLACE_SUPPLIER,	/**< Indicates the availability of place supplier link value in the Place data */
-	MAPS_PLACE_RELATED,		/**< Indicates the availability of related place link in the Place data */
-	MAPS_ROUTE_PATH,		/**< Indicates that the Route Data Structure is defined as a Path (a list of geographical coordinates) */
+	MAPS_PLACE_ADDRESS,				/**< Indicates the availability of address value in the Place data */
+	MAPS_PLACE_RATING,				/**< Indicates the availability of rating value in the Place data */
+	MAPS_PLACE_CATEGORIES,			/**< Indicates the availability of place category list in the Place data */
+	MAPS_PLACE_ATTRIBUTES,			/**< Indicates the availability of place attribute list in the Place data */
+	MAPS_PLACE_CONTACTS,			/**< Indicates the availability of place contact list in the Place data */
+	MAPS_PLACE_EDITORIALS,			/**< Indicates the availability of place editorial list in the Place data */
+	MAPS_PLACE_REVIEWS,				/**< Indicates the availability of place review list in the Place data */
+	MAPS_PLACE_IMAGE,				/**< Indicates the availability of place image in Place the data */
+	MAPS_PLACE_SUPPLIER,			/**< Indicates the availability of place supplier link value in the Place data */
+	MAPS_PLACE_RELATED,				/**< Indicates the availability of related place link in the Place data */
+	MAPS_ROUTE_PATH,				/**< Indicates that the Route Data Structure is defined as a Path (a list of geographical coordinates) */
 	MAPS_ROUTE_SEGMENTS_PATH,		/**< Indicates that the Route Data Structure is defined as a list of Segments while each segment is defined as a Path */
 	MAPS_ROUTE_SEGMENTS_MANEUVERS,	/**< Indicates that the Route Data Structure is defined as a list of Segments while each segment is defined as a list of Maneuvers*/
 
-	MAPS_VIEW_TRAFFIC = 0x100,	/**< Indicates the availability of traffic information on the Map @if MOBILE (Since 3.0) @endif */
-	MAPS_VIEW_PUBLIC_TRANSIT,	/**< Indicates the availability of public transit information on the Map @if MOBILE (Since 3.0) @endif */
-	MAPS_VIEW_BUILDING,		/**< Indicates the availability of 3D building drawable on the Map @if MOBILE (Since 3.0) @endif */
-	MAPS_VIEW_SCALEBAR		/**< Indicates the availability of scale bar on the Map @if MOBILE (Since 3.0) @endif */
+	MAPS_VIEW_TRAFFIC = 0x100,		/**< Indicates the availability of traffic information on the Map @if MOBILE (Since 3.0) @endif */
+	MAPS_VIEW_PUBLIC_TRANSIT,		/**< Indicates the availability of public transit information on the Map @if MOBILE (Since 3.0) @endif */
+	MAPS_VIEW_BUILDING,				/**< Indicates the availability of 3D building drawable on the Map @if MOBILE (Since 3.0) @endif */
+	MAPS_VIEW_SCALEBAR				/**< Indicates the availability of scale bar on the Map @if MOBILE (Since 3.0) @endif */
 } maps_service_data_e;
 
 /**
  * @brief	The Maps Service handle
  * @details The Maps Service handle can be created by calling of maps_service_create().
  * \n To release the handle use maps_service_destroy().
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  *
  * @see maps_service_create()
  * @see maps_service_destroy()
@@ -114,7 +115,7 @@ typedef void *maps_service_h;
 /**
  * @brief	Called when requesting available Maps Providers.
  * @details A Maps Service invokes this callback iteratively as long as available Maps Providers exist.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks The string @a maps_provider must be released using free().
  *
  * @param[in]	maps_provider	The info of Maps Provider
@@ -135,7 +136,7 @@ typedef bool(*maps_service_provider_info_cb) (char *maps_provider,
  * @brief	Gets available Maps Providers.
  * @details This function delivers available Maps Providers via
  * maps_service_provider_info_cb() callback.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	callback	The callback function to receive available Maps Providers
  * information
@@ -160,7 +161,7 @@ int maps_service_foreach_provider(maps_service_provider_info_cb callback,
  * and linked with Maps Service handle.
  * \n A Maps Service handle is used to query Maps Provider performing services,
  * such as Geocoding, Searching Places and Routing.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @privlevel public
  * @privilege %http://tizen.org/privilege/mapservice \n
  *            %http://tizen.org/privilege/network.get
@@ -205,7 +206,7 @@ int maps_service_create(const char *maps_provider, maps_service_h *maps);
 /**
  * @brief	Destroys the Maps Service handle and releases all its resources.
  * @details This function releases all used resources of the Maps Service and Maps Provider.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @privlevel public
  * @privilege %http://tizen.org/privilege/mapservice
  *
@@ -214,6 +215,7 @@ int maps_service_create(const char *maps_provider, maps_service_h *maps);
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
  * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
+ * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
  *
  * @pre Call maps_service_create() to create Maps Service and get its handle.
  *
@@ -226,7 +228,7 @@ int maps_service_destroy(maps_service_h maps);
  * @details This function sets the Maps Provider's Key which will be used in each Maps
  * Service request to Maps Provider.
  * \n Maps key can be obtained with maps_service_get_provider_key().
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks To get the @a provider_key, refer to corresponding Maps Provider
  * documentation.
  * \n To get app_id and app_code of HERE, visit https://developer.here.com/,
@@ -255,7 +257,7 @@ int maps_service_set_provider_key(maps_service_h maps,
  * @details This function gets the Maps Key which is to be used in each Maps
  * Service request to Maps Provider.
  * \n Maps key can be set with maps_service_set_provider_key().
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks The string @a provider_key must be released using free().
  * \n @a maps_service_get_provider_key is always synchronous function.
  *
@@ -278,7 +280,7 @@ int maps_service_get_provider_key(const maps_service_h maps,
  * @brief	Sets the Maps Preference.
  * @details This function sets the Maps Preferences which are used in each Maps
  * Service request to Maps Provider.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	maps		The handle of Maps Service
  * @param[in]	preference	The handle of Maps Preference
@@ -301,7 +303,7 @@ int maps_service_set_preference(maps_service_h maps,
  * @details This function gets the Maps Preferences which are used in each Maps
  * Service request to Maps Provider.
  * \n Preferences can be set with maps_service_set_preference().
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks @a preference must be released using maps_preference_destroy().
  * \n @a maps_service_get_preference is always synchronous function.
  *
@@ -323,7 +325,7 @@ int maps_service_get_preference(maps_service_h maps,
 /**
  * @brief	Checks if the Maps Service supports a request.
  * @details This function checks if the Maps Service supports a specified request.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks @a maps_service_provider_is_service_supported is always synchronous
  * function.
  *
@@ -347,7 +349,7 @@ int maps_service_provider_is_service_supported(const maps_service_h maps,
  * @brief	Checks if the Maps Service supports a data feature.
  * @details This function checks if the Maps Service supports a specified data
  * feature.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks @a maps_service_provider_is_data_supported is always synchronous
  * function.
  *
@@ -378,7 +380,7 @@ int maps_service_provider_is_data_supported(const maps_service_h maps,
  * @details This function cancels the service request initiated by geocoding
  * and searching places and routes.
 
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @privlevel public
  * @privilege %http://tizen.org/privilege/mapservice
  *
@@ -455,7 +457,7 @@ int maps_service_cancel_request(const maps_service_h maps, int request_id);
  * @details The Maps Service invokes this callback while iterating through the
  * list of obtained coordinates of the specified place.
  * \n If search is failed, the value of @a total is 0 and @a coordinates is NULL
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks The parameter @a coordinates must be released using
  * maps_coordinates_destroy().
  * \n This error code will be reported. \n
@@ -500,7 +502,7 @@ typedef bool(*maps_service_geocode_cb) (maps_error_e result, int request_id,
  *			#MAPS_ERROR_OUT_OF_MEMORY \n
  *			#MAPS_ERROR_INVALID_PARAMETER \n
  *			#MAPS_ERROR_NOT_FOUND.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	result		The result of request
  * @param[in]	request_id	The id of request
@@ -527,7 +529,7 @@ typedef void (*maps_service_reverse_geocode_cb) (maps_error_e result,
  * \n The request is asynchronous.
  * @details This function obtains position coordinates for a given free-formed
  * address string.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @privlevel public
  * @privilege %http://tizen.org/privilege/mapservice \n
  *            %http://tizen.org/privilege/internet \n
@@ -578,7 +580,7 @@ int maps_service_geocode(const maps_service_h maps, const char *address,
  * \n The request is asynchronous.
  * @details This function obtains position coordinates for a given free-formed
  * address string within the specified bounding box.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @privlevel public
  * @privilege %http://tizen.org/privilege/mapservice \n
  *            %http://tizen.org/privilege/internet \n
@@ -635,7 +637,7 @@ int maps_service_geocode_inside_area(const maps_service_h maps,
  * \n The request is asynchronous.
  * @details This function obtains position coordinates for a given structured
  * address.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @privlevel public
  * @privilege %http://tizen.org/privilege/mapservice \n
  *            %http://tizen.org/privilege/internet \n
@@ -689,7 +691,7 @@ int maps_service_geocode_by_structured_address(const maps_service_h maps,
  * \n The request is asynchronous.
  * @details This function obtains structured address information for a given
  * position coordinates.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @privlevel public
  * @privilege %http://tizen.org/privilege/mapservice \n
  *            %http://tizen.org/privilege/internet \n
@@ -740,7 +742,7 @@ int maps_service_reverse_geocode(const maps_service_h maps, double latitude,
  * from map service provider.
  * \n The value of @a total is same with requested coordinates list size.
  * Even though one of address is not provided valid address handle is retrieved.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  * @remarks	You can get the respective address information of @a address_list
  * using maps_address_list_foreach().
  * \n This error code will be reported. \n
@@ -775,7 +777,7 @@ typedef bool (*maps_service_multi_reverse_geocode_cb) (maps_error_e result,
  * @brief	Gets the address list for a given position coordinates list.
  * \n The request is asynchronous.
  * @details This function obtains structured address information.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  * @privlevel public
  * @privilege %http://tizen.org/privilege/mapservice \n
  *            %http://tizen.org/privilege/internet \n
@@ -845,7 +847,7 @@ int maps_service_multi_reverse_geocode(const maps_service_h maps,
  * @details The Maps Service invokes this callback while iterating through the
  * set of obtained Place data.
  * \n If search is failed, the value of @a total is 0 and @a place is NULL
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks The parameter @a place must be released using maps_place_destroy().
  * \n This error code will be reported. \n
  *			#MAPS_ERROR_NONE \n
@@ -882,7 +884,7 @@ typedef bool(*maps_service_search_place_cb) (maps_error_e error,
  * @details The Maps Service invokes this callback when the Place data obtained
  * from the specified coordinates.
  * \n If search is failed, the value of @a total is 0 and @a place_list is NULL
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  * @remarks	The parameter @a place_list must be released using maps_place_list_destroy().
  * \n This error code will be reported. \n
  *			#MAPS_ERROR_NONE \n
@@ -909,7 +911,7 @@ typedef void(*maps_service_search_place_list_cb) (maps_error_e error,
  * @details The Maps Service invokes this callback when the Place detail data
  * obtained from the specified uri.
  * \n If search is failed, @a place is NULL
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  * @remarks The parameter @a place must be released using maps_place_destroy().
  * \n This error code will be reported. \n
  *			#MAPS_ERROR_NONE \n
@@ -935,7 +937,7 @@ typedef void(*maps_service_get_place_details_cb) (maps_error_e error,
  * \n The request is asynchronous.
  * @details This function obtains the Place information for a specified distance
  * around a given coordinates position.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @privlevel public
  * @privilege %http://tizen.org/privilege/mapservice \n
  *            %http://tizen.org/privilege/internet \n
@@ -994,7 +996,7 @@ int maps_service_search_place(const maps_service_h maps,
  * \n The request is asynchronous.
  * @details This function obtains the Place information for a specified
  * coordinates boundary.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @privlevel public
  * @privilege %http://tizen.org/privilege/mapservice \n
  *            %http://tizen.org/privilege/internet \n
@@ -1054,7 +1056,7 @@ int maps_service_search_place_by_area(const maps_service_h maps,
  * \n The request is asynchronous.
  * @details This function obtains the Place information for a specified
  * free-formed address string.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @privlevel public
  * @privilege %http://tizen.org/privilege/mapservice \n
  *            %http://tizen.org/privilege/internet \n
@@ -1115,7 +1117,7 @@ int maps_service_search_place_by_address(const maps_service_h maps,
  * @brief	Queries a brief Place information by a coordinates boundary.
  * /n The request is asynchronous.
  * @details This function obtains the brief Place information for a specified coordinates boundary.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  * @privlevel public
  * @privilege %http://tizen.org/privilege/mapservice \n
  *            %http://tizen.org/privilege/internet \n
@@ -1165,7 +1167,7 @@ int maps_service_search_place_list(const maps_service_h maps,
  * @brief	Queries a Detail place information by a place uri.
  * \n The request is asynchronous.
  * @details This function obtains the Detail place information for a specified place uri
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  * @privlevel public
  * @privilege %http://tizen.org/privilege/mapservice \n
  *            %http://tizen.org/privilege/internet \n
@@ -1234,7 +1236,7 @@ int maps_service_get_place_details(const maps_service_h maps,
  * @details The Maps Service invokes this callback while iterating through the
  * set of obtained Routes.
  * \n If search is failed, the value of @a total is 0 and @a route is NULL.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks The parameter @a route must be released using maps_route_destroy().
  * \n This error code will be reported. \n
  *			#MAPS_ERROR_NONE \n
@@ -1270,7 +1272,7 @@ typedef bool(*maps_service_search_route_cb) (maps_error_e error,
  * \n The request is asynchronous.
  * @details This function gets the Route information for a specified origin and
  * destination coordinates.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @privlevel public
  * @privilege %http://tizen.org/privilege/mapservice \n
  *            %http://tizen.org/privilege/internet \n
@@ -1324,7 +1326,7 @@ int maps_service_search_route(const maps_service_h maps,
  * \n The request is asynchronous.
  * @details This function gets the Route information for the Route, passing
  * through a specified set of way points.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @privlevel public
  * @privilege %http://tizen.org/privilege/mapservice \n
  *            %http://tizen.org/privilege/internet \n
