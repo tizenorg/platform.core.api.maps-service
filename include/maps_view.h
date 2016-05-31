@@ -136,7 +136,7 @@ typedef void(*maps_view_on_event_cb) (maps_view_event_type_e type, maps_view_eve
  * @remarks The @a View must be released using maps_view_destroy().
  *
  * @param[in]	maps	The maps service handle
- * @param[in]	obj		The image object
+ * @param[in]	obj		The evas object to be drawn
  * @param[out]	view	The handle pointer to a maps_view_h,
  * in which to store the newly created View handle
  * @return	0 on success, otherwise a negative error value
@@ -146,6 +146,7 @@ typedef void(*maps_view_on_event_cb) (maps_view_event_type_e type, maps_view_eve
  * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
  *
  * @pre @a maps is created using maps_service_create().
+ * @pre @a obj is recommended using a smart object.
  *
  * @see maps_view_destroy()
  * @see maps_service_create()
@@ -154,8 +155,9 @@ typedef void(*maps_view_on_event_cb) (maps_view_event_type_e type, maps_view_eve
  * @see maps_view_set_orientation()
  * @see maps_view_set_type()
  * @see maps_view_set_visibility()
+ * @see elm_layout_add()
  */
-int maps_view_create(maps_service_h maps, Evas_Image *obj, maps_view_h *view);
+int maps_view_create(maps_service_h maps, Evas_Object *obj, maps_view_h *view);
 
 /**
  * @brief	Destroys the View.
@@ -200,6 +202,7 @@ int maps_view_destroy(maps_view_h view);
  * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
  * @retval	#MAPS_ERROR_CONNECTION_TIME_OUT Timeout error, no answer
  * @retval	#MAPS_ERROR_NETWORK_UNREACHABLE Network unavailable
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a view is created using maps_view_create().
  * @pre @a coordinates are created using maps_coordinates_create().
@@ -257,6 +260,7 @@ int maps_view_get_center(const maps_view_h view, maps_coordinates_h *coordinates
  * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
  * @retval	#MAPS_ERROR_CONNECTION_TIME_OUT Timeout error, no answer
  * @retval	#MAPS_ERROR_NETWORK_UNREACHABLE Network unavailable
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a view is created using maps_view_create().
  *
@@ -290,6 +294,32 @@ int maps_view_set_zoom_level(maps_view_h view, int level);
 int maps_view_get_zoom_level(const maps_view_h view, int *level);
 
 /**
+ * @brief	Sets the minimal zoom level of the map.
+ * @details This function sets the minimally allowed zoom level of the map.
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
+ * @privlevel public
+ * @privilege %http://tizen.org/privilege/mapservice
+ *
+ * @param[in]	view	The view handle
+ * @param[out]	level	The new minimal zoom level
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_INVALID_OPERATION Operation is not valid
+ * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
+ *
+ * @pre @a view is created using maps_view_create().
+ *
+ * @see maps_view_get_min_zoom_level()
+ * @see maps_view_set_max_zoom_level()
+ * @see maps_view_get_max_zoom_level()
+ * @see maps_view_get_zoom_level()
+ * @see maps_view_set_zoom_level()
+ * @see maps_view_create()
+ */
+int maps_view_set_min_zoom_level(maps_view_h view, int level);
+
+/**
  * @brief	Gets the minimal zoom level of the map.
  * @details This function gets the minimally allowed zoom level of the map.
  * @since_tizen 3.0
@@ -310,6 +340,32 @@ int maps_view_get_zoom_level(const maps_view_h view, int *level);
  * @see maps_view_create()
  */
 int maps_view_get_min_zoom_level(const maps_view_h view, int *min_zoom_level);
+
+/**
+ * @brief	Sets the maximal zoom level of the map.
+ * @details This function sets the maximally allowed zoom level of the map.
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
+ * @privlevel public
+ * @privilege %http://tizen.org/privilege/mapservice
+ *
+ * @param[in]	view	The view handle
+ * @param[out]	level	The new maximal zoom level
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_INVALID_OPERATION Operation is not valid
+ * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
+ *
+ * @pre @a view is created using maps_view_create().
+ *
+ * @see maps_view_set_min_zoom_level()
+ * @see maps_view_get_min_zoom_level()
+ * @see maps_view_get_max_zoom_level()
+ * @see maps_view_get_zoom_level()
+ * @see maps_view_set_zoom_level()
+ * @see maps_view_create()
+ */
+int maps_view_set_max_zoom_level(maps_view_h view, int level);
 
 /**
  * @brief	Gets the maximal zoom level of the map.
@@ -352,6 +408,7 @@ int maps_view_get_max_zoom_level(const maps_view_h view, int *max_zoom_level);
  * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
  * @retval	#MAPS_ERROR_CONNECTION_TIME_OUT Timeout error, no answer
  * @retval	#MAPS_ERROR_NETWORK_UNREACHABLE Network unavailable
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a view is created using maps_view_create().
  *
@@ -388,7 +445,9 @@ int maps_view_get_orientation(const maps_view_h view, double *rotation_angle);
  * @brief	Converts screen coordinates to the geographical coordinates.
  * @details This function converts screen coordinates to the geographical
  * coordinates accordingly to the current map zoom and orientation.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
+ * @privlevel public
+ * @privilege %http://tizen.org/privilege/mapservice
  * @remarks The @a coordinates must be released using maps_coordinates_destroy().
  *
  * @param[in]	view		The view handle
@@ -401,6 +460,7 @@ int maps_view_get_orientation(const maps_view_h view, double *rotation_angle);
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
  *
  * @pre @a view is created using maps_view_create().
  *
@@ -416,7 +476,9 @@ int maps_view_screen_to_geolocation(maps_view_h view,
  * @brief	Converts geographical coordinates to the screen coordinates.
  * @details This function converts geographical coordinates to the screen
  * coordinates accordingly to the current map zoom and orientation.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
+ * @privlevel public
+ * @privilege %http://tizen.org/privilege/mapservice
  *
  * @param[in]	view		The view handle
  * @param[in]	coordinates	The geographical coordinates
@@ -427,6 +489,7 @@ int maps_view_screen_to_geolocation(maps_view_h view,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
  *
  * @pre @a view is created using maps_view_create().
  * @pre @a coordinates is created using maps_coordinates_create().
@@ -461,6 +524,7 @@ int maps_view_geolocation_to_screen(maps_view_h view,
  * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
  * @retval	#MAPS_ERROR_CONNECTION_TIME_OUT Timeout error, no answer
  * @retval	#MAPS_ERROR_NETWORK_UNREACHABLE Network unavailable
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a view is created using maps_view_create().
  *
@@ -671,6 +735,7 @@ int maps_view_get_public_transit_enabled(const maps_view_h view, bool *enable);
  * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
  * @retval	#MAPS_ERROR_CONNECTION_TIME_OUT Timeout error, no answer
  * @retval	#MAPS_ERROR_NETWORK_UNREACHABLE Network unavailable
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a view is created using maps_view_create().
  *
@@ -753,11 +818,11 @@ int maps_view_get_scalebar_enabled(const maps_view_h view, bool *enabled);
 
 /**
  * @brief	Gets the View port.
- * @details This function gets the View port as a pointer on Evas_Image.
+ * @details This function gets the View port as a pointer on Evas_Object.
  * @since_tizen 3.0
  *
  * @param[in]	view		The view handle
- * @param[out]	viewport	The pointer to Evas_Image in which to store
+ * @param[out]	viewport	The pointer to Evas_Object in which to store
  * the View port
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
@@ -768,7 +833,7 @@ int maps_view_get_scalebar_enabled(const maps_view_h view, bool *enabled);
  * @see maps_view_create()
  * @see Evas_Object
  */
-int maps_view_get_viewport(const maps_view_h view, Evas_Image **viewport);
+int maps_view_get_viewport(const maps_view_h view, Evas_Object **viewport);
 
 /**
  * @brief	Sets geometry of View port.
@@ -793,6 +858,7 @@ int maps_view_get_viewport(const maps_view_h view, Evas_Image **viewport);
  * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
  * @retval	#MAPS_ERROR_CONNECTION_TIME_OUT Timeout error, no answer
  * @retval	#MAPS_ERROR_NETWORK_UNREACHABLE Network unavailable
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a view is created using maps_view_create().
  *
@@ -870,6 +936,7 @@ int maps_view_move(maps_view_h view, int x, int y);
  * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
  * @retval	#MAPS_ERROR_CONNECTION_TIME_OUT Timeout error, no answer
  * @retval	#MAPS_ERROR_NETWORK_UNREACHABLE Network unavailable
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a view is created using maps_view_create().
  *
@@ -884,19 +951,12 @@ int maps_view_resize(maps_view_h view, int width, int height);
  * @brief	Shows or hides the View.
  * @details This function changes the visibility of View on the screen.
  * @since_tizen 3.0
- * @privlevel public
- * @privilege %http://tizen.org/privilege/mapservice \n
- *            %http://tizen.org/privilege/internet \n
- *            %http://tizen.org/privilege/network.get
  *
  * @param[in]	view		The view handle
  * @param[in]	visible		The new visibility of the View
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
- * @retval	#MAPS_ERROR_CONNECTION_TIME_OUT Timeout error, no answer
- * @retval	#MAPS_ERROR_NETWORK_UNREACHABLE Network unavailable
  *
  * @pre @a view is created using maps_view_create().
  *
@@ -1023,6 +1083,8 @@ int maps_view_get_gesture_enabled(const maps_view_h view, maps_view_gesture_e ge
  * @brief	Adds a visual object on the map.
  * @details This function adds a visual object on the map.
  * @since_tizen 3.0
+ * @privlevel public
+ * @privilege %http://tizen.org/privilege/mapservice
  * @remarks The @a object handle will be released automatically when the view is
  * destroyed in the maps_view_destroy().
  *
@@ -1031,6 +1093,7 @@ int maps_view_get_gesture_enabled(const maps_view_h view, maps_view_gesture_e ge
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
  *
  * @pre @a view is created using maps_view_create().
  * @pre @a object is created using #maps_view_object_create_marker(),
@@ -1051,6 +1114,8 @@ int maps_view_add_object(maps_view_h view, maps_view_object_h object);
  * @brief	Removes a visual object from the map.
  * @details This function removes a visual object from the map.
  * @since_tizen 3.0
+ * @privlevel public
+ * @privilege %http://tizen.org/privilege/mapservice
  * @remarks The @a object handle will be released automatically by the View.
  *
  * @param[in]	view		The view handle
@@ -1058,6 +1123,7 @@ int maps_view_add_object(maps_view_h view, maps_view_object_h object);
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
  *
  * @pre @a view is created using maps_view_create().
  * @pre @a object is added using maps_view_add_object().
@@ -1073,12 +1139,15 @@ int maps_view_remove_object(maps_view_h view, maps_view_object_h object);
  * @brief	Removes all visual objects from the map.
  * @details This function removes all visual object from the map.
  * @since_tizen 3.0
+ * @privlevel public
+ * @privilege %http://tizen.org/privilege/mapservice
  * @remarks All object handles will be released automatically by the View.
  *
  * @param[in]	view		The view handle
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
  *
  * @pre @a view is created using maps_view_create().
  * @pre objects are added using maps_view_add_object().
@@ -1117,6 +1186,16 @@ int maps_view_remove_all_objects(maps_view_h view);
  * @see maps_view_create()
  */
 int maps_view_foreach_object(const maps_view_h view, maps_view_object_cb callback, void *user_data);
+
+
+
+/*----------------------------------------------------------------------------*/
+/*
+ * Snapshot Capture Service
+ */
+
+#include <maps_view_snapshot.h>
+
 
 /**
  * @}
