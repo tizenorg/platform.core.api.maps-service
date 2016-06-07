@@ -1,3 +1,8 @@
+[Version]   capi-maps-service_0.6.1
+[Date]      07 June 2016
+[Title]     modified internal APIs for plug-in
+[Developer] Seechan Kim <cbible.kim@samsung.com>
+
 [Version]   capi-maps-service_0.6.0
 [Date]      18 April 2016
 [Title]     ACR about Maps-View APIs
@@ -54,6 +59,11 @@
 [Date]      23 September 2015
 [Title]     Added Mapping API.
 [Developer] Alexey Shulga <a.shulga@samsung.com>
+
+[Version]   capi-maps-service_0.4.7
+[Date]      5 January 2016
+[Title]     Fixed some mistakes in doxygen.
+[Developer] Young-Ae Kang <youngae.kang@samsung.com>
 
 [Version]   capi-maps-service_0.4.6
 [Date]      16 September 2015

@@ -58,9 +58,9 @@ typedef void *maps_area_h;
  * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  */
 typedef enum {
-	MAPS_AREA_NONE = 0, /**< Undefined geographical area type. */
-	MAPS_AREA_RECTANGLE, /**< Rectangular geographical area type. */
-	MAPS_AREA_CIRCLE, /**< Circle geographical area type. */
+	MAPS_AREA_NONE = 0,		/**< Undefined geographical area type. */
+	MAPS_AREA_RECTANGLE,	/**< Rectangular geographical area type. */
+	MAPS_AREA_CIRCLE,		/**< Circle geographical area type. */
 } maps_area_type_e;
 
 /**
@@ -72,10 +72,8 @@ typedef enum {
  * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  */
 typedef struct _maps_area_rectangle_s {
-	maps_coordinates_s top_left;		/**< The top left position
-						  of rectangle. */
-	maps_coordinates_s bottom_right;	/**< The bottom right position
-						  of rectangle. */
+	maps_coordinates_s top_left;		/**< The top left position of rectangle. */
+	maps_coordinates_s bottom_right;	/**< The bottom right position of rectangle. */
 } maps_area_rectangle_s;
 
 /**
@@ -88,7 +86,7 @@ typedef struct _maps_area_rectangle_s {
  */
 typedef struct _maps_area_circle_s {
 	maps_coordinates_s center;	/**< The center position of a circle. */
-	double radius;			/**< The radius of a circle. */
+	double radius;				/**< The radius of a circle. */
 } maps_area_circle_s;
 
 /**
@@ -103,10 +101,8 @@ typedef struct _maps_area_circle_s {
 typedef struct _maps_area_s {
 	maps_area_type_e type;	/**< The area type of this information. */
 	union {
-		maps_area_rectangle_s rect;	/**< The geographical
-					information of a rectangle. */
-		maps_area_circle_s circle;	/**< The geographical
-					information of a circle. */
+		maps_area_rectangle_s rect;	/**< The geographical information of a rectangle. */
+		maps_area_circle_s circle;	/**< The geographical information of a circle. */
 	};
 } maps_area_s;
 

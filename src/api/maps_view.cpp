@@ -299,43 +299,14 @@ static void __on_canvas_multi_up(void *data, Evas *e, Evas_Object *obj, void *ev
 	v->finger_stream->multi_up((Evas_Event_Multi_Up *)event_info);
 }
 
-static void __maps_plugin_render_map_cb(maps_error_e result, int request_id,
-	maps_coordinates_h center, maps_area_h area, void *user_data)
-{
-	if ((result != MAPS_ERROR_NONE) || !center || !area || !user_data)
-		return;
-
-	/* Here we know that the Plugin has the rendered maps.
-	*  We should mark the view as "invalid"  and request the view update.
-	*  In the view update or idle handle we should do the following.
-	*  There are three types of idlers: Enterers, Idlers(proper) and Exiters
-	*/
-
-	maps_view_h view = (maps_view_h)user_data;
-	if (!view)
-		return;
-
-	/* Get the view pointer */
-	maps_view_s *v = (maps_view_s *) view;
-
-	/* Signal to the animator, that we are ready to draw */
-	v->ready_to_draw = true;
-
-	maps_coordinates_destroy(center);
-	maps_area_destroy(area);
-
-}
-
 static int __maps_plugin_render_map(const maps_view_h view,
 	const maps_coordinates_h coordinates, const double zoom_factor, const double rotation_angle)
 {
 	if (!view || !coordinates)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
-	int request_id = 0;
 	return __get_plugin_interface(view)->maps_plugin_render_map(view,
-										coordinates, zoom_factor, rotation_angle,
-										__maps_plugin_render_map_cb, view, &request_id);
+										coordinates, zoom_factor, rotation_angle);
 
 }
 
@@ -427,16 +398,11 @@ void __maps_view_ready(const maps_view_h view)
 	_maps_view_set_inertia_enabled(view, true);
 
 	/* Invoke user registered event callback */
-#if 1
 	maps_view_event_data_h ed = _maps_view_create_event_data(MAPS_VIEW_EVENT_READY);
 	if(ed) {
 		_maps_view_invoke_event_callback(view, ed);
 		maps_view_event_data_destroy(ed);
 	}
-#else	
-	_maps_view_invoke_event_callback((maps_view_s *)view,
-			_maps_view_create_event_data(MAP_EVENT_READY));
-#endif
 }
 
 
@@ -704,13 +670,7 @@ int _maps_view_move_center(maps_view_h view, const int delta_x, const int delta_
 	if (!view)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
-
-	/* TODO: Implement it with command and command queue,
-	*  similarly as it is done in maps service */
-
-	int request_id = 0;
-	int error = __get_plugin_interface(view)->maps_plugin_move_center(view, delta_x, delta_y,
-										__maps_plugin_render_map_cb, view, &request_id);
+	int error = __get_plugin_interface(view)->maps_plugin_move_center(view, delta_x, delta_y);
 
 	/* Invoke user registered event callback */
 	maps_view_event_data_h ed =
@@ -758,7 +718,7 @@ EXPORT_API int maps_view_set_zoom_level(maps_view_h view, int level)
 	int new_level = level;
 	if (new_level < v->min_zoom_level) new_level = v->min_zoom_level;
 	if (new_level > v->max_zoom_level) new_level = v->max_zoom_level;
-	
+
 	/* Add inertia to the zoom process */
 	if(v->inertial_camera)
 		v->inertial_camera->set_zoom_target(double(new_level));
@@ -1173,7 +1133,7 @@ EXPORT_API int maps_view_get_screen_location(const maps_view_h view, int *x, int
 
 EXPORT_API int maps_view_move(maps_view_h view, int x, int y)
 {
-	if (!view || (x < 0) || (y < 0))
+	if (!view)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_view_s *v = (maps_view_s *) view;
 	evas_object_move(v->panel, x, y);
@@ -1567,7 +1527,7 @@ EXPORT_API int maps_view_get_maps_plugin_view_handle(maps_view_h hView, void **m
 
 EXPORT_API int maps_view_set_maps_plugin_view_handle(maps_view_h hView, void *maps_plugin_view_handle)
 {
-	if (!hView || !maps_plugin_view_handle)
+	if (!hView)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
 	maps_view_s *v = (maps_view_s *)hView;

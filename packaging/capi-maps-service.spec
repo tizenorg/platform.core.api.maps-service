@@ -1,6 +1,6 @@
 Name:       capi-maps-service
 Summary:    Tizen Maps Service API
-Version:    0.6.0
+Version:    0.6.1
 Release:    1
 Group:      Location/API
 License:    Apache-2.0
@@ -18,7 +18,6 @@ BuildRequires:  pkgconfig(dlog)
 BuildRequires:  pkgconfig(eina)
 BuildRequires:  pkgconfig(evas)
 BuildRequires:  pkgconfig(ecore)
-BuildRequires:  pkgconfig(evas)
 
 Requires(post):  /sbin/ldconfig
 Requires(postun):  /sbin/ldconfig

@@ -183,21 +183,12 @@ typedef enum _maps_distance_unit_e {
  * @see #_maps_route_request_feature_e
  */
 typedef enum _maps_route_optimization_e {
-
-	MAPS_ROUTE_TYPE_FASTEST, /**< Indicates the fastest route */
-
-	MAPS_ROUTE_TYPE_SHORTEST, /**< Indicates the shortest route
-				    (car mode only) */
-
-	MAPS_ROUTE_TYPE_ECONOMIC, /**< Indicates the most economic route
-				    (car mode only) */
-
-	MAPS_ROUTE_TYPE_SCENIC, /**< Indicates the most scenic route */
-
+	MAPS_ROUTE_TYPE_FASTEST,    /**< Indicates the fastest route */
+	MAPS_ROUTE_TYPE_SHORTEST,   /**< Indicates the shortest route (car mode only) */
+	MAPS_ROUTE_TYPE_ECONOMIC,   /**< Indicates the most economic route (car mode only) */
+	MAPS_ROUTE_TYPE_SCENIC,     /**< Indicates the most scenic route */
 	MAPS_ROUTE_TYPE_FASTESTNOW, /**< Indicates the most fastest route now */
-
 	MAPS_ROUTE_TYPE_DIRECTDRIVE /**< Indicates direct drive */
-
 } maps_route_optimization_e;
 
 /**
@@ -211,22 +202,12 @@ typedef enum _maps_route_optimization_e {
  * @see #_maps_route_request_feature_e
  */
 typedef enum _maps_route_transport_mode_e {
-
-	MAPS_ROUTE_TRANSPORT_MODE_CAR, /**< Indicates that the route is to be
-					 traveled by car. */
-
-	MAPS_ROUTE_TRANSPORT_MODE_PEDESTRIAN, /**< Indicates that the route is
-						for a pedestrian. */
-
-	MAPS_ROUTE_TRANSPORT_MODE_BICYCLE, /**< Indicates that the route is for
-					     a cyclist. */
-
+	MAPS_ROUTE_TRANSPORT_MODE_CAR,           /**< Indicates that the route is to be traveled by car. */
+	MAPS_ROUTE_TRANSPORT_MODE_PEDESTRIAN,    /**< Indicates that the route is for a pedestrian. */
+	MAPS_ROUTE_TRANSPORT_MODE_BICYCLE,       /**< Indicates that the route is for a cyclist. */
 	MAPS_ROUTE_TRANSPORT_MODE_PUBLICTRANSIT, /**< Indicates that the route
-						   is to be traveled  using
-						   public transport. */
-
-	MAPS_ROUTE_TRANSPORT_MODE_TRUCK /**< Indicates that the route is for a
-					  truck. */
+	                                              is to be traveled  using public transport. */
+	MAPS_ROUTE_TRANSPORT_MODE_TRUCK          /**< Indicates that the route is for a truck. */
 } maps_route_transport_mode_e;
 
 /**
@@ -240,20 +221,11 @@ typedef enum _maps_route_transport_mode_e {
  * @see #_maps_route_request_feature_e
  */
 typedef enum _maps_route_feature_weight_e {
-
-	MAPS_ROUTE_FEATURE_WEIGHT_NORMAL, /**< Indicates normal weighting. */
-
-	MAPS_ROUTE_FEATURE_WEIGHT_PREFER, /**< Indicates that a feature is
-					    preferred. */
-
-	MAPS_ROUTE_FEATURE_WEIGHT_AVOID, /**< Indicates that a feature is to be
-					   avoided. */
-
-	MAPS_ROUTE_FEATURE_WEIGHT_SOFTEXCLUDE, /**< Indicates that soft-exclude
-						 applies to the feature. */
-
-	MAPS_ROUTE_FEATURE_WEIGHT_STRICTEXCLUDE /**< Indicates that the feature
-						  is to be strictly excluded. */
+	MAPS_ROUTE_FEATURE_WEIGHT_NORMAL,       /**< Indicates normal weighting. */
+	MAPS_ROUTE_FEATURE_WEIGHT_PREFER,       /**< Indicates that a feature is preferred. */
+	MAPS_ROUTE_FEATURE_WEIGHT_AVOID,        /**< Indicates that a feature is to be avoided. */
+	MAPS_ROUTE_FEATURE_WEIGHT_SOFTEXCLUDE,  /**< Indicates that soft-exclude applies to the feature. */
+	MAPS_ROUTE_FEATURE_WEIGHT_STRICTEXCLUDE /**< Indicates that the feature is to be strictly excluded. */
 } maps_route_feature_weight_e;
 
 /**
@@ -267,31 +239,17 @@ typedef enum _maps_route_feature_weight_e {
  * @see #_maps_route_feature_weight_e
  */
 typedef enum _maps_route_request_feature_e {
-
-	MAPS_ROUTE_FEATURE_NO, /**< Indicates no route features
-				  (are selected). */
-
-	MAPS_ROUTE_FEATURE_TOLL, /**< Indicates toll roads
-				   (toll gates/booths). */
-
-	MAPS_ROUTE_FEATURE_MOTORWAY, /**< Indicates motorway. */
-
-	MAPS_ROUTE_FEATURE_BOATFERRY, /**< Indicates a boat ferry. */
-
-	MAPS_ROUTE_FEATURE_RAILFERRY, /**< Indicates rail (train) ferry. */
-
+	MAPS_ROUTE_FEATURE_NO,             /**< Indicates no route features (are selected). */
+	MAPS_ROUTE_FEATURE_TOLL,           /**< Indicates toll roads (toll gates/booths). */
+	MAPS_ROUTE_FEATURE_MOTORWAY,       /**< Indicates motorway. */
+	MAPS_ROUTE_FEATURE_BOATFERRY,      /**< Indicates a boat ferry. */
+	MAPS_ROUTE_FEATURE_RAILFERRY,      /**< Indicates rail (train) ferry. */
 	MAPS_ROUTE_FEATURE_PUBLICTTRANSIT, /**< Indicates public transport. */
-
-	MAPS_ROUTE_FEATURE_TUNNEL, /**< Indicates tunnel. */
-
-	MAPS_ROUTE_FEATURE_DIRTROAD, /**< Indicates dirt road. */
-
-	MAPS_ROUTE_FEATURE_PARKS, /**< Indicates park. */
-
-	MAPS_ROUTE_FEATURE_HOVLANE, /**< Indicates a high-occupancy vehicle
-				      lane. */
-
-	MAPS_ROUTE_FEATURE_STAIRS /**< Indicates stairs. */
+	MAPS_ROUTE_FEATURE_TUNNEL,         /**< Indicates tunnel. */
+	MAPS_ROUTE_FEATURE_DIRTROAD,       /**< Indicates dirt road. */
+	MAPS_ROUTE_FEATURE_PARKS,          /**< Indicates park. */
+	MAPS_ROUTE_FEATURE_HOVLANE,        /**< Indicates a high-occupancy vehicle lane. */
+	MAPS_ROUTE_FEATURE_STAIRS          /**< Indicates stairs. */
 } maps_route_feature_e;
 
 /*----------------------------------------------------------------------------*/
@@ -318,7 +276,7 @@ typedef enum _maps_route_request_feature_e {
  * @see maps_preference_foreach_property()
  */
 typedef bool(*maps_preference_properties_cb) (int index, int total, char *key,
-					      char *value, void *user_data);
+								char *value, void *user_data);
 
 /*----------------------------------------------------------------------------*/
 
@@ -374,7 +332,7 @@ int maps_preference_destroy(maps_preference_h preference);
  * @see maps_preference_destroy()
  */
 int maps_preference_clone(const maps_preference_h origin,
-			  maps_preference_h *cloned);
+								maps_preference_h *cloned);
 
 /*----------------------------------------------------------------------------*/
 
@@ -390,7 +348,7 @@ int maps_preference_clone(const maps_preference_h origin,
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
  */
 int maps_preference_get_distance_unit(const maps_preference_h preference,
-				      maps_distance_unit_e *unit);
+								maps_distance_unit_e *unit);
 
 /**
  * @brief	Gets the language.
@@ -405,7 +363,7 @@ int maps_preference_get_distance_unit(const maps_preference_h preference,
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
  */
 int maps_preference_get_language(const maps_preference_h preference,
-				 char **language);
+								char **language);
 
 /**
  * @brief	Gets the max amount of results.
@@ -419,7 +377,7 @@ int maps_preference_get_language(const maps_preference_h preference,
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
  */
 int maps_preference_get_max_results(const maps_preference_h preference,
-				    int *max_results);
+								int *max_results);
 
 /**
  * @brief	Gets the country code.
@@ -434,7 +392,7 @@ int maps_preference_get_max_results(const maps_preference_h preference,
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
  */
 int maps_preference_get_country_code(const maps_preference_h preference,
-				     char **country_code);
+								char **country_code);
 
 /**
  * @brief	Gets the route optimization.
@@ -448,8 +406,7 @@ int maps_preference_get_country_code(const maps_preference_h preference,
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
  */
 int maps_preference_get_route_optimization(const maps_preference_h preference,
-					   maps_route_optimization_e *
-					   optimization);
+								maps_route_optimization_e * optimization);
 
 /**
  * @brief	Gets the route transport mode.
@@ -462,10 +419,8 @@ int maps_preference_get_route_optimization(const maps_preference_h preference,
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
  */
-int maps_preference_get_route_transport_mode(const maps_preference_h
-					     preference,
-					     maps_route_transport_mode_e *
-					     transport_mode);
+int maps_preference_get_route_transport_mode(const maps_preference_h preference,
+								maps_route_transport_mode_e *transport_mode);
 
 /**
  * @brief	Gets the route feature weight.
@@ -478,10 +433,8 @@ int maps_preference_get_route_transport_mode(const maps_preference_h
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
  */
-int maps_preference_get_route_feature_weight(const maps_preference_h
-					     preference,
-					     maps_route_feature_weight_e *
-					     feature_weight);
+int maps_preference_get_route_feature_weight(const maps_preference_h preference,
+								maps_route_feature_weight_e *feature_weight);
 
 /**
  * @brief	Gets the route feature.
@@ -495,7 +448,7 @@ int maps_preference_get_route_feature_weight(const maps_preference_h
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
  */
 int maps_preference_get_route_feature(const maps_preference_h preference,
-				      maps_route_feature_e *feature);
+								maps_route_feature_e *feature);
 
 /**
  * @brief	Gets the enable status of alternative routes.
@@ -508,7 +461,8 @@ int maps_preference_get_route_feature(const maps_preference_h preference,
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
  */
-int maps_preference_get_route_alternatives_enabled(const maps_preference_h preference, bool *enable);
+int maps_preference_get_route_alternatives_enabled(const maps_preference_h preference,
+								bool *enable);
 
 /**
  * @brief	Gets the maps preference value by key.
@@ -523,8 +477,8 @@ int maps_preference_get_route_alternatives_enabled(const maps_preference_h prefe
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
  */
-int maps_preference_get(const maps_preference_h preference, const char *key,
-			char **value);
+int maps_preference_get(const maps_preference_h preference,
+								const char *key, char **value);
 
 /**
  * @brief	Retrieves all maps properties.
@@ -548,8 +502,7 @@ int maps_preference_get(const maps_preference_h preference, const char *key,
  * @see maps_preference_properties_cb()
  */
 int maps_preference_foreach_property(const maps_preference_h preference,
-				     maps_preference_properties_cb callback,
-				     void *user_data);
+								maps_preference_properties_cb callback, void *user_data);
 
 /*----------------------------------------------------------------------------*/
 
@@ -570,7 +523,7 @@ int maps_preference_foreach_property(const maps_preference_h preference,
  * @see maps_preference_get_distance_unit()
  */
 int maps_preference_set_distance_unit(maps_preference_h preference,
-				      const maps_distance_unit_e unit);
+								const maps_distance_unit_e unit);
 
 /**
  * @brief	Sets the maps language.
@@ -589,7 +542,7 @@ int maps_preference_set_distance_unit(maps_preference_h preference,
  * @see maps_preference_get_language()
  */
 int maps_preference_set_language(maps_preference_h preference,
-				 const char *language);
+								const char *language);
 
 /**
  * @brief	Sets the max amount of results.
@@ -608,7 +561,7 @@ int maps_preference_set_language(maps_preference_h preference,
  * @see maps_preference_get_max_results()
  */
 int maps_preference_set_max_results(maps_preference_h preference,
-				    const int max_results);
+								const int max_results);
 
 /**
  * @brief	Sets the maps country code.
@@ -627,7 +580,7 @@ int maps_preference_set_max_results(maps_preference_h preference,
  * @see maps_preference_get_country_code()
  */
 int maps_preference_set_country_code(maps_preference_h preference,
-				     const char *country_code);
+								const char *country_code);
 
 /**
  * @brief	Sets the route optimization.
@@ -646,8 +599,7 @@ int maps_preference_set_country_code(maps_preference_h preference,
  * @see maps_preference_get_route_optimization()
  */
 int maps_preference_set_route_optimization(maps_preference_h preference,
-					   const maps_route_optimization_e
-					   optimization);
+								const maps_route_optimization_e optimization);
 
 /**
  * @brief	Sets the route transport mode.
@@ -666,8 +618,7 @@ int maps_preference_set_route_optimization(maps_preference_h preference,
  * @see maps_preference_get_route_optimization()
  */
 int maps_preference_set_route_transport_mode(maps_preference_h preference,
-					     const maps_route_transport_mode_e
-					     transport_mode);
+								const maps_route_transport_mode_e transport_mode);
 
 /**
  * @brief	Sets the route feature weight.
@@ -686,8 +637,7 @@ int maps_preference_set_route_transport_mode(maps_preference_h preference,
  * @see maps_preference_get_route_feature_weight()
  */
 int maps_preference_set_route_feature_weight(maps_preference_h preference,
-					     const maps_route_feature_weight_e
-					     feature_weight);
+								const maps_route_feature_weight_e feature_weight);
 
 /**
  * @brief	Sets the route feature.
@@ -706,7 +656,7 @@ int maps_preference_set_route_feature_weight(maps_preference_h preference,
  * @see maps_preference_get_route_feature()
  */
 int maps_preference_set_route_feature(maps_preference_h preference,
-				      const maps_route_feature_e feature);
+								const maps_route_feature_e feature);
 
 /**
  * @brief	Sets the enable status of alternative routes.
@@ -724,7 +674,8 @@ int maps_preference_set_route_feature(maps_preference_h preference,
  * @see maps_preference_create()
  * @see maps_preference_get_route_alternatives_enabled()
  */
-int maps_preference_set_route_alternatives_enabled(maps_preference_h preference, bool enable);
+int maps_preference_set_route_alternatives_enabled(maps_preference_h preference,
+								bool enable);
 
 /**
  * @brief	Sets the preference value by key.
@@ -746,7 +697,7 @@ int maps_preference_set_route_alternatives_enabled(maps_preference_h preference,
  * @see maps_preference_foreach_property()
  */
 int maps_preference_set_property(maps_preference_h preference,
-				 const char *key, const char *value);
+								const char *key, const char *value);
 
 #ifdef __cplusplus
 }

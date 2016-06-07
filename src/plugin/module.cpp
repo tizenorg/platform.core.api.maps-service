@@ -137,8 +137,7 @@ maps_plugin_h plugin::binary_extractor::init(const provider_info &info,
 			(maps_plugin_get_preference_f) gmod_find_sym(plugin,
 			"maps_plugin_get_preference");
 		new_plugin->interface.maps_plugin_is_service_supported =
-			(maps_plugin_is_service_supported_f)
-			gmod_find_sym(plugin,
+			(maps_plugin_is_service_supported_f) gmod_find_sym(plugin,
 			"maps_plugin_is_service_supported");
 		new_plugin->interface.maps_plugin_is_data_supported =
 			(maps_plugin_is_data_supported_f) gmod_find_sym(plugin,
@@ -149,13 +148,10 @@ maps_plugin_h plugin::binary_extractor::init(const provider_info &info,
 			(maps_plugin_geocode_f) gmod_find_sym(plugin,
 			"maps_plugin_geocode");
 		new_plugin->interface.maps_plugin_geocode_inside_area =
-			(maps_plugin_geocode_inside_area_f)
-			gmod_find_sym(plugin,
+			(maps_plugin_geocode_inside_area_f) gmod_find_sym(plugin,
 			"maps_plugin_geocode_inside_area");
-		new_plugin->interface.
-			maps_plugin_geocode_by_structured_address =
-			(maps_plugin_geocode_by_structured_address_f)
-			gmod_find_sym(plugin,
+		new_plugin->interface.maps_plugin_geocode_by_structured_address =
+			(maps_plugin_geocode_by_structured_address_f) gmod_find_sym(plugin,
 			"maps_plugin_geocode_by_structured_address");
 		new_plugin->interface.maps_plugin_reverse_geocode =
 			(maps_plugin_reverse_geocode_f) gmod_find_sym(plugin,
@@ -169,12 +165,10 @@ maps_plugin_h plugin::binary_extractor::init(const provider_info &info,
 			(maps_plugin_search_place_f) gmod_find_sym(plugin,
 			"maps_plugin_search_place");
 		new_plugin->interface.maps_plugin_search_place_by_area =
-			(maps_plugin_search_place_by_area_f)
-			gmod_find_sym(plugin,
+			(maps_plugin_search_place_by_area_f) gmod_find_sym(plugin,
 			"maps_plugin_search_place_by_area");
 		new_plugin->interface.maps_plugin_search_place_by_address =
-			(maps_plugin_search_place_by_address_f)
-			gmod_find_sym(plugin,
+			(maps_plugin_search_place_by_address_f) gmod_find_sym(plugin,
 			"maps_plugin_search_place_by_address");
 		new_plugin->interface.maps_plugin_search_place_list =
 			(maps_plugin_search_place_list_f) gmod_find_sym(plugin,
@@ -216,19 +210,14 @@ maps_plugin_h plugin::binary_extractor::init(const provider_info &info,
 		new_plugin->interface.maps_plugin_get_scalebar =
 			(maps_plugin_get_scalebar_f) gmod_find_sym(plugin,
 			"maps_plugin_get_scalebar");
-		new_plugin->interface.maps_plugin_draw_map =
-			(maps_plugin_draw_map_f) gmod_find_sym(plugin,
-			"maps_plugin_draw_map");
 		new_plugin->interface.maps_plugin_on_object =
 			(maps_plugin_on_object_f) gmod_find_sym(plugin,
 			"maps_plugin_on_object");
 		new_plugin->interface.maps_plugin_screen_to_geography =
-			(maps_plugin_screen_to_geography_f)
-			gmod_find_sym(plugin,
+			(maps_plugin_screen_to_geography_f) gmod_find_sym(plugin,
 			"maps_plugin_screen_to_geography");
 		new_plugin->interface.maps_plugin_geography_to_screen =
-			(maps_plugin_geography_to_screen_f)
-			gmod_find_sym(plugin,
+			(maps_plugin_geography_to_screen_f) gmod_find_sym(plugin,
 			"maps_plugin_geography_to_screen");
 		new_plugin->interface.maps_plugin_get_min_zoom_level =
 			(maps_plugin_get_min_zoom_level_f) gmod_find_sym(plugin,
@@ -256,51 +245,37 @@ maps_plugin_h plugin::binary_extractor::init(const provider_info &info,
 			ret = new_plugin->interface.maps_plugin_init_module((maps_plugin_h *) (&new_plugin), module);
 
 		if (ret != MAPS_ERROR_NONE) {
-			MAPS_LOGE(
-			"ERROR! Plugin initialization function ""failed: %d",
-				ret);
+			MAPS_LOGE("ERROR! Plugin initialization function ""failed: %d", ret);
 			break;
 		}
 
 		if (!new_plugin->interface.maps_plugin_set_provider_key) {
-			MAPS_LOGE(
-			"ERROR! Plugin set_provider_key function is NULL: %d",
-				ret);
+			MAPS_LOGE("ERROR! Plugin set_provider_key function is NULL: %d", ret);
 			break;
 		}
 
 		if (!new_plugin->interface.maps_plugin_get_provider_key) {
-			MAPS_LOGE(
-			"ERROR! Plugin set_provider_key function is NULL: %d",
-				ret);
+			MAPS_LOGE("ERROR! Plugin set_provider_key function is NULL: %d", ret);
 			break;
 		}
 
 		if (!new_plugin->interface.maps_plugin_set_preference) {
-			MAPS_LOGE(
-			"ERROR! Plugin set_preference function is NULL: %d",
-				ret);
+			MAPS_LOGE("ERROR! Plugin set_preference function is NULL: %d", ret);
 			break;
 		}
 
 		if (!new_plugin->interface.maps_plugin_get_preference) {
-			MAPS_LOGE(
-			"ERROR! Plugin get_preference function is NULL: %d",
-				ret);
+			MAPS_LOGE("ERROR! Plugin get_preference function is NULL: %d", ret);
 			break;
 		}
 
 		if (!new_plugin->interface.maps_plugin_is_data_supported) {
-			MAPS_LOGE(
-				"ERROR! Plugin support_is_data_supported function is NULL: %d",
-				ret);
+			MAPS_LOGE("ERROR! Plugin support_is_data_supported function is NULL: %d", ret);
 			break;
 		}
 
 		if (!new_plugin->interface.maps_plugin_is_service_supported) {
-			MAPS_LOGE(
-				"ERROR! Plugin support_is_service_supported function is NULL: %d",
-				ret);
+			MAPS_LOGE("ERROR! Plugin support_is_service_supported function is NULL: %d", ret);
 			break;
 		}
 
@@ -313,8 +288,7 @@ maps_plugin_h plugin::binary_extractor::init(const provider_info &info,
 			g_hash_table_new_full(g_int_hash, g_int_equal, g_free,
 			session::command_handler::destroy);
 		if (!new_plugin->pending_request_maps) {
-			MAPS_LOGE("OUT_OF_MEMORY(0x%08x)",
-				MAPS_ERROR_OUT_OF_MEMORY);
+			MAPS_LOGE("OUT_OF_MEMORY(0x%08x)", MAPS_ERROR_OUT_OF_MEMORY);
 			break;
 		}
 		g_mutex_init(&new_plugin->pending_request_mutex);

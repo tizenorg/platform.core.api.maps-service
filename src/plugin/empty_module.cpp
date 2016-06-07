@@ -74,114 +74,111 @@ int maps_plugin_is_data_supported_empty(maps_service_data_e data, bool *supporte
 
 /* Geocode */
 int maps_plugin_geocode_empty(const char *address,
-	const maps_preference_h preference,
-	const maps_service_geocode_cb callback,
-	void *user_data, int *request_id)
+								const maps_preference_h preference,
+								const maps_service_geocode_cb callback,
+								void *user_data, int *request_id)
 {
 	return 0;
 }
 
 int maps_plugin_geocode_inside_area_empty(const char *address,
-					  const maps_area_h bounds,
-					  const maps_preference_h preference,
-					  maps_service_geocode_cb callback,
-					  void *user_data, int *request_id)
+								const maps_area_h bounds,
+								const maps_preference_h preference,
+								maps_service_geocode_cb callback,
+								void *user_data, int *request_id)
 {
 	return 0;
 }
 
-int maps_plugin_geocode_by_structured_address_empty(const maps_address_h
-						    address,
-						    const maps_preference_h
-						    preference,
-						    maps_service_geocode_cb
-						    callback, void *user_data,
-						    int *request_id)
+int maps_plugin_geocode_by_structured_address_empty(const maps_address_h address,
+								const maps_preference_h preference,
+								maps_service_geocode_cb callback,
+								void *user_data,
+								int *request_id)
 {
 	return 0;
 }
 
 int maps_plugin_reverse_geocode_empty(double latitude, double longitude,
-				      const maps_preference_h preference,
-				      maps_service_reverse_geocode_cb
-				      callback, void *user_data,
-				      int *request_id)
+								const maps_preference_h preference,
+								maps_service_reverse_geocode_cb
+								callback, void *user_data,
+								int *request_id)
 {
 	return 0;
 }
 
 int maps_plugin_multi_reverse_geocode_empty(const maps_coordinates_list_h maps_list,
-						const maps_preference_h preference,
-						maps_service_multi_reverse_geocode_cb callback,
-						void *user_data, int *request_id)
+								const maps_preference_h preference,
+								maps_service_multi_reverse_geocode_cb callback,
+								void *user_data, int *request_id)
 {
 	return 0;
 }
 
 /* Place */
 int maps_plugin_search_place_empty(const maps_coordinates_h position,
-				   int distance,
-				   const maps_place_filter_h filter,
-				   maps_preference_h preference,
-				   maps_service_search_place_cb callback,
-				   void *user_data, int *request_id)
+								int distance,
+								const maps_place_filter_h filter,
+								maps_preference_h preference,
+								maps_service_search_place_cb callback,
+								void *user_data, int *request_id)
 {
 	return 0;
 }
 
 int maps_plugin_search_place_by_area_empty(const maps_area_h boundary,
-					   const maps_place_filter_h filter,
-					   maps_preference_h preference,
-					   maps_service_search_place_cb
-					   callback, void *user_data,
-					   int *request_id)
+								const maps_place_filter_h filter,
+								maps_preference_h preference,
+								maps_service_search_place_cb callback,
+								void *user_data,
+								int *request_id)
 {
 	return 0;
 }
 
 int maps_plugin_search_place_by_address_empty(const char *address,
-					      const maps_area_h boundary,
-					      const maps_place_filter_h filter,
-					      maps_preference_h preference,
-					      maps_service_search_place_cb
-					      callback, void *user_data,
-					      int *request_id)
+								const maps_area_h boundary,
+								const maps_place_filter_h filter,
+								maps_preference_h preference,
+								maps_service_search_place_cb callback,
+								void *user_data,
+								int *request_id)
 {
 	return 0;
 }
 
 int maps_plugin_search_place_list_empty(const maps_area_h boundary,
-				   const maps_place_filter_h filter,
-				   maps_preference_h preference,
-				   maps_service_search_place_list_cb callback,
-				   void *user_data, int *request_id)
+								const maps_place_filter_h filter,
+								maps_preference_h preference,
+								maps_service_search_place_list_cb callback,
+								void *user_data, int *request_id)
 {
 	return 0;
 }
 
 int maps_plugin_get_place_details_empty(const char *url,
-						maps_service_get_place_details_cb callback,
-						void *user_data, int *request_id)
+								maps_service_get_place_details_cb callback,
+								void *user_data, int *request_id)
 {
 	return 0;
 }
 
 /* Route */
 int maps_plugin_search_route_empty(const maps_coordinates_h origin,
-				   const maps_coordinates_h destination,
-				   maps_preference_h preference,
-				   maps_service_search_route_cb callback,
-				   void *user_data, int *request_id)
+								const maps_coordinates_h destination,
+								maps_preference_h preference,
+								maps_service_search_route_cb callback,
+								void *user_data, int *request_id)
 {
 	return 0;
 }
 
-int maps_plugin_search_route_waypoints_empty(const maps_coordinates_h *
-					     waypoint_list, int waypoint_num,
-					     maps_preference_h preference,
-					     maps_service_search_route_cb
-					     callback, void *user_data,
-					     int *request_id)
+int maps_plugin_search_route_waypoints_empty(const maps_coordinates_h *waypoint_list,
+								int waypoint_num,
+								maps_preference_h preference,
+								maps_service_search_route_cb callback,
+								void *user_data, int *request_id)
 {
 	return 0;
 }
@@ -203,16 +200,15 @@ int maps_plugin_destroy_map_view_empty(maps_view_h view)
 	return 0;
 }
 
-int maps_plugin_render_map_empty(maps_view_h view, const maps_coordinates_h coordinates,
-								double zoom_factor, double rotation_angle,
-								maps_plugin_render_map_cb callback,
-								void* user_data, int* request_id)
+int maps_plugin_render_map_empty(maps_view_h view,
+								const maps_coordinates_h coordinates,
+								double zoom_factor,
+								double rotation_angle)
 {
 	return 0;
 }
 
-int maps_plugin_move_center_empty(maps_view_h view, const int delta_x, const int delta_y,
-				  maps_plugin_render_map_cb callback, void* user_data, int* request_id)
+int maps_plugin_move_center_empty(maps_view_h view, const int delta_x, const int delta_y)
 {
 	return 0;
 }
@@ -227,13 +223,8 @@ int maps_plugin_get_scalebar_empty(maps_view_h view, bool *enabled)
 	return 0;
 }
 
-int maps_plugin_draw_map_empty(maps_view_h view, Evas* canvas, int x, int y,
-								int width, int height)
-{
-	return 0;
-}
-
-int maps_plugin_on_object_empty(maps_view_h view, const maps_view_object_h object,
+int maps_plugin_on_object_empty(maps_view_h view,
+								const maps_view_object_h object,
 								maps_view_object_operation_e operation)
 {
 	return 0;
@@ -309,7 +300,6 @@ plugin::interface_s empty_interface = {
 	maps_plugin_move_center_empty,
 	maps_plugin_set_scalebar_empty,
 	maps_plugin_get_scalebar_empty,
-	maps_plugin_draw_map_empty,
 	maps_plugin_on_object_empty,
 	maps_plugin_screen_to_geography_empty,
 	maps_plugin_geography_to_screen_empty,

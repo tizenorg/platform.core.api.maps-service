@@ -129,7 +129,7 @@ int maps_address_clone(const maps_address_h origin, maps_address_h *cloned);
  * @see maps_address_create()
  */
 int maps_address_get_building_number(const maps_address_h address,
-				     char **building_number);
+								char **building_number);
 
 /**
  * @brief	Gets the street name of the address handle.
@@ -244,7 +244,7 @@ int maps_address_get_country(const maps_address_h address, char **country);
  * @see maps_address_create()
  */
 int maps_address_get_country_code(const maps_address_h address,
-				  char **country_code);
+								char **country_code);
 
 /**
  * @brief	Gets the county of the address handle.
@@ -585,7 +585,8 @@ typedef bool (*maps_address_cb)(int index, maps_address_h address, void *user_da
  * @see maps_address_list_destroy()
  * @see maps_address_list_get_length()
  */
-int maps_address_list_foreach(maps_address_list_h address_list, maps_address_cb callback, void *user_data);
+int maps_address_list_foreach(maps_address_list_h address_list,
+								maps_address_cb callback, void *user_data);
 
 /**
  * @brief	Frees all of the memory used by a address list.

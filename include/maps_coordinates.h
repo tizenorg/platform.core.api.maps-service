@@ -92,7 +92,7 @@ typedef void *maps_coordinates_list_h;
  * @see maps_coordinates_destroy()
  */
 int maps_coordinates_create(const double latitude, const double longitude,
-			    maps_coordinates_h *coordinates);
+								maps_coordinates_h *coordinates);
 
 /**
  * @brief	Destroys the Geographical Coordinates and releases all its
@@ -133,7 +133,7 @@ int maps_coordinates_destroy(maps_coordinates_h coordinates);
  * @see maps_coordinates_destroy()
  */
 int maps_coordinates_clone(const maps_coordinates_h origin,
-			   maps_coordinates_h *cloned);
+								maps_coordinates_h *cloned);
 
 /*----------------------------------------------------------------------------*/
 
@@ -154,7 +154,7 @@ int maps_coordinates_clone(const maps_coordinates_h origin,
  * @see maps_coordinates_set_latitude()
  */
 int maps_coordinates_get_latitude(const maps_coordinates_h coordinates,
-				  double *latitude);
+								double *latitude);
 
 /**
  * @brief	Gets the longitude of the coordinates.
@@ -173,7 +173,7 @@ int maps_coordinates_get_latitude(const maps_coordinates_h coordinates,
  * @see maps_coordinates_set_longitude()
  */
 int maps_coordinates_get_longitude(const maps_coordinates_h coordinates,
-				   double *longitude);
+								double *longitude);
 
 /**
  * @brief	Gets the latitude and longitude of the coordinates.
@@ -194,8 +194,8 @@ int maps_coordinates_get_longitude(const maps_coordinates_h coordinates,
  * @see maps_coordinates_set_latitude_longitude()
  */
 int maps_coordinates_get_latitude_longitude(const maps_coordinates_h coordinates,
-				double *latitude,
-				double *longitude);
+								double *latitude,
+								double *longitude);
 /*----------------------------------------------------------------------------*/
 
 /**
@@ -215,7 +215,7 @@ int maps_coordinates_get_latitude_longitude(const maps_coordinates_h coordinates
  * @see maps_coordinates_get_latitude()
  */
 int maps_coordinates_set_latitude(maps_coordinates_h coordinates,
-				  const double latitude);
+								const double latitude);
 
 /**
  * @brief	Sets the longitude of the coordinates.
@@ -234,7 +234,7 @@ int maps_coordinates_set_latitude(maps_coordinates_h coordinates,
  * @see maps_coordinates_get_longitude()
  */
 int maps_coordinates_set_longitude(maps_coordinates_h coordinates,
-				   const double longitude);
+								const double longitude);
 
 /**
  * @brief	Sets the latitude and longitude of the coordinates.
@@ -255,8 +255,8 @@ int maps_coordinates_set_longitude(maps_coordinates_h coordinates,
  * @see maps_coordinates_get_latitude_longitude()
  */
 int maps_coordinates_set_latitude_longitude(maps_coordinates_h coordinates,
-				const double latitude,
-				const double longitude);
+								const double latitude,
+								const double longitude);
 
 /**
  * @brief	Creates a coordinates list having a set of coordinates.
@@ -298,7 +298,8 @@ int maps_coordinates_list_destroy(maps_coordinates_list_h coordinates_list);
  * @see maps_coordinates_list_create()
  * @see maps_coordinates_list_destroy()
  */
-int maps_coordinates_list_append(maps_coordinates_list_h coordinates_list, maps_coordinates_h coordinates);
+int maps_coordinates_list_append(maps_coordinates_list_h coordinates_list,
+								maps_coordinates_h coordinates);
 
 /**
  * @brief	Removes a coordinates from a coordinates list.
@@ -313,7 +314,8 @@ int maps_coordinates_list_append(maps_coordinates_list_h coordinates_list, maps_
  * @see maps_coordinates_list_create()
  * @see maps_coordinates_list_destroy()
  */
-int maps_coordinates_list_remove(maps_coordinates_list_h coordinates_list, maps_coordinates_h coordinates);
+int maps_coordinates_list_remove(maps_coordinates_list_h coordinates_list,
+								maps_coordinates_h coordinates);
 
 /**
  * @brief	Gets the number of elements in an coordinates list.
@@ -328,7 +330,8 @@ int maps_coordinates_list_remove(maps_coordinates_list_h coordinates_list, maps_
  * @see maps_coordinates_list_create()
  * @see maps_coordinates_list_destroy()
  */
-int maps_coordinates_list_get_length(maps_coordinates_list_h coordinates_list, int *length);
+int maps_coordinates_list_get_length(maps_coordinates_list_h coordinates_list,
+								int *length);
 
 /**
  * @brief	Called iteratively to get a coordinates information.
@@ -358,7 +361,8 @@ typedef bool (*maps_coordinates_cb) (int index, maps_coordinates_h coordinates, 
  * @see maps_coordinates_list_destroy()
  * @see maps_coordinates_list_get_length()
  */
-int maps_coordinates_list_foreach(maps_coordinates_list_h coordinates_list, maps_coordinates_cb callback, void *user_data);
+int maps_coordinates_list_foreach(maps_coordinates_list_h coordinates_list,
+								maps_coordinates_cb callback, void *user_data);
 
 
 #ifdef __cplusplus
