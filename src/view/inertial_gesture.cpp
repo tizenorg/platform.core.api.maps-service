@@ -67,6 +67,8 @@ void view::inertial_gesture::tap(int finger_no, const touch_point &tp)
 	MAPS_LOGI("TRANSITION finger %d tap time: %d",
 		  finger_no, tp._timestamp);
 
+	_maps_view_halt_inertial_camera(_view);
+
 	if(transiting) { /* Halt the transition */
 		for(int i = 0; i < MAX_FINGERS; i ++) {
 			if(!transiting_part[i])
@@ -79,7 +81,6 @@ void view::inertial_gesture::tap(int finger_no, const touch_point &tp)
 			_d->up(i, tp);
 		}
 
-		_maps_view_halt_inertial_camera(_view);
 		_d->halt_gesture();
 		reset();
 	}
@@ -97,6 +98,8 @@ void view::inertial_gesture::tap(int finger_no, const touch_point &tp)
 void view::inertial_gesture::move(int finger_no, const touch_point &tp)
 {
 	MAPS_LOGI("TRANSITION finger %d move", finger_no);
+
+	_maps_view_halt_inertial_camera(_view);
 
 	_prev[finger_no] = _last[finger_no];
 	_last[finger_no] = tp;
