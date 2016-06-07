@@ -79,24 +79,24 @@ typedef enum _maps_service_e {
  * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  */
 typedef enum _maps_service_data_e {
-	MAPS_PLACE_ADDRESS,		/**< Indicates the availability of address value in the Place data */
-	MAPS_PLACE_RATING,		/**< Indicates the availability of rating value in the Place data */
-	MAPS_PLACE_CATEGORIES,	/**< Indicates the availability of place category list in the Place data */
-	MAPS_PLACE_ATTRIBUTES,	/**< Indicates the availability of place attribute list in the Place data */
-	MAPS_PLACE_CONTACTS,	/**< Indicates the availability of place contact list in the Place data */
-	MAPS_PLACE_EDITORIALS,	/**< Indicates the availability of place editorial list in the Place data */
-	MAPS_PLACE_REVIEWS,		/**< Indicates the availability of place review list in the Place data */
-	MAPS_PLACE_IMAGE,		/**< Indicates the availability of place image in Place the data */
-	MAPS_PLACE_SUPPLIER,	/**< Indicates the availability of place supplier link value in the Place data */
-	MAPS_PLACE_RELATED,		/**< Indicates the availability of related place link in the Place data */
-	MAPS_ROUTE_PATH,		/**< Indicates that the Route Data Structure is defined as a Path (a list of geographical coordinates) */
+	MAPS_PLACE_ADDRESS,				/**< Indicates the availability of address value in the Place data */
+	MAPS_PLACE_RATING,				/**< Indicates the availability of rating value in the Place data */
+	MAPS_PLACE_CATEGORIES,			/**< Indicates the availability of place category list in the Place data */
+	MAPS_PLACE_ATTRIBUTES,			/**< Indicates the availability of place attribute list in the Place data */
+	MAPS_PLACE_CONTACTS,			/**< Indicates the availability of place contact list in the Place data */
+	MAPS_PLACE_EDITORIALS,			/**< Indicates the availability of place editorial list in the Place data */
+	MAPS_PLACE_REVIEWS,				/**< Indicates the availability of place review list in the Place data */
+	MAPS_PLACE_IMAGE,				/**< Indicates the availability of place image in Place the data */
+	MAPS_PLACE_SUPPLIER,			/**< Indicates the availability of place supplier link value in the Place data */
+	MAPS_PLACE_RELATED,				/**< Indicates the availability of related place link in the Place data */
+	MAPS_ROUTE_PATH,				/**< Indicates that the Route Data Structure is defined as a Path (a list of geographical coordinates) */
 	MAPS_ROUTE_SEGMENTS_PATH,		/**< Indicates that the Route Data Structure is defined as a list of Segments while each segment is defined as a Path */
 	MAPS_ROUTE_SEGMENTS_MANEUVERS,	/**< Indicates that the Route Data Structure is defined as a list of Segments while each segment is defined as a list of Maneuvers*/
 
-	MAPS_VIEW_TRAFFIC = 0x100,	/**< Indicates the availability of traffic information on the Map @if MOBILE (Since 3.0) @endif */
-	MAPS_VIEW_PUBLIC_TRANSIT,	/**< Indicates the availability of public transit information on the Map @if MOBILE (Since 3.0) @endif */
-	MAPS_VIEW_BUILDING,		/**< Indicates the availability of 3D building drawable on the Map @if MOBILE (Since 3.0) @endif */
-	MAPS_VIEW_SCALEBAR		/**< Indicates the availability of scale bar on the Map @if MOBILE (Since 3.0) @endif */
+	MAPS_VIEW_TRAFFIC = 0x100,		/**< Indicates the availability of traffic information on the Map @if MOBILE (Since 3.0) @endif */
+	MAPS_VIEW_PUBLIC_TRANSIT,		/**< Indicates the availability of public transit information on the Map @if MOBILE (Since 3.0) @endif */
+	MAPS_VIEW_BUILDING,				/**< Indicates the availability of 3D building drawable on the Map @if MOBILE (Since 3.0) @endif */
+	MAPS_VIEW_SCALEBAR				/**< Indicates the availability of scale bar on the Map @if MOBILE (Since 3.0) @endif */
 } maps_service_data_e;
 
 /**
@@ -214,6 +214,7 @@ int maps_service_create(const char *maps_provider, maps_service_h *maps);
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
  * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
+ * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
  *
  * @pre Call maps_service_create() to create Maps Service and get its handle.
  *

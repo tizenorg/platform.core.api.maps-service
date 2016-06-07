@@ -848,35 +848,6 @@ int maps_plugin_create_map_view(maps_view_h view, maps_plugin_map_view_ready_cb 
 int maps_plugin_destroy_map_view(maps_view_h view);
 
 /**
- * @brief	Called when the map rendering is finished.
- * @details The Plugin invokes this callback when the rendering of the requested
- * part of map is finished.
- * @since_tizen 3.0
- * @remarks The parameter @a center must be released using
- * maps_coordinates_destroy().
- * \n To use the @a center outside of this function, copy the handle using
- * maps_coordinates_clone() function.
- * \n The parameter @a area must be released using maps_area_destroy()
- * \n To use the @a area outside of this function, copy the handle using
- * maps_area_clone() function.
- *
- * @param[in]	result		The result of request
- * @param[in]	request_id	The id of request, start from 0
- * @param[in]	centes		The coordinates of the center of requested map
- * area
- * @param[in]	area		The requested map area
- * @param[in]	user_data	The user data passed from
- * maps_plugin_render_map()
- *
- * @pre maps_plugin_render_map() will invoke this callback.
- *
- * @see maps_plugin_render_map()
- */
-typedef void(*maps_plugin_render_map_cb) (maps_error_e result, int request_id,
-								maps_coordinates_h center,
-								maps_area_h area, void* user_data);
-
-/**
  * @brief	Request a map rendering.
  * @details This function request a draw routine of the map location with a
  * specified zoom factor and rotation angle.
@@ -901,9 +872,7 @@ typedef void(*maps_plugin_render_map_cb) (maps_error_e result, int request_id,
  * @see maps_plugin_draw_map()
  */
 int maps_plugin_render_map(maps_view_h view, const maps_coordinates_h coordinates,
-								double zoom_factor, double rotation_angle,
-								maps_plugin_render_map_cb callback,
-								void* user_data, int* request_id);
+								double zoom_factor, double rotation_angle);
 
 /**
  * @brief	Request the Plugin to move a map on a given delta.
@@ -930,33 +899,39 @@ int maps_plugin_render_map(maps_view_h view, const maps_coordinates_h coordinate
  * @see maps_plugin_render_map()
  * @see maps_plugin_draw_map()
  */
-int maps_plugin_move_center(maps_view_h view, int delta_x, int delta_y,
-								maps_plugin_render_map_cb callback,
-								void* user_data, int* request_id);
+int maps_plugin_move_center(maps_view_h view, int delta_x, int delta_y);
 
 /**
- * @brief	Draw a map on the maps view panel.
- * @details This function draws the map, requested previously on the maps view
- * panel in accordance with the current maps settings.
+ * @brief	Enables or disables the scalebar.
+ * @details This function enables or disables the scalebar.
+ * @since_tizen 3.0
+ * @remarks This function requires network access.
+ *
+ * @param[in]	view		The handle of maps_view
+ * @param[in]	enabled		The enable status
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
+ *
+ * @see maps_plugin_get_scalebar()
+ */
+int maps_plugin_set_scalebar(maps_view_h view, bool enable);
+
+/**
+ * @brief	Checks whether the scalebar is enabled or not.
+ * @details This function checks whether the scalebar is enabled or not.
  * @since_tizen 3.0
  *
  * @param[in]	view		The handle of maps_view
- * @param[in]	canvas		The canvas to draw on
- * @param[in]	x			The x coordinate on the canvas top left
- * @param[in]	y			The y coordinate on the canvas top left
- * @param[in]	width		The width of the cancas
- * @param[in]	height		The height of the cancas
+ * @param[out]enabled		The pointer to a boolean in which to store the enable status
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
  *
- * @pre the draing routine is requested with preliminary call of
- * maps_plugin_render_map().
- *
- * @see maps_plugin_set_view()
- * @see maps_plugin_render_map()
+ * @see maps_plugin_set_scalebar()
  */
-int maps_plugin_draw_map(maps_view_h view, Evas* canvas, int x, int y, int width, int height);
+int maps_plugin_get_scalebar(maps_view_h view, bool *enabled);
 
 /**
  * @brief	Notifyes that the visual object is changed.
@@ -1063,38 +1038,6 @@ int maps_plugin_get_max_zoom_level(maps_view_h view, int *max_zoom_level);
  * @see maps_plugin_get_max_zoom_level
  */
 int maps_plugin_get_center(maps_view_h view, maps_coordinates_h *coordinates);
-
-/**
- * @brief	Enables or disables the scalebar.
- * @details This function enables or disables the scalebar.
- * @since_tizen 3.0
- * @remarks This function requires network access.
- *
- * @param[in]	view		The handle of maps_view
- * @param[in]	enabled		The enable status
- * @return	0 on success, otherwise a negative error value
- * @retval	#MAPS_ERROR_NONE Successful
- * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
- *
- * @see maps_plugin_get_scalebar()
- */
-int maps_plugin_set_scalebar(maps_view_h view, bool enable);
-
-/**
- * @brief	Checks whether the scalebar is enabled or not.
- * @details This function checks whether the scalebar is enabled or not.
- * @since_tizen 3.0
- *
- * @param[in]	view		The handle of maps_view
- * @param[out]enabled		The pointer to a boolean in which to store the enable status
- * @return	0 on success, otherwise a negative error value
- * @retval	#MAPS_ERROR_NONE Successful
- * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- *
- * @see maps_plugin_set_scalebar()
- */
-int maps_plugin_get_scalebar(maps_view_h view, bool *enabled);
 
 #ifdef __cplusplus
 }

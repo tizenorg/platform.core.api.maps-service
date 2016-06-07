@@ -146,7 +146,6 @@ extern "C" {
  * @brief	The Maps Preference handle.
  * @details The Maps Preference handle can be obtained via call of
  * maps_preference_create().
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  * \n To release the handle use maps_preference_destroy().
  * \n To clone the handle use maps_preference_clone().
  * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
