@@ -50,26 +50,6 @@ typedef void *maps_place_category_h;
 /*----------------------------------------------------------------------------*/
 
 /**
- * @brief	Creates a new place category handle.
- * @details This function creates a new place category handle and allocates all
- * needed resources.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
- * @remarks @a category must be released using maps_place_category_destroy().
- * \n @a category may be cloned using maps_place_category_clone().
- *
- * @param[out]	category	A handle of a new place category on success
- * @return	0 on success, otherwise a negative error value
- * @retval	#MAPS_ERROR_NONE Successful
- * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
- * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- *
- * @see maps_place_category_destroy()
- * @see maps_place_category_clone()
- */
-int maps_place_category_create(maps_place_category_h *category);
-
-
-/**
  * @brief	Clones the place category handle.
  * @details This function clones the place category handle @a origin and all its
  * resources.
@@ -86,7 +66,7 @@ int maps_place_category_create(maps_place_category_h *category);
  * @see maps_place_category_destroy()
  */
 int maps_place_category_clone(const maps_place_category_h origin,
-			      maps_place_category_h *cloned);
+								maps_place_category_h *cloned);
 
 
 /**
@@ -109,66 +89,6 @@ int maps_place_category_destroy(maps_place_category_h category);
 /*----------------------------------------------------------------------------*/
 
 /**
- * @brief	Sets the place category id.
- * @details This function sets the place category id.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
- *
- * @param[in]	category	The handle of place category
- * @param[in]	id		The place category id
- * @return	0 on success, otherwise a negative error value
- * @retval	#MAPS_ERROR_NONE Successful
- * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- *
- * @pre @a category is created using maps_place_category_create().
- *
- * @see maps_place_category_create()
- * @see maps_place_category_get_id()
- */
-int maps_place_category_set_id(maps_place_category_h category,
-			       const char *id);
-
-
-/**
- * @brief	Sets the place category name.
- * @details This function sets the place category name.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
- *
- * @param[in]	category	The handle of place category
- * @param[in]	name		The place category name
- * @return	0 on success, otherwise a negative error value
- * @retval	#MAPS_ERROR_NONE Successful
- * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- *
- * @pre @a category is created using maps_place_category_create().
- *
- * @see maps_place_category_create()
- * @see maps_place_category_get_name()
- */
-int maps_place_category_set_name(maps_place_category_h category,
-				 const char *name);
-
-
-/**
- * @brief	Sets the place category URL.
- * @details This function sets the place category URL.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
- *
- * @param[in]	category	The handle of place category
- * @param[in]	url		The place category URL
- * @return	0 on success, otherwise a negative error value
- * @retval	#MAPS_ERROR_NONE Successful
- * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- *
- * @pre @a category is created using maps_place_category_create().
- *
- * @see maps_place_category_create()
- * @see maps_place_category_get_url()
- */
-int maps_place_category_set_url(maps_place_category_h category,
-				const char *url);
-
-
-/**
  * @brief	Gets the place category id.
  * @details This function gets the place category id.
  * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
@@ -180,8 +100,7 @@ int maps_place_category_set_url(maps_place_category_h category,
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
  */
-int maps_place_category_get_id(const maps_place_category_h category,
-			       char **id);
+int maps_place_category_get_id(const maps_place_category_h category, char **id);
 
 /**
  * @brief	Gets the place category name.
@@ -195,8 +114,7 @@ int maps_place_category_get_id(const maps_place_category_h category,
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
  */
-int maps_place_category_get_name(const maps_place_category_h category,
-				 char **name);
+int maps_place_category_get_name(const maps_place_category_h category, char **name);
 
 /**
  * @brief	Gets the place category URL.
@@ -210,8 +128,7 @@ int maps_place_category_get_name(const maps_place_category_h category,
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
  */
-int maps_place_category_get_url(const maps_place_category_h category,
-				char **url);
+int maps_place_category_get_url(const maps_place_category_h category, char **url);
 
 #ifdef __cplusplus
 }
