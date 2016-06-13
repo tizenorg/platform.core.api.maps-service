@@ -328,7 +328,6 @@ static void __on_canvas_multi_line(void *data, Evas *e, Evas_Object *obj, void *
 void _maps_view_set_idle_listener(const maps_view_h view,
 	void (*callback)(void *user_data), void *user_data)
 {
-
 	if(!view)
 		return;
 	maps_view_s *v = (maps_view_s *)view;
@@ -351,8 +350,6 @@ static Eina_Bool __maps_view_on_idle_cb(void *data)
 		return ECORE_CALLBACK_RENEW;
 
 	maps_view_s *v = (maps_view_s *)data;
-	if(!v)
-		return ECORE_CALLBACK_RENEW; // same as EINA_TRUE
 
 	bool is_transiting = false;
 	bool is_continue = false;
