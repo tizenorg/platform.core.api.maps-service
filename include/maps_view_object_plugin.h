@@ -46,21 +46,11 @@ extern "C" {
  * @since_tizen 3.0
  */
 typedef enum _maps_view_object_operation_e {
-
-	/** Indicates the add object operation */
-	MAPS_VIEW_OBJECT_ADD,
-
-	/** Indicates the change object visibility operation */
-	MAPS_VIEW_OBJECT_SET_VISIBLE,
-
-	/** Indicates the move object operation */
-	MAPS_VIEW_OBJECT_MOVE,
-
-	/** Indicates the operation of changing object specific properties */
-	MAPS_VIEW_OBJECT_CHANGE,
-
-	/** Indicates the remove object operation */
-	MAPS_VIEW_OBJECT_REMOVE,
+	MAPS_VIEW_OBJECT_ADD,			/**< Indicates the add object operation */
+	MAPS_VIEW_OBJECT_SET_VISIBLE,	/**< Indicates the change object visibility operation */
+	MAPS_VIEW_OBJECT_MOVE,			/**< Indicates the move object operation */
+	MAPS_VIEW_OBJECT_CHANGE,		/**< Indicates the operation of changing object specific properties */
+	MAPS_VIEW_OBJECT_REMOVE,		/**< Indicates the remove object operation */
 } maps_view_object_operation_e;
 
 int maps_view_object_marker_set_size(const maps_view_object_h marker, int width, int height);

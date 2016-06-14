@@ -36,9 +36,7 @@ view::gesture_detector_statemachine::~gesture_detector_statemachine()
 void view::gesture_detector_statemachine::tap(int finger_no,
 					      const touch_point &tp)
 {
-
 	switch(finger_no) {
-
 	case 0:	/* Single finger pressed */
 		_info._finger_down[0] = tp;
 		_info._finger_move[0] = tp;
@@ -87,7 +85,6 @@ void view::gesture_detector_statemachine::up(int finger_no,
 					     const touch_point &tp)
 {
 	switch(finger_no) {
-
 	case 0: /* Up the single finger */
 		_info._finger_up[0] = tp;
 
@@ -149,7 +146,6 @@ void view::gesture_detector_statemachine::move(int finger_no,
 	stop_long_press_timer();
 
 	switch(finger_no) {
-
 	case 0: /* Moving the first (single) finger */
 		_info._prev_finger_down[0] = _info._finger_move[0];
 		_info._finger_move[0] = tp;
@@ -219,9 +215,7 @@ void view::gesture_detector_statemachine::state_machine_on_event(view_event_e ev
 	detector_states_e old_state = _current_state;
 
 	switch(_current_state) {
-
 	case STATE_NONE: {
-
 		_info._start_view_state.capture(_view);
 		log_map_center(FG_WHITE);
 
@@ -248,8 +242,9 @@ void view::gesture_detector_statemachine::state_machine_on_event(view_event_e ev
 			if(finger_pressed_enough(0, 0, __CLICK_DURATION)) {
 				_current_state = STATE_CLICKED;
 				start_tap_timer();
-			} else
+			} else {
 				_current_state = STATE_NONE;
+			}
 			break;
 		}
 		case LONG_PRESS_TIMER:
@@ -320,7 +315,6 @@ void view::gesture_detector_statemachine::state_machine_on_event(view_event_e ev
 	case STATE_SECOND_PRESSED: {
 		switch(event) {
 		case FINGER_UP: {
-
 			/* First click position */
 			const touch_point p1 = _info_history._finger_down[0];
 
@@ -336,9 +330,7 @@ void view::gesture_detector_statemachine::state_machine_on_event(view_event_e ev
 			 * convenience
 			 */
 
-			if(get_trajectory_effective_length(p1, p2)
-			   <= (4 * __CLICK_AREA)) {
-
+			if(get_trajectory_effective_length(p1, p2) <= (4 * __CLICK_AREA)) {
 				/* Switching to Double Tap state */
 				_current_state = STATE_SECOND_CLICKED;
 
@@ -348,15 +340,14 @@ void view::gesture_detector_statemachine::state_machine_on_event(view_event_e ev
 				 * No need to expect other events here.
 				 * Immediatelly switching to the initial State
 				 */
-				_current_state = STATE_NONE;
 
+				_current_state = STATE_NONE;
 			} else {
 				/* Seems like it is a simple click */
 				_current_state = STATE_CLICKED;
 				stop_long_press_timer();
 				start_tap_timer();
 			}
-
 			break;
 		}
 		case TAP_TIMER:
@@ -410,7 +401,6 @@ void view::gesture_detector_statemachine::state_machine_on_event(view_event_e ev
 	}
 
 	case STATE_MOVING: {
-
 		if(event != FINGER_MOVE)
 			finish_panning(0);
 
@@ -443,7 +433,6 @@ void view::gesture_detector_statemachine::state_machine_on_event(view_event_e ev
 	}
 
 	case STATE_FINGER2_MOVING: {
-
 		if(event != FINGER2_MOVE)
 			finish_panning(1);
 
@@ -529,7 +518,6 @@ void view::gesture_detector_statemachine::state_machine_on_event(view_event_e ev
 	case STATE_FINGER1_PRESSED: {
 		switch(event) {
 		case FINGER_UP:
-
 			if(finger_pressed_enough(0, 0, __CLICK_DURATION)
 			   &&  finger_pressed_enough(1, 0, __CLICK_DURATION)){
 				_current_state = STATE_2FINGERS_CLICKED;
@@ -820,7 +808,6 @@ void view::gesture_detector_statemachine::log_event(view_event_e event)
 void view::gesture_detector_statemachine::log_state(view_event_e event,
 				       detector_states_e state)
 {
-
 	string e = get_event_str(event);
 	string s = get_state_str(state);
 

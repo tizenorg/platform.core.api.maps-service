@@ -41,20 +41,19 @@ extern "C" {
  * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
  */
 typedef enum _maps_error_e {
-
 	MAPS_ERROR_NONE = TIZEN_ERROR_NONE,	/**< Successful */
 
 	MAPS_ERROR_PERMISSION_DENIED =
 		TIZEN_ERROR_PERMISSION_DENIED,	/**< Permission Denied */
 
 	MAPS_ERROR_OUT_OF_MEMORY =
-		TIZEN_ERROR_OUT_OF_MEMORY,	/**< Out of memory */
+		TIZEN_ERROR_OUT_OF_MEMORY,		/**< Out of memory */
 
 	MAPS_ERROR_INVALID_PARAMETER =
 		TIZEN_ERROR_INVALID_PARAMETER,	/**< Invalid parameter */
 
 	MAPS_ERROR_NOT_SUPPORTED =
-		TIZEN_ERROR_NOT_SUPPORTED,	/**< Not supported */
+		TIZEN_ERROR_NOT_SUPPORTED,		/**< Not supported */
 
 	MAPS_ERROR_CONNECTION_TIME_OUT =
 		TIZEN_ERROR_CONNECTION_TIME_OUT,/**< Timeout error, no answer */
@@ -69,20 +68,19 @@ typedef enum _maps_error_e {
 		TIZEN_ERROR_KEY_NOT_AVAILABLE,	/**< Invalid key */
 
 	MAPS_ERROR_RESOURCE_BUSY =
-		TIZEN_ERROR_RESOURCE_BUSY,	/**< Maps Service busy */
+		TIZEN_ERROR_RESOURCE_BUSY,		/**< Maps Service busy */
 
 	MAPS_ERROR_CANCELED =
-		TIZEN_ERROR_CANCELED,	/**< Maps Service request aborted */
+		TIZEN_ERROR_CANCELED,			/**< Maps Service request aborted */
 
 	MAPS_ERROR_UNKNOWN =
-		TIZEN_ERROR_UNKNOWN,		/**< Unknown error */
+		TIZEN_ERROR_UNKNOWN,			/**< Unknown error */
 
 	MAPS_ERROR_SERVICE_NOT_AVAILABLE =
 		TIZEN_ERROR_MAPS_SERVICE | 0x01,/**< Service unavailable */
 
 	MAPS_ERROR_NOT_FOUND =
-		TIZEN_ERROR_MAPS_SERVICE | 0x02/**< Result not found */
-
+		TIZEN_ERROR_MAPS_SERVICE | 0x02	/**< Result not found */
 } maps_error_e;
 
 #ifdef __cplusplus

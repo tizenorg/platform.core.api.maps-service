@@ -28,8 +28,7 @@ session::command_queue *session::command_queue::interface()
 		static command_queue_sync sync_queue;
 		return &sync_queue;
 #endif /* _MAPS_SERVICE_SUPPORTS_ASYNC_QUEUE_ */
-	}
-	else {
+	} else {
 		static command_queue_sync sync_queue;
 		return &sync_queue;
 	}
@@ -140,11 +139,11 @@ gint session::command_queue_view::iterate(gconstpointer a,
 	/* Attempting to update existing command with freshier data.
 	 * It is decided not to store a number of commands of the same type:
 	 * one command is enough */
-	if(c_new) {
-		if(ca->get_type() == c_new->get_type()) {
+	if (c_new) {
+		if (ca->get_type() == c_new->get_type()) {
 			ca->merge(c_new);
 			//c_new->set_merged();
-		} else if(cb->get_type() == c_new->get_type()) {
+		} else if (cb->get_type() == c_new->get_type()) {
 			cb->merge(c_new);
 			//c_new->set_merged();
 		}
@@ -164,7 +163,7 @@ int session::command_queue_view::push(command *c)
 {
 	/*g_print("session::command_queue_view::push "
 			"pushed a command: %p\n", c);*/
-	if(c == command::empty_ptr())
+	if (c == command::empty_ptr())
 		return MAPS_ERROR_NONE;
 
 	if (!c || !c->plugin() || !c->plugin()->request_queue)
@@ -173,26 +172,23 @@ int session::command_queue_view::push(command *c)
 
 	queue_autoref(c->plugin()->request_queue);
 
-
 #if 0
 	/* ---------------------------------------------- */
 	/* This is the routine without queue modification */
 	const bool _dbg_simple_queue = false;
-	if(_dbg_simple_queue) {
-		g_async_queue_push (c->plugin()->request_queue, c);
+	if (_dbg_simple_queue) {
+		g_async_queue_push(c->plugin()->request_queue, c);
 		return MAPS_ERROR_NONE;
 	}
 	/* ---------------------------------------------- */
 #endif
-
-
 
 	/* Iterating the queue; sorting it and simultaneously attempting
 	 * to update the data of the existing command of the current type.
 	 * This approach allows to store only one instance of a command per
 	 * given type */
 	/*__dbg_queue_length = 0;*/
-	g_async_queue_sort (c->plugin()->request_queue,
+	g_async_queue_sort(c->plugin()->request_queue,
 			    session::command_queue_view::iterate, c);
 	/*g_print("Queue Length: %d\n", __dbg_queue_length);*/
 
@@ -205,10 +201,10 @@ int session::command_queue_view::push(command *c)
 	 *
 	 * https://developer.gnome.org/glib/stable/
 	 *	glib-Asynchronous-Queues.html#g-async-queue-push-sorted */
-	if(c->merged())
+	if (c->merged())
 		delete c;
 	else
-		g_async_queue_push_sorted (c->plugin()->request_queue, c,
+		g_async_queue_push_sorted(c->plugin()->request_queue, c,
 					   session::command_queue_view::iterate,
 					   NULL);
 
@@ -231,11 +227,11 @@ session::command* session::command_queue_view::pop(plugin::plugin_s *p)
 	 * https://developer.gnome.org/glib/stable/glib-Asynchronous-Queues.html#g-async-queue-timeout-pop
 	 */
 	command* c =
-		(command*) g_async_queue_timeout_pop(p->request_queue,
+		(command*)g_async_queue_timeout_pop(p->request_queue,
 					/*300 * G_TIME_SPAN_MILLISECOND);*/
 					/* Small timeout is better for UI */
 					10 * G_TIME_SPAN_MILLISECOND);
-	/*if(c)
+	/*if (c)
 		g_print("session::command_queue_view::pop "
 			"extracted a command: %p\n", c);*/
 	return (c) ? c : command::empty_ptr();

@@ -67,8 +67,7 @@ maps_view_object_h view::polyline_constructor::construct(const maps_coordinates_
 
 		/* SUCCESS */
 		return polyline;
-
-	} while(false);
+	} while (false);
 
 	/* FAILURE: Releasing objects */
 	maps_view_object_destroy(polyline);

@@ -60,8 +60,7 @@ maps_view_object_h view::polygon_constructor::construct(const maps_coordinates_l
 
 		/* SUCCESS */
 		return polygon;
-
-	} while(false);
+	} while (false);
 
 	/* FAILURE: Releasing objects */
 	maps_view_object_destroy(polygon);

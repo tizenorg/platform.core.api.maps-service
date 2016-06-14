@@ -74,21 +74,16 @@ typedef struct _maps_view_polygon_data_s {
 * This represents visual object information
  */
 typedef struct _maps_view_object_s {
-	maps_view_object_type_e type; /* marker, polyline, polygon, group */
-
-	void *shape_data;	/* Pointer to the visual object data, such as
-				   maps_view_marker_data_s or
-				   maps_view_polyline_data_s */
-
+	maps_view_object_type_e type;	/* marker, polyline, polygon, group */
+	void *shape_data;				/* Pointer to the visual object data, such as
+									   maps_view_marker_data_s or maps_view_polyline_data_s */
 	bool visible;
-
 	maps_view_object_h parent_group; /* The group, owning the object */
-
 	maps_view_h view;	/* Link with the parent Map View */
-
 } maps_view_object_s;
 
-int _maps_view_on_object_operation(maps_view_h view, maps_view_object_h object, maps_view_object_operation_e operation);
+int _maps_view_on_object_operation(maps_view_h view, maps_view_object_h object,
+								maps_view_object_operation_e operation);
 
 static maps_view_h __get_view(const maps_view_object_h object);
 static maps_view_polyline_data_s *__get_polyline_data(const maps_view_object_h object);
@@ -141,7 +136,7 @@ static int __maps_view_polyline_data_create(void **polyline)
 
 		*polyline = (maps_view_polyline_data_s *) p;
 		return MAPS_ERROR_NONE;
-	} while(false);
+	} while (false);
 
 	__maps_view_polyline_data_destroy(p);
 	return error;
@@ -191,7 +186,7 @@ static int __maps_view_polygon_data_create(void **polygon)
 
 		*polygon = (maps_view_polygon_data_s *) p;
 		return MAPS_ERROR_NONE;
-	} while(false);
+	} while (false);
 
 	__maps_view_polygon_data_destroy(p);
 	return error;
@@ -246,7 +241,7 @@ static int __maps_view_marker_data_create(void **marker)
 		m->z_order = 0;
 		*marker = (maps_view_marker_data_s *) m;
 		return MAPS_ERROR_NONE;
-	} while(false);
+	} while (false);
 
 	__maps_view_marker_data_destroy(m);
 	return error;
@@ -317,7 +312,7 @@ int _maps_view_object_create(maps_view_object_type_e type, maps_view_object_h *o
 
 		*object = (maps_view_object_h) o;
 		return MAPS_ERROR_NONE;
-	} while(false);
+	} while (false);
 	maps_view_object_destroy(o);
 	return error;
 }

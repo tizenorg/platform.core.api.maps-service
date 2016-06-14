@@ -74,7 +74,7 @@ view::zoom_calculator::zoom_calculator(const touch_point &start_tp_f1,
 	const double cur_r = sqrt(cur_dx * cur_dx + cur_dy * cur_dy) / 2;
 
 	/* Calculating the zoom factor */
-	if((start_r != .0) && (cur_r != .0) && (start_r != cur_r)) {
+	if ((start_r != .0) && (cur_r != .0) && (start_r != cur_r)) {
 		if (cur_r > start_r)
 			_new_zoom_factor = (cur_r / start_r) - 1;
 		else
@@ -93,8 +93,7 @@ view::zoom_calculator::zoom_calculator(const touch_point &start_tp_f1,
 	if (curl < 0) {
 		_new_rotation_angle = (angle / M_PI * 180.);
 		_rotation_happend = true;
-	}
-	else if (curl > 0) {
+	} else if (curl > 0) {
 		_new_rotation_angle = 360 - (angle / M_PI * 180.);
 		_rotation_happend = true;
 	}
@@ -161,7 +160,7 @@ session::command *view::gesture_processor::construct_gesture_command(
 	case MAPS_VIEW_ACTION_SCROLL: {
 		maps_coordinates_h coords = c;
 		maps_coordinates_h center_clone = NULL;
-		if(!coords) {
+		if (!coords) {
 			maps_view_get_center(_gd->_view, &center_clone);
 			coords = center_clone;
 		}
@@ -195,7 +194,7 @@ session::command *view::gesture_processor::construct_gesture_command(
 
 		maps_coordinates_h coords = c;
 		maps_coordinates_h center_clone = NULL;
-		if(!coords) {
+		if (!coords) {
 			maps_view_get_center(_gd->_view, &center_clone);
 			coords = center_clone;
 		}
@@ -206,21 +205,21 @@ session::command *view::gesture_processor::construct_gesture_command(
 	}
 	case MAPS_VIEW_ACTION_ZOOM:
 	case MAPS_VIEW_ACTION_ROTATE: {
-		if(zoom_changed & rotation_changed) {
+		if (zoom_changed & rotation_changed) {
 			MAPS_LOGD("rotation_angle=%f", rotation_angle);
-			if(zoom_factor == .0)
+			if (zoom_factor == .0)
 				maps_view_get_zoom_factor(_gd->_view, &zoom_factor);
-			if(rotation_angle == .0)
+			if (rotation_angle == .0)
 				maps_view_get_orientation(_gd->_view, &rotation_angle);
 			rotation_angle -= (int(rotation_angle) / 360) * 360;
 			return new session::command_view_zoom_rotate(get_maps(), _gd->_view, zoom_factor, rotation_angle);
-		} else if(zoom_changed) {
-			if(zoom_factor == .0)
+		} else if (zoom_changed) {
+			if (zoom_factor == .0)
 				maps_view_get_zoom_factor(_gd->_view, &zoom_factor);
 			MAPS_LOGI("\t set new zoom command: %f\n", zoom_factor);
 			return new session::command_view_zoom(get_maps(), _gd->_view, zoom_factor);
-		} else if(rotation_changed) {
-			if(rotation_angle == .0)
+		} else if (rotation_changed) {
+			if (rotation_angle == .0)
 				maps_view_get_orientation(_gd->_view, &rotation_angle);
 			rotation_angle -= (int(rotation_angle) / 360) * 360;
 			return new session::command_view_rotate(get_maps(), _gd->_view, rotation_angle);
@@ -253,7 +252,7 @@ void view::gesture_processor::on_long_press()
 
 	/* Invoke user registered event callback */
 	maps_view_event_data_h ed = _maps_view_create_event_data(MAPS_VIEW_EVENT_GESTURE);
-	if(ed) {
+	if (ed) {
 		_maps_view_event_data_set_gesture_type(ed, MAPS_VIEW_GESTURE_LONG_PRESS);
 		_maps_view_event_data_set_position(ed, tp._x, tp._y);
 		_maps_view_event_data_set_fingers(ed, 1);
@@ -283,7 +282,7 @@ void view::gesture_processor::on_double_tap()
 
 	/* Invoke user registered event callback */
 	maps_view_event_data_h ed = _maps_view_create_event_data(MAPS_VIEW_EVENT_GESTURE);
-	if(ed) {
+	if (ed) {
 		_maps_view_event_data_set_gesture_type(ed, MAPS_VIEW_GESTURE_DOUBLE_TAP);
 		_maps_view_event_data_set_position(ed, tp._x, tp._y);
 		_maps_view_event_data_set_fingers(ed, 1);
@@ -313,7 +312,7 @@ void view::gesture_processor::on_tap()
 
 	/* Invoke user registered event callback */
 	maps_view_event_data_h ed = _maps_view_create_event_data(MAPS_VIEW_EVENT_GESTURE);
-	if(ed) {
+	if (ed) {
 		_maps_view_event_data_set_gesture_type(ed, MAPS_VIEW_GESTURE_TAP);
 		_maps_view_event_data_set_position(ed, tp._x, tp._y);
 		_maps_view_event_data_set_fingers(ed, 1);
@@ -342,7 +341,7 @@ void view::gesture_processor::on_two_finger_tap()
 
 	/* Invoke user registered event callback */
 	maps_view_event_data_h ed = _maps_view_create_event_data(MAPS_VIEW_EVENT_GESTURE);
-	if(ed) {
+	if (ed) {
 		_maps_view_event_data_set_gesture_type(ed, MAPS_VIEW_GESTURE_2_FINGER_TAP);
 		_maps_view_event_data_set_position(ed, gesture_center._x, gesture_center._y);
 		_maps_view_event_data_set_fingers(ed, 2);
@@ -379,7 +378,7 @@ void view::gesture_processor::on_pan(int finger_no)
 		return;
 
 	touch_point prev_tp = _gd->_info._prev_finger_down[finger_no];
-	if(prev_tp.empty())
+	if (prev_tp.empty())
 		prev_tp = _gd->_info._finger_down[finger_no];
 
 	/* a. Calculating the delta of the gesture */
@@ -394,7 +393,7 @@ void view::gesture_processor::on_pan(int finger_no)
 
 	/* Invoke user registered event callback */
 	maps_view_event_data_h ed = _maps_view_create_event_data(MAPS_VIEW_EVENT_GESTURE);
-	if(ed) {
+	if (ed) {
 		_maps_view_event_data_set_gesture_type(ed, MAPS_VIEW_GESTURE_SCROLL);
 		_maps_view_event_data_set_position(ed, cur_tp._x, cur_tp._y);
 		_maps_view_event_data_set_fingers(ed, 1);
@@ -466,7 +465,7 @@ bool view::gesture_processor::on_zoom(bool zoom_changed, double &zoom_factor)
 	double new_zoom_factor = zc.get_zoom_factor();
 
 	/* Analyse zoom factor changes */
-	if(zc.zoom_happend()) {
+	if (zc.zoom_happend()) {
 		/* Apply newly calculated zoom factor */
 		new_zoom_factor += _gd->_info._start_view_state._zoom_factor;
 
@@ -476,25 +475,25 @@ bool view::gesture_processor::on_zoom(bool zoom_changed, double &zoom_factor)
 		int max_zoom_level = 0;
 		maps_view_get_min_zoom_level(_gd->_view, &min_zoom_level);
 		maps_view_get_max_zoom_level(_gd->_view, &max_zoom_level);
-		if(new_zoom_factor < min_zoom_level)
+		if (new_zoom_factor < min_zoom_level)
 			new_zoom_factor = min_zoom_level;
-		if(new_zoom_factor > max_zoom_level)
+		if (new_zoom_factor > max_zoom_level)
 			new_zoom_factor = max_zoom_level;
 
 		/* Check if the zoom changed relatively to initial state */
 		double diff = _gd->_info._start_view_state._prev_zoom_factor - new_zoom_factor;
 		if ((!zoom_changed && (diff > 0.10 || diff < -0.10)) ||
-			( zoom_changed && (diff > 0.02 || diff < -0.02))) {
+			(zoom_changed && (diff > 0.02 || diff < -0.02))) {
 			_gd->_info._start_view_state._prev_zoom_factor = new_zoom_factor;
 			zoom_changed = true;
 			MAPS_LOGD("[zoom_changed] %f, %f -> %f",
 				diff, _gd->_info._start_view_state._prev_zoom_factor, new_zoom_factor);
-		}
-		else
+		} else {
 			zoom_changed = false;
+		}
 	}
 
-	if(!zoom_changed)
+	if (!zoom_changed)
 		return false;
 
 	zoom_factor = new_zoom_factor;
@@ -539,7 +538,7 @@ bool view::gesture_processor::on_rotate(bool rotation_changed, double &rotation_
 	double new_rotation_angle = zc.get_rotation_angle();
 
 	/* Analyze rotation angle changes */
-	if(zc.rotation_happend()) {
+	if (zc.rotation_happend()) {
 		/* Apply newly calculated rotation angle */
 		new_rotation_angle += _gd->_info._start_view_state._rotation_angle;
 
@@ -551,17 +550,17 @@ bool view::gesture_processor::on_rotate(bool rotation_changed, double &rotation_
 		/* Check if the zoom changed relatively to initial state */
 		double diff = calc_angle(_gd->_info._start_view_state._prev_rotation_angle, new_rotation_angle);
 		if ((!rotation_changed && (diff > 4.0 || diff < -4.0)) ||
-			( rotation_changed && (diff > 0.5 || diff < -0.5))) {
+			(rotation_changed && (diff > 0.5 || diff < -0.5))) {
 			_gd->_info._start_view_state._prev_rotation_angle = new_rotation_angle;
 			rotation_changed = true;
 			MAPS_LOGD("[rotation_changed] %f, %f -> %f",
 				diff, _gd->_info._start_view_state._prev_rotation_angle, new_rotation_angle);
-		}
-		else
+		} else {
 			rotation_changed = false;
+		}
 	}
 
-	if(!rotation_changed)
+	if (!rotation_changed)
 		return false; // Seems nothing changed, we can return
 
 	rotation_angle = new_rotation_angle;
@@ -620,7 +619,7 @@ void view::gesture_processor::on_zoom_rotate(bool zoom_changed, double zoom_fact
 				_maps_view_event_data_set_rotation_angle(ed, rotation_angle);
 				_maps_view_invoke_event_callback(_gd->_view, ed);
 			}
-			maps_view_event_data_destroy(ed);				
+			maps_view_event_data_destroy(ed);
 		}
 	}
 #else
@@ -727,9 +726,9 @@ view::finger_event_stream::finger_event_stream(maps_view_h v)
 
 void view::finger_event_stream::set_gesture_detector(gesture_detector *d)
 {
-	if(!d)
+	if (!d)
 		return;
-	if(d != _d) {
+	if (d != _d) {
 		_d->halt_gesture();
 		delete _d;
 		_d = d;
@@ -738,7 +737,7 @@ void view::finger_event_stream::set_gesture_detector(gesture_detector *d)
 
 view::finger_event_stream::~finger_event_stream()
 {
-	if(_d) {
+	if (_d) {
 		_d->halt_gesture();
 		delete _d;
 	}
@@ -748,7 +747,7 @@ view::finger_event_stream::~finger_event_stream()
 void view::finger_event_stream::tap(Evas_Event_Mouse_Down *ev)
 {
 	MAPS_LOGI("finger_event_stream::tap");
-	if(!ev)
+	if (!ev)
 		return;
 
 	/*
@@ -756,7 +755,7 @@ void view::finger_event_stream::tap(Evas_Event_Mouse_Down *ev)
 	 *  so we have to skip this "late" event "press" for the sake of
 	 *  detector simplicity
 	 */
-	if(_finger_pressed[0]) {
+	if (_finger_pressed[0]) {
 		MAPS_LOGI("finger_event_stream::tap [SKIPED]");
 		return;
 	}
@@ -773,7 +772,7 @@ void view::finger_event_stream::tap(Evas_Event_Mouse_Down *ev)
 
 void view::finger_event_stream::move(Evas_Event_Mouse_Move *ev)
 {
-	if(!ev)
+	if (!ev)
 		return;
 
 	/* Current touch point info */
@@ -786,7 +785,7 @@ void view::finger_event_stream::move(Evas_Event_Mouse_Move *ev)
 	 *  so we have to emulate the "press" for the sake of
 	 *  detector simplicity
 	 */
-	if(!_finger_pressed[0]) {
+	if (!_finger_pressed[0]) {
 		MAPS_LOGI("finger_event_stream::tap [CORRECTION]");
 		_finger_pressed[0] = true;
 		_finger_down[0] = tp;
@@ -797,7 +796,7 @@ void view::finger_event_stream::move(Evas_Event_Mouse_Move *ev)
 
 	/* It's needed to correct the touch point, when the finger moved out of
 	 * assigned movement threshold */
-	if(!_finger_moving[0] &&  !_finger_moving[1]
+	if (!_finger_moving[0] &&  !_finger_moving[1]
 	    && finger_dragged_enough(0, tp)) {
 		_d->_info._finger_down[0] = tp;
 	}
@@ -806,9 +805,8 @@ void view::finger_event_stream::move(Evas_Event_Mouse_Move *ev)
 	 *  We think that the movement happend when the finger moved out of
 	 *  some small area.
 	 */
-	if(_finger_moving[0] || _finger_moving[1]
+	if (_finger_moving[0] || _finger_moving[1]
 	   || finger_dragged_enough(0, tp)) {
-
 		_finger_moving[0] = true;
 
 		/* Process finger move */
@@ -823,7 +821,7 @@ void view::finger_event_stream::move(Evas_Event_Mouse_Move *ev)
 void view::finger_event_stream::up(Evas_Event_Mouse_Up *ev)
 {
 	MAPS_LOGI("finger_event_stream::up");
-	if(!ev)
+	if (!ev)
 		return;
 
 	/* Process finger up */
@@ -837,11 +835,11 @@ void view::finger_event_stream::up(Evas_Event_Mouse_Up *ev)
 void view::finger_event_stream::multi_tap(Evas_Event_Multi_Down *ev)
 {
 	MAPS_LOGI("finger_event_stream::multi_tap");
-	if(!ev)
+	if (!ev)
 		return;
 
 	const int finger_no = ev->device;
-	if(finger_no >= MAX_FINGERS)
+	if (finger_no >= MAX_FINGERS)
 		return;
 
 	/* Current touch point info */
@@ -852,7 +850,7 @@ void view::finger_event_stream::multi_tap(Evas_Event_Multi_Down *ev)
 	 *  so we have to skip this "late" event "press" for the sake of
 	 *  detector simplicity
 	 */
-	if(_finger_pressed[finger_no]) {
+	if (_finger_pressed[finger_no]) {
 		MAPS_LOGI("finger_event_stream::multi_tap [SKIPED]");
 		return;
 	}
@@ -866,11 +864,11 @@ void view::finger_event_stream::multi_tap(Evas_Event_Multi_Down *ev)
 
 void view::finger_event_stream::multi_move(Evas_Event_Multi_Move *ev)
 {
-	if(!ev)
+	if (!ev)
 		return;
 
 	const int finger_no = ev->device;
-	if(finger_no >= MAX_FINGERS)
+	if (finger_no >= MAX_FINGERS)
 		return;
 
 	/* Current touch point info */
@@ -883,7 +881,7 @@ void view::finger_event_stream::multi_move(Evas_Event_Multi_Move *ev)
 	 *  so we have to emulate the "press" for the sake of
 	 *  detector simplicity
 	 */
-	if(!_finger_pressed[finger_no]) {
+	if (!_finger_pressed[finger_no]) {
 		MAPS_LOGI("finger_event_stream::multi_tap [CORRECTION]");
 		_finger_pressed[finger_no] = true;
 		_finger_down[finger_no] = tp;
@@ -894,7 +892,7 @@ void view::finger_event_stream::multi_move(Evas_Event_Multi_Move *ev)
 
 	/* It's needed to correct the touch point, when the finger moved out of
 	 * assigned movement threshold */
-	if(!_finger_moving[0] &&  !_finger_moving[1]
+	if (!_finger_moving[0] &&  !_finger_moving[1]
 	    && finger_dragged_enough(finger_no, tp)) {
 		_d->_info._finger_down[finger_no] = tp;
 	}
@@ -903,7 +901,7 @@ void view::finger_event_stream::multi_move(Evas_Event_Multi_Move *ev)
 	 *  We think that the movement happend when the finger moved out of
 	 *  some small area.
 	 */
-	if(_finger_moving[0] || _finger_moving[1]
+	if (_finger_moving[0] || _finger_moving[1]
 	   || finger_dragged_enough(finger_no, tp)) {
 		_finger_moving[finger_no] = true;
 
@@ -919,11 +917,11 @@ void view::finger_event_stream::multi_move(Evas_Event_Multi_Move *ev)
 void view::finger_event_stream::multi_up(Evas_Event_Multi_Up *ev)
 {
 	MAPS_LOGI("finger_event_stream::multi_up");
-	if(!ev)
+	if (!ev)
 		return;
 
 	const int finger_no = ev->device;
-	if(finger_no >= MAX_FINGERS)
+	if (finger_no >= MAX_FINGERS)
 		return;
 
 	/* Process finger up */

@@ -133,7 +133,6 @@ namespace plugin {
 
 /* Plugin interface */
 typedef struct _interface_s {
-
 	/* Plugin dedicated functions */
 	maps_plugin_init_f maps_plugin_init;
 	maps_plugin_shutdown_f maps_plugin_shutdown;

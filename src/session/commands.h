@@ -570,7 +570,7 @@ private:
 	command_get_place_details() : command(NULL)
 	{
 	}
-	command_get_place_details( const command_get_place_details &src)
+	command_get_place_details(const command_get_place_details &src)
 		 : command(NULL)
 	{
 	}

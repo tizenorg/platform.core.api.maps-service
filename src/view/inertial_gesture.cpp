@@ -44,7 +44,7 @@ view::inertial_gesture::~inertial_gesture()
 {
 	//_maps_view_set_idle_listener(_view, NULL, NULL);
 
-	if(_d)
+	if (_d)
 		delete _d;
 	_d = NULL;
 }
@@ -69,9 +69,9 @@ void view::inertial_gesture::tap(int finger_no, const touch_point &tp)
 
 	_maps_view_halt_inertial_camera(_view);
 
-	if(transiting) { /* Halt the transition */
-		for(int i = 0; i < MAX_FINGERS; i ++) {
-			if(!transiting_part[i])
+	if (transiting) { /* Halt the transition */
+		for (int i = 0; i < MAX_FINGERS; i ++) {
+			if (!transiting_part[i])
 				continue;
 
 			unsigned int timestamp = _last[i]._timestamp + get_transition_time(i);
@@ -91,7 +91,7 @@ void view::inertial_gesture::tap(int finger_no, const touch_point &tp)
 	_cur_x[finger_no] = tp._x;
 	_cur_y[finger_no] = tp._y;
 
-	if(_d)
+	if (_d)
 		_d->tap(finger_no, tp);
 }
 
@@ -106,7 +106,7 @@ void view::inertial_gesture::move(int finger_no, const touch_point &tp)
 	_cur_x[finger_no] = tp._x;
 	_cur_y[finger_no] = tp._y;
 
-	if(_d)
+	if (_d)
 		_d->move(finger_no, tp);
 }
 
@@ -125,7 +125,7 @@ void view::inertial_gesture::up(int finger_no, const touch_point &tp)
 	MAPS_LOGD("trajectory=%d", trajectory);
 	if (trajectory <= 5) dt = 0;
 
-	if(dt == 0) {
+	if (dt == 0) {
 		_derivative_x[finger_no] = .0;
 		_derivative_y[finger_no] = .0;
 	} else {
@@ -146,19 +146,19 @@ bool view::inertial_gesture::next_transition_step()
 	transiting = false;
 
 	//static const double dt = 1.;
-	for(int i = 0; i < MAX_FINGERS; i ++) {
-		if(!transiting_part[i])
+	for (int i = 0; i < MAX_FINGERS; i ++) {
+		if (!transiting_part[i])
 			continue;
 
 		transiting_part[i] = false;
 
-		if(ABS(_derivative_x[i]) > __ACCURACY) {
+		if (ABS(_derivative_x[i]) > __ACCURACY) {
 			_cur_x[i] = get_next_point(_cur_x[i], _derivative_x[i], _dt[i]);
 			_derivative_x[i] = get_next_derivative(_derivative_x[i], _dt[i]);
 			transiting_part[i] |= ABS(_derivative_x[i]) > __ACCURACY;
 		}
 
-		if(ABS(_derivative_y[i]) > __ACCURACY) {
+		if (ABS(_derivative_y[i]) > __ACCURACY) {
 			_cur_y[i] = get_next_point(_cur_y[i], _derivative_y[i], _dt[i]);
 			_derivative_y[i] = get_next_derivative(_derivative_y[i], _dt[i]);
 			transiting_part[i] |= ABS(_derivative_y[i]) > __ACCURACY;
@@ -167,7 +167,7 @@ bool view::inertial_gesture::next_transition_step()
 		unsigned int timestamp = _last[i]._timestamp + get_transition_time(i);
 
 		const touch_point tp(_cur_x[i], _cur_y[i], timestamp);
-		if(transiting_part[i]) {
+		if (transiting_part[i]) {
 			MAPS_LOGI("TRANSITION finger %d move FAKE time: %d", i, tp._timestamp);
 			_d->move(i, tp);
 		} else {
@@ -179,7 +179,7 @@ bool view::inertial_gesture::next_transition_step()
 				      step in transient is needed */
 	}
 
-	if(!transiting)
+	if (!transiting)
 		reset();
 
 	return transiting;
@@ -197,13 +197,13 @@ double view::inertial_gesture::get_next_derivative(const double &derivative,
 						   const double &dt)
 {
 	/* Simple square parabola */
-	/*if(derivative > 0)
+	/*if (derivative > 0)
 		return (derivative + __ACCEL * dt);
 	else
 		return (derivative - __ACCEL * dt);*/
 
 	/* Exponential spped down */
-	if(_d->_info._fingers_pressed <= 1)
+	if (_d->_info._fingers_pressed <= 1)
 		return (derivative * .9);
 	else
 		return (derivative * .5);
@@ -228,7 +228,7 @@ unsigned int view::inertial_gesture::get_transition_time(int finger_no) const
 void view::inertial_gesture::on_idle(void *data)
 {
 	inertial_gesture *ig = (inertial_gesture *)data;
-	if(ig && ig->transiting) {
+	if (ig && ig->transiting) {
 		MAPS_LOGI("TRANSITION on idle");
 		ig->next_transition_step();
 		g_usleep(5*1000);
@@ -239,7 +239,7 @@ void view::inertial_gesture::on_idle(void *data)
 void view::inertial_gesture::reset()
 {
 	transiting = false;
-	for(int i = 0; i < MAX_FINGERS; i ++) {
+	for (int i = 0; i < MAX_FINGERS; i ++) {
 		transiting_part[i] = false;
 		transiting_start[i] = 0;
 	}

@@ -24,16 +24,16 @@
 extern int _maps_view_move_center(maps_view_h view, const int delta_x, const int delta_y);
 
 extern int _maps_view_set_zoom_rotate(maps_view_h view,
-				     const bool zoom_changed, const double zoom_factor,
-				     const bool rotation_changed, const double rotation_angle);
+								const bool zoom_changed, const double zoom_factor,
+								const bool rotation_changed, const double rotation_angle);
 
 extern bool maps_address_is_valid(const maps_address_h address);
 extern bool maps_area_is_valid(const maps_area_h area);
 extern bool maps_coordinates_is_valid(const maps_coordinates_h coordinates);
 
 static int __put_to_hashtable(session::command_handler *ch,
-			      maps_service_data_e feature,
-			      maps_int_hashtable_h t)
+								maps_service_data_e feature,
+								maps_int_hashtable_h t)
 {
 	if (!ch || !t)
 		return MAPS_ERROR_INVALID_PARAMETER;
@@ -79,9 +79,7 @@ int session::command_geocode::run()
 		/*  need to create the handler when the function is NULL */
 		pr.add(my_req_id);
 		handler = new command_geocode_handler(plugin(),
-					     callback,
-					     user_data,
-					     my_req_id);
+					     callback, user_data, my_req_id);
 
 		if (handler) {
 			/* Run the plugin interface function */
@@ -92,12 +90,10 @@ int session::command_geocode::run()
 			pr.update(my_req_id, handler);
 
 			MAPS_LOGD("session::command_geocode::run: %d", my_req_id);
-		}
-		else {
+		} else {
 			error = MAPS_ERROR_OUT_OF_MEMORY;
 		}
-	}
-	else {
+	} else {
 		/* Plugin Function is NULL: use default empty function */
 		/*
 		func = plugin::get_empty_interface().maps_plugin_geocode;
@@ -127,7 +123,6 @@ bool session::command_geocode_handler::foreach_geocode_cb(maps_error_e error,
 							  coordinates,
 							  void *user_data)
 {
-
 	command_geocode_handler *handler = (command_geocode_handler *) user_data;
 
 	if (request_id != handler->plg_req_id) {
@@ -176,12 +171,10 @@ session::command_geocode_inside_bounds::command_geocode_inside_bounds(
 
 	if (maps_area_is_valid(b)) {
 		bounds = b;
-	}
-	else {
+	} else {
 		error = MAPS_ERROR_INVALID_PARAMETER;
 		*request_id = -1;
 	}
-
 }
 
 session::command_geocode_inside_bounds::~command_geocode_inside_bounds()
@@ -215,12 +208,10 @@ int session::command_geocode_inside_bounds::run()
 			pr.update(my_req_id, handler);
 
 			MAPS_LOGD("session::command_geocode_inside_bounds::run: %d", my_req_id);
-		}
-		else {
+		} else {
 			error = MAPS_ERROR_OUT_OF_MEMORY;
 		}
-	}
-	else {
+	} else {
 		/* Plugin Function is NULL: use default empty function */
 		/*
 		func = plugin::get_empty_interface().
@@ -257,13 +248,11 @@ session::command_geocode_by_structured_address::
 
 	if (maps_address_is_valid(a)) {
 		address = a;
-	}
-	else {
+	} else {
 		error = MAPS_ERROR_INVALID_PARAMETER;
 		*request_id = -1;
 		MAPS_LOGD("Invalid parameter");
 	}
-
 }
 
 session::command_geocode_by_structured_address::
@@ -296,12 +285,10 @@ int session::command_geocode_by_structured_address::run()
 						 handler, &handler->plg_req_id);
 
 			pr.update(my_req_id, handler);
-		}
-		else {
+		} else {
 			error = MAPS_ERROR_OUT_OF_MEMORY;
 		}
-	}
-	else {
+	} else {
 		/* Plugin Function is NULL: use default empty function */
 		/*
 		func = plugin::get_empty_interface().
@@ -335,7 +322,6 @@ session::command_reverse_geocode::command_reverse_geocode(maps_service_h ms,
 {
 	*request_id = command::command_request_id++;
 	my_req_id = *request_id;
-
 }
 
 session::command_reverse_geocode::~command_reverse_geocode()
@@ -368,12 +354,10 @@ int session::command_reverse_geocode::run()
 			pr.update(my_req_id, handler);
 
 			MAPS_LOGD("session::command_reverse_geocode::run: %d", my_req_id);
-		}
-		else {
+		} else {
 			error = MAPS_ERROR_OUT_OF_MEMORY;
 		}
-	}
-	else {
+	} else {
 		/* Plugin Function is NULL: use default empty function */
 		/*
 		func = plugin::get_empty_interface().
@@ -404,13 +388,11 @@ void session::command_reverse_geocode_handler::foreach_reverse_geocode_cb(
 						maps_address_h address,
 						void *user_data)
 {
-
 	command_reverse_geocode_handler *handler =
 		(command_reverse_geocode_handler *) user_data;
 
 	if (request_id != handler->plg_req_id) {
-		MAPS_LOGE(
-"\n\nERROR! Incorrect request id [%d] come from the plugin; expected [%d]\n\n",
+		MAPS_LOGE("\n\nERROR! Incorrect request id [%d] come from the plugin; expected [%d]\n\n",
 			request_id, handler->plg_req_id);
 	}
 
@@ -485,12 +467,10 @@ int session::command_multi_reverse_geocode::run()
 			pr.update(my_req_id, handler);
 
 			MAPS_LOGD("session::command_multi_reverse_geocode::run: %d", my_req_id);
-		}
-		else {
+		} else {
 			error = MAPS_ERROR_OUT_OF_MEMORY;
 		}
-	}
-	else {
+	} else {
 		/* Plugin Function is NULL: use default empty function */
 		/*
 		func = plugin::get_empty_interface().
@@ -563,8 +543,7 @@ session::command_search_place::command_search_place(maps_service_h ms,
 
 	if (maps_coordinates_is_valid(pos)) {
 		position = pos;
-	}
-	else {
+	} else {
 		error = MAPS_ERROR_INVALID_PARAMETER;
 		*request_id = -1;
 		MAPS_LOGD("Invalid parameter");
@@ -600,12 +579,10 @@ int session::command_search_place::run()
 			pr.update(my_req_id, handler);
 
 			MAPS_LOGD("session::command_search_place::run: %d", my_req_id);
-		}
-		else {
+		} else {
 			error = MAPS_ERROR_OUT_OF_MEMORY;
 		}
-	}
-	else {
+	} else {
 		/* Plugin Function is NULL: use default empty function */
 		/*
 		func = plugin::get_empty_interface().maps_plugin_search_place;
@@ -657,7 +634,6 @@ bool session::command_search_place_handler::foreach_place_cb(maps_error_e error,
 							     maps_place_h place,
 							     void *user_data)
 {
-
 	command_search_place_handler *handler =
 		(command_search_place_handler *) user_data;
 
@@ -711,8 +687,7 @@ session::command_search_by_area_place::command_search_by_area_place(
 
 	if (maps_area_is_valid(b)) {
 		boundary = b;
-	}
-	else {
+	} else {
 		error = MAPS_ERROR_INVALID_PARAMETER;
 		*request_id = -1;
 	}
@@ -740,7 +715,6 @@ int session::command_search_by_area_place::run()
 							   user_data,
 							   my_req_id);
 		if (handler) {
-
 			/* Run the plugin interface function */
 			error = func(boundary, filter,
 				preference, command_search_place_handler::foreach_place_cb,
@@ -749,12 +723,10 @@ int session::command_search_by_area_place::run()
 			pr.update(my_req_id, handler);
 
 			MAPS_LOGD("session::command_search_by_area_place::run: %d", my_req_id);
-		}
-		else {
+		} else {
 			error = MAPS_ERROR_OUT_OF_MEMORY;
 		}
-	}
-	else {
+	} else {
 		/* Plugin Function is NULL: use default empty function */
 		/*
 		func = plugin::get_empty_interface().
@@ -834,12 +806,10 @@ int session::command_search_by_address_place::run()
 			pr.update(my_req_id, handler);
 
 			MAPS_LOGD("session::command_search_by_address_place::run: %d", my_req_id);
-		}
-		else {
+		} else {
 			error = MAPS_ERROR_OUT_OF_MEMORY;
 		}
-	}
-	else {
+	} else {
 		/* Plugin Function is NULL: use default empty function */
 		/*
 		func = plugin::get_empty_interface().
@@ -914,12 +884,10 @@ int session::command_search_place_list::run()
 			pr.update(my_req_id, handler);
 
 			MAPS_LOGD("session::command_search_place_list::run: %d", my_req_id);
-		}
-		else {
+		} else {
 			error = MAPS_ERROR_OUT_OF_MEMORY;
 		}
-	}
-	else {
+	} else {
 		/* Plugin Function is NULL: use default empty function */
 		/*
 		func = plugin::get_empty_interface().maps_plugin_search_place_list;
@@ -1009,12 +977,10 @@ int session::command_get_place_details::run()
 
 			MAPS_LOGD("session::command_get_place_details::run: %d",
 				my_req_id);
-		}
-		else {
+		} else {
 			error = MAPS_ERROR_OUT_OF_MEMORY;
 		}
-	}
-	else {
+	} else {
 		/* Plugin Function is NULL: use default empty function */
 		/*
 		func = plugin::get_empty_interface().
@@ -1041,7 +1007,6 @@ session::command_get_place_details_handler::command_get_place_details_handler(
 void session::command_get_place_details_handler::foreach_place_details_cb(maps_error_e error,
 							     int request_id, maps_place_h place, void *user_data)
 {
-
 	command_get_place_details_handler *handler =
 		(command_get_place_details_handler *) user_data;
 
@@ -1087,15 +1052,13 @@ session::command_search_route::command_search_route(maps_service_h ms,
 
 	if (maps_coordinates_is_valid(orig)) {
 		origin = orig;
-	}
-	else {
+	} else {
 		error = MAPS_ERROR_INVALID_PARAMETER;
 	}
 
 	if (maps_coordinates_is_valid(dest)) {
 		destination = dest;
-	}
-	else {
+	} else {
 		error = MAPS_ERROR_INVALID_PARAMETER;
 	}
 
@@ -1122,25 +1085,21 @@ int session::command_search_route::run()
 		/* No need to create the handler when the function is NULL */
 		pr.add(my_req_id);
 		handler = new command_search_route_handler(plugin(),
-							   callback,
-							   user_data,
-							   my_req_id);
+							callback, user_data, my_req_id);
 
 		if (handler) {
 			/* Run the plugin interface function */
 			error = func(origin, destination, preference,
-		     command_search_route_handler::foreach_route_cb,
-		     handler, &handler->plg_req_id);
+							command_search_route_handler::foreach_route_cb,
+							handler, &handler->plg_req_id);
 
 			pr.update(my_req_id, handler);
 
 			MAPS_LOGD("session::command_search_route::run: %d", my_req_id);
-		}
-		else {
+		} else {
 			error = MAPS_ERROR_OUT_OF_MEMORY;
 		}
-	}
-	else {
+	} else {
 		/* Plugin Function is NULL: use default empty function */
 		/*
 		func = plugin::get_empty_interface().maps_plugin_search_route;
@@ -1223,12 +1182,10 @@ int session::command_search_route_waypoints::run()
 			pr.update(my_req_id, handler);
 
 			MAPS_LOGD("session::command_search_place::run: %d", my_req_id);
-		}
-		else {
+		} else {
 			error = MAPS_ERROR_OUT_OF_MEMORY;
 		}
-	}
-	else {
+	} else {
 		/* Plugin Function is NULL: use default empty function */
 		/*
 		func = plugin::get_empty_interface().
@@ -1350,7 +1307,7 @@ int session::command_view_set_center::run()
 			  lat, lon);
 	}
 
-	if(!v)
+	if (!v)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
 	int error = MAPS_ERROR_NONE;
@@ -1358,7 +1315,7 @@ int session::command_view_set_center::run()
 		error = maps_view_set_center(v, c);
 		if(error != MAPS_ERROR_NONE)
 			break;
-	} while(false);
+	} while (false);
 
 	const int ret = error;
 	destroy();
@@ -1421,7 +1378,7 @@ int session::command_view_move_center::run()
 		error = _maps_view_move_center(v, _delta_x, _delta_y);
 		if(error != MAPS_ERROR_NONE)
 			break;
-	} while(false);
+	} while (false);
 
 	const int ret = error;
 	destroy();
@@ -1453,14 +1410,14 @@ void session::command_view_move_center::merge(const command *c)
 
 int session::command_view_zoom::run()
 {
-	MAPS_LOGD ("session::command_view_zoom::run factor = %f", zoom_factor);
+	MAPS_LOGD("session::command_view_zoom::run factor = %f", zoom_factor);
 
 	if (!v)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
-	const int ret = maps_view_set_zoom_factor (v, zoom_factor);
+	const int ret = maps_view_set_zoom_factor(v, zoom_factor);
 
-	destroy ();
+	destroy();
 	return ret;
 }
 
@@ -1480,14 +1437,14 @@ void session::command_view_zoom::merge(const command *c)
 	command_view_zoom *cmd = (command_view_zoom *)c;
 	if (v == cmd->v) {
 		zoom_factor = cmd->zoom_factor;
-		cmd->set_merged ();
+		cmd->set_merged();
 	}
 }
 
 /*----------------------------------------------------------------------------*/
 int session::command_view_rotate::run()
 {
-	MAPS_LOGD ("session::command_view_rotate::run angle = %f",
+	MAPS_LOGD("session::command_view_rotate::run angle = %f",
 		  rotation_angle);
 
 	if (!v)
@@ -1495,7 +1452,7 @@ int session::command_view_rotate::run()
 
 	const int ret = maps_view_set_orientation(v, rotation_angle);
 
-	destroy ();
+	destroy();
 	return ret;
 }
 
@@ -1523,7 +1480,7 @@ void session::command_view_rotate::merge(const command *c)
 
 int session::command_view_zoom_rotate::run()
 {
-	MAPS_LOGD ("session::command_view_zoom_rotate::run "
+	MAPS_LOGD("session::command_view_zoom_rotate::run "
 		   "factor = %f, angle = %f",
 		   zoom_factor, rotation_angle);
 
@@ -1534,7 +1491,7 @@ int session::command_view_zoom_rotate::run()
 						  true, zoom_factor,
 						  true, rotation_angle);
 
-	destroy ();
+	destroy();
 	return ret;
 }
 

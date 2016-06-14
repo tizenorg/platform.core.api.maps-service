@@ -60,8 +60,7 @@ maps_view_object_h view::marker_constructor::construct(maps_coordinates_h coordi
 
 		/* SUCCESS */
 		return marker;
-
-	} while(false);
+	} while (false);
 
 	/* FAILURE: Releasing objects */
 	maps_view_object_destroy(marker);
