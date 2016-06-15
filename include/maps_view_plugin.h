@@ -37,7 +37,7 @@ extern "C" {
 
 /**
  * @brief	Enumerations of color space types
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  */
 typedef enum _maps_view_colorspace_type_e
 {
@@ -49,7 +49,7 @@ typedef enum _maps_view_colorspace_type_e
  * @brief	Zooms the map on the view.
  * @details This function zooms the map on the View with real value of zoom
  * factor.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  * @privlevel public
  *
  * @param[in]	view		The view handle
@@ -78,7 +78,7 @@ int maps_view_set_zoom_factor(maps_view_h view, double zoom_factor);
 /**
  * @brief	Gets the zoom factor.
  * @details This function gets the current zoom factor of View.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  * @remarks zoom @a factor can be obtained also in maps_view_on_event_cb()
  * callback, assigned using maps_view_set_event_cb() with the event
  * type #MAPS_VIEW_EVENT_ACTION specified.

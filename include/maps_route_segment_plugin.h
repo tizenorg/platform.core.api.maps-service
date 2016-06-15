@@ -40,7 +40,7 @@ extern "C" {
  * @brief	Creates a new route segment handle.
  * @details This function creates a new route segment handle and allocates all
  * needed resources.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks @a segment must be released using maps_route_segment_destroy().
  * \n @a segment may be cloned using maps_route_segment_clone().
  *
@@ -58,7 +58,7 @@ int maps_route_segment_create(maps_route_segment_h *segment);
 /**
  * @brief	Sets the route segment origin.
  * @details This function sets the route segment origin.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	segment		The segment handle
  * @param[in]	origin		The origin of segment
@@ -77,7 +77,7 @@ int maps_route_segment_set_origin(maps_route_segment_h segment,
 /**
  * @brief	Sets the route segment destination.
  * @details This function sets the route segment destination.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	segment		The segment handle
  * @param[in]	destination	The destination of segment
@@ -96,7 +96,7 @@ int maps_route_segment_set_destination(maps_route_segment_h segment,
 /**
  * @brief	Sets the route segment bounding box.
  * @details This function sets the route segment bounding box.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	segment		The segment handle
  * @param[in]	bounding_box	The start angle of the segment
@@ -115,7 +115,7 @@ int maps_route_segment_set_bounding_box(maps_route_segment_h segment,
 /**
  * @brief	Sets the route segment distance.
  * @details This function sets the route segment distance.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	segment		The segment handle
  * @param[in]	distance	The distance of the segment
@@ -134,7 +134,7 @@ int maps_route_segment_set_distance(maps_route_segment_h segment,
 /**
  * @brief	Sets the route segment duration.
  * @details This function sets the route segment duration.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	segment		The segment handle
  * @param[in]	duration	The duration of the segment
@@ -153,7 +153,7 @@ int maps_route_segment_set_duration(maps_route_segment_h segment,
 /**
  * @brief	Sets the route segment path.
  * @details This function sets the route segment path.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	segment		The segment handle
  * @param[in]	path		The maneuver list
@@ -172,7 +172,7 @@ int maps_route_segment_set_path(maps_route_segment_h segment,
 /**
  * @brief	Sets the route segment maneuver list.
  * @details This function sets the route segment maneuver list.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	segment		The segment handle
  * @param[in]	maneuvers	The maneuver list

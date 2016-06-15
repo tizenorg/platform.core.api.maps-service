@@ -41,7 +41,7 @@ extern "C" {
  * @brief Creates a new place media handle.
  * @details This function creates a new place media handle and allocates all
  * needed resources.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks @a media must be released using maps_place_media_destroy().
  * \n @a media may be cloned using maps_place_media_clone().
  *
@@ -59,7 +59,7 @@ int maps_place_media_create(maps_place_media_h *media);
 /**
  * @brief	Sets the place media attribution.
  * @details This function sets the place media attribution.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	media		The handle of place media
  * @param[in]	attribution	The place media attribution
@@ -78,7 +78,7 @@ int maps_place_media_set_attribution(maps_place_media_h media,
 /**
  * @brief	Sets the place media supplier link.
  * @details This function sets the place media supplier link.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	media		The handle of place media
  * @param[in]	supplier	The place media supplier link
@@ -97,7 +97,7 @@ int maps_place_media_set_supplier(maps_place_media_h media,
 /**
  * @brief	Sets the place media via link.
  * @details This function sets the place media via link.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	media		The handle of place media
  * @param[in]	via		The place media via link

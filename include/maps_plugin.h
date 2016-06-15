@@ -44,7 +44,7 @@ extern "C" {
 /**
  * @brief	The Maps Plugin handle.
  * @details The handle of Maps Plugin instance.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  */
 typedef void *maps_plugin_h;
 
@@ -56,7 +56,7 @@ typedef void *maps_plugin_h;
 /**
  * @brief	Initialize a new Maps Plugin.
  * @details A maps plugin handle can be used to access a specified plugin.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks @a plugin and it resources must be released in
  * maps_plugin_shutdown().
  *
@@ -75,7 +75,7 @@ int maps_plugin_init(maps_plugin_h *plugin);
  * @brief	Destroys the Maps Plugin handle.
  * @details This function destroys the maps plugin handle and releases all its
  * resources.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	plugin		The maps plugin handle to destroy
  * @return	0 on success, otherwise a negative error value
@@ -89,7 +89,7 @@ int maps_plugin_shutdown(maps_plugin_h plugin);
 /**
  * @brief	Returns a plugin info.
  * @details This function returns a plugin info.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[out]	info	A plugin info
  * @return	0 on success, otherwise a negative error value
@@ -111,7 +111,7 @@ int maps_plugin_get_info(maps_plugin_info_h *info);
  * @brief	Sets the Maps Key to be used in the Maps Plugin requests.
  * @details This function sets the Maps Key which will be used in each Maps
  * Plugin request to Maps Provider.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks To obtain the @a provider_key refer to corresponding Maps Provider
  * documentation.
  * \n For HERE Maps refer to https://developer.here.com/,
@@ -133,7 +133,7 @@ int maps_plugin_set_provider_key(const char *provider_key);
  * @details This function gets the Maps Key which is to be used in each Maps
  * Service request to Maps Provider.
  * \n Maps key can be set with maps_plugin_set_provider_key().
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks The string @a provider_key must be released using free().
  *
  * @param[out]	provider_key	The Maps Key
@@ -150,7 +150,7 @@ int maps_plugin_get_provider_key(char **provider_key);
  * @brief	Sets the Maps Preference.
  * @details This function sets the Maps Preferences which are used in each Maps
  * Plugin request to Maps Provider.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	preference	The handle of Maps Preference
  * @return	0 on success, otherwise a negative error value
@@ -168,7 +168,7 @@ int maps_plugin_set_preference(maps_item_hashtable_h preference);
  * @details This function gets the Maps Preferences which are used in each Maps
  * Plugin request to Maps Provider.
  * \n Preferences can be set with maps_plugin_set_preference().
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks @a preference must be released using maps_preference_destroy().
  *
  * @param[out]	preference	The handle of Maps Preference
@@ -184,7 +184,7 @@ int maps_plugin_get_preference(maps_item_hashtable_h *preference);
 /**
  * @brief	Checks if the Maps Plugin supports a request.
  * @details This function checks if the Maps Plugin supports a specified request.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	service		The service to be checked
  * @param[out]	supported	Is the service supported
@@ -202,7 +202,7 @@ int maps_plugin_is_service_supported(maps_service_e service, bool *supported);
 /**
  * @brief	Checks if the Maps Plugin supports a data feature.
  * @details This function checks if the Maps Plugin supports a specified data feature.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	data		The data feature to be checked
  * @param[out]	supported	Is the data feature supported
@@ -226,7 +226,7 @@ int maps_plugin_is_data_supported(maps_service_data_e data, bool *supported);
  * @brief	Gets the position coordinates for a given address.
  * @details This function obtains position coordinates for a given free-formed
  * address string.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks This function requires network access.
  * \n To cancel the request use maps_plugin_cancel_request().
  *
@@ -268,7 +268,7 @@ int maps_plugin_geocode(const char *address,
  * bounding box.
  * @details This function obtains position coordinates for a given free-formed
  * address string within the specified bounding box.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks This function requires network access.
  * \n Polygonal bounding box is not supported.
  * \n To cancel the request, use maps_plugin_cancel_request().
@@ -316,7 +316,7 @@ int maps_plugin_geocode_inside_area(const char *address,
  * @brief	Gets the position coordinates for a given address.
  * @details This function obtains position coordinates for a given structured
  * address.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks This function requires network access.
  * \n To cancel the request use maps_plugin_cancel_request().
  * \n To check if Maps Provider is capable of Geocoding and which geocoding
@@ -359,7 +359,7 @@ int maps_plugin_geocode_by_structured_address(const maps_address_h address,
  * @brief	Gets the address for a given position coordinates.
  * @details This function obtains structured address information for a given
  * position coordinates.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks This function requires network access.
  * \n To cancel the request use maps_plugin_cancel_request().
  * \n To check if Maps Provider is capable of reverse geocoding and which
@@ -400,7 +400,7 @@ int maps_plugin_reverse_geocode(double latitude, double longitude,
  * @brief	Gets the address list for a given position coordinates list.
  * @details This function obtains structured address information for a given
  * position coordinates.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  * @remarks This function requires network access.
  * \n To cancel the request use maps_plugin_cancel_request().
  * \n To check if Maps Provider is capable of Reverse Geocoding and which
@@ -445,7 +445,7 @@ int maps_plugin_multi_reverse_geocode(const maps_coordinates_list_h geocode_list
  * distance.
  * @details This function obtains the Place information for a specified distance
  * around a given coordinates position.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks This function requires network access.
  * \n To cancel the search request use maps_plugin_cancel_request().
  * \n To check if Maps Provider is capable of Place Search and which Place
@@ -491,7 +491,7 @@ int maps_plugin_search_place(const maps_coordinates_h position, int distance,
  * @brief	Queries a Place information by a coordinates boundary.
  * @details This function obtains the Place information for a specified
  * coordinates boundary.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks This function requires network access.
  * \n @a boundary is supporting only circle type bounds for search.
  * \n To cancel the search request use maps_plugin_cancel_request().
@@ -537,7 +537,7 @@ int maps_plugin_search_place_by_area(const maps_area_h boundary,
  * @brief	Queries a Place information by a free-formed address string.
  * @details This function obtains the Place information for a specified free-
  * formed address string.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks This function requires network access.
  * \n @a boundary is supporting only circle type bounds for search.
  * \n To cancel the search request use maps_plugin_cancel_request().
@@ -584,7 +584,7 @@ int maps_plugin_search_place_by_address(const char *address,
 /**
  * @brief	Queries a brief Place information by a coordinates boundary.
  * @details This function obtains the brief Place information for a specified coordinates boundary.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  * @remarks This function requires network access.
  * \n To cancel the search request use maps_plugin_cancel_request().
  * \n To check if Maps Provider is capable of Place Search and which Place
@@ -626,7 +626,7 @@ int maps_plugin_search_place_list(const maps_area_h boundary,
 /**
  * @brief	Queries a Detail place information by a place uri.
  * @details This function obtains the Detail place information for a specified place uri
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  * @remarks This function requires network access.
  * \n To cancel the search request use maps_plugin_cancel_request().
  * \n To check if Maps Provider is capable of Place Search and which Place
@@ -673,7 +673,7 @@ int maps_plugin_get_place_details(const char *url,
  * @brief	Queries the Route from origin coordinate to a destination.
  * @details This function obtains the Route information for a specified origin
  * and destination coordinates.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks This function requires network access.
  * \n To cancel the search request use maps_plugin_cancel_request().
  * \n To check if Maps Provider is capable of Route Search and which Route
@@ -714,7 +714,7 @@ int maps_plugin_search_route(const maps_coordinates_h origin,
  * @brief	Queries the Route, passing through a specified way points.
  * @details This function obtains the Route information for the Route, passing
  * through a specified set of way points.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks This function requires network access.
  * \n To cancel the search request use maps_plugin_cancel_request().
  * \n To check if Maps Provider is capable of Route Search and which Route
@@ -760,7 +760,7 @@ int maps_plugin_search_route_waypoints(const maps_coordinates_h *waypoint_list,
  * @brief	Cancels the service request.
  * @details This function cancels the service request initiated by geocode,
  * route or place search.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks This function requires network access.
  *
  * @param[in]	request_id	The request id
@@ -807,7 +807,7 @@ int maps_plugin_cancel_request(int request_id);
 /**
  * @brief	Called when the map initialzing is finished.
  * @details The Plugin invokes this callback when the initialzing of map is finished.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	view		The maps view
  *
@@ -820,7 +820,7 @@ typedef void(*maps_plugin_map_view_ready_cb) (maps_view_h hView);
 /**
  * @brief	Create a maps view.
  * @details This function create a maps view to the plugin.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	view		The maps view
  * @return	0 on success, otherwise a negative error value
@@ -835,7 +835,7 @@ int maps_plugin_create_map_view(maps_view_h view, maps_plugin_map_view_ready_cb 
 /**
  * @brief	Destroy a maps view.
  * @details This function destory a maps view to the plugin.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	view		The maps view
  * @return	0 on success, otherwise a negative error value
@@ -851,7 +851,7 @@ int maps_plugin_destroy_map_view(maps_view_h view);
  * @brief	Request a map rendering.
  * @details This function request a draw routine of the map location with a
  * specified zoom factor and rotation angle.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	view		The handle of maps_view
  * @param[in]	coordinates	The coordinates of location to draw
@@ -879,7 +879,7 @@ int maps_plugin_render_map(maps_view_h view, const maps_coordinates_h coordinate
  * @details This function request the Plugin to move a map on a given delta
  * screen coordinates. The current values of zoom or orientation are
  * remaining same.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	view		The handle of maps_view
  * @param[in]	delta_x		The delta x
@@ -904,7 +904,7 @@ int maps_plugin_move_center(maps_view_h view, int delta_x, int delta_y);
 /**
  * @brief	Enables or disables the scalebar.
  * @details This function enables or disables the scalebar.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  * @remarks This function requires network access.
  *
  * @param[in]	view		The handle of maps_view
@@ -921,7 +921,7 @@ int maps_plugin_set_scalebar(maps_view_h view, bool enable);
 /**
  * @brief	Checks whether the scalebar is enabled or not.
  * @details This function checks whether the scalebar is enabled or not.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	view		The handle of maps_view
  * @param[out]enabled		The pointer to a boolean in which to store the enable status
@@ -939,7 +939,7 @@ int maps_plugin_get_scalebar(maps_view_h view, bool *enabled);
  * changed. The possible causes of changes are enumerated in
  * #maps_view_object_operation_e ind nclude object adding, moving, removing,
  * visibility modificating or editing object specific properties.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	view		The handle of maps_view
  * @param[in]	object		The object handle
@@ -957,7 +957,7 @@ int maps_plugin_on_object(maps_view_h view, const maps_view_object_h object,
  * @brief	Converts screen coordinates to the geographical coordinates.
  * @details This function converts screen coordinates to the geographical
  * coordinates accordingly to the current maps settings.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	view	The handle of maps_view
  * @param[in]	x		The x coordinate on the screen
@@ -978,7 +978,7 @@ int maps_plugin_screen_to_geography(maps_view_h view, int x, int y,
  * @brief	Converts geographical coordinates to the screen coordinates.
  * @details This function converts geographical coordinates to the screen
  * coordinates accordingly to the current maps settings.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	view		The handle of maps_view
  * @param[in]	coordinates	The geographical coordinates
@@ -998,7 +998,7 @@ int maps_plugin_geography_to_screen(maps_view_h view, const maps_coordinates_h c
 /**
  * @brief	Gets the minimal zooms level of the Map.
  * @details This function gets the minimally available zoom level of the Map.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	view			The handle of maps_view
  * @param[out]min_zoom_level	The minimally available zoom level
@@ -1011,7 +1011,7 @@ int maps_plugin_get_min_zoom_level(maps_view_h view, int *min_zoom_level);
 /**
  * @brief	Gets the maximal zooms level of the Map.
  * @details This function gets the maximally available zoom level of the Map.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	view			The handle of maps_view
  * @param[out]max_zoom_level	The maximally available zoom level
@@ -1024,7 +1024,7 @@ int maps_plugin_get_max_zoom_level(maps_view_h view, int *max_zoom_level);
 /**
  * @brief	Gets the central coordinates of a Map.
  * @details This function gets the central coordinates of a Map.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  * @remarks @a coordinates must be released using maps_coordinates_destroy().
  *
  * @param[in]	view		The handle of maps_view
@@ -1042,7 +1042,7 @@ int maps_plugin_get_center(maps_view_h view, maps_coordinates_h *coordinates);
 /**
  * @brief	Gets raw pixels of the Map.
  * @details This function gets raw pixels of the Map.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	view		The view handle
  * @param[out]	data		The pixels of the Map

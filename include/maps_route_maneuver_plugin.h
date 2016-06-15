@@ -40,7 +40,7 @@ extern "C" {
  * @brief	Creates a new route maneuver handle.
  * @details This function creates a new route maneuver handle and allocates all
  * needed resources.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks @a maneuver must be released using maps_route_maneuver_destroy().
  * \n @a maneuver may be cloned using maps_route_maneuver_clone().
  *
@@ -58,7 +58,7 @@ int maps_route_maneuver_create(maps_route_maneuver_h *maneuver);
 /**
  * @brief	Sets the route maneuver direction id.
  * @details This function sets the route maneuver direction id.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	maneuver	The maneuver handle
  * @param[in]	direction_id	The direction ID
@@ -79,7 +79,7 @@ int maps_route_maneuver_set_direction_id(maps_route_maneuver_h maneuver,
 /**
  * @brief	Sets the route maneuver turn type.
  * @details This function sets the route maneuver turn type.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	maneuver	The maneuver handle
  * @param[in]	turn_type	The turn type
@@ -99,7 +99,7 @@ int maps_route_maneuver_set_turn_type(maps_route_maneuver_h maneuver,
 /**
  * @brief	Sets the route maneuver road name.
  * @details This function sets the route maneuver road name.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	maneuver	The maneuver handle
  * @param[in]	road_name	The current road name
@@ -118,7 +118,7 @@ int maps_route_maneuver_set_road_name(maps_route_maneuver_h maneuver,
 /**
  * @brief	Sets the route maneuver instruction text.
  * @details This function sets the route maneuver instruction text.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	maneuver		The maneuver handle
  * @param[in]	instruction_text	The current road name
@@ -137,7 +137,7 @@ int maps_route_maneuver_set_instruction_text(maps_route_maneuver_h maneuver,
 /**
  * @brief	Sets the route maneuver locale.
  * @details This function sets the route maneuver locale.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	maneuver	The maneuver handle
  * @param[in]	locale		The languages of instruction text and street
@@ -157,7 +157,7 @@ int maps_route_maneuver_set_locale(maps_route_maneuver_h maneuver,
 /**
  * @brief	Sets the route maneuver position.
  * @details This function sets the route maneuver position.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	maneuver	The maneuver handle
  * @param[in]	position	The geographical position of maneuver
@@ -176,7 +176,7 @@ int maps_route_maneuver_set_position(maps_route_maneuver_h maneuver,
 /**
  * @brief	Sets the time to next instruction in route maneuver.
  * @details This function sets the time to next instruction in route maneuver.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	maneuver			The maneuver handle
  * @param[in]	time_to_next_instruction	The time to next instruction
@@ -197,7 +197,7 @@ int maps_route_maneuver_set_time_to_next_instruction(maps_route_maneuver_h
  * @brief	Sets the distance to next instruction in route maneuver.
  * @details This function sets the distance to next instruction in route
  * maneuver.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	maneuver			The maneuver handle
  * @param[in]	distance_to_next_instruction	The distance from the current

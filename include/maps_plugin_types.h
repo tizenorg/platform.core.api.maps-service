@@ -37,7 +37,7 @@ extern "C" {
 
 /**
  * @brief	Structure of the coordinates list.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  * @remarks #maps_coordinates_list_h is a void pointer to the #maps_coordinates_list_s.
  *
  * @see maps_coordinates_list_create()
@@ -47,7 +47,7 @@ typedef GList maps_coordinates_list_s;
 
 /**
  * @brief	Structure of the address list.
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  * @remarks #maps_address_list_h is a void pointer to the #maps_address_list_s.
  *
  * @see maps_address_list_create()

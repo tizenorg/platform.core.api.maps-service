@@ -41,7 +41,7 @@ extern "C" {
  * @brief Creates a new place URL handle.
  * @details This function creates a new place URL handle and allocates all
  * needed resources.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks @a url must be released using maps_place_url_destroy().
  * \n @a url may be cloned using maps_place_url_clone().
  *
@@ -59,7 +59,7 @@ int maps_place_url_create(maps_place_url_h *url);
 /**
  * @brief	Sets the place URL path.
  * @details This function sets the place URL path.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	url		The handle of place URL
  * @param[in]	path		The place URL path
@@ -77,7 +77,7 @@ int maps_place_url_set_path(maps_place_url_h url, const char *path);
 /**
  * @brief	Sets the place URL description.
  * @details This function sets the place URL description.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	url		The handle of place URL
  * @param[in]	description	The place URL description

@@ -43,7 +43,7 @@ extern "C" {
 
 /**
  * @brief	Enumerations of operation types over the map view object
- * @since_tizen 3.0
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  */
 typedef enum _maps_view_object_operation_e {
 	MAPS_VIEW_OBJECT_ADD,			/**< Indicates the add object operation */

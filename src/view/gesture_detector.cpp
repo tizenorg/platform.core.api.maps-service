@@ -17,6 +17,7 @@
 
 #include "gesture_detector.h"
 #include <glib.h>
+#include <math.h>
 
 
 extern bool _maps_view_is_gesture_available(maps_view_h view,

@@ -41,7 +41,7 @@ extern "C" {
  * @brief Creates a new place rating handle.
  * @details This function creates a new place rating handle and allocates all
  * needed resources.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks @a rating must be released using maps_place_rating_destroy().
  * \n @a rating may be cloned using maps_place_rating_clone().
  *
@@ -59,7 +59,7 @@ int maps_place_rating_create(maps_place_rating_h *rating);
 /**
  * @brief	Sets the place rating count.
  * @details This function sets the place rating count.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	rating		The handle of place rating
  * @param[in]	count		The place rating count
@@ -77,7 +77,7 @@ int maps_place_rating_set_count(maps_place_rating_h rating, const int count);
 /**
  * @brief	Sets the place rating average.
  * @details This function sets the place rating average.
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 3.0 @endif
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	rating		The handle of place rating
  * @param[in]	average		The place rating average
