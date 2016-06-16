@@ -21,6 +21,7 @@
 /* Set of empty functions */
 
 /* Plugin dedicated functions */
+//LCOV_EXCL_START
 int maps_plugin_init_empty(maps_plugin_h *plugin)
 {
 	return 0;
@@ -325,3 +326,4 @@ plugin::interface_s *plugin::get_empty_interface_ptr()
 {
 	return &empty_interface;
 }
+//LCOV_EXCL_STOP

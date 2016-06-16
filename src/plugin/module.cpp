@@ -42,12 +42,12 @@ plugin::provider_info plugin::binary_extractor::get_plugin_info(const
 							string &file_name) const
 {
 	if (file_name.empty())
-		return provider_info::empty_instance;
+		return provider_info::empty_instance;	//LCOV_EXCL_LINE
 
 	/* 1.Initialize plugin */
 	GMod *plugin = gmod_new(file_name, FALSE);
 	if (!plugin)
-		return provider_info::empty_instance;
+		return provider_info::empty_instance;	//LCOV_EXCL_LINE
 
 	provider_info info;
 
@@ -86,8 +86,10 @@ maps_plugin_h plugin::binary_extractor::init(const provider_info &info,
 
 	GMod *plugin = gmod_new(info.file, TRUE);
 	if (!plugin) {
+//LCOV_EXCL_START
 		MAPS_LOGE("Open Module Failed: %s", info.file.c_str());
 		return NULL;
+//LCOV_EXCL_STOP
 	}
 
 	/* 2.1 Create new plugin interface */
@@ -96,9 +98,11 @@ maps_plugin_h plugin::binary_extractor::init(const provider_info &info,
 	/* 2. Perform steps to completely initialize a plugin */
 	do {
 		if (!new_plugin) {
+//LCOV_EXCL_START
 			MAPS_LOGE("OUT_OF_MEMORY(0x%08x)",
 				MAPS_ERROR_OUT_OF_MEMORY);
 			break;
+//LCOV_EXCL_STOP
 		}
 
 		/* 2.1 Set plugin module handle */
@@ -232,9 +236,11 @@ maps_plugin_h plugin::binary_extractor::init(const provider_info &info,
 
 		/* 2.3 Check whether the plugin init function is valid */
 		if (!new_plugin->interface.maps_plugin_init) {
+//LCOV_EXCL_START
 			MAPS_LOGE(
 			"ERROR! Plugin initialization function is invalid");
 			break;
+//LCOV_EXCL_STOP
 		}
 
 		/* 2.4 Call a plugin to initialize itself, send to the plugin
@@ -243,40 +249,40 @@ maps_plugin_h plugin::binary_extractor::init(const provider_info &info,
 		if (!module || !new_plugin->interface.maps_plugin_init_module)
 			ret = new_plugin->interface.maps_plugin_init((maps_plugin_h *) (&new_plugin));
 		else
-			ret = new_plugin->interface.maps_plugin_init_module((maps_plugin_h *) (&new_plugin), module);
+			ret = new_plugin->interface.maps_plugin_init_module((maps_plugin_h *) (&new_plugin), module);	//LCOV_EXCL_LINE
 
 		if (ret != MAPS_ERROR_NONE) {
-			MAPS_LOGE("ERROR! Plugin initialization function ""failed: %d", ret);
+			MAPS_LOGE("ERROR! Plugin initialization function ""failed: %d", ret);	//LCOV_EXCL_LINE
 			break;
 		}
 
 		if (!new_plugin->interface.maps_plugin_set_provider_key) {
-			MAPS_LOGE("ERROR! Plugin set_provider_key function is NULL: %d", ret);
+			MAPS_LOGE("ERROR! Plugin set_provider_key function is NULL: %d", ret);	//LCOV_EXCL_LINE
 			break;
 		}
 
 		if (!new_plugin->interface.maps_plugin_get_provider_key) {
-			MAPS_LOGE("ERROR! Plugin set_provider_key function is NULL: %d", ret);
+			MAPS_LOGE("ERROR! Plugin set_provider_key function is NULL: %d", ret);	//LCOV_EXCL_LINE
 			break;
 		}
 
 		if (!new_plugin->interface.maps_plugin_set_preference) {
-			MAPS_LOGE("ERROR! Plugin set_preference function is NULL: %d", ret);
+			MAPS_LOGE("ERROR! Plugin set_preference function is NULL: %d", ret);	//LCOV_EXCL_LINE
 			break;
 		}
 
 		if (!new_plugin->interface.maps_plugin_get_preference) {
-			MAPS_LOGE("ERROR! Plugin get_preference function is NULL: %d", ret);
+			MAPS_LOGE("ERROR! Plugin get_preference function is NULL: %d", ret);	//LCOV_EXCL_LINE
 			break;
 		}
 
 		if (!new_plugin->interface.maps_plugin_is_data_supported) {
-			MAPS_LOGE("ERROR! Plugin support_is_data_supported function is NULL: %d", ret);
+			MAPS_LOGE("ERROR! Plugin support_is_data_supported function is NULL: %d", ret);	//LCOV_EXCL_LINE
 			break;
 		}
 
 		if (!new_plugin->interface.maps_plugin_is_service_supported) {
-			MAPS_LOGE("ERROR! Plugin support_is_service_supported function is NULL: %d", ret);
+			MAPS_LOGE("ERROR! Plugin support_is_service_supported function is NULL: %d", ret);	//LCOV_EXCL_LINE
 			break;
 		}
 
@@ -289,8 +295,10 @@ maps_plugin_h plugin::binary_extractor::init(const provider_info &info,
 			g_hash_table_new_full(g_int_hash, g_int_equal, g_free,
 			session::command_handler::destroy);
 		if (!new_plugin->pending_request_maps) {
+//LCOV_EXCL_START
 			MAPS_LOGE("OUT_OF_MEMORY(0x%08x)", MAPS_ERROR_OUT_OF_MEMORY);
 			break;
+//LCOV_EXCL_STOP
 		}
 		g_mutex_init(&new_plugin->pending_request_mutex);
 
@@ -301,11 +309,13 @@ maps_plugin_h plugin::binary_extractor::init(const provider_info &info,
 		return new_plugin;
 	} while (FALSE);
 
+//LCOV_EXCL_START
 	MAPS_LOGE("Shut down the plugin becuause of error");
 
 	/* 3. shutdown plugin in case of problem */
 	shutdown(new_plugin);
 	return NULL;
+//LCOV_EXCL_STOP
 }
 
 void plugin::binary_extractor::shutdown(maps_plugin_h plugin_h)
@@ -325,7 +335,7 @@ void plugin::binary_extractor::shutdown(maps_plugin_h plugin_h)
 
 	/* 2. Destroy the request queue */
 	if (plugin->request_queue)
-		g_async_queue_unref(plugin->request_queue);
+		g_async_queue_unref(plugin->request_queue);	//LCOV_EXCL_LINE
 
 	/* 3. Destroy the map of pending requests */
 	if (plugin->pending_request_maps) {
@@ -350,8 +360,10 @@ plugin::GMod *plugin::binary_extractor::gmod_new(const string &module_file,
 						 gboolean is_resident) const
 {
 	if (!g_module_supported()) {
+//LCOV_EXCL_START
 		MAPS_LOGE("ERROR! g_module_supported is false\n\n");
 		return NULL;
+//LCOV_EXCL_STOP
 	}
 
 	if (module_file.empty())
@@ -361,8 +373,10 @@ plugin::GMod *plugin::binary_extractor::gmod_new(const string &module_file,
 
 	gmod->name = g_strdup(module_file.c_str());
 	if (!gmod->name) {
+//LCOV_EXCL_START
 		g_free(gmod);
 		return NULL;
+//LCOV_EXCL_STOP
 	}
 
 	/*gmod->path = g_module_build_path(MAPS_PLUGINS_PATH_PREFIX,
@@ -370,13 +384,16 @@ plugin::GMod *plugin::binary_extractor::gmod_new(const string &module_file,
 	gmod->path = g_strnfill(100, 0);
 	g_sprintf(gmod->path, "%s/%s", MAPS_PLUGINS_PATH_PREFIX, gmod->name);
 	if (!gmod->path) {
+//LCOV_EXCL_START
 		g_free(gmod->name);
 		g_free(gmod);
 		return NULL;
+//LCOV_EXCL_STOP
 	}
 
 	gmod->module = g_module_open(gmod->path, G_MODULE_BIND_LAZY);
 	if (!gmod->module) {
+//LCOV_EXCL_START
 		MAPS_LOGE("module path not found: %s", gmod->path);
 
 		const gchar *last_error = g_module_error();
@@ -386,6 +403,7 @@ plugin::GMod *plugin::binary_extractor::gmod_new(const string &module_file,
 		g_free(gmod->path);
 		g_free(gmod);
 		return NULL;
+//LCOV_EXCL_STOP
 	}
 	MAPS_LOGD("open module");
 	/*if (is_resident)
@@ -434,14 +452,16 @@ void plugin::binary_extractor::trace_dbg(const plugin_s *plugin) const
 	MAPS_LOGD("*********************************************");
 	MAPS_LOGD("PLUGIN INFO");
 	if (!plugin) {
+//LCOV_EXCL_START
 		MAPS_LOGD("PLUGIN is NULL");
 		MAPS_LOGD("*********************************************");
 		return;
+//LCOV_EXCL_STOP
 	}
 
 	const GMod *mod = (const GMod *) plugin->module;
 	if (!mod) {
-		MAPS_LOGD("PLUGIN module is NULL");
+		MAPS_LOGD("PLUGIN module is NULL");	//LCOV_EXCL_LINE
 	} else {
 		MAPS_LOGD("module address:\t\t\t%p", mod->module);
 		MAPS_LOGD("module name:\t\t\t%s", mod->name);
@@ -451,7 +471,7 @@ void plugin::binary_extractor::trace_dbg(const plugin_s *plugin) const
 	if (!plugin->request_queue) {
 		MAPS_LOGD("PLUGIN request queue is NULL");
 	} else {
-		MAPS_LOGD("plugin request queue:\t\t\t%p", plugin->request_queue);
+		MAPS_LOGD("plugin request queue:\t\t\t%p", plugin->request_queue);		//LCOV_EXCL_LINE
 	}
 
 	const interface_s *itf = &plugin->interface;

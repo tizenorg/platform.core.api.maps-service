@@ -98,8 +98,10 @@ EXPORT_API int maps_service_create(const char *maps_provider, maps_service_h *ma
 
 	/* Check if privileges enough */
 	if (!__has_maps_service_privilege()) {
+//LCOV_EXCL_START
 		MAPS_LOGD("ERROR: privilege is not included");
 		return MAPS_ERROR_PERMISSION_DENIED;
+//LCOV_EXCL_STOP
 	}
 
 	int error = MAPS_ERROR_NOT_SUPPORTED;
@@ -121,18 +123,22 @@ EXPORT_API int maps_service_create(const char *maps_provider, maps_service_h *ma
 		maps_service_s *maps_service = g_slice_new0(maps_service_s);
 
 		if (maps_service == NULL) {
+//LCOV_EXCL_START
 			MAPS_LOGE("OUT_OF_MEMORY(0x%08x)", MAPS_ERROR_OUT_OF_MEMORY);
 			error = MAPS_ERROR_OUT_OF_MEMORY;
 			break;
+//LCOV_EXCL_STOP
 		}
 
 		/* 3. Initialize the requested plugin */
 		int init_error = MAPS_ERROR_NONE; /* Storage for init error code */
 		maps_plugin_h plugin_h = plugin::binary_extractor().init(info, module, &init_error);
 		if (!plugin_h) {
+//LCOV_EXCL_START
 			error = init_error;
 			MAPS_LOGE("ERROR! Plugin init failed");
 			break;
+//LCOV_EXCL_STOP
 		}
 
 		maps_service->plugin = plugin_h;

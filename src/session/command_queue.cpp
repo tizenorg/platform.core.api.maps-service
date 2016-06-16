@@ -36,6 +36,7 @@ session::command_queue *session::command_queue::interface()
 
 /*----------------------------------------------------------------------------*/
 
+//LCOV_EXCL_START
 int session::command_queue_sync::push(command *c)
 {
 	return (c and c->plugin())? c->run() : MAPS_ERROR_INVALID_PARAMETER;
@@ -50,6 +51,7 @@ void session::command_queue_sync::process(plugin::plugin_s *p)
 {
 	/* empty */
 }
+//LCOV_EXCL_STOP
 
 void session::command_queue_sync::clear(plugin::plugin_s *p)
 {

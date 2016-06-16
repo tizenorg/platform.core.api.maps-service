@@ -19,6 +19,8 @@
 #include "maps_view_event_data.h"
 #include "maps_util.h"
 
+//LCOV_EXCL_START
+//LCOV_EXCL_STOP
 /*
  * This represents visual event object information
  */
@@ -88,8 +90,10 @@ int _maps_view_event_data_create(maps_view_event_data_h *event)
 
 	maps_view_event_data_s *e = g_slice_new0(maps_view_event_data_s);
 	if (!e) {
+//LCOV_EXCL_START
 		MAPS_LOGE("OUT_OF_MEMORY(0x%08x)", MAPS_ERROR_OUT_OF_MEMORY);
 		return MAPS_ERROR_OUT_OF_MEMORY;
+//LCOV_EXCL_STOP
 	}
 
 	e->event_type = MAPS_VIEW_EVENT_GESTURE;
@@ -115,6 +119,7 @@ EXPORT_API int maps_view_event_data_destroy(maps_view_event_data_h event)
 	return MAPS_ERROR_NONE;
 }
 
+//LCOV_EXCL_START
 EXPORT_API int maps_view_event_data_clone(const maps_view_event_data_h origin, maps_view_event_data_h *cloned)
 {
 	if (!origin || !cloned)
@@ -167,7 +172,7 @@ int _maps_view_event_data_set_center(maps_view_event_data_h event, maps_coordina
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_view_event_data_s *e = (maps_view_event_data_s *) event;
 	if (e->center)
-		maps_coordinates_destroy(e->center);
+		maps_coordinates_destroy(e->center);	//LCOV_EXCL_LINE
 	return maps_coordinates_clone(center, &e->center);
 }
 
@@ -384,3 +389,4 @@ EXPORT_API int maps_view_event_data_get_object(const maps_view_event_data_h even
 	*object = e->object;
 	return MAPS_ERROR_NONE;
 }
+//LCOV_EXCL_STOP

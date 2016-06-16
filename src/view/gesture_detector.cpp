@@ -26,6 +26,7 @@ extern bool _maps_view_is_gesture_available(maps_view_h view,
 /*----------------------------------------------------------------------------*/
 
 
+//LCOV_EXCL_START
 view::gesture_detector::gesture_detector(maps_view_h v)
 	: _view(v)
 	, _gp(this)
@@ -222,3 +223,4 @@ void view::gesture_detector::log_map_center(int color)
 		  lat, lon,
 		  0x1B, 0, 0, 0);
 }
+//LCOV_EXCL_STOP

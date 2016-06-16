@@ -29,11 +29,13 @@ plugin::provider_info::provider_info()
 {
 }
 
+//LCOV_EXCL_START
 plugin::provider_info::provider_info(const string &p, const string &f)
 : provider(p)
 , file(f)
 {
 }
+//LCOV_EXCL_STOP
 
 plugin::provider_info::provider_info(const provider_info &src)
 {
@@ -84,7 +86,7 @@ vector<plugin::provider_info> plugin::discovery::get_available_list() const
 		/* Request the next plugin binary to get provider info */
 		const provider_info info = be.get_plugin_info(l[i]);
 		if (info.empty())
-			continue;
+			continue;	//LCOV_EXCL_LINE
 
 		/* Add provider info to the resulting list */
 		v.push_back(info);
@@ -116,8 +118,10 @@ vector<string> plugin::discovery::get_module_file_list() const
 
 		g_pattern_spec_free(plugin_name_pattern);
 		g_dir_close(dir);
+//LCOV_EXCL_START
 	} else if (error) {
 		MAPS_LOGE("%d: Can not open directory: %s\n", error->code, error->message);
+//LCOV_EXCL_STOP
 	}
 
 	return l;

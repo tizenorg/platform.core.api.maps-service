@@ -28,6 +28,7 @@ session::command::command(maps_service_h ms)
 {
 }
 
+//LCOV_EXCL_START
 session::command::command(const command &src)
 {
 	*this = src;
@@ -52,6 +53,7 @@ int session::command::run()
 {
 	return MAPS_ERROR_NONE;
 }
+//LCOV_EXCL_STOP
 
 void session::command::destroy()
 {
@@ -62,15 +64,16 @@ void session::command::destroy()
 plugin::interface_s *session::command::interface() const
 {
 	if (!m)
-		return plugin::get_empty_interface_ptr();
+		return plugin::get_empty_interface_ptr();	//LCOV_EXCL_LINE
 
 	plugin::plugin_s *p = __extract_plugin(m);
 	if (!p)
-		return plugin::get_empty_interface_ptr();
+		return plugin::get_empty_interface_ptr();	//LCOV_EXCL_LINE
 
 	return &p->interface;
 }
 
+//LCOV_EXCL_START
 maps_plugin_h session::command::handle() const
 {
 	return (maps_plugin_h) plugin();
@@ -108,6 +111,7 @@ void session::command::set_merged()
 {
 	is_merged = true;
 }
+//LCOV_EXCL_STOP
 /*----------------------------------------------------------------------------*/
 
 session::command_handler::command_handler(plugin::plugin_s *p, void *ud,
@@ -160,9 +164,11 @@ void session::pending_request::update(int user_req_id,
 		handler->plg_req_id);
 
 	if (!contains(user_req_id)) {	/* Attempt to update not existing id */
+//LCOV_EXCL_START
 		MAPS_LOGD("\t not updated session::pending_request: %d, %d",
 			user_req_id, handler->plg_req_id);
 		delete handler;	/* This handler must be deleted */
+//LCOV_EXCL_STOP
 		return;
 	}
 
@@ -221,9 +227,11 @@ bool session::pending_request::contains(const int user_req_id)
 	return g_hash_table_contains(plg->pending_request_maps, &user_req_id);
 }
 
+//LCOV_EXCL_START
 int *session::pending_request::int_dup(const int n)
 {
 	int *clone = g_new0(int, 1);
 	*clone = n;
 	return clone;
 }
+//LCOV_EXCL_STOP
