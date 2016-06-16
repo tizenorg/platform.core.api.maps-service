@@ -20,6 +20,7 @@
 #include "maps_view_plugin.h"
 #include <glib.h>
 
+//LCOV_EXCL_START
 view::touch_point::touch_point()
 	: _x(0)
 	, _y(0)
@@ -244,3 +245,4 @@ int view::runtime_touch_info::calc_finger_pressed()
 			cnt++;
 	return cnt;
 }
+//LCOV_EXCL_STOP

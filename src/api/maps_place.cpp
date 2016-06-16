@@ -100,8 +100,10 @@ EXPORT_API int maps_place_create(maps_place_h *place)
 	*place = (maps_place_h) g_slice_new0(maps_place_s);
 
 	if (*place == NULL) {
+//LCOV_EXCL_START
 		MAPS_LOGE("OUT_OF_MEMORY(0x%08x)", MAPS_ERROR_OUT_OF_MEMORY);
 		return MAPS_ERROR_OUT_OF_MEMORY;
+//LCOV_EXCL_STOP
 	}
 
 	return MAPS_ERROR_NONE;
@@ -289,17 +291,21 @@ EXPORT_API int maps_place_clone(const maps_place_h origin,
 		}
 
 		if (p->supported_data) {
+//LCOV_EXCL_START
 			error = _maps_place_set_supported_data(*cloned, p->supported_data);
 			if (error != MAPS_ERROR_NONE)
 				break;
+//LCOV_EXCL_STOP
 		}
 
 		return MAPS_ERROR_NONE;
 	} while (false);
 
+//LCOV_EXCL_START
 	maps_place_destroy(*cloned);
 	*cloned = NULL;
 	return error;
+//LCOV_EXCL_STOP
 }
 
 /*----------------------------------------------------------------------------*/
@@ -564,8 +570,10 @@ int _maps_place_is_data_supported(const maps_place_h place,
 		return MAPS_ERROR_NONE;
 	}
 
+//LCOV_EXCL_START
 	*supported = false;
 	return maps_int_hashtable_contains(p->supported_data, data, supported);
+//LCOV_EXCL_STOP
 }
 
 /*----------------------------------------------------------------------------*/
@@ -745,7 +753,7 @@ int _maps_place_set_supported_data(maps_place_h place,
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_place_s *p = (maps_place_s *) place;
 	if (p->supported_data)
-		maps_int_hashtable_destroy(p->supported_data);
+		maps_int_hashtable_destroy(p->supported_data);	//LCOV_EXCL_LINE
 	return maps_int_hashtable_clone(supported_data, &p->supported_data);
 }
 

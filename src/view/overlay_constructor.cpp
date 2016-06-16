@@ -27,8 +27,10 @@ maps_view_object_h view::overlay_constructor::construct(maps_coordinates_h coord
 	Evas_Object *object, maps_view_overlay_type_e type)
 {
 	if (!coordinates || !object) {
+//LCOV_EXCL_START
 		__error = MAPS_ERROR_INVALID_PARAMETER;
 		return NULL;
+//LCOV_EXCL_STOP
 	}
 
 	__error = MAPS_ERROR_NONE;
@@ -59,7 +61,9 @@ maps_view_object_h view::overlay_constructor::construct(maps_coordinates_h coord
 		return overlay;
 	} while (false);
 
+//LCOV_EXCL_START
 	/* FAILURE: Releasing objects */
 	maps_view_object_destroy(overlay);
 	return NULL;
+//LCOV_EXCL_STOP
 }

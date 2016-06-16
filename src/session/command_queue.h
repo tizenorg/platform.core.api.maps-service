@@ -18,6 +18,7 @@
 #define __MAPS_SERVICE_SESSION_COMMAND_QUEUE_H__
 
 #include "module.h"
+//LCOV_EXCL_START
 
 namespace session
 {
@@ -125,5 +126,6 @@ namespace session
 #endif /* _MAPS_SERVICE_SUPPORTS_ASYNC_QUEUE_ */
 
 };
+//LCOV_EXCL_STOP
 
 #endif				/* __MAPS_SERVICE_SESSION_COMMAND_QUEUE_H__ */

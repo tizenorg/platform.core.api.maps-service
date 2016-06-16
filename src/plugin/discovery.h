@@ -19,6 +19,7 @@
 
 #include "maps_util.h"
 
+//LCOV_EXCL_START
 namespace plugin
 {
 
@@ -58,5 +59,6 @@ namespace plugin
 	provider_info find_by_names(const string &provider);
 	void split_provider_name(const char *original, char **provider, char **module);
 }
+//LCOV_EXCL_STOP
 
 #endif				/* __MAPS_SERVICE_PLUGIN_DISCOVERY_H__ */

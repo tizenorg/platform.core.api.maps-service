@@ -18,6 +18,7 @@
 #include "gesture_detector_statemachine.h"
 #include <glib.h>
 
+//LCOV_EXCL_START
 
 view::gesture_detector_statemachine::gesture_detector_statemachine(maps_view_h v)
 	: gesture_detector(v)
@@ -818,3 +819,4 @@ void view::gesture_detector_statemachine::log_state(view_event_e event,
 		  s.c_str(), state, e.c_str(), event,
 		  0x1B, 0, 0, 0);
 }
+//LCOV_EXCL_STOP

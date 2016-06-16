@@ -60,8 +60,10 @@ EXPORT_API int maps_address_create(maps_address_h *address)
 
 	maps_address_s *a = g_new0(maps_address_s, 1);
 	if (!a) {
+		//LCOV_EXCL_START
 		MAPS_LOGE("OUT_OF_MEMORY(0x%08x)", MAPS_ERROR_OUT_OF_MEMORY);
 		return MAPS_ERROR_OUT_OF_MEMORY;
+		//LCOV_EXCL_STOP
 	}
 
 	*address = (maps_address_h) a;
@@ -182,9 +184,11 @@ EXPORT_API int maps_address_clone(const maps_address_h origin,
 		return MAPS_ERROR_NONE;
 	} while (false);
 
+//LCOV_EXCL_START
 	maps_address_destroy(*cloned);
 	*cloned = NULL;
 	return error;
+//LCOV_EXCL_STOP
 }
 
 /*----------------------------------------------------------------------------*/
