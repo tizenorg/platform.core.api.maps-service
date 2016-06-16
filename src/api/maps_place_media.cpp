@@ -29,7 +29,7 @@ typedef struct _maps_place_media_s
 const gsize _MAPS_PLACE_MEDIA_ATTRIBUTION_MAX_LENGTH = 64;
 
 /*----------------------------------------------------------------------------*/
-
+//LCOV_EXCL_START
 EXPORT_API int maps_place_media_create(maps_place_media_h *place)
 {
 	if (!place)
@@ -43,6 +43,7 @@ EXPORT_API int maps_place_media_create(maps_place_media_h *place)
 
 	return MAPS_ERROR_NONE;
 }
+//LCOV_EXCL_STOP
 
 EXPORT_API int maps_place_media_destroy(maps_place_media_h place)
 {
@@ -97,9 +98,11 @@ EXPORT_API int maps_place_media_clone(const maps_place_media_h origin,
 		return MAPS_ERROR_NONE;
 	} while (false);
 
+	//LCOV_EXCL_START
 	maps_place_media_destroy(*cloned);
 	*cloned = NULL;
 	return error;
+	//LCOV_EXCL_STOP
 }
 
 /*----------------------------------------------------------------------------*/
@@ -130,7 +133,7 @@ EXPORT_API int maps_place_media_get_via(const maps_place_media_h place,
 }
 
 /*----------------------------------------------------------------------------*/
-
+//LCOV_EXCL_START
 EXPORT_API int maps_place_media_set_attribution(maps_place_media_h place,
 								const char *attribution)
 {
@@ -162,3 +165,4 @@ EXPORT_API int maps_place_media_set_via(maps_place_media_h place,
 		maps_place_link_object_destroy(m->via);
 	return maps_place_link_object_clone(via, &m->via);
 }
+//LCOV_EXCL_STOP

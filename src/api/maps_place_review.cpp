@@ -132,9 +132,11 @@ EXPORT_API int maps_place_review_clone(const maps_place_review_h origin,
 		return MAPS_ERROR_NONE;
 	} while (false);
 
+	//LCOV_EXCL_START
 	maps_place_review_destroy(*cloned);
 	*cloned = NULL;
 	return error;
+	//LCOV_EXCL_STOP
 }
 
 /*----------------------------------------------------------------------------*/
@@ -203,7 +205,7 @@ EXPORT_API int maps_place_review_get_user_link(const maps_place_review_h place,
 }
 
 /*----------------------------------------------------------------------------*/
-
+//LCOV_EXCL_START
 EXPORT_API int maps_place_review_set_date(maps_place_review_h place,
 								const char *date)
 {
@@ -271,3 +273,4 @@ EXPORT_API int maps_place_review_set_user_link(maps_place_review_h place,
 		maps_place_link_object_destroy(r->user);
 	return maps_place_link_object_clone(user, &r->user);
 }
+//LCOV_EXCL_STOP

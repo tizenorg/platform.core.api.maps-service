@@ -100,8 +100,10 @@ EXPORT_API int maps_place_create(maps_place_h *place)
 	*place = (maps_place_h) g_slice_new0(maps_place_s);
 
 	if (*place == NULL) {
+		//LCOV_EXCL_START
 		MAPS_LOGE("OUT_OF_MEMORY(0x%08x)", MAPS_ERROR_OUT_OF_MEMORY);
 		return MAPS_ERROR_OUT_OF_MEMORY;
+		//LCOV_EXCL_STOP
 	}
 
 	return MAPS_ERROR_NONE;
@@ -236,61 +238,61 @@ EXPORT_API int maps_place_clone(const maps_place_h origin,
 
 		if (p->properties) {
 			error = maps_place_set_properties(*cloned, p->properties);
-			if (error != MAPS_ERROR_NONE)
+			if (error != MAPS_ERROR_NONE) //LCOV_EXCL_LINE
 				break;
 		}
 
 		if (p->categories) {
 			error = maps_place_set_categories(*cloned, p->categories);
-			if (error != MAPS_ERROR_NONE)
+			if (error != MAPS_ERROR_NONE) //LCOV_EXCL_LINE
 				break;
 		}
 
 		if (p->attribute) {
 			error = maps_place_set_attributes(*cloned, p->attribute);
-			if (error != MAPS_ERROR_NONE)
+			if (error != MAPS_ERROR_NONE) //LCOV_EXCL_LINE
 				break;
 		}
 
 		if (p->contacts) {
 			error = maps_place_set_contacts(*cloned, p->contacts);
-			if (error != MAPS_ERROR_NONE)
+			if (error != MAPS_ERROR_NONE) //LCOV_EXCL_LINE
 				break;
 		}
 
 		if (p->editorials) {
 			error = maps_place_set_editorials(*cloned, p->editorials);
-			if (error != MAPS_ERROR_NONE)
+			if (error != MAPS_ERROR_NONE) //LCOV_EXCL_LINE
 				break;
 		}
 
 		if (p->images) {
 			error = maps_place_set_images(*cloned, p->images);
-			if (error != MAPS_ERROR_NONE)
+			if (error != MAPS_ERROR_NONE) //LCOV_EXCL_LINE
 				break;
 		}
 
 		if (p->reviews) {
 			error = maps_place_set_reviews(*cloned, p->reviews);
-			if (error != MAPS_ERROR_NONE)
+			if (error != MAPS_ERROR_NONE) //LCOV_EXCL_LINE
 				break;
 		}
 
 		if (p->supplier) {
 			error = maps_place_set_supplier_link(*cloned, p->supplier);
-			if (error != MAPS_ERROR_NONE)
+			if (error != MAPS_ERROR_NONE) //LCOV_EXCL_LINE
 				break;
 		}
 
 		if (p->related) {
 			error = maps_place_set_related_link(*cloned, p->related);
-			if (error != MAPS_ERROR_NONE)
+			if (error != MAPS_ERROR_NONE) //LCOV_EXCL_LINE
 				break;
 		}
 
 		if (p->supported_data) {
 			error = _maps_place_set_supported_data(*cloned, p->supported_data);
-			if (error != MAPS_ERROR_NONE)
+			if (error != MAPS_ERROR_NONE) //LCOV_EXCL_LINE
 				break;
 		}
 
@@ -569,7 +571,7 @@ int _maps_place_is_data_supported(const maps_place_h place,
 }
 
 /*----------------------------------------------------------------------------*/
-
+//LCOV_EXCL_START
 EXPORT_API int maps_place_set_id(maps_place_h place, const char *id)
 {
 	if (!place || !id)
@@ -789,3 +791,4 @@ EXPORT_API int maps_place_list_destroy(maps_place_list_h place_list)
 
 	return maps_item_list_destroy(place_list);
 }
+//LCOV_EXCL_STOP

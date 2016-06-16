@@ -48,7 +48,7 @@ typedef struct _maps_route_segment_s
 } maps_route_segment_s;
 
 /*----------------------------------------------------------------------------*/
-
+//LCOV_EXCL_START
 EXPORT_API int maps_route_segment_create(maps_route_segment_h *segment)
 {
 	if (!segment)
@@ -62,6 +62,7 @@ EXPORT_API int maps_route_segment_create(maps_route_segment_h *segment)
 
 	return MAPS_ERROR_NONE;
 }
+//LCOV_EXCL_STOP
 
 EXPORT_API int maps_route_segment_destroy(maps_route_segment_h segment)
 {
@@ -154,9 +155,11 @@ EXPORT_API int maps_route_segment_clone(const maps_route_segment_h segment,
 		return MAPS_ERROR_NONE;
 	} while (false);
 
+	//LCOV_EXCL_START
 	maps_route_segment_destroy(*cloned);
 	*cloned = NULL;
 	return error;
+	//LCOV_EXCL_STOP
 }
 
 /*----------------------------------------------------------------------------*/
@@ -216,7 +219,7 @@ EXPORT_API int maps_route_segment_foreach_path(const maps_route_segment_h segmen
 
 	/* Check if this API feature available */
 	if (!__is_supported(segment, MAPS_ROUTE_SEGMENTS_PATH))
-		return MAPS_ERROR_NOT_SUPPORTED;
+		return MAPS_ERROR_NOT_SUPPORTED; //LCOV_EXCL_LINE
 
 	/* Check if parameters are valid */
 	if (!callback)
@@ -236,7 +239,7 @@ EXPORT_API int maps_route_segment_foreach_maneuver(const maps_route_segment_h se
 
 	/* Check if this API feature available */
 	if (!__is_supported(segment, MAPS_ROUTE_SEGMENTS_MANEUVERS))
-		return MAPS_ERROR_NOT_SUPPORTED;
+		return MAPS_ERROR_NOT_SUPPORTED; //LCOV_EXCL_LINE
 
 	/* Check if parameters are valid */
 	if (!callback)
@@ -266,7 +269,7 @@ int _maps_route_segment_is_data_supported(const maps_route_segment_h segment,
 }
 
 /*----------------------------------------------------------------------------*/
-
+//LCOV_EXCL_START
 EXPORT_API int maps_route_segment_set_origin(maps_route_segment_h segment,
 								const maps_coordinates_h origin)
 {
@@ -358,3 +361,4 @@ int _maps_route_segment_set_supported_data(maps_route_segment_h segment,
 		maps_int_hashtable_destroy(p->supported_data);
 	return maps_int_hashtable_clone(supported_data, &p->supported_data);
 }
+//LCOV_EXCL_STOP

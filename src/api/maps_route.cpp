@@ -67,7 +67,7 @@ typedef struct _maps_route_s
 const gsize _MAPS_ROUTE_ID_MAX_LENGTH = 32;
 
 /*----------------------------------------------------------------------------*/
-
+//LCOV_EXCL_START
 EXPORT_API int maps_route_create(maps_route_h *route)
 {
 	if (!route)
@@ -81,6 +81,7 @@ EXPORT_API int maps_route_create(maps_route_h *route)
 
 	return MAPS_ERROR_NONE;
 }
+//LCOV_EXCL_STOP
 
 EXPORT_API int maps_route_destroy(maps_route_h route)
 {
@@ -199,9 +200,11 @@ EXPORT_API int maps_route_clone(const maps_route_h origin,
 		return MAPS_ERROR_NONE;
 	} while (false);
 
+	//LCOV_EXCL_START
 	maps_route_destroy(*cloned);
 	*cloned = NULL;
 	return error;
+	//LCOV_EXCL_STOP
 }
 
 /*----------------------------------------------------------------------------*/
@@ -279,7 +282,7 @@ EXPORT_API int maps_route_foreach_path(const maps_route_h route,
 
 	/* Check if this API feature available */
 	if (!__is_supported(route, MAPS_ROUTE_PATH))
-		return MAPS_ERROR_NOT_SUPPORTED;
+		return MAPS_ERROR_NOT_SUPPORTED; //LCOV_EXCL_LINE
 
 	/* Check if parameters are valid */
 	if (!callback)
@@ -300,7 +303,7 @@ EXPORT_API int maps_route_foreach_segment(const maps_route_h route,
 	/* Check if this API feature available */
 	if (!__is_supported(route, MAPS_ROUTE_SEGMENTS_PATH)
 		&& !__is_supported(route, MAPS_ROUTE_SEGMENTS_MANEUVERS))
-		return MAPS_ERROR_NOT_SUPPORTED;
+		return MAPS_ERROR_NOT_SUPPORTED; //LCOV_EXCL_LINE
 
 	/* Check if parameters are valid */
 	if (!callback)
@@ -349,7 +352,7 @@ int _maps_route_is_data_supported(const maps_route_h route,
 }
 
 /*----------------------------------------------------------------------------*/
-
+//LCOV_EXCL_START
 EXPORT_API int maps_route_set_route_id(const maps_route_h route,
 								const char *route_id)
 {
@@ -492,3 +495,4 @@ int _maps_route_set_supported_data(maps_route_h route,
 			__maps_route_set_supported_data_foreach_cb, supported_data);
 	return error;
 }
+//LCOV_EXCL_STOP

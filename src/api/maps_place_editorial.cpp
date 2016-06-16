@@ -30,7 +30,7 @@ const gsize _MAPS_PLACE_EDITORIAL_DESCRIPTION_MAX_LENGTH = 64;
 const gsize _MAPS_PLACE_EDITORIAL_LANGUAGE_MAX_LENGTH = 32;
 
 /*----------------------------------------------------------------------------*/
-
+//LCOV_EXCL_START
 EXPORT_API int maps_place_editorial_create(maps_place_editorial_h *place)
 {
 	if (!place)
@@ -44,6 +44,7 @@ EXPORT_API int maps_place_editorial_create(maps_place_editorial_h *place)
 
 	return MAPS_ERROR_NONE;
 }
+//LCOV_EXCL_STOP
 
 EXPORT_API int maps_place_editorial_destroy(maps_place_editorial_h place)
 {
@@ -101,9 +102,11 @@ EXPORT_API int maps_place_editorial_clone(const maps_place_editorial_h origin,
 		return MAPS_ERROR_NONE;
 	} while (false);
 
+	//LCOV_EXCL_START
 	maps_place_editorial_destroy(*cloned);
 	*cloned = NULL;
 	return error;
+	//LCOV_EXCL_STOP
 }
 
 /*----------------------------------------------------------------------------*/
@@ -136,6 +139,7 @@ EXPORT_API int maps_place_editorial_get_media(const maps_place_editorial_h place
 
 /*----------------------------------------------------------------------------*/
 
+//LCOV_EXCL_START
 EXPORT_API int maps_place_editorial_set_description(maps_place_editorial_h place,
 								const char *description)
 {
@@ -166,3 +170,4 @@ EXPORT_API int maps_place_editorial_set_media(maps_place_editorial_h place,
 		maps_place_media_destroy(e->media);
 	return maps_place_media_clone(media, &e->media);
 }
+//LCOV_EXCL_STOP

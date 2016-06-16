@@ -37,7 +37,7 @@ const gsize _MAPS_ROUTE_MANEUVER_INSTRUCTION_TEXT_MAX_LENGTH = 256;
 const gsize _MAPS_ROUTE_MANEUVER_LOCALE_MAX_LENGTH = 32;
 
 /*----------------------------------------------------------------------------*/
-
+//LCOV_EXCL_START
 EXPORT_API int maps_route_maneuver_create(maps_route_maneuver_h *maneuver)
 {
 	if (!maneuver)
@@ -51,6 +51,7 @@ EXPORT_API int maps_route_maneuver_create(maps_route_maneuver_h *maneuver)
 
 	return MAPS_ERROR_NONE;
 }
+//LCOV_EXCL_STOP
 
 EXPORT_API int maps_route_maneuver_destroy(maps_route_maneuver_h maneuver)
 {
@@ -96,26 +97,34 @@ EXPORT_API int maps_route_maneuver_clone(const maps_route_maneuver_h origin,
 
 		if (p->position) {
 			error = maps_route_maneuver_set_position(*cloned, p->position);
+			//LCOV_EXCL_START
 			if (error != MAPS_ERROR_NONE)
 				break;
+			//LCOV_EXCL_STOP
 		}
 
 		if (p->instruction_text) {
 			error = maps_route_maneuver_set_instruction_text(*cloned, p->instruction_text);
+			//LCOV_EXCL_START
 			if (error != MAPS_ERROR_NONE)
 				break;
+			//LCOV_EXCL_STOP
 		}
 
 		if (p->road_name) {
 			error = maps_route_maneuver_set_road_name(*cloned, p->road_name);
+			//LCOV_EXCL_START
 			if (error != MAPS_ERROR_NONE)
 				break;
+			//LCOV_EXCL_STOP
 		}
 
 		if (p->locale) {
 			error = maps_route_maneuver_set_locale(*cloned, p->locale);
+			//LCOV_EXCL_START
 			if (error != MAPS_ERROR_NONE)
 				break;
+			//LCOV_EXCL_STOP
 		}
 
 		error = maps_route_maneuver_set_time_to_next_instruction
@@ -131,9 +140,11 @@ EXPORT_API int maps_route_maneuver_clone(const maps_route_maneuver_h origin,
 		return MAPS_ERROR_NONE;
 	} while (false);
 
+	//LCOV_EXCL_START
 	maps_route_maneuver_destroy(*cloned);
 	*cloned = NULL;
 	return error;
+	//LCOV_EXCL_STOP
 }
 
 /*----------------------------------------------------------------------------*/
@@ -219,6 +230,7 @@ EXPORT_API int maps_route_maneuver_get_distance_to_next_instruction(const
 
 /*----------------------------------------------------------------------------*/
 
+//LCOV_EXCL_START
 EXPORT_API int maps_route_maneuver_set_direction_id(maps_route_maneuver_h maneuver,
 								const maps_route_direction_e direction_id)
 {
@@ -304,3 +316,4 @@ EXPORT_API int maps_route_maneuver_set_distance_to_next_instruction(
 		distance_to_next_instruction;
 	return MAPS_ERROR_NONE;
 }
+//LCOV_EXCL_STOP

@@ -26,7 +26,7 @@ typedef struct _maps_place_filter_s
 } maps_place_filter_s;
 
 /*----------------------------------------------------------------------------*/
-
+//LCOV_EXCL_START
 EXPORT_API int maps_place_filter_create(maps_place_filter_h *filter)
 {
 	if (!filter)
@@ -43,6 +43,7 @@ EXPORT_API int maps_place_filter_create(maps_place_filter_h *filter)
 
 	return MAPS_ERROR_NONE;
 }
+//LCOV_EXCL_STOP
 
 EXPORT_API int maps_place_filter_destroy(maps_place_filter_h filter)
 {
@@ -86,9 +87,11 @@ EXPORT_API int maps_place_filter_clone(const maps_place_filter_h origin,
 		return MAPS_ERROR_NONE;
 	} while (false);
 
+	//LCOV_EXCL_START
 	maps_place_filter_destroy(*cloned);
 	*cloned = NULL;
 	return error;
+	//LCOV_EXCL_STOP
 }
 
 /*----------------------------------------------------------------------------*/
@@ -149,7 +152,7 @@ EXPORT_API int maps_place_filter_get_place_address(const maps_place_filter_h fil
 }
 
 /*----------------------------------------------------------------------------*/
-
+//LCOV_EXCL_START
 EXPORT_API int maps_place_filter_set(maps_place_filter_h filter,
 								const char *key, const char *value)
 {
@@ -195,3 +198,4 @@ EXPORT_API int maps_place_filter_set_place_address(maps_place_filter_h filter,
 	return maps_item_hashtable_set_string(((maps_place_filter_s *) filter)->
 		table, "MAPS_PLACE_FILTER_PLACE_ADDRESS", place_address);
 }
+//LCOV_EXCL_STOP
