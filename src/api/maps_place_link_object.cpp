@@ -32,7 +32,7 @@ const gsize _MAPS_PLACE_LINK_OBJECT_TYPE_MAX_LENGTH = 32;
 const gsize _MAPS_PLACE_LINK_OBJECT_STRING_MAX_LENGTH = 256;
 
 /*----------------------------------------------------------------------------*/
-
+//LCOV_EXCL_START
 EXPORT_API int maps_place_link_object_create(maps_place_link_object_h *place)
 {
 	if (!place)
@@ -47,6 +47,7 @@ EXPORT_API int maps_place_link_object_create(maps_place_link_object_h *place)
 
 	return MAPS_ERROR_NONE;
 }
+//LCOV_EXCL_STOP
 
 EXPORT_API int maps_place_link_object_destroy(maps_place_link_object_h place)
 {
@@ -114,9 +115,11 @@ EXPORT_API int maps_place_link_object_clone(const maps_place_link_object_h
 		return MAPS_ERROR_NONE;
 	} while (false);
 
+	//LCOV_EXCL_START
 	maps_place_link_object_destroy(*cloned);
 	*cloned = NULL;
 	return error;
+	//LCOV_EXCL_STOP
 }
 
 /*----------------------------------------------------------------------------*/

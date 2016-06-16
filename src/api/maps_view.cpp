@@ -246,6 +246,7 @@ int _maps_view_on_object_operation(maps_view_h view, maps_view_object_h object, 
 	}
 }
 
+//LCOV_EXCL_START
 static void __on_canvas_tap(void *data, Evas *e, Evas_Object *obj, void *event_info)
 {
 	MAPS_LOGI("__on_canvas_tap");
@@ -321,6 +322,7 @@ static void __on_canvas_multi_up(void *data, Evas *e, Evas_Object *obj, void *ev
 	/* Detect & Process the gesture */
 	v->finger_stream->multi_up((Evas_Event_Multi_Up *)event_info);
 }
+//LCOV_EXCL_STOP
 
 static int __maps_plugin_render_map(const maps_view_h view,
 	const maps_coordinates_h coordinates, const double zoom_factor, const double rotation_angle)
@@ -1523,6 +1525,7 @@ void _maps_view_invoke_event_callback(maps_view_h view, maps_view_event_data_h e
 /* TODO: consider refactoring of Hit Test features and separation as
  *  dedicated classes */
 
+//LCOV_EXCL_START
 typedef struct _maps_view_hit_test_data_s {
 	maps_view_s *v;
 	int x;
@@ -1671,6 +1674,7 @@ maps_view_object_h _maps_view_object_hit_test(maps_view_h view, int x, int y, ma
 	/* 2. Extract test result */
 	return htd.object;
 }
+//LCOV_EXCL_STOP
 
 EXPORT_API int maps_view_get_maps_plugin_view_handle(maps_view_h hView, void **maps_plugin_view_handle)
 {

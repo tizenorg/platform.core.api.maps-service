@@ -1282,7 +1282,7 @@ int session::command_cancel_request::run()
  *		Mapping API commands
  */
 /*----------------------------------------------------------------------------*/
-
+//LCOV_EXCL_START
 session::command_view_set_center::command_view_set_center(maps_service_h ms,
 							   maps_view_h view,
 						const maps_coordinates_h coords)
@@ -1515,3 +1515,4 @@ void session::command_view_zoom_rotate::merge(const command *c)
 		cmd->set_merged();
 	}
 }
+//LCOV_EXCL_STOP

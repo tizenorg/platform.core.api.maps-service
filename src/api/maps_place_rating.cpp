@@ -25,7 +25,7 @@ typedef struct _maps_place_rating_s
 } maps_place_rating_s;
 
 /*----------------------------------------------------------------------------*/
-
+//LCOV_EXCL_START
 EXPORT_API int maps_place_rating_create(maps_place_rating_h *place)
 {
 	if (!place)
@@ -39,6 +39,7 @@ EXPORT_API int maps_place_rating_create(maps_place_rating_h *place)
 
 	return MAPS_ERROR_NONE;
 }
+//LCOV_EXCL_STOP
 
 EXPORT_API int maps_place_rating_destroy(maps_place_rating_h place)
 {
@@ -73,9 +74,11 @@ EXPORT_API int maps_place_rating_clone(const maps_place_rating_h origin,
 		return MAPS_ERROR_NONE;
 	} while (false);
 
+	//LCOV_EXCL_START
 	maps_place_rating_destroy(*cloned);
 	*cloned = NULL;
 	return error;
+	//LCOV_EXCL_STOP
 }
 
 /*----------------------------------------------------------------------------*/
@@ -99,7 +102,7 @@ EXPORT_API int maps_place_rating_get_average(const maps_place_rating_h place,
 }
 
 /*----------------------------------------------------------------------------*/
-
+//LCOV_EXCL_START
 EXPORT_API int maps_place_rating_set_count(maps_place_rating_h place,
 								const int count)
 {
@@ -117,3 +120,4 @@ EXPORT_API int maps_place_rating_set_average(maps_place_rating_h place,
 	((maps_place_rating_s *) place)->average = average;
 	return MAPS_ERROR_NONE;
 }
+//LCOV_EXCL_STOP

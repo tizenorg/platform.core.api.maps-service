@@ -30,7 +30,7 @@ const gsize _MAPS_PLACE_CONTACT_TYPE_MAX_LENGTH = 32;
 const gsize _MAPS_PLACE_CONTACT_VALUE_MAX_LENGTH = 512;
 
 /*----------------------------------------------------------------------------*/
-
+//LCOV_EXCL_START
 EXPORT_API int maps_place_contact_create(maps_place_contact_h *place)
 {
 	if (!place)
@@ -44,6 +44,7 @@ EXPORT_API int maps_place_contact_create(maps_place_contact_h *place)
 
 	return MAPS_ERROR_NONE;
 }
+//LCOV_EXCL_STOP
 
 EXPORT_API int maps_place_contact_destroy(maps_place_contact_h place)
 {
@@ -98,9 +99,11 @@ EXPORT_API int maps_place_contact_clone(const maps_place_contact_h origin,
 		return MAPS_ERROR_NONE;
 	} while (false);
 
+	//LCOV_EXCL_START
 	maps_place_contact_destroy(*cloned);
 	*cloned = NULL;
 	return error;
+	//LCOV_EXCL_STOP
 }
 
 /*----------------------------------------------------------------------------*/
@@ -131,6 +134,7 @@ EXPORT_API int maps_place_contact_get_value(const maps_place_contact_h place, ch
 
 /*----------------------------------------------------------------------------*/
 
+//LCOV_EXCL_START
 EXPORT_API int maps_place_contact_set_label(maps_place_contact_h place, const char *label)
 {
 	if (!place || !label)
@@ -154,3 +158,4 @@ EXPORT_API int maps_place_contact_set_value(maps_place_contact_h place, const ch
 	return maps_set_string(value, _MAPS_PLACE_CONTACT_VALUE_MAX_LENGTH,
 		&((maps_place_contact_s *) place)->value);
 }
+//LCOV_EXCL_STOP
