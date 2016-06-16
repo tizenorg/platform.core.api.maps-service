@@ -146,8 +146,7 @@ EXPORT_API int maps_view_capture_snapshot(maps_view_h view,
 				MAPS_LOGE("Failed to encode it with JPEG format. error=%d", error);
 				error = MAPS_ERROR_INVALID_OPERATION;
 			}
-		}
-		else if (type == MAPS_VIEW_SNAPSHOT_BMP) {
+		} else if (type == MAPS_VIEW_SNAPSHOT_BMP) {
 			if (cs == MAPS_VIEW_COLORSPACE_RGBA8888) {
 				MAPS_LOGD("RGBA -> BGRA");
 				__convert_rgba_to_bgra(image_buffer, w, h);
@@ -157,18 +156,18 @@ EXPORT_API int maps_view_capture_snapshot(maps_view_h view,
 				MAPS_LOGE("Failed to store it to a file.");
 				error = MAPS_ERROR_INVALID_OPERATION;
 			}
-		}
-		else
+		} else {
 			error = MAPS_ERROR_INVALID_PARAMETER;
-	} while(0);
+		}
+	} while (0);
 
 	if (fname) {
 		if (error == MAPS_ERROR_NONE) {
 			remove(path);
 			rename(fname, path);
-		}
-		else
+		} else {
 			remove(fname);
+		}
 		free(fname);
 	}
 	g_free(image_buffer);

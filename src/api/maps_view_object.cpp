@@ -314,7 +314,7 @@ static int __maps_view_overlay_data_create(void **overlay)
 
 		*overlay = (maps_view_overlay_data_s *) m;
 		return MAPS_ERROR_NONE;
-	} while(false);
+	} while (false);
 
 	__maps_view_overlay_data_destroy(m);
 	return error;
@@ -1010,10 +1010,10 @@ int _maps_view_object_overlay_set_bubble(maps_view_object_h overlay)
 
 	pixels = (unsigned char *)evas_object_image_data_get(m->bubble, EINA_TRUE);
 	row_stride = cairo_format_stride_for_width(CAIRO_FORMAT_ARGB32, w);
-	surface = cairo_image_surface_create_for_data(pixels,CAIRO_FORMAT_ARGB32,
+	surface = cairo_image_surface_create_for_data(pixels, CAIRO_FORMAT_ARGB32,
 												   w, h, row_stride);
 	/* Create the cairo context */
-	cairo = cairo_create (surface);
+	cairo = cairo_create(surface);
 
 	/* Configuration */
 	cairo_set_source_rgba(cairo, 0, 0, 0, 0);
@@ -1026,19 +1026,18 @@ int _maps_view_object_overlay_set_bubble(maps_view_object_h overlay)
 	int bh = h - by - _OVERLAY_BUBBLE_PIN_SIZE;
 
 	/* build a path */
-	cairo_new_path (cairo);
+	cairo_new_path(cairo);
 	if (m->type == MAPS_VIEW_OVERLAY_BUBBLE) {
 		double r = bh / 8.;
 		double d = M_PI / 180.;
-		cairo_arc (cairo, bx + bw - r, by + r, r, -90 * d, 0 * d);
-		cairo_arc (cairo, bx + bw - r, by + bh - r, r, 0 * d, 90 * d);
+		cairo_arc(cairo, bx + bw - r, by + r, r, -90 * d, 0 * d);
+		cairo_arc(cairo, bx + bw - r, by + bh - r, r, 0 * d, 90 * d);
 		cairo_line_to(cairo, bx + bw / 2 + _OVERLAY_BUBBLE_PIN_SIZE, by + bh);
 		cairo_line_to(cairo, bx + bw / 2, by + bh + _OVERLAY_BUBBLE_PIN_SIZE);
 		cairo_line_to(cairo, bx + bw / 2 - _OVERLAY_BUBBLE_PIN_SIZE, by + bh);
-		cairo_arc (cairo, bx + r, by + bh - r, r, 90 * d, 180 * d);
-		cairo_arc (cairo, bx + r, by + r, r, 180 * d, 270 * d);
-	}
-	else {
+		cairo_arc(cairo, bx + r, by + bh - r, r, 90 * d, 180 * d);
+		cairo_arc(cairo, bx + r, by + r, r, 180 * d, 270 * d);
+	} else {
 		cairo_move_to(cairo, 1., 1.);
 		cairo_line_to(cairo, 1., bh);
 		cairo_line_to(cairo, bw / 2 - _OVERLAY_BUBBLE_PIN_SIZE, bh);
@@ -1183,14 +1182,12 @@ static bool __maps_view_object_overlay_set_visible(maps_view_object_h overlay)
 			evas_object_hide(m->object);
 			if (m->bubble)
 				evas_object_hide(m->bubble);
-		}
-		else {
+		} else {
 			evas_object_show(m->object);
 			if (m->bubble)
 				evas_object_show(m->bubble);
 		}
-	}
-	else {
+	} else {
 		evas_object_hide(m->object);
 		if (m->bubble)
 			evas_object_hide(m->bubble);
@@ -1240,9 +1237,9 @@ static bool __maps_view_object_overlay_move(maps_view_object_h overlay, maps_coo
 			y -= _OVERLAY_BUBBLE_MARGIN ;
 			evas_object_move(m->bubble, x, y);
 		}
-	}
-	else
+	} else {
 		evas_object_move(m->object, x, y);
+	}
 	return true;
 }
 
@@ -1251,7 +1248,7 @@ static bool __maps_view_object_overlay_update(maps_view_object_h overlay, Evas_O
 	if (!overlay || !clipper)
 		return false;
 
-	bool ret = false;	
+	bool ret = false;
 	maps_coordinates_h coordinates = NULL;
 
 	do {
@@ -1263,7 +1260,7 @@ static bool __maps_view_object_overlay_update(maps_view_object_h overlay, Evas_O
 
 		maps_view_object_overlay_get_coordinates(overlay, &coordinates);
 		ret = __maps_view_object_overlay_move(overlay, coordinates);
-	} while(0);
+	} while (0);
 
 	if (coordinates)
 		maps_coordinates_destroy(coordinates);
