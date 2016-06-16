@@ -69,7 +69,9 @@ maps_view_object_h view::polyline_constructor::construct(const maps_coordinates_
 		return polyline;
 	} while (false);
 
+//LCOV_EXCL_START
 	/* FAILURE: Releasing objects */
 	maps_view_object_destroy(polyline);
 	return NULL;
+//LCOV_EXCL_STOP
 }

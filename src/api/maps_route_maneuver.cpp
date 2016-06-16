@@ -45,8 +45,10 @@ EXPORT_API int maps_route_maneuver_create(maps_route_maneuver_h *maneuver)
 	*maneuver = (maps_route_maneuver_h) g_slice_new0(maps_route_maneuver_s);
 
 	if (*maneuver == NULL) {
+//LCOV_EXCL_START
 		MAPS_LOGE("OUT_OF_MEMORY(0x%08x)", MAPS_ERROR_OUT_OF_MEMORY);
 		return MAPS_ERROR_OUT_OF_MEMORY;
+//LCOV_EXCL_STOP
 	}
 
 	return MAPS_ERROR_NONE;
@@ -131,9 +133,11 @@ EXPORT_API int maps_route_maneuver_clone(const maps_route_maneuver_h origin,
 		return MAPS_ERROR_NONE;
 	} while (false);
 
+//LCOV_EXCL_START
 	maps_route_maneuver_destroy(*cloned);
 	*cloned = NULL;
 	return error;
+//LCOV_EXCL_STOP
 }
 
 /*----------------------------------------------------------------------------*/

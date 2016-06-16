@@ -20,6 +20,7 @@
 #include <maps_util.h>
 
 
+//LCOV_EXCL_START
 namespace view
 {
 	class poly_shape_hit_test {
@@ -41,5 +42,6 @@ namespace view
 		bool pnpoly(const float x, const float y) const;
 	};
 };
+//LCOV_EXCL_STOP
 
 #endif				/* __MAPS_VIEW_POLY_SHAPE_HIT_TEST_H__ */

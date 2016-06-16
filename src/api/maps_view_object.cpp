@@ -149,9 +149,11 @@ static int __maps_view_polyline_data_create(void **polyline)
 	do {
 		p = g_slice_new0(maps_view_polyline_data_s);
 		if (!p) {
+//LCOV_EXCL_START
 			MAPS_LOGE("OUT_OF_MEMORY(0x%08x)",
 				  MAPS_ERROR_OUT_OF_MEMORY);
 			return MAPS_ERROR_OUT_OF_MEMORY;
+//LCOV_EXCL_STOP
 		}
 
 		error = maps_coordinates_list_create(&p->points);
@@ -162,8 +164,10 @@ static int __maps_view_polyline_data_create(void **polyline)
 		return MAPS_ERROR_NONE;
 	} while (false);
 
+//LCOV_EXCL_START
 	__maps_view_polyline_data_destroy(p);
 	return error;
+//LCOV_EXCL_STOP
 }
 
 static int __maps_view_polyline_data_destroy(void *polyline)
@@ -199,9 +203,11 @@ static int __maps_view_polygon_data_create(void **polygon)
 	do {
 		p = g_slice_new0(maps_view_polygon_data_s);
 		if (!p) {
+//LCOV_EXCL_START
 			MAPS_LOGE("OUT_OF_MEMORY(0x%08x)",
 				  MAPS_ERROR_OUT_OF_MEMORY);
 			return MAPS_ERROR_OUT_OF_MEMORY;
+//LCOV_EXCL_STOP
 		}
 
 		error = maps_coordinates_list_create(&p->points);
@@ -212,8 +218,10 @@ static int __maps_view_polygon_data_create(void **polygon)
 		return MAPS_ERROR_NONE;
 	} while (false);
 
+//LCOV_EXCL_START
 	__maps_view_polygon_data_destroy(p);
 	return error;
+//LCOV_EXCL_STOP
 }
 
 static int __maps_view_polygon_data_destroy(void *polygon)
@@ -250,9 +258,11 @@ static int __maps_view_marker_data_create(void **marker)
 	do {
 		m = g_slice_new0(maps_view_marker_data_s);
 		if (!m) {
+//LCOV_EXCL_START
 			MAPS_LOGE("OUT_OF_MEMORY(0x%08x)",
 				  MAPS_ERROR_OUT_OF_MEMORY);
 			return MAPS_ERROR_OUT_OF_MEMORY;
+//LCOV_EXCL_STOP
 		}
 
 		error = maps_coordinates_create(.0, .0, &m->coordinates);
@@ -267,8 +277,10 @@ static int __maps_view_marker_data_create(void **marker)
 		return MAPS_ERROR_NONE;
 	} while (false);
 
+//LCOV_EXCL_START
 	__maps_view_marker_data_destroy(m);
 	return error;
+//LCOV_EXCL_STOP
 }
 
 static int __maps_view_marker_data_destroy(void *marker)
@@ -366,9 +378,11 @@ int _maps_view_object_create(maps_view_object_type_e type, maps_view_object_h *o
 	do {
 		o = g_slice_new0(maps_view_object_s);
 		if (!o) {
+//LCOV_EXCL_START
 			MAPS_LOGE("OUT_OF_MEMORY(0x%08x)",
 				  MAPS_ERROR_OUT_OF_MEMORY);
 			return MAPS_ERROR_OUT_OF_MEMORY;
+//LCOV_EXCL_STOP
 		}
 
 		o->type = type;
@@ -405,8 +419,10 @@ int _maps_view_object_create(maps_view_object_type_e type, maps_view_object_h *o
 		*object = (maps_view_object_h) o;
 		return MAPS_ERROR_NONE;
 	} while (false);
+//LCOV_EXCL_START
 	maps_view_object_destroy(o);
 	return error;
+//LCOV_EXCL_STOP
 }
 
 int _maps_view_object_set_view(maps_view_object_h object, maps_view_h view)
@@ -469,9 +485,11 @@ EXPORT_API int maps_view_object_create_polyline(maps_coordinates_list_h coordina
 		return pc.get_error();
 
 	/* Polyline create failure */
+//LCOV_EXCL_START
 	maps_view_object_destroy(*polyline);
 	*polyline = NULL;
 	return pc.get_error();
+//LCOV_EXCL_STOP
 }
 
 EXPORT_API int maps_view_object_create_polygon(maps_coordinates_list_h coordinates,
@@ -487,9 +505,11 @@ EXPORT_API int maps_view_object_create_polygon(maps_coordinates_list_h coordinat
 		return pc.get_error();
 
 	/* Polygon create failure */
+//LCOV_EXCL_START
 	maps_view_object_destroy(*polygon);
 	*polygon = NULL;
 	return pc.get_error();
+//LCOV_EXCL_STOP
 }
 
 EXPORT_API int maps_view_object_create_overlay(maps_coordinates_h coordinates,

@@ -38,8 +38,10 @@ EXPORT_API int maps_place_attribute_create(maps_place_attribute_h *place)
 	*place = (maps_place_attribute_h) g_slice_new0(maps_place_attribute_s);
 
 	if (*place == NULL) {
+//LCOV_EXCL_START
 		MAPS_LOGE("OUT_OF_MEMORY(0x%08x)", MAPS_ERROR_OUT_OF_MEMORY);
 		return MAPS_ERROR_OUT_OF_MEMORY;
+//LCOV_EXCL_STOP
 	}
 
 	return MAPS_ERROR_NONE;
@@ -99,9 +101,11 @@ EXPORT_API int maps_place_attribute_clone(const maps_place_attribute_h origin,
 		return MAPS_ERROR_NONE;
 	} while (false);
 
+//LCOV_EXCL_START
 	maps_place_attribute_destroy(*cloned);
 	*cloned = NULL;
 	return error;
+//LCOV_EXCL_STOP
 }
 
 /*----------------------------------------------------------------------------*/

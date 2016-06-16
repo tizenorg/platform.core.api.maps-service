@@ -21,6 +21,7 @@
 #include <glib.h>
 
 
+//LCOV_EXCL_START
 view::inertial_camera::inertial_camera(maps_view_h view)
 	: _view(view)
 	  , target_zoom_factor(.0)
@@ -258,3 +259,4 @@ bool view::inertial_camera::next_transition_step()
 
 	return transiting;
 }
+//LCOV_EXCL_STOP

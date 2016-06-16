@@ -216,6 +216,7 @@ typedef struct _GMod {
 /* RAII Class implementing the mutex helper on the base of GLib mutex */
 /* which automatically locks mutex during its creation and unlocks while
 *  exiting the scope */
+//LCOV_EXCL_START
 class scope_mutex {
 	GMutex *mutex;
 public:
@@ -237,6 +238,7 @@ private:
 	gpointer gmod_find_sym(GMod *gmod, const gchar *func_name) const;
 	void trace_dbg(const plugin_s *plugin) const;
 };
+//LCOV_EXCL_STOP
 };
 
 #endif				/* __MAPS_SERVICE_PLUGIN_MODULE_H__ */

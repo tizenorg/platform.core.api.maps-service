@@ -69,6 +69,7 @@
 
 #define _S(s) #s
 
+//LCOV_EXCL_START
 /*
  * @brief	Copies one string to another and releases receiver if needed.
  * @details This function copies one string to another and releases receiver if
@@ -195,5 +196,6 @@ public:
 		return !pstring || (*this == string(""));
 	}
 };
+//LCOV_EXCL_STOP
 
 #endif				/* __MAPS_UTIL_H__ */

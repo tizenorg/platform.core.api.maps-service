@@ -59,7 +59,9 @@ maps_view_object_h view::overlay_constructor::construct(maps_coordinates_h coord
 		return overlay;
 	} while (false);
 
+//LCOV_EXCL_START
 	/* FAILURE: Releasing objects */
 	maps_view_object_destroy(overlay);
 	return NULL;
+//LCOV_EXCL_STOP
 }

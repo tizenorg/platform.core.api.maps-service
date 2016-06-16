@@ -49,6 +49,7 @@ extern int _maps_view_get_plugin_center(const maps_view_h view, maps_coordinates
 
 /* ---------------------------------------------------------------------------*/
 
+//LCOV_EXCL_START
 
 view::zoom_calculator::zoom_calculator(const touch_point &start_tp_f1,
 					const touch_point &cur_tp_f1,
@@ -976,3 +977,4 @@ bool view::finger_event_stream::finger_dragged_enough(int finger_no,
 		gesture_detector::get_trajectory_effective_length(tp, start);
 	return (trajectory >= gesture_detector::__CLICK_AREA);
 }
+//LCOV_EXCL_STOP

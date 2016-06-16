@@ -62,7 +62,9 @@ maps_view_object_h view::marker_constructor::construct(maps_coordinates_h coordi
 		return marker;
 	} while (false);
 
+//LCOV_EXCL_START
 	/* FAILURE: Releasing objects */
 	maps_view_object_destroy(marker);
 	return NULL;
+//LCOV_EXCL_STOP
 }

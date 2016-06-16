@@ -91,7 +91,7 @@ int session::command_geocode::run()
 
 			MAPS_LOGD("session::command_geocode::run: %d", my_req_id);
 		} else {
-			error = MAPS_ERROR_OUT_OF_MEMORY;
+			error = MAPS_ERROR_OUT_OF_MEMORY;	//LCOV_EXCL_LINE
 		}
 	} else {
 		/* Plugin Function is NULL: use default empty function */
@@ -107,6 +107,7 @@ int session::command_geocode::run()
 	return ret;
 }
 
+//LCOV_EXCL_START
 session::command_geocode_handler::command_geocode_handler(plugin::plugin_s *p,
 						maps_service_geocode_cb cb,
 						void *ud, int urid)
@@ -114,6 +115,7 @@ session::command_geocode_handler::command_geocode_handler(plugin::plugin_s *p,
  , callback(cb)
 {
 }
+//LCOV_EXCL_STOP
 
 bool session::command_geocode_handler::foreach_geocode_cb(maps_error_e error,
 							  int request_id,
@@ -126,8 +128,10 @@ bool session::command_geocode_handler::foreach_geocode_cb(maps_error_e error,
 	command_geocode_handler *handler = (command_geocode_handler *) user_data;
 
 	if (request_id != handler->plg_req_id) {
+//LCOV_EXCL_START
 		MAPS_LOGE("\nERROR! Incorrect request id [%d] come from the plugin; expected [%d]\n",
 			request_id, handler->plg_req_id);
+//LCOV_EXCL_STOP
 	}
 
 	/* Make a user's copy of result data */
@@ -209,7 +213,7 @@ int session::command_geocode_inside_bounds::run()
 
 			MAPS_LOGD("session::command_geocode_inside_bounds::run: %d", my_req_id);
 		} else {
-			error = MAPS_ERROR_OUT_OF_MEMORY;
+			error = MAPS_ERROR_OUT_OF_MEMORY;	//LCOV_EXCL_LINE
 		}
 	} else {
 		/* Plugin Function is NULL: use default empty function */
@@ -286,7 +290,7 @@ int session::command_geocode_by_structured_address::run()
 
 			pr.update(my_req_id, handler);
 		} else {
-			error = MAPS_ERROR_OUT_OF_MEMORY;
+			error = MAPS_ERROR_OUT_OF_MEMORY;	//LCOV_EXCL_LINE
 		}
 	} else {
 		/* Plugin Function is NULL: use default empty function */
@@ -355,7 +359,7 @@ int session::command_reverse_geocode::run()
 
 			MAPS_LOGD("session::command_reverse_geocode::run: %d", my_req_id);
 		} else {
-			error = MAPS_ERROR_OUT_OF_MEMORY;
+			error = MAPS_ERROR_OUT_OF_MEMORY;	//LCOV_EXCL_LINE
 		}
 	} else {
 		/* Plugin Function is NULL: use default empty function */
@@ -372,6 +376,7 @@ int session::command_reverse_geocode::run()
 	return ret;
 }
 
+//LCOV_EXCL_START
 session::command_reverse_geocode_handler::command_reverse_geocode_handler(
 					plugin::plugin_s *p,
 					maps_service_reverse_geocode_cb cb,
@@ -380,6 +385,7 @@ session::command_reverse_geocode_handler::command_reverse_geocode_handler(
  , callback(cb)
 {
 }
+//LCOV_EXCL_STOP
 
 void session::command_reverse_geocode_handler::foreach_reverse_geocode_cb(
 						maps_error_e error,
@@ -468,7 +474,7 @@ int session::command_multi_reverse_geocode::run()
 
 			MAPS_LOGD("session::command_multi_reverse_geocode::run: %d", my_req_id);
 		} else {
-			error = MAPS_ERROR_OUT_OF_MEMORY;
+			error = MAPS_ERROR_OUT_OF_MEMORY;	//LCOV_EXCL_LINE
 		}
 	} else {
 		/* Plugin Function is NULL: use default empty function */
@@ -485,12 +491,14 @@ int session::command_multi_reverse_geocode::run()
 	return ret;
 }
 
+//LCOV_EXCL_START
 session::command_multi_reverse_geocode_handler::command_multi_reverse_geocode_handler(
 			plugin::plugin_s *p, maps_service_multi_reverse_geocode_cb cb, void *ud, int urid)
  : command_handler(p, ud, urid)
  , callback(cb)
 {
 }
+//LCOV_EXCL_STOP
 
 bool session::command_multi_reverse_geocode_handler::foreach_multi_reverse_geocode_cb(
 			maps_error_e error, int request_id, int total, maps_coordinates_list_h address_list, void *user_data)
@@ -499,8 +507,10 @@ bool session::command_multi_reverse_geocode_handler::foreach_multi_reverse_geoco
 		(command_multi_reverse_geocode_handler *) user_data;
 
 	if (request_id != handler->plg_req_id) {
+//LCOV_EXCL_START
 		MAPS_LOGE("\n\nERROR! Incorrect request id [%d] come from the plugin; expected [%d]\n\n",
 			request_id, handler->plg_req_id);
+//LCOV_EXCL_STOP
 	}
 
 	/* Make a user's copy of result data */
@@ -580,7 +590,7 @@ int session::command_search_place::run()
 
 			MAPS_LOGD("session::command_search_place::run: %d", my_req_id);
 		} else {
-			error = MAPS_ERROR_OUT_OF_MEMORY;
+			error = MAPS_ERROR_OUT_OF_MEMORY;	//LCOV_EXCL_LINE
 		}
 	} else {
 		/* Plugin Function is NULL: use default empty function */
@@ -596,6 +606,7 @@ int session::command_search_place::run()
 	return ret;
 }
 
+//LCOV_EXCL_START
 session::command_search_place_handler::command_search_place_handler(
 						plugin::plugin_s* p,
 						maps_service_search_place_cb cb,
@@ -604,6 +615,7 @@ session::command_search_place_handler::command_search_place_handler(
  , callback(cb)
 {
 }
+//LCOV_EXCL_STOP
 
 void session::command_search_place_handler::set_supported_data(maps_place_h place)
 {
@@ -638,8 +650,10 @@ bool session::command_search_place_handler::foreach_place_cb(maps_error_e error,
 		(command_search_place_handler *) user_data;
 
 	if (request_id != handler->plg_req_id) {
+//LCOV_EXCL_START
 		MAPS_LOGE("\nERROR! Incorrect request id [%d] come from the plugin; expected [%d]\n",
 			request_id, handler->plg_req_id);
+//LCOV_EXCL_STOP
 	}
 
 	/* Make a user's copy of result data */
@@ -724,7 +738,7 @@ int session::command_search_by_area_place::run()
 
 			MAPS_LOGD("session::command_search_by_area_place::run: %d", my_req_id);
 		} else {
-			error = MAPS_ERROR_OUT_OF_MEMORY;
+			error = MAPS_ERROR_OUT_OF_MEMORY;	//LCOV_EXCL_LINE
 		}
 	} else {
 		/* Plugin Function is NULL: use default empty function */
@@ -807,7 +821,7 @@ int session::command_search_by_address_place::run()
 
 			MAPS_LOGD("session::command_search_by_address_place::run: %d", my_req_id);
 		} else {
-			error = MAPS_ERROR_OUT_OF_MEMORY;
+			error = MAPS_ERROR_OUT_OF_MEMORY;	//LCOV_EXCL_LINE
 		}
 	} else {
 		/* Plugin Function is NULL: use default empty function */
@@ -885,7 +899,7 @@ int session::command_search_place_list::run()
 
 			MAPS_LOGD("session::command_search_place_list::run: %d", my_req_id);
 		} else {
-			error = MAPS_ERROR_OUT_OF_MEMORY;
+			error = MAPS_ERROR_OUT_OF_MEMORY;	//LCOV_EXCL_LINE
 		}
 	} else {
 		/* Plugin Function is NULL: use default empty function */
@@ -901,6 +915,7 @@ int session::command_search_place_list::run()
 	return ret;
 }
 
+//LCOV_EXCL_START
 session::command_search_place_list_handler::command_search_place_list_handler(
 						plugin::plugin_s* p,
 						maps_service_search_place_list_cb cb,
@@ -909,6 +924,7 @@ session::command_search_place_list_handler::command_search_place_list_handler(
  , callback(cb)
 {
 }
+//LCOV_EXCL_STOP
 
 void session::command_search_place_list_handler::foreach_place_list_cb(maps_error_e error,
 							     int request_id,
@@ -920,8 +936,10 @@ void session::command_search_place_list_handler::foreach_place_list_cb(maps_erro
 		(command_search_place_list_handler *) user_data;
 
 	if (request_id != handler->plg_req_id) {
+//LCOV_EXCL_START
 		MAPS_LOGE("\n\nERROR! Incorrect request id [%d] come from the plugin; expected [%d]\n\n",
 			request_id, handler->plg_req_id);
+//LCOV_EXCL_STOP
 	}
 
 	/* Send data to user */
@@ -978,7 +996,7 @@ int session::command_get_place_details::run()
 			MAPS_LOGD("session::command_get_place_details::run: %d",
 				my_req_id);
 		} else {
-			error = MAPS_ERROR_OUT_OF_MEMORY;
+			error = MAPS_ERROR_OUT_OF_MEMORY;	//LCOV_EXCL_LINE
 		}
 	} else {
 		/* Plugin Function is NULL: use default empty function */
@@ -995,6 +1013,7 @@ int session::command_get_place_details::run()
 	return ret;
 }
 
+//LCOV_EXCL_START
 session::command_get_place_details_handler::command_get_place_details_handler(
 						plugin::plugin_s* p,
 						maps_service_get_place_details_cb cb,
@@ -1003,6 +1022,7 @@ session::command_get_place_details_handler::command_get_place_details_handler(
  , callback(cb)
 {
 }
+//LCOV_EXCL_STOP
 
 void session::command_get_place_details_handler::foreach_place_details_cb(maps_error_e error,
 							     int request_id, maps_place_h place, void *user_data)
@@ -1011,8 +1031,10 @@ void session::command_get_place_details_handler::foreach_place_details_cb(maps_e
 		(command_get_place_details_handler *) user_data;
 
 	if (request_id != handler->plg_req_id) {
+//LCOV_EXCL_START
 		MAPS_LOGE("\n\nERROR! Incorrect request id [%d] come from the plugin; expected [%d]\n\n",
 			request_id, handler->plg_req_id);
+//LCOV_EXCL_STOP
 	}
 
 	/* Make a user's copy of result data */
@@ -1063,8 +1085,10 @@ session::command_search_route::command_search_route(maps_service_h ms,
 	}
 
 	if (error) {
+//LCOV_EXCL_START
 		*request_id = -1;
 		MAPS_LOGD("Invalid parameter");
+//LCOV_EXCL_STOP
 	}
 }
 
@@ -1097,7 +1121,7 @@ int session::command_search_route::run()
 
 			MAPS_LOGD("session::command_search_route::run: %d", my_req_id);
 		} else {
-			error = MAPS_ERROR_OUT_OF_MEMORY;
+			error = MAPS_ERROR_OUT_OF_MEMORY;	//LCOV_EXCL_LINE
 		}
 	} else {
 		/* Plugin Function is NULL: use default empty function */
@@ -1183,7 +1207,7 @@ int session::command_search_route_waypoints::run()
 
 			MAPS_LOGD("session::command_search_place::run: %d", my_req_id);
 		} else {
-			error = MAPS_ERROR_OUT_OF_MEMORY;
+			error = MAPS_ERROR_OUT_OF_MEMORY;	//LCOV_EXCL_LINE
 		}
 	} else {
 		/* Plugin Function is NULL: use default empty function */
@@ -1200,6 +1224,7 @@ int session::command_search_route_waypoints::run()
 	return ret;
 }
 
+//LCOV_EXCL_START
 session::command_search_route_handler::command_search_route_handler(
 						plugin::plugin_s *p,
 						maps_service_search_route_cb cb,
@@ -1208,11 +1233,12 @@ session::command_search_route_handler::command_search_route_handler(
  , callback(cb)
 {
 }
+//LCOV_EXCL_STOP
 
 void session::command_search_route_handler::set_supported_data(maps_route_h route)
 {
 	if (!route || !plugin())
-		return;
+		return;	//LCOV_EXCL_LINE
 
 	maps_int_hashtable_h data_supported = NULL;
 	if (maps_int_hashtable_create(&data_supported) != MAPS_ERROR_NONE)
@@ -1237,8 +1263,10 @@ bool session::command_search_route_handler::foreach_route_cb(maps_error_e error,
 		(command_search_route_handler *) user_data;
 
 	if (request_id != handler->plg_req_id) {
+//LCOV_EXCL_START
 		MAPS_LOGE("\n\nERROR! Incorrect request id [%d] come from the plugin; expected [%d]\n\n",
 			request_id, handler->plg_req_id);
+//LCOV_EXCL_STOP
 	}
 
 	/* Make a user's copy of result data */
@@ -1282,6 +1310,7 @@ int session::command_cancel_request::run()
  *		Mapping API commands
  */
 /*----------------------------------------------------------------------------*/
+//LCOV_EXCL_START
 
 session::command_view_set_center::command_view_set_center(maps_service_h ms,
 							   maps_view_h view,
@@ -1515,3 +1544,4 @@ void session::command_view_zoom_rotate::merge(const command *c)
 		cmd->set_merged();
 	}
 }
+//LCOV_EXCL_STOP

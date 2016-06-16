@@ -23,6 +23,7 @@
 namespace session
 {
 
+//LCOV_EXCL_START
 /*----------------------------------------------------------------------------*/
 /*typedef int (*maps_plugin_geocode_f)(maps_service_h maps,
 * const char *address, maps_service_geocode_cb callback,
@@ -869,6 +870,7 @@ private:
 	virtual int get_priority() const;
 	virtual void merge(const command *c);
 };
+//LCOV_EXCL_STOP
 
 }
 
