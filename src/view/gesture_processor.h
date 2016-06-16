@@ -32,6 +32,7 @@
 #define _MOVE_CENTER_COMMAND_DEFINED_
 
 
+//LCOV_EXCL_START
 namespace view
 {
 
@@ -149,5 +150,6 @@ namespace view
 		void set_gesture_detector(class gesture_detector *d);
 	};
 };
+//LCOV_EXCL_STOP
 
 #endif				/* __MAPS_VIEW_GESTURE_PROCESSOR_H__ */

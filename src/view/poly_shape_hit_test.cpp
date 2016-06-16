@@ -20,6 +20,7 @@
 #include <math.h>
 
 
+//LCOV_EXCL_START
 void view::poly_shape_hit_test::add_point(const float x, const float y)
 {
 	__x.push_back(x);
@@ -153,3 +154,4 @@ bool view::poly_shape_hit_test::pnpoly(const float x, const float y) const
 	}
 	return (c != 0);
 }
+//LCOV_EXCL_STOP

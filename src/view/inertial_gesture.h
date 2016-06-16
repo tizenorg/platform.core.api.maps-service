@@ -19,6 +19,7 @@
 
 #include "gesture_detector.h"
 
+//LCOV_EXCL_START
 namespace view
 {
 	class inertial_gesture : public gesture_detector {
@@ -64,5 +65,6 @@ namespace view
 		void reset();
 	};
 };
+//LCOV_EXCL_STOP
 
 #endif				/* __MAPS_VIEW_INERTIAL_GESTURE_H__ */

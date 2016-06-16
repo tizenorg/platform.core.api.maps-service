@@ -19,6 +19,7 @@
 #include "command_queue.h"
 #include "command.h"
 
+//LCOV_EXCL_START
 session::thread::thread()
 {
 }
@@ -69,3 +70,4 @@ void session::thread::stop(plugin::plugin_s *p)
 	command_queue *cq = session::command_queue::interface();
 	cq->clear(p);
 }
+//LCOV_EXCL_STOP

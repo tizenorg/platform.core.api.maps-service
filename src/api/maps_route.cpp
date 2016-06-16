@@ -75,8 +75,10 @@ EXPORT_API int maps_route_create(maps_route_h *route)
 	*route = (maps_route_h) g_slice_new0(maps_route_s);
 
 	if (*route == NULL) {
+//LCOV_EXCL_START
 		MAPS_LOGE("OUT_OF_MEMORY(0x%08x)", MAPS_ERROR_OUT_OF_MEMORY);
 		return MAPS_ERROR_OUT_OF_MEMORY;
+//LCOV_EXCL_STOP
 	}
 
 	return MAPS_ERROR_NONE;
@@ -191,17 +193,21 @@ EXPORT_API int maps_route_clone(const maps_route_h origin,
 		}
 
 		if (r->supported_data) {
+//LCOV_EXCL_START
 			error = _maps_route_set_supported_data(*cloned, r->supported_data);
 			if (error != MAPS_ERROR_NONE)
 				break;
+//LCOV_EXCL_STOP
 		}
 
 		return MAPS_ERROR_NONE;
 	} while (false);
 
+//LCOV_EXCL_START
 	maps_route_destroy(*cloned);
 	*cloned = NULL;
 	return error;
+//LCOV_EXCL_STOP
 }
 
 /*----------------------------------------------------------------------------*/
@@ -344,8 +350,10 @@ int _maps_route_is_data_supported(const maps_route_h route,
 		return MAPS_ERROR_NONE;
 	}
 
+//LCOV_EXCL_START
 	*supported = false;
 	return maps_int_hashtable_contains(r->supported_data, data, supported);
+//LCOV_EXCL_STOP
 }
 
 /*----------------------------------------------------------------------------*/
@@ -481,7 +489,7 @@ int _maps_route_set_supported_data(maps_route_h route,
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_route_s *p = (maps_route_s *) route;
 	if (p->supported_data)
-		maps_int_hashtable_destroy(p->supported_data);
+		maps_int_hashtable_destroy(p->supported_data);	//LCOV_EXCL_LINE
 	int error =
 		maps_int_hashtable_clone(supported_data, &p->supported_data);
 	if (error != MAPS_ERROR_NONE)

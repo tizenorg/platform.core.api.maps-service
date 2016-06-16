@@ -35,8 +35,10 @@ EXPORT_API int maps_area_create_rectangle(const maps_coordinates_h top_left,
 	maps_area_s *bound = g_new0(maps_area_s, 1);
 
 	if (bound == NULL) {
+		//LCOV_EXCL_START
 		MAPS_LOGE("OUT_OF_MEMORY(0x%08x)", MAPS_ERROR_OUT_OF_MEMORY);
 		return MAPS_ERROR_OUT_OF_MEMORY;
+		//LCOV_EXCL_STOP
 	}
 
 	bound->type = MAPS_AREA_RECTANGLE;
@@ -61,8 +63,10 @@ EXPORT_API int maps_area_create_circle(const maps_coordinates_h center,
 	maps_area_s *bound = g_new0(maps_area_s, 1);
 
 	if (bound == NULL) {
+		//LCOV_EXCL_START
 		MAPS_LOGE("OUT_OF_MEMORY(0x%08x)", MAPS_ERROR_OUT_OF_MEMORY);
 		return MAPS_ERROR_OUT_OF_MEMORY;
+		//LCOV_EXCL_STOP
 	}
 
 	bound->type = MAPS_AREA_CIRCLE;

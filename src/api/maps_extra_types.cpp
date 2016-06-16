@@ -31,8 +31,10 @@ EXPORT_API int maps_item_list_create(maps_item_list_h *list)
 	maps_item_list_s *l = g_slice_new0(maps_item_list_s);
 
 	if (!l) {
+		//LCOV_EXCL_START
 		MAPS_LOGE("OUT_OF_MEMORY(0x%08x)", MAPS_ERROR_OUT_OF_MEMORY);
 		return MAPS_ERROR_OUT_OF_MEMORY;
+		//LCOV_EXCL_STOP
 	}
 
 	l->l = NULL;
@@ -91,7 +93,7 @@ EXPORT_API int maps_item_list_foreach(maps_item_list_h list,
 		void *clone = NULL;
 		if (clone_func) {
 			if (clone_func(data, &clone) != MAPS_ERROR_NONE)
-				continue;
+				continue;	//LCOV_EXCL_LINE
 		} else {
 			clone = data;
 		}
@@ -193,9 +195,11 @@ EXPORT_API int maps_item_list_clone(const maps_item_list_h origin,
 		return MAPS_ERROR_NONE;
 	} while (false);
 
+	//LCOV_EXCL_START
 	maps_item_list_destroy(*cloned);
 	*cloned = NULL;
 	return error;
+	//LCOV_EXCL_STOP
 }
 
 /*----------------------------------------------------------------------------*/
@@ -212,8 +216,10 @@ EXPORT_API int maps_string_hashtable_create(maps_string_hashtable_h *table)
 	maps_string_hashtable_s *t = g_slice_new0(maps_string_hashtable_s);
 
 	if (!t) {
+		//LCOV_EXCL_START
 		MAPS_LOGE("OUT_OF_MEMORY(0x%08x)", MAPS_ERROR_OUT_OF_MEMORY);
 		return MAPS_ERROR_OUT_OF_MEMORY;
+		//LCOV_EXCL_STOP
 	}
 
 	t->t = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
@@ -290,11 +296,11 @@ EXPORT_API int maps_string_hashtable_foreach(maps_string_hashtable_h table,
 		char *key_clone = NULL;
 		if (maps_item_hashtable_clone_string(key,
 				(void **) &key_clone) != MAPS_ERROR_NONE)
-			continue;
+			continue;	//LCOV_EXCL_LINE
 		char *value_clone = NULL;
 		if (maps_item_hashtable_clone_string(value,
 				(void **) &value_clone) != MAPS_ERROR_NONE)
-			continue;
+			continue;	//LCOV_EXCL_LINE
 
 		if (!callback(index++, total, key_clone, value_clone,
 				user_data))
@@ -328,16 +334,20 @@ EXPORT_API int maps_string_hashtable_clone(const maps_string_hashtable_h origin,
 		g_hash_table_iter_init(&iter, t->t);
 		while (g_hash_table_iter_next(&iter, &key, &value)) {
 			g_hash_table_insert(t_cloned->t,
+				//LCOV_EXCL_START
 				(gpointer) g_strdup((const gchar *) key),
 				(gpointer) g_strdup((const gchar *) value));
+				//LCOV_EXCL_STOP
 		}
 
 		return MAPS_ERROR_NONE;
 	} while (false);
 
+	//LCOV_EXCL_START
 	maps_string_hashtable_destroy(*cloned);
 	*cloned = NULL;
 	return error;
+	//LCOV_EXCL_STOP
 }
 
 EXPORT_API int maps_string_hashtable_contains(maps_string_hashtable_h table,
@@ -364,8 +374,10 @@ EXPORT_API int maps_int_hashtable_create(maps_int_hashtable_h *table)
 	maps_int_hashtable_s *t = g_slice_new0(maps_int_hashtable_s);
 
 	if (!t) {
+		//LCOV_EXCL_START
 		MAPS_LOGE("OUT_OF_MEMORY(0x%08x)", MAPS_ERROR_OUT_OF_MEMORY);
 		return MAPS_ERROR_OUT_OF_MEMORY;
+		//LCOV_EXCL_STOP
 	}
 
 	t->t = g_hash_table_new_full(g_int_hash, g_int_equal, g_free, g_free);
@@ -409,7 +421,7 @@ EXPORT_API int maps_int_hashtable_get(maps_int_hashtable_h table,
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_int_hashtable_s *t = (maps_int_hashtable_s *) table;
 	if (!t->t)
-		return MAPS_ERROR_NOT_FOUND;
+		return MAPS_ERROR_NOT_FOUND;	//LCOV_EXCL_LINE
 	const int *table_value = (const int *) g_hash_table_lookup(t->t, &key);
 	if (!table_value)
 		return MAPS_ERROR_NONE;
@@ -437,7 +449,7 @@ EXPORT_API int maps_int_hashtable_foreach(maps_int_hashtable_h table,
 	maps_int_hashtable_s *t = (maps_int_hashtable_s *) table;
 
 	if (!t->t)
-		return MAPS_ERROR_NOT_FOUND;
+		return MAPS_ERROR_NOT_FOUND;	//LCOV_EXCL_LINE
 
 	GHashTableIter iter;
 	gpointer key, value;
@@ -492,9 +504,11 @@ EXPORT_API int maps_int_hashtable_clone(const maps_int_hashtable_h origin,
 		return MAPS_ERROR_NONE;
 	} while (false);
 
+	//LCOV_EXCL_START
 	maps_int_hashtable_destroy(*cloned);
 	*cloned = NULL;
 	return error;
+	//LCOV_EXCL_STOP
 }
 
 EXPORT_API int maps_int_hashtable_contains(maps_int_hashtable_h table,
@@ -522,7 +536,7 @@ void _maps_hashtable_item_create(maps_hashtable_item_s **item)
 	*item = g_slice_new0(maps_hashtable_item_s);
 
 	if (*item == NULL)
-		MAPS_LOGE("OUT_OF_MEMORY(0x%08x)", MAPS_ERROR_OUT_OF_MEMORY);
+		MAPS_LOGE("OUT_OF_MEMORY(0x%08x)", MAPS_ERROR_OUT_OF_MEMORY);	//LCOV_EXCL_LINE
 }
 
 void _maps_hashtable_item_destroy(gpointer data)
@@ -551,8 +565,10 @@ EXPORT_API int maps_item_hashtable_create(maps_item_hashtable_h *table)
 	maps_item_hashtable_s *t = g_slice_new0(maps_item_hashtable_s);
 
 	if (!t) {
+		//LCOV_EXCL_START
 		MAPS_LOGE("OUT_OF_MEMORY(0x%08x)", MAPS_ERROR_OUT_OF_MEMORY);
 		return MAPS_ERROR_OUT_OF_MEMORY;
+		//LCOV_EXCL_STOP
 	}
 
 	t->t = g_hash_table_new_full(g_str_hash, g_str_equal, g_free,
@@ -593,8 +609,10 @@ EXPORT_API int maps_item_hashtable_clone_int(void *origin, void **cloned)
 	int *n_cloned = g_new0(int, 1);
 
 	if (n_cloned == NULL) {
+		//LCOV_EXCL_START
 		MAPS_LOGE("OUT_OF_MEMORY(0x%08x)", MAPS_ERROR_OUT_OF_MEMORY);
 		return MAPS_ERROR_OUT_OF_MEMORY;
+		//LCOV_EXCL_STOP
 	}
 
 	int *n_origin = (int *) origin;
@@ -616,8 +634,10 @@ EXPORT_API int maps_item_hashtable_clone_float(void *origin, void **cloned)
 	double *n_cloned = g_new0(double, 1);
 
 	if (n_cloned == NULL) {
+		//LCOV_EXCL_START
 		MAPS_LOGE("OUT_OF_MEMORY(0x%08x)", MAPS_ERROR_OUT_OF_MEMORY);
 		return MAPS_ERROR_OUT_OF_MEMORY;
+		//LCOV_EXCL_STOP
 	}
 
 	double *n_origin = (double *) origin;
@@ -672,8 +692,10 @@ EXPORT_API int maps_item_hashtable_set(maps_item_hashtable_h table,
 
 		const int error = clone_func((void *) value, &item->value);
 		if (error != MAPS_ERROR_NONE) {
+			//LCOV_EXCL_START
 			_maps_hashtable_item_destroy(item);
 			return error;
+			//LCOV_EXCL_STOP
 		}
 		item->clone_func = clone_func;
 		item->free_func = free_func;
@@ -765,7 +787,7 @@ EXPORT_API int maps_item_hashtable_foreach(maps_item_hashtable_h table,
 	while (g_hash_table_iter_next(&iter, &key, &value)) {
 		maps_hashtable_item_s *item = (maps_hashtable_item_s *) value;
 		if (!item || !item->clone_func)
-			continue;
+			continue;	//LCOV_EXCL_LINE
 
 		char *key_clone = NULL;
 		if (maps_item_hashtable_clone_string(key,
@@ -817,9 +839,11 @@ EXPORT_API int maps_item_hashtable_clone(const maps_item_hashtable_h origin,
 		return MAPS_ERROR_NONE;
 	} while (false);
 
+	//LCOV_EXCL_START
 	maps_item_hashtable_destroy(*cloned);
 	*cloned = NULL;
 	return error;
+	//LCOV_EXCL_STOP
 }
 
 EXPORT_API int maps_item_hashtable_contains(maps_item_hashtable_h table,

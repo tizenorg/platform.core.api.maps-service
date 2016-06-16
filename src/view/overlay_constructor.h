@@ -19,6 +19,7 @@
 #include "maps_error.h"
 #include "maps_view_object.h"
 
+//LCOV_EXCL_START
 namespace view
 {
 	class overlay_constructor {
@@ -37,5 +38,6 @@ namespace view
 		}
 	};
 };
+//LCOV_EXCL_STOP
 
 #endif				/* __MAPS_VIEW_overlay_constructor_H__ */

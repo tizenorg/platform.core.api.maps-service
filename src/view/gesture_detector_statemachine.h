@@ -21,6 +21,7 @@
 #include "runtime_data.h"
 #include "gesture_detector.h"
 
+//LCOV_EXCL_START
 
 namespace view
 {
@@ -129,5 +130,6 @@ namespace view
 		string get_event_str(view_event_e event);
 	};
 };
+//LCOV_EXCL_STOP
 
 #endif				/* __MAPS_VIEW_GESTURE_DETECTOR_STATEMACHINE_H__ */
