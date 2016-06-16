@@ -236,9 +236,9 @@ int _maps_view_on_object_operation(maps_view_h view, maps_view_object_h object, 
 
 	maps_view_object_type_e type;
 	maps_view_object_get_type(object, &type);
-	if (type == MAPS_VIEW_OBJECT_OVERLAY)
+	if (type == MAPS_VIEW_OBJECT_OVERLAY) {
 		return _maps_view_object_overlay_operation(view, object, operation);
-	else {
+	} else {
 		if(!__get_plugin_interface(view)->maps_plugin_on_object)
 			return  MAPS_ERROR_INVALID_PARAMETER;
 
@@ -1503,17 +1503,17 @@ void _maps_view_invoke_event_callback(maps_view_h view, maps_view_event_data_h e
 	int maps_view_object_get_type(maps_view_object_h object, maps_view_object_type_e *type);
 
 	int subtype = 0;
-	if (type == MAPS_VIEW_EVENT_GESTURE)
+	if (type == MAPS_VIEW_EVENT_GESTURE) {
 		maps_view_event_data_get_gesture_type(event_data, (maps_view_gesture_e*)&subtype);
-	else if (type == MAPS_VIEW_EVENT_ACTION)
+	} else if (type == MAPS_VIEW_EVENT_ACTION) {
 		maps_view_event_data_get_action_type(event_data, (maps_view_action_e*)&subtype);
-	else if (type == MAPS_VIEW_EVENT_OBJECT) {
+	} else if (type == MAPS_VIEW_EVENT_OBJECT) {
 		maps_view_object_h object;
 		maps_view_event_data_get_object(event_data, &object);
 		maps_view_object_get_type(object, (maps_view_object_type_e*)&subtype);
 	}
 	if (type == MAPS_VIEW_EVENT_READY)
-	MAPS_LOGD("[invoked event] type=%d, subtype=%d", type, subtype);
+		MAPS_LOGD("[invoked event] type=%d, subtype=%d", type, subtype);
 #endif
 
 	v->event_callbacks[type].callback(type, event_data, v->event_callbacks[type].user_data);

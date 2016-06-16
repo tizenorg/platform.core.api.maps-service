@@ -57,8 +57,7 @@ maps_view_object_h view::overlay_constructor::construct(maps_coordinates_h coord
 
 		/* SUCCESS */
 		return overlay;
-
-	} while(false);
+	} while (false);
 
 	/* FAILURE: Releasing objects */
 	maps_view_object_destroy(overlay);
