@@ -69,7 +69,7 @@ static bool __encode_bitmap_file(const void *data, int width, int height, const 
        int i;
 
        if (fp == NULL) {
-              MAPS_LOGE("fopen fail");
+              MAPS_LOGE("fopen fail");	//LCOV_EXCL_LINE
               return false;
        }
        bmpfile_header.filesz = sizeof(bmpfile_magic) + sizeof(bmpfile_header) + sizeof(bmp_dib_v3_header_t) + (width * height * 3);
@@ -124,8 +124,10 @@ EXPORT_API int maps_view_capture_snapshot(maps_view_h view,
 												(void**)&image_buffer, &w, &h, &cs);
 		if (error != MAPS_ERROR_NONE) break;
 		if (cs != MAPS_VIEW_COLORSPACE_RGBA8888 && cs != MAPS_VIEW_COLORSPACE_BGRA8888) {
+//LCOV_EXCL_START
 			MAPS_LOGE("The color space is not supported yet. (%d)", cs);
 			error = MAPS_ERROR_INVALID_OPERATION;
+//LCOV_EXCL_STOP
 			break;
 		}
 
@@ -153,8 +155,10 @@ EXPORT_API int maps_view_capture_snapshot(maps_view_h view,
 				cs = MAPS_VIEW_COLORSPACE_BGRA8888;
 			}
 			if (!__encode_bitmap_file(image_buffer, w, h, fname)) {
+//LCOV_EXCL_START
 				MAPS_LOGE("Failed to store it to a file.");
 				error = MAPS_ERROR_INVALID_OPERATION;
+//LCOV_EXCL_STOP
 			}
 		} else {
 			error = MAPS_ERROR_INVALID_PARAMETER;
@@ -166,7 +170,7 @@ EXPORT_API int maps_view_capture_snapshot(maps_view_h view,
 			remove(path);
 			rename(fname, path);
 		} else {
-			remove(fname);
+			remove(fname);	//LCOV_EXCL_LINE
 		}
 		free(fname);
 	}

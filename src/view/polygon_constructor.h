@@ -19,6 +19,7 @@
 #include "maps_error.h"
 #include "maps_view_object.h"
 
+//LCOV_EXCL_START
 namespace view
 {
 	class polygon_constructor {
@@ -41,5 +42,6 @@ namespace view
 		}
 	};
 };
+//LCOV_EXCL_STOP
 
 #endif				/* __MAPS_VIEW_POLYGON_CONSTRUCTOR_H__ */

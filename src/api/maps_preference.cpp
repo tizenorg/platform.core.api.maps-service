@@ -117,8 +117,10 @@ EXPORT_API int maps_preference_create(maps_preference_h *preference)
 		return MAPS_ERROR_NONE;
 	} while (0);
 
+//LCOV_EXCL_START
 	maps_item_hashtable_destroy(preference);
 	return error;
+//LCOV_EXCL_STOP
 }
 
 EXPORT_API int maps_preference_destroy(maps_preference_h preference)

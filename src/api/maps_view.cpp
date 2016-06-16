@@ -166,7 +166,7 @@ static void __maps_view_on_event_empty_cb(maps_view_event_type_e type,
 	/* empty */
 }
 
-
+//LCOV_EXCL_START
 session::command_queue *__maps_view_select_q()
 {
 	/*
@@ -229,6 +229,7 @@ int _maps_view_on_overlay_update_all(maps_view_h view)
 	maps_view_s *v = (maps_view_s *)view;
 	return maps_item_list_foreach(v->view_objects, NULL, _maps_view_object_overlay_cb, v->clipper);
 }
+//LCOV_EXCL_STOP
 
 int _maps_view_on_object_operation(maps_view_h view, maps_view_object_h object, maps_view_object_operation_e operation)
 {
@@ -247,6 +248,7 @@ int _maps_view_on_object_operation(maps_view_h view, maps_view_object_h object, 
 	}
 }
 
+//LCOV_EXCL_START
 static void __on_canvas_tap(void *data, Evas *e, Evas_Object *obj, void *event_info)
 {
 	MAPS_LOGI("__on_canvas_tap");
@@ -307,7 +309,6 @@ static void __on_canvas_multi_tap(void *data, Evas *e, Evas_Object *obj, void *e
 	v->finger_stream->multi_tap((Evas_Event_Multi_Down *)event_info);
 }
 
-
 static void __on_canvas_multi_up(void *data, Evas *e, Evas_Object *obj, void *event_info)
 {
 	MAPS_LOGI("__on_canvas_multi_up");
@@ -321,16 +322,6 @@ static void __on_canvas_multi_up(void *data, Evas *e, Evas_Object *obj, void *ev
 
 	/* Detect & Process the gesture */
 	v->finger_stream->multi_up((Evas_Event_Multi_Up *)event_info);
-}
-
-static int __maps_plugin_render_map(const maps_view_h view,
-	const maps_coordinates_h coordinates, const double zoom_factor, const double rotation_angle)
-{
-	if (!view || !coordinates)
-		return MAPS_ERROR_INVALID_PARAMETER;
-
-	return __get_plugin_interface(view)->maps_plugin_render_map(view,
-										coordinates, zoom_factor, rotation_angle);
 }
 
 static void __on_canvas_multi_line(void *data, Evas *e, Evas_Object *obj, void *event_info)
@@ -347,7 +338,19 @@ static void __on_canvas_multi_line(void *data, Evas *e, Evas_Object *obj, void *
 	/* Detect & Process the gesture */
 	v->finger_stream->multi_move((Evas_Event_Multi_Move *)event_info);
 }
+//LCOV_EXCL_STOP
 
+static int __maps_plugin_render_map(const maps_view_h view,
+	const maps_coordinates_h coordinates, const double zoom_factor, const double rotation_angle)
+{
+	if (!view || !coordinates)
+		return MAPS_ERROR_INVALID_PARAMETER;
+
+	return __get_plugin_interface(view)->maps_plugin_render_map(view,
+										coordinates, zoom_factor, rotation_angle);
+}
+
+//LCOV_EXCL_START
 void _maps_view_set_idle_listener(const maps_view_h view,
 	void (*callback)(void *user_data), void *user_data)
 {
@@ -411,6 +414,7 @@ static Eina_Bool __maps_view_animator_cb(void *data)
 {
 	return ECORE_CALLBACK_RENEW;
 }
+//LCOV_EXCL_STOP
 
 void __maps_view_ready(const maps_view_h view)
 {
@@ -429,6 +433,7 @@ void __maps_view_ready(const maps_view_h view)
 
 /* ----------------------CREATE AND DESTROY-----------------------------------*/
 
+//LCOV_EXCL_START
 static void __maps_view_parent_resize_cb(void *data, Evas *e, Evas_Object *obj, void *event_info)
 {
 	maps_view_s *v = (maps_view_s*)data;
@@ -454,6 +459,7 @@ static void __maps_view_panel_resize_cb(void *data, Evas *e, Evas_Object *obj, v
 	_maps_view_get_plugin_center(v, &v->center);
 	maps_view_set_screen_location(v, x, y, w, h);
 }
+//LCOV_EXCL_STOP
 
 static void __maps_view_create_panel(maps_view_h view, Evas_Object *obj)
 {
@@ -493,8 +499,10 @@ EXPORT_API int maps_view_create(maps_service_h maps, Evas_Object *obj, maps_view
 
 	maps_view_s *v = g_slice_new0(maps_view_s);
 	if (!v) {
+//LCOV_EXCL_START
 		MAPS_LOGE("OUT_OF_MEMORY(0x%08x)", MAPS_ERROR_OUT_OF_MEMORY);
 		return MAPS_ERROR_OUT_OF_MEMORY;
+//LCOV_EXCL_STOP
 	}
 
 	/* Initialize the list with visual objects */
@@ -536,8 +544,10 @@ EXPORT_API int maps_view_create(maps_service_h maps, Evas_Object *obj, maps_view
 	/* Gesture Processing */
 	v->finger_stream = new view::finger_event_stream(v);
 	if (!v->finger_stream) {
+//LCOV_EXCL_START
 		MAPS_LOGE("OUT_OF_MEMORY(0x%08x)", MAPS_ERROR_OUT_OF_MEMORY);
 		return MAPS_ERROR_OUT_OF_MEMORY;
+//LCOV_EXCL_STOP
 	}
 	evas_object_event_callback_add(v->panel, EVAS_CALLBACK_MOUSE_DOWN, __on_canvas_tap, v);
 	evas_object_event_callback_add(v->panel, EVAS_CALLBACK_MOUSE_UP, __on_canvas_up, v);
@@ -662,7 +672,7 @@ EXPORT_API int maps_view_destroy(maps_view_h view)
 	return MAPS_ERROR_NONE;
 }
 
-
+//LCOV_EXCL_START
 int _maps_view_set_center_directly(const maps_view_h view,
 								const maps_coordinates_h coordinates)
 {
@@ -686,6 +696,7 @@ int _maps_view_get_plugin_center(const maps_view_h view,
 
 	return __get_plugin_interface(view)->maps_plugin_get_center(view, center);
 }
+//LCOV_EXCL_STOP
 
 /*----------------------MAP ZOOM, ROTATE, SET CENTER--------------------------*/
 
@@ -754,6 +765,7 @@ EXPORT_API int maps_view_set_center(maps_view_h view, maps_coordinates_h coordin
 	return __maps_view_set_center(view, coordinates, FALSE);
 }
 
+//LCOV_EXCL_START
 int _maps_view_move_center(maps_view_h view, const int delta_x, const int delta_y)
 {
 	if (!view)
@@ -776,6 +788,7 @@ int _maps_view_move_center(maps_view_h view, const int delta_x, const int delta_
 
 	return error;
 }
+//LCOV_EXCL_STOP
 
 EXPORT_API int maps_view_set_scalebar_enabled(const maps_view_h view, bool enable)
 {
@@ -821,7 +834,7 @@ EXPORT_API int maps_view_set_zoom_level(maps_view_h view, int level)
 
 	/* Add inertia to the zoom process */
 	if (v->inertial_camera)
-		v->inertial_camera->set_zoom_target(double(new_level));
+		v->inertial_camera->set_zoom_target(double(new_level));	//LCOV_EXCL_LINE
 
 	v->zoom_level = new_level;
 	v->zoom_factor = double(new_level); /* Update the integer  zoom level too */
@@ -933,7 +946,7 @@ int _maps_view_set_zoom_rotate(maps_view_h view,
 	if (rotation_changed) {
 		/* Add inertia to the rotation process */
 		if (v->inertial_camera)
-			v->inertial_camera->set_rotation_target(angle);
+			v->inertial_camera->set_rotation_target(angle);	//LCOV_EXCL_LINE
 
 		/* Update Map View rotation angle */
 		v->rotation_angle = angle;
@@ -948,10 +961,12 @@ int _maps_view_set_zoom_rotate(maps_view_h view,
 		maps_view_event_data_h ed =
 			_maps_view_create_event_data(MAPS_VIEW_EVENT_ACTION);
 		if (ed) {
+//LCOV_EXCL_START
 			_maps_view_event_data_set_action_type(ed, MAPS_VIEW_ACTION_ZOOM);
 			_maps_view_event_data_set_zoom_factor(ed, v->zoom_factor);
 			_maps_view_invoke_event_callback(v, ed);
 			maps_view_event_data_destroy(ed);
+//LCOV_EXCL_STOP
 		}
 	}
 
@@ -1005,7 +1020,7 @@ EXPORT_API int maps_view_set_orientation(maps_view_h view, double angle)
 	/* Add inertia to the rotation process */
 	maps_view_s *v = (maps_view_s *)view;
 	if (v->inertial_camera)
-		v->inertial_camera->set_rotation_target(angle);
+		v->inertial_camera->set_rotation_target(angle);	//LCOV_EXCL_LINE
 
 	return _maps_view_set_zoom_rotate(view, false, .0, true, angle);
 }
@@ -1159,16 +1174,20 @@ int _maps_view_set_inertia_enabled(maps_view_h view, bool enabled)
 		if (!v->inertial_gesture) {
 			v->inertial_gesture = new view::inertial_gesture(view);
 			if (!v->inertial_gesture) {
+//LCOV_EXCL_START
 				MAPS_LOGE("OUT_OF_MEMORY(0x%08x)", MAPS_ERROR_OUT_OF_MEMORY);
 				return MAPS_ERROR_OUT_OF_MEMORY;
+//LCOV_EXCL_STOP
 			}
 		}
 
 		if (!v->inertial_camera) {
 			v->inertial_camera = new view::inertial_camera(view);
 			if (!v->inertial_camera) {
+//LCOV_EXCL_START
 				MAPS_LOGE("OUT_OF_MEMORY(0x%08x)", MAPS_ERROR_OUT_OF_MEMORY);
 				return MAPS_ERROR_OUT_OF_MEMORY;
+//LCOV_EXCL_STOP
 			}
 		}
 
@@ -1201,6 +1220,7 @@ int _maps_view_set_inertia_enabled(maps_view_h view, bool enabled)
 	return MAPS_ERROR_NONE;
 }
 
+//LCOV_EXCL_START
 EXPORT_API int maps_view_get_inertia_enabled(maps_view_h view, bool *enabled)
 {
 	if (!view || !enabled)
@@ -1210,6 +1230,7 @@ EXPORT_API int maps_view_get_inertia_enabled(maps_view_h view, bool *enabled)
 	*enabled = v->inertial_camera != NULL;
 	return MAPS_ERROR_NONE;
 }
+//LCOV_EXCL_STOP
 
 EXPORT_API int maps_view_set_language(maps_view_h view, const char *language)
 {
@@ -1368,6 +1389,7 @@ EXPORT_API int maps_view_get_visibility(const maps_view_h view, bool *visible)
 	return MAPS_ERROR_NONE;
 }
 
+//LCOV_EXCL_START
 int _maps_view_redraw(const maps_view_h view)
 {
 	if (!view)
@@ -1379,6 +1401,7 @@ int _maps_view_redraw(const maps_view_h view)
 
 	return MAPS_ERROR_NONE;
 }
+//LCOV_EXCL_STOP
 
 /* ---------------------USER CONTROL------------------------------------------*/
 
@@ -1468,7 +1491,7 @@ EXPORT_API int maps_view_add_object(maps_view_h view, maps_view_object_h object)
 		return MAPS_ERROR_NONE;
 	} while (false);
 
-	return error;
+	return error;	//LCOV_EXCL_LINE
 }
 
 EXPORT_API int maps_view_remove_object(maps_view_h view, maps_view_object_h object)
@@ -1487,7 +1510,7 @@ EXPORT_API int maps_view_remove_object(maps_view_h view, maps_view_object_h obje
 		/* Redraw the view */
 		error = _maps_view_redraw(v);
 		if (error != MAPS_ERROR_NONE)
-			return error;
+			return error;	//LCOV_EXCL_LINE
 
 		return MAPS_ERROR_NONE;
 	} while (false);
@@ -1510,7 +1533,7 @@ EXPORT_API int maps_view_remove_all_objects(maps_view_h view)
 		/* Redraw the view */
 		error = _maps_view_redraw(v);
 		if (error != MAPS_ERROR_NONE)
-			return error;
+			return error;	//LCOV_EXCL_LINE
 
 		return MAPS_ERROR_NONE;
 	} while (false);
@@ -1536,8 +1559,10 @@ maps_view_event_data_h _maps_view_create_event_data(maps_view_event_type_e type)
 	maps_view_event_data_h event_data = NULL;
 	const int error = _maps_view_event_data_create(&event_data);
 	if (error != MAPS_ERROR_NONE) {
+//LCOV_EXCL_START
 		maps_view_event_data_destroy(event_data);
 		return NULL;
+//LCOV_EXCL_STOP
 	}
 	if (!event_data)
 		return NULL;
@@ -1548,7 +1573,7 @@ maps_view_event_data_h _maps_view_create_event_data(maps_view_event_type_e type)
 void _maps_view_invoke_event_callback(maps_view_h view, maps_view_event_data_h event_data)
 {
 	if (!view || !event_data)
-		return;
+		return;	//LCOV_EXCL_LINE
 
 	maps_view_s *v = (maps_view_s *)view;
 
@@ -1595,7 +1620,7 @@ typedef struct _maps_view_collect_poly_object_point_s {
 	view::poly_shape_hit_test *pd;
 } maps_view_collect_poly_object_point_s;
 
-
+//LCOV_EXCL_START
 static bool __maps_view_object_poly_collect_points_cb(int index, maps_coordinates_h point, void *user_data)
 {
 	if (!point || !user_data)
@@ -1730,6 +1755,7 @@ maps_view_object_h _maps_view_object_hit_test(maps_view_h view, int x, int y, ma
 	/* 2. Extract test result */
 	return htd.object;
 }
+//LCOV_EXCL_STOP
 
 EXPORT_API int maps_view_get_maps_plugin_view_handle(maps_view_h hView, void **maps_plugin_view_handle)
 {

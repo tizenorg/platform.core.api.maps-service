@@ -45,8 +45,10 @@ EXPORT_API int maps_place_review_create(maps_place_review_h *place)
 	*place = (maps_place_review_h) g_slice_new0(maps_place_review_s);
 
 	if (*place == NULL) {
+//LCOV_EXCL_START
 		MAPS_LOGE("OUT_OF_MEMORY(0x%08x)", MAPS_ERROR_OUT_OF_MEMORY);
 		return MAPS_ERROR_OUT_OF_MEMORY;
+//LCOV_EXCL_STOP
 	}
 
 	return MAPS_ERROR_NONE;
@@ -132,9 +134,11 @@ EXPORT_API int maps_place_review_clone(const maps_place_review_h origin,
 		return MAPS_ERROR_NONE;
 	} while (false);
 
+//LCOV_EXCL_START
 	maps_place_review_destroy(*cloned);
 	*cloned = NULL;
 	return error;
+//LCOV_EXCL_STOP
 }
 
 /*----------------------------------------------------------------------------*/
@@ -198,8 +202,7 @@ EXPORT_API int maps_place_review_get_user_link(const maps_place_review_h place,
 {
 	if (!place || !user)
 		return MAPS_ERROR_INVALID_PARAMETER;
-	return maps_place_link_object_clone(((maps_place_review_s *) place)->
-		user, user);
+	return maps_place_link_object_clone(((maps_place_review_s *) place)->user, user);
 }
 
 /*----------------------------------------------------------------------------*/

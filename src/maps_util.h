@@ -30,6 +30,8 @@
 #endif
 #define LOG_TAG "CAPI_MAPS_SERVICE"
 
+//LCOV_EXCL_START
+
 /*
 * Internal Macros
 */
@@ -195,5 +197,6 @@ public:
 		return !pstring || (*this == string(""));
 	}
 };
+//LCOV_EXCL_STOP
 
 #endif				/* __MAPS_UTIL_H__ */

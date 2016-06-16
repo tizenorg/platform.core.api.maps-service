@@ -34,8 +34,10 @@ EXPORT_API int maps_plugin_info_create(maps_plugin_info_h *info)
 	*info = g_slice_new0(maps_plugin_info_s);
 
 	if (*info == NULL) {
+//LCOV_EXCL_START
 		MAPS_LOGE("OUT_OF_MEMORY(0x%08x)", MAPS_ERROR_OUT_OF_MEMORY);
 		return MAPS_ERROR_OUT_OF_MEMORY;
+//LCOV_EXCL_STOP
 	}
 
 	return MAPS_ERROR_NONE;
@@ -80,9 +82,11 @@ EXPORT_API int maps_plugin_info_clone(const maps_plugin_info_h origin,
 		return MAPS_ERROR_NONE;
 	} while (false);
 
+//LCOV_EXCL_START
 	maps_plugin_info_destroy(*cloned);
 	*cloned = NULL;
 	return error;
+//LCOV_EXCL_STOP
 }
 
 /*----------------------------------------------------------------------------*/
