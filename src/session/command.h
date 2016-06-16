@@ -35,6 +35,7 @@ typedef enum _command_type_e {
 
 /*----------------------------------------------------------------------------*/
 
+//LCOV_EXCL_START
 class command
 {
 	private:
@@ -148,5 +149,6 @@ class pending_request
 		int *int_dup(const int n);
 };
 }
+//LCOV_EXCL_STOP
 
 #endif				/* __MAPS_SERVICE_SESSION_COMMAND_H__ */

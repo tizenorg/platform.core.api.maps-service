@@ -30,8 +30,10 @@ maps_view_object_h view::marker_constructor::construct(maps_coordinates_h coordi
 	}
 
 	if ((type < MAPS_VIEW_MARKER_PIN) || (type > MAPS_VIEW_MARKER_STICKER)) {
+//LCOV_EXCL_START
 		__error = MAPS_ERROR_INVALID_PARAMETER;
 		return NULL;
+//LCOV_EXCL_STOP
 	}
 
 	__error = MAPS_ERROR_NONE;
@@ -62,7 +64,9 @@ maps_view_object_h view::marker_constructor::construct(maps_coordinates_h coordi
 		return marker;
 	} while (false);
 
+//LCOV_EXCL_START
 	/* FAILURE: Releasing objects */
 	maps_view_object_destroy(marker);
 	return NULL;
+//LCOV_EXCL_STOP
 }

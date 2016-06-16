@@ -19,6 +19,7 @@
 
 #include "maps_view.h"
 
+//LCOV_EXCL_START
 namespace view
 {
 	class inertial_camera {
@@ -74,5 +75,6 @@ namespace view
 		void set_cur_state();
 	};
 };
+//LCOV_EXCL_STOP
 
 #endif /* __MAPS_VIEW_INERTIAL_CAMERA_H__ */

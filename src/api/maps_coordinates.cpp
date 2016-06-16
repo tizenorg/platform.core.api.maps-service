@@ -36,8 +36,10 @@ EXPORT_API int maps_coordinates_create(const double latitude,
 
 	maps_coordinates_s *coord = g_new0(maps_coordinates_s, 1);
 	if (coord == NULL) {
+		//LCOV_EXCL_START
 		MAPS_LOGE("OUT_OF_MEMORY(0x%08x)", MAPS_ERROR_OUT_OF_MEMORY);
 		return MAPS_ERROR_OUT_OF_MEMORY;
+		//LCOV_EXCL_STOP
 	}
 	coord->latitude = latitude;
 	coord->longitude = longitude;
@@ -71,9 +73,11 @@ EXPORT_API int maps_coordinates_clone(const maps_coordinates_h origin,
 			break;
 		return MAPS_ERROR_NONE;
 	} while (false);
+//LCOV_EXCL_START
 	maps_coordinates_destroy(*cloned);
 	*cloned = NULL;
 	return error;
+//LCOV_EXCL_STOP
 }
 
 /*----------------------------------------------------------------------------*/
@@ -175,7 +179,7 @@ static void _free_coordinates(gpointer data)
 	maps_coordinates_s *coordinates = (maps_coordinates_s *) data;
 	ret = maps_coordinates_destroy(coordinates);
 	if (ret) {
-		MAPS_LOGI("Failed to maps_coordinates_destroy!!!");
+		MAPS_LOGI("Failed to maps_coordinates_destroy!!!");	//LCOV_EXCL_LINE
 	}
 }
 

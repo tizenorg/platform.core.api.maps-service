@@ -28,6 +28,7 @@ extern void _maps_view_set_idle_listener(maps_view_h view,
 
 extern void _maps_view_halt_inertial_camera(maps_view_h view);
 
+//LCOV_EXCL_START
 view::inertial_gesture::inertial_gesture(maps_view_h view)
 	: gesture_detector(view)
 	  , _d(NULL)
@@ -244,3 +245,4 @@ void view::inertial_gesture::reset()
 		transiting_start[i] = 0;
 	}
 }
+//LCOV_EXCL_STOP

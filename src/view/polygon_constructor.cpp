@@ -28,8 +28,10 @@ maps_view_object_h view::polygon_constructor::construct(const maps_coordinates_l
 						  const unsigned char a)
 {
 	if (!coordinates) {
+//LCOV_EXCL_START
 		__error = MAPS_ERROR_INVALID_PARAMETER;
 		return NULL;
+//LCOV_EXCL_STOP
 	}
 
 	__error = MAPS_ERROR_NONE;
@@ -62,7 +64,9 @@ maps_view_object_h view::polygon_constructor::construct(const maps_coordinates_l
 		return polygon;
 	} while (false);
 
+//LCOV_EXCL_START
 	/* FAILURE: Releasing objects */
 	maps_view_object_destroy(polygon);
 	return NULL;
+//LCOV_EXCL_STOP
 }
