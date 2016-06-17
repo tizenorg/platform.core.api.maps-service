@@ -123,6 +123,7 @@ const gsize _MAPS_VIEW_LANGUAGE_MAX_LENGTH = 16;
 /* ---------------------------------------------------------------------------*/
 
 extern plugin::plugin_s *__extract_plugin(maps_service_h maps);
+extern bool _is_internet_feature_supported(void);
 extern int _maps_view_event_data_set_type(const maps_view_event_data_h event, maps_view_event_type_e event_type);
 extern int _maps_view_event_data_set_gesture_type(const maps_view_event_data_h event, maps_view_gesture_e gesture_type);
 extern int _maps_view_event_data_set_action_type(const maps_view_event_data_h event, maps_view_action_e action_type);
@@ -743,6 +744,10 @@ static int __maps_view_set_center(maps_view_h view, maps_coordinates_h coordinat
 
 EXPORT_API int maps_view_set_center(maps_view_h view, maps_coordinates_h coordinates)
 {
+	/* Check if internet feature is supported */
+	if (!_is_internet_feature_supported())
+		return MAPS_ERROR_NOT_SUPPORTED;
+
 	return __maps_view_set_center(view, coordinates, FALSE);
 }
 
@@ -774,6 +779,10 @@ EXPORT_API int maps_view_set_scalebar_enabled(const maps_view_h view, bool enabl
 	if (!view)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
+	/* Check if internet feature is supported */
+	if (!_is_internet_feature_supported())
+		return MAPS_ERROR_NOT_SUPPORTED;
+
 	return __get_plugin_interface(view)->maps_plugin_set_scalebar(view, enable);
 }
 
@@ -797,6 +806,10 @@ EXPORT_API int maps_view_set_zoom_level(maps_view_h view, int level)
 {
 	if (!view)
 		return MAPS_ERROR_INVALID_PARAMETER;
+
+	/* Check if internet feature is supported */
+	if (!_is_internet_feature_supported())
+		return MAPS_ERROR_NOT_SUPPORTED;
 
 	maps_view_s *v = (maps_view_s *) view;
 	int new_level = level;
@@ -982,6 +995,10 @@ EXPORT_API int maps_view_set_orientation(maps_view_h view, double angle)
 	if (!view)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
+	/* Check if internet feature is supported */
+	if (!_is_internet_feature_supported())
+		return MAPS_ERROR_NOT_SUPPORTED;
+
 	/* Add inertia to the rotation process */
 	maps_view_s *v = (maps_view_s *)view;
 	if (v->inertial_camera)
@@ -1041,6 +1058,11 @@ EXPORT_API int maps_view_set_type(maps_view_h view, maps_view_type_e type)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	if ((type < MAPS_VIEW_TYPE_NORMAL) || (type > MAPS_VIEW_TYPE_HYBRID))
 		return MAPS_ERROR_INVALID_PARAMETER;
+
+	/* Check if internet feature is supported */
+	if (!_is_internet_feature_supported())
+		return MAPS_ERROR_NOT_SUPPORTED;
+
 	maps_view_s *v = (maps_view_s *) view;
 	v->type = type;
 	return maps_view_set_center(view, v->center);
@@ -1059,6 +1081,11 @@ EXPORT_API int maps_view_set_buildings_enabled(maps_view_h view, bool enabled)
 {
 	if (!view)
 		return MAPS_ERROR_INVALID_PARAMETER;
+
+	/* Check if internet feature is supported */
+	if (!_is_internet_feature_supported())
+		return MAPS_ERROR_NOT_SUPPORTED;
+
 	maps_view_s *v = (maps_view_s *) view;
 	v->buildings_enabled = enabled;
 	return maps_view_set_center(view, v->center);
@@ -1077,6 +1104,11 @@ EXPORT_API int maps_view_set_traffic_enabled(maps_view_h view, bool enabled)
 {
 	if (!view)
 		return MAPS_ERROR_INVALID_PARAMETER;
+
+	/* Check if internet feature is supported */
+	if (!_is_internet_feature_supported())
+		return MAPS_ERROR_NOT_SUPPORTED;
+
 	maps_view_s *v = (maps_view_s *) view;
 	v->traffic_enabled = enabled;
 	return maps_view_set_center(view, v->center);
@@ -1095,6 +1127,11 @@ EXPORT_API int maps_view_set_public_transit_enabled(maps_view_h view, bool enabl
 {
 	if (!view)
 		return MAPS_ERROR_INVALID_PARAMETER;
+
+	/* Check if internet feature is supported */
+	if (!_is_internet_feature_supported())
+		return MAPS_ERROR_NOT_SUPPORTED;
+
 	maps_view_s *v = (maps_view_s *) view;
 	v->public_transit_enabled = enabled;
 	return maps_view_set_center(view, v->center);
@@ -1176,6 +1213,10 @@ EXPORT_API int maps_view_set_language(maps_view_h view, const char *language)
 	if (!view || !language)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
+	/* Check if internet feature is supported */
+	if (!_is_internet_feature_supported())
+		return MAPS_ERROR_NOT_SUPPORTED;
+
 	/* Check if language is supported */
 	static const char *lngs[] = {
 		"ara",
@@ -1252,6 +1293,11 @@ EXPORT_API int maps_view_set_screen_location(maps_view_h view, int x, int y, int
 {
 	if (!view)
 		return MAPS_ERROR_INVALID_PARAMETER;
+
+	/* Check if internet feature is supported */
+	if (!_is_internet_feature_supported())
+		return MAPS_ERROR_NOT_SUPPORTED;
+
 	int error = maps_view_move(view, x, y);
 	if (error == MAPS_ERROR_NONE)
 		error = maps_view_resize(view, width, height);
@@ -1271,6 +1317,11 @@ EXPORT_API int maps_view_move(maps_view_h view, int x, int y)
 {
 	if (!view)
 		return MAPS_ERROR_INVALID_PARAMETER;
+
+	/* Check if internet feature is supported */
+	if (!_is_internet_feature_supported())
+		return MAPS_ERROR_NOT_SUPPORTED;
+
 	maps_view_s *v = (maps_view_s *) view;
 	evas_object_move(v->panel, x, y);
 	evas_object_move(v->clipper, x, y);
