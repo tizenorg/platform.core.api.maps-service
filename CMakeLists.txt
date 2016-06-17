@@ -22,6 +22,7 @@ SET(dependents
 	gmodule-2.0
 	capi-base-common
 	dlog
+	capi-system-info
 
 	# Mapping API dependencies
 	eina
