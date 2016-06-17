@@ -13,6 +13,7 @@ BuildRequires:  pkgconfig(glib-2.0)
 BuildRequires:  pkgconfig(gmodule-2.0)
 BuildRequires:  pkgconfig(capi-base-common)
 BuildRequires:  pkgconfig(dlog)
+BuildRequires:  pkgconfig(capi-system-info)
 
 # Mapping API dependencies
 BuildRequires:  pkgconfig(eina)

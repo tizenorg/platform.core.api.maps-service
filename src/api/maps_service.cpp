@@ -16,6 +16,7 @@
 
 #include <glib.h>
 #include <unistd.h>
+#include <system_info.h>
 #include "maps_service.h"
 #include "maps_error.h"
 #include "maps_service.h"
@@ -54,6 +55,47 @@ static bool __maps_provider_supported(maps_service_h maps, maps_service_e servic
 		!= MAPS_ERROR_NONE)
 		return false;
 	return supported;
+}
+
+bool _is_internet_feature_supported(void)
+{
+	static bool __is_checked = false;
+	static bool __is_supported = true;
+
+	if (!__is_checked) {
+		char *profile = NULL;
+		int ret = system_info_get_platform_string("http://tizen.org/feature/profile", &profile);
+		if (ret == SYSTEM_INFO_ERROR_NONE && profile && *profile) {
+			MAPS_LOGD("profile : %s", profile);
+
+			/* if wearable, check internet feature in addition */
+			if (!strcmp("wearable", profile)) {
+				ret = system_info_get_platform_bool("http://tizen.org/feature/network.internet", &__is_supported);
+				MAPS_LOGD("internet feature supported : %d", __is_supported);
+			}
+			g_free(profile);
+
+			/* set the flag which means feature checked */
+			__is_checked = (ret == SYSTEM_INFO_ERROR_NONE);
+		}
+ 	}
+
+	return __is_supported;
+/*
+	if (!is_checked_profile
+
+	bool is_supported = false;
+	int retval = 0;
+	retval = system_info_get_platform_bool("http://tizen.org/feature/network.internet", &is_supported);
+	if (retval != SYSTEM_INFO_ERROR_NONE)
+		MAPS_LOGE("SYSTEM_INFO_ERROR: network.internet (%d)", retval);
+MAPS_LOGD("is_supported=%d", is_supported);
+	return is_supported;
+#else
+MAPS_LOGD("is_supported=true");
+	return true;
+#endif
+*/
 }
 
 static bool __has_maps_service_privilege()
@@ -270,6 +312,10 @@ EXPORT_API int maps_service_geocode(const maps_service_h maps,
 	if (!address || !callback || !request_id)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
+	/* Check if internet feature is supported */
+	if (!_is_internet_feature_supported())
+		return MAPS_ERROR_NOT_SUPPORTED;
+
 	/* Check if privileges enough */
 	if (!__has_maps_service_privilege())
 		return MAPS_ERROR_PERMISSION_DENIED;
@@ -302,6 +348,10 @@ EXPORT_API int maps_service_geocode_inside_area(const maps_service_h maps,
 	if (!address || !bounds || !callback || !request_id)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
+	/* Check if internet feature is supported */
+	if (!_is_internet_feature_supported())
+		return MAPS_ERROR_NOT_SUPPORTED;
+
 	/* Check if privileges enough */
 	if (!__has_maps_service_privilege())
 		return MAPS_ERROR_PERMISSION_DENIED;
@@ -333,6 +383,10 @@ EXPORT_API int maps_service_geocode_by_structured_address(const maps_service_h m
 	if (!address || !callback || !request_id)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
+	/* Check if internet feature is supported */
+	if (!_is_internet_feature_supported())
+		return MAPS_ERROR_NOT_SUPPORTED;
+
 	/* Check if privileges enough */
 	if (!__has_maps_service_privilege())
 		return MAPS_ERROR_PERMISSION_DENIED;
@@ -363,10 +417,14 @@ EXPORT_API int maps_service_reverse_geocode(const maps_service_h maps,
 	/* Check if parameters are valid */
 	if (!callback || !request_id)
 		return MAPS_ERROR_INVALID_PARAMETER;
-	if (latitude <= -90 && latitude >= 90)
+	if (latitude <= -90 || latitude >= 90)
 		return MAPS_ERROR_INVALID_PARAMETER;
-	if (longitude <= -180 && longitude >= 180)
+	if (longitude <= -180 || longitude >= 180)
 		return MAPS_ERROR_INVALID_PARAMETER;
+
+	/* Check if internet feature is supported */
+	if (!_is_internet_feature_supported())
+		return MAPS_ERROR_NOT_SUPPORTED;
 
 	/* Check if privileges enough */
 	if (!__has_maps_service_privilege())
@@ -401,8 +459,12 @@ EXPORT_API int maps_service_search_place(const maps_service_h maps,
 		return MAPS_ERROR_NOT_SUPPORTED;
 
 	/* Check if parameters are valid */
-	if (!position || !filter || !callback || !request_id)
+	if (!position || (distance < 0) || !filter || !callback || !request_id)
 		return MAPS_ERROR_INVALID_PARAMETER;
+
+	/* Check if internet feature is supported */
+	if (!_is_internet_feature_supported())
+		return MAPS_ERROR_NOT_SUPPORTED;
 
 	/* Check if privileges enough */
 	if (!__has_maps_service_privilege())
@@ -436,6 +498,10 @@ EXPORT_API int maps_service_search_place_by_area(const maps_service_h maps,
 	/* Check if parameters are valid */
 	if (!boundary || !filter || !callback || !request_id)
 		return MAPS_ERROR_INVALID_PARAMETER;
+
+	/* Check if internet feature is supported */
+	if (!_is_internet_feature_supported())
+		return MAPS_ERROR_NOT_SUPPORTED;
 
 	/* Check if privileges enough */
 	if (!__has_maps_service_privilege())
@@ -471,6 +537,10 @@ EXPORT_API int maps_service_search_place_by_address(const maps_service_h maps,
 	if (!address || !boundary || !filter || !callback || !request_id)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
+	/* Check if internet feature is supported */
+	if (!_is_internet_feature_supported())
+		return MAPS_ERROR_NOT_SUPPORTED;
+
 	/* Check if privileges enough */
 	if (!__has_maps_service_privilege())
 		return MAPS_ERROR_PERMISSION_DENIED;
@@ -499,6 +569,10 @@ EXPORT_API int maps_service_search_place_list(const maps_service_h maps,
 	if (!boundary || !filter || !callback || !request_id)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
+	/* Check if internet feature is supported */
+	if (!_is_internet_feature_supported())
+		return MAPS_ERROR_NOT_SUPPORTED;
+
 	if (!__has_maps_service_privilege())
 		return MAPS_ERROR_PERMISSION_DENIED;
 
@@ -522,6 +596,10 @@ EXPORT_API int maps_service_get_place_details(const maps_service_h maps,
 
 	if (!url || !callback || !request_id)
 		return MAPS_ERROR_INVALID_PARAMETER;
+
+	/* Check if internet feature is supported */
+	if (!_is_internet_feature_supported())
+		return MAPS_ERROR_NOT_SUPPORTED;
 
 	if (!__has_maps_service_privilege())
 		return MAPS_ERROR_PERMISSION_DENIED;
@@ -557,6 +635,10 @@ EXPORT_API int maps_service_search_route(const maps_service_h maps,
 	if (!origin || !destination || !callback || !request_id)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
+	/* Check if internet feature is supported */
+	if (!_is_internet_feature_supported())
+		return MAPS_ERROR_NOT_SUPPORTED;
+
 	/* Check if privileges enough */
 	if (!__has_maps_service_privilege())
 		return MAPS_ERROR_PERMISSION_DENIED;
@@ -589,6 +671,10 @@ EXPORT_API int maps_service_search_route_waypoints(const maps_service_h maps,
 	/* Check if parameters are valid */
 	if (!waypoint_list || (waypoint_num < 2) || !callback || !request_id)
 		return MAPS_ERROR_INVALID_PARAMETER;
+
+	/* Check if internet feature is supported */
+	if (!_is_internet_feature_supported())
+		return MAPS_ERROR_NOT_SUPPORTED;
 
 	/* Check if privileges enough */
 	if (!__has_maps_service_privilege())
@@ -647,6 +733,10 @@ EXPORT_API int maps_service_multi_reverse_geocode(const maps_service_h maps,
 
 	if (!coordinates_list || !callback || !request_id)
 		return MAPS_ERROR_INVALID_PARAMETER;
+
+	/* Check if internet feature is supported */
+	if (!_is_internet_feature_supported())
+		return MAPS_ERROR_NOT_SUPPORTED;
 
 	if (!__has_maps_service_privilege())
 		return MAPS_ERROR_PERMISSION_DENIED;
