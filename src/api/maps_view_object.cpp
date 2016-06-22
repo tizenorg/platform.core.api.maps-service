@@ -1174,6 +1174,9 @@ static bool __maps_view_object_overlay_set_visible(maps_view_object_h overlay)
 		return false;
 
 	maps_view_overlay_data_s *m = __get_overlay_data(overlay);
+	if (!m)
+		return false;
+
 	maps_view_object_s *o = (maps_view_object_s *)overlay;
 	if (o->visible) {
 		int zoom;
