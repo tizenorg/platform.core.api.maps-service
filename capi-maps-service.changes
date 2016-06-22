@@ -1,3 +1,8 @@
+[Version]   capi-maps-service_0.6.2
+[Date]      22 June 2016
+[Title]     added to check network.internet feature of wearable target
+[Developer] Seechan Kim <cbible.kim@samsung.com>
+
 [Version]   capi-maps-service_0.6.1
 [Date]      07 June 2016
 [Title]     modified internal APIs for plug-in
