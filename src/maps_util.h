@@ -127,13 +127,15 @@ public:
 	void push_back(const T &value)
 	{
 		T *clone = new T(value);
-		g_array_append_val(parray, clone);
-		current_size++;
+		if (clone) {
+			g_array_append_val(parray, clone);
+			current_size++;
+		}
 	}
 	T &operator[](size_t idx) const
 	{
 		T *item = g_array_index(parray, T *, idx);
-		 return *item;
+		return *item;
 	}
 	unsigned int size() const
 	{
