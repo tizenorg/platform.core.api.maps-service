@@ -1210,6 +1210,8 @@ static bool __maps_view_object_overlay_clip(maps_view_object_h overlay, Evas_Obj
 	int x, y, w, h;
 	maps_view_get_screen_location(__get_view(overlay), &x, &y, &w, &h);
 	maps_view_overlay_data_s *m = __get_overlay_data(overlay);
+	if (!m)
+		return false;
 	evas_object_color_set(clipper, 255, 255, 255, 255);
 	evas_object_move(clipper, x, y);
 	evas_object_resize(clipper, w, h);
@@ -1230,6 +1232,8 @@ static bool __maps_view_object_overlay_move(maps_view_object_h overlay, maps_coo
 	int x, y, w, h;
 	maps_view_geolocation_to_screen(__get_view(overlay), coordinates, &x, &y);
 	maps_view_overlay_data_s *m = __get_overlay_data(overlay);
+	if (!m)
+		return false;
 	evas_object_geometry_get(m->object, NULL, NULL, &w, &h);
 
 	x -= w / 2;

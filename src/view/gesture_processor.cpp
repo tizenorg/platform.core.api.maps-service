@@ -225,12 +225,15 @@ session::command *view::gesture_processor::construct_gesture_command(
 			rotation_angle -= (int(rotation_angle) / 360) * 360;
 			return new session::command_view_rotate(get_maps(), _gd->_view, rotation_angle);
 		}
+		break;
 	}
 	case MAPS_VIEW_ACTION_NONE:
 		MAPS_LOGI("GESTURE: This Gesture is assigned with no Action");
+		break;
 	default:
-		return session::command::empty_ptr();
+		break;
 	}
+	return session::command::empty_ptr();
 }
 
 void view::gesture_processor::on_long_press()
