@@ -31,8 +31,19 @@ SET(dependents
 	cairo
 	elementary
 	capi-media-image-util
+)
+
+IF(${TIZEN_VER} LESS 300)
+	SET(dependents
+		${dependents}
+		# Privilege check
+		capi-appfw-app-manager
+		pkgmgr-info
+		capi-security-privilege-manager
 	)
-SET(pc_dependents "capi-base-common")
+ENDIF(${TIZEN_VER} LESS 300)
+
+SET(pc_dependents "capi-base-common evas")
 
 INCLUDE(FindPkgConfig)
 pkg_check_modules(${fw_name} REQUIRED ${dependents})
@@ -40,11 +51,9 @@ FOREACH(flag ${${fw_name}_CFLAGS})
 	SET(EXTRA_CFLAGS "${EXTRA_CFLAGS} ${flag}")
 ENDFOREACH(flag)
 
-#SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${EXTRA_CFLAGS} -fPIC -Wall -Werror -g -fdump-rtl-expand")
 SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${EXTRA_CFLAGS} -fPIC -Wall -Werror -fvisibility=hidden -fvisibility-inlines-hidden")
 SET(CMAKE_C_FLAGS_DEBUG "-O0 -g")
 
-#SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${EXTRA_CFLAGS} -fPIC -Wall -Werror -g -fPIC -fdump-rtl-expand -std=c++0x")
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${EXTRA_CFLAGS} -fPIC -Wall -Werror -fvisibility=hidden")
 SET(CMAKE_CXX_FLAGS_DEBUG "-O0 -g")
 
@@ -52,6 +61,11 @@ IF("${ARCH}" STREQUAL "arm")
 	ADD_DEFINITIONS("-DTARGET")
 ENDIF("${ARCH}" STREQUAL "arm")
 
+IF("${PROFILE}" STREQUAL "wearable")
+	ADD_DEFINITIONS("-DTIZEN_WEARABLE")
+ENDIF("${PROFILE}" STREQUAL "wearable")
+
+ADD_DEFINITIONS("-DTIZEN_VER=${TIZEN_VER}")
 ADD_DEFINITIONS("-DPREFIX=\"${CMAKE_INSTALL_PREFIX}\"")
 ADD_DEFINITIONS("-DEXPORT_API=__attribute__((visibility(\"default\")))")
 #ADD_DEFINITIONS("-DTIZEN_DEBUG")
@@ -72,7 +86,7 @@ SET_TARGET_PROPERTIES(${fw_name}
 	VERSION ${FULLVER}
 	SOVERSION ${MAJORVER}
 	CLEAN_DIRECT_OUTPUT 1
-	)
+)
 
 INSTALL(TARGETS ${fw_name} DESTINATION ${LIBDIR})
 INSTALL(
@@ -81,7 +95,7 @@ INSTALL(
 	# *_plugin.h" are needed by plugin
 	#        PATTERN "*_plugin.h" EXCLUDE
 	PATTERN "${INC_DIR}/*.h"
-	)
+)
 
 SET(PC_NAME ${fw_name})
 SET(PC_DESCRIPTION "Tizen Maps Library")
@@ -93,5 +107,5 @@ CONFIGURE_FILE(
 	${fw_name}.pc.in
 	${CMAKE_CURRENT_SOURCE_DIR}/${fw_name}.pc
 	@ONLY
-	)
+)
 INSTALL(FILES ${CMAKE_CURRENT_SOURCE_DIR}/${fw_name}.pc DESTINATION ${LIBDIR}/pkgconfig)

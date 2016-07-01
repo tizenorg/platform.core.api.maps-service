@@ -35,6 +35,7 @@
 #include "inertial_gesture.h"
 #include "gesture_detector_statemachine.h"
 #include "maps_view_event_data.h"
+#include "maps_condition.h"
 
 /*
  * The structure of callbacks info, Maps View is invoking during events
@@ -123,7 +124,6 @@ const gsize _MAPS_VIEW_LANGUAGE_MAX_LENGTH = 16;
 /* ---------------------------------------------------------------------------*/
 
 extern plugin::plugin_s *__extract_plugin(maps_service_h maps);
-extern bool _is_internet_feature_supported(void);
 extern int _maps_view_event_data_set_type(const maps_view_event_data_h event, maps_view_event_type_e event_type);
 extern int _maps_view_event_data_set_gesture_type(const maps_view_event_data_h event, maps_view_gesture_e gesture_type);
 extern int _maps_view_event_data_set_action_type(const maps_view_event_data_h event, maps_view_action_e action_type);
@@ -488,8 +488,13 @@ static void __maps_view_create_panel(maps_view_h view, Evas_Object *obj)
 /* Create the panel and link it to the instance of Maps Service */
 EXPORT_API int maps_view_create(maps_service_h maps, Evas_Object *obj, maps_view_h *view)
 {
+	/* Check if parameters are valid */
 	if (!maps || !obj || !view)
 		return MAPS_ERROR_INVALID_PARAMETER;
+
+	/* Check if privileges enough */
+	if (!maps_condition_check_privilege())
+		return MAPS_ERROR_PERMISSION_DENIED;
 
 	maps_view_s *v = g_slice_new0(maps_view_s);
 	if (!v) {
@@ -600,8 +605,13 @@ EXPORT_API int maps_view_create(maps_service_h maps, Evas_Object *obj, maps_view
 /* Destroy the panel and unlink it from the instance of Maps Service */
 EXPORT_API int maps_view_destroy(maps_view_h view)
 {
+	/* Check if parameters are valid */
 	if (!view)
 		return MAPS_ERROR_INVALID_PARAMETER;
+
+	/* Check if privileges enough */
+	if (!maps_condition_check_privilege())
+		return MAPS_ERROR_PERMISSION_DENIED;
 
 	maps_view_s *v = (maps_view_s *) view;
 
@@ -745,11 +755,16 @@ static int __maps_view_set_center(maps_view_h view, maps_coordinates_h coordinat
 EXPORT_API int maps_view_set_center(maps_view_h view, maps_coordinates_h coordinates)
 {
 	/* Check if internet feature is supported */
-	if (!_is_internet_feature_supported())
+	if (!maps_condition_check_feature())
 		return MAPS_ERROR_NOT_SUPPORTED;
 
+	/* Check if parameters are valid */
 	if (!view || !coordinates)
 		return MAPS_ERROR_INVALID_PARAMETER;
+
+	/* Check if privileges enough */
+	if (!maps_condition_check_privilege())
+		return MAPS_ERROR_PERMISSION_DENIED;
 
 	return __maps_view_set_center(view, coordinates, FALSE);
 }
@@ -780,11 +795,16 @@ int _maps_view_move_center(maps_view_h view, const int delta_x, const int delta_
 EXPORT_API int maps_view_set_scalebar_enabled(const maps_view_h view, bool enable)
 {
 	/* Check if internet feature is supported */
-	if (!_is_internet_feature_supported())
+	if (!maps_condition_check_feature())
 		return MAPS_ERROR_NOT_SUPPORTED;
 
+	/* Check if parameters are valid */
 	if (!view)
 		return MAPS_ERROR_INVALID_PARAMETER;
+
+	/* Check if privileges enough */
+	if (!maps_condition_check_privilege())
+		return MAPS_ERROR_PERMISSION_DENIED;
 
 	return __get_plugin_interface(view)->maps_plugin_set_scalebar(view, enable);
 }
@@ -808,11 +828,16 @@ EXPORT_API int maps_view_get_center(const maps_view_h view, maps_coordinates_h *
 EXPORT_API int maps_view_set_zoom_level(maps_view_h view, int level)
 {
 	/* Check if internet feature is supported */
-	if (!_is_internet_feature_supported())
+	if (!maps_condition_check_feature())
 		return MAPS_ERROR_NOT_SUPPORTED;
 
+	/* Check if parameters are valid */
 	if (!view)
 		return MAPS_ERROR_INVALID_PARAMETER;
+
+	/* Check if privileges enough */
+	if (!maps_condition_check_privilege())
+		return MAPS_ERROR_PERMISSION_DENIED;
 
 	maps_view_s *v = (maps_view_s *) view;
 	int new_level = level;
@@ -852,8 +877,14 @@ EXPORT_API int maps_view_get_zoom_level(const maps_view_h view, int *level)
 
 EXPORT_API int maps_view_set_min_zoom_level(maps_view_h view, int level)
 {
+	/* Check if parameters are valid */
 	if (!view)
 		return MAPS_ERROR_INVALID_PARAMETER;
+
+	/* Check if privileges enough */
+	if (!maps_condition_check_privilege())
+		return MAPS_ERROR_PERMISSION_DENIED;
+
 	maps_view_s *v = (maps_view_s *) view;
 	int min_zoom_level = -1;
 	__get_plugin_interface(v)->maps_plugin_get_min_zoom_level(view, &min_zoom_level);
@@ -878,8 +909,14 @@ EXPORT_API int maps_view_get_min_zoom_level(const maps_view_h view, int *min_zoo
 
 EXPORT_API int maps_view_set_max_zoom_level(maps_view_h view, int level)
 {
+	/* Check if parameters are valid */
 	if (!view)
 		return MAPS_ERROR_INVALID_PARAMETER;
+
+	/* Check if privileges enough */
+	if (!maps_condition_check_privilege())
+		return MAPS_ERROR_PERMISSION_DENIED;
+
 	maps_view_s *v = (maps_view_s *) view;
 	int max_zoom_level = -1;
 	__get_plugin_interface(v)->maps_plugin_get_max_zoom_level(view, &max_zoom_level);
@@ -996,11 +1033,16 @@ EXPORT_API int maps_view_get_zoom_factor(const maps_view_h view, double *factor)
 EXPORT_API int maps_view_set_orientation(maps_view_h view, double angle)
 {
 	/* Check if internet feature is supported */
-	if (!_is_internet_feature_supported())
+	if (!maps_condition_check_feature())
 		return MAPS_ERROR_NOT_SUPPORTED;
 
+	/* Check if parameters are valid */
 	if (!view)
 		return MAPS_ERROR_INVALID_PARAMETER;
+
+	/* Check if privileges enough */
+	if (!maps_condition_check_privilege())
+		return MAPS_ERROR_PERMISSION_DENIED;
 
 	/* Add inertia to the rotation process */
 	maps_view_s *v = (maps_view_s *)view;
@@ -1027,8 +1069,14 @@ EXPORT_API int maps_view_get_orientation(const maps_view_h view, double *angle)
 EXPORT_API int maps_view_screen_to_geolocation(maps_view_h view,
 	int x, int y, maps_coordinates_h *coordinates)
 {
+	/* Check if parameters are valid */
 	if (!view || !coordinates)
 		return MAPS_ERROR_INVALID_PARAMETER;
+
+	/* Check if privileges enough */
+	if (!maps_condition_check_privilege())
+		return MAPS_ERROR_PERMISSION_DENIED;
+
 	int posx = 0;
 	int posy = 0;
 	maps_view_get_screen_location(view, &posx, &posy, NULL, NULL);
@@ -1039,8 +1087,14 @@ EXPORT_API int maps_view_screen_to_geolocation(maps_view_h view,
 EXPORT_API int maps_view_geolocation_to_screen(const maps_view_h view,
 	const maps_coordinates_h coordinates, int *x, int *y)
 {
+	/* Check if parameters are valid */
 	if (!view || !coordinates || !x || !y)
 		return MAPS_ERROR_INVALID_PARAMETER;
+
+	/* Check if privileges enough */
+	if (!maps_condition_check_privilege())
+		return MAPS_ERROR_PERMISSION_DENIED;
+
 	int posx = 0;
 	int posy = 0;
 	maps_view_get_screen_location(view, &posx, &posy, NULL, NULL);
@@ -1058,13 +1112,18 @@ EXPORT_API int maps_view_geolocation_to_screen(const maps_view_h view,
 EXPORT_API int maps_view_set_type(maps_view_h view, maps_view_type_e type)
 {
 	/* Check if internet feature is supported */
-	if (!_is_internet_feature_supported())
+	if (!maps_condition_check_feature())
 		return MAPS_ERROR_NOT_SUPPORTED;
 
+	/* Check if parameters are valid */
 	if (!view)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	if ((type < MAPS_VIEW_TYPE_NORMAL) || (type > MAPS_VIEW_TYPE_HYBRID))
 		return MAPS_ERROR_INVALID_PARAMETER;
+
+	/* Check if privileges enough */
+	if (!maps_condition_check_privilege())
+		return MAPS_ERROR_PERMISSION_DENIED;
 
 	maps_view_s *v = (maps_view_s *) view;
 	v->type = type;
@@ -1083,11 +1142,16 @@ EXPORT_API int maps_view_get_type(const maps_view_h view, maps_view_type_e *type
 EXPORT_API int maps_view_set_buildings_enabled(maps_view_h view, bool enabled)
 {
 	/* Check if internet feature is supported */
-	if (!_is_internet_feature_supported())
+	if (!maps_condition_check_feature())
 		return MAPS_ERROR_NOT_SUPPORTED;
 
+	/* Check if parameters are valid */
 	if (!view)
 		return MAPS_ERROR_INVALID_PARAMETER;
+
+	/* Check if privileges enough */
+	if (!maps_condition_check_privilege())
+		return MAPS_ERROR_PERMISSION_DENIED;
 
 	maps_view_s *v = (maps_view_s *) view;
 	v->buildings_enabled = enabled;
@@ -1106,11 +1170,16 @@ EXPORT_API int maps_view_get_buildings_enabled(const maps_view_h view, bool *ena
 EXPORT_API int maps_view_set_traffic_enabled(maps_view_h view, bool enabled)
 {
 	/* Check if internet feature is supported */
-	if (!_is_internet_feature_supported())
+	if (!maps_condition_check_feature())
 		return MAPS_ERROR_NOT_SUPPORTED;
 
+	/* Check if parameters are valid */
 	if (!view)
 		return MAPS_ERROR_INVALID_PARAMETER;
+
+	/* Check if privileges enough */
+	if (!maps_condition_check_privilege())
+		return MAPS_ERROR_PERMISSION_DENIED;
 
 	maps_view_s *v = (maps_view_s *) view;
 	v->traffic_enabled = enabled;
@@ -1129,11 +1198,16 @@ EXPORT_API int maps_view_get_traffic_enabled(const maps_view_h view, bool *enabl
 EXPORT_API int maps_view_set_public_transit_enabled(maps_view_h view, bool enabled)
 {
 	/* Check if internet feature is supported */
-	if (!_is_internet_feature_supported())
+	if (!maps_condition_check_feature())
 		return MAPS_ERROR_NOT_SUPPORTED;
 
+	/* Check if parameters are valid */
 	if (!view)
 		return MAPS_ERROR_INVALID_PARAMETER;
+
+	/* Check if privileges enough */
+	if (!maps_condition_check_privilege())
+		return MAPS_ERROR_PERMISSION_DENIED;
 
 	maps_view_s *v = (maps_view_s *) view;
 	v->public_transit_enabled = enabled;
@@ -1214,11 +1288,16 @@ EXPORT_API int maps_view_get_inertia_enabled(maps_view_h view, bool *enabled)
 EXPORT_API int maps_view_set_language(maps_view_h view, const char *language)
 {
 	/* Check if internet feature is supported */
-	if (!_is_internet_feature_supported())
+	if (!maps_condition_check_feature())
 		return MAPS_ERROR_NOT_SUPPORTED;
 
+	/* Check if parameters are valid */
 	if (!view || !language)
 		return MAPS_ERROR_INVALID_PARAMETER;
+
+	/* Check if privileges enough */
+	if (!maps_condition_check_privilege())
+		return MAPS_ERROR_PERMISSION_DENIED;
 
 	/* Check if language is supported */
 	static const char *lngs[] = {
@@ -1295,11 +1374,16 @@ int _maps_view_get_clipper(const maps_view_h view, Evas_Object **clipper)
 EXPORT_API int maps_view_set_screen_location(maps_view_h view, int x, int y, int width, int height)
 {
 	/* Check if internet feature is supported */
-	if (!_is_internet_feature_supported())
+	if (!maps_condition_check_feature())
 		return MAPS_ERROR_NOT_SUPPORTED;
 
+	/* Check if parameters are valid */
 	if (!view)
 		return MAPS_ERROR_INVALID_PARAMETER;
+
+	/* Check if privileges enough */
+	if (!maps_condition_check_privilege())
+		return MAPS_ERROR_PERMISSION_DENIED;
 
 	int error = maps_view_move(view, x, y);
 	if (error == MAPS_ERROR_NONE)
@@ -1319,7 +1403,7 @@ EXPORT_API int maps_view_get_screen_location(const maps_view_h view, int *x, int
 EXPORT_API int maps_view_move(maps_view_h view, int x, int y)
 {
 	/* Check if internet feature is supported */
-	if (!_is_internet_feature_supported())
+	if (!maps_condition_check_feature())
 		return MAPS_ERROR_NOT_SUPPORTED;
 
 	if (!view)
@@ -1334,11 +1418,16 @@ EXPORT_API int maps_view_move(maps_view_h view, int x, int y)
 EXPORT_API int maps_view_resize(maps_view_h view, int width, int height)
 {
 	/* Check if internet feature is supported */
-	if (!_is_internet_feature_supported())
+	if (!maps_condition_check_feature())
 		return MAPS_ERROR_NOT_SUPPORTED;
 
+	/* Check if parameters are valid */
 	if (!view || (width <= 0) || (height <= 0))
 		return MAPS_ERROR_INVALID_PARAMETER;
+
+	/* Check if privileges enough */
+	if (!maps_condition_check_privilege())
+		return MAPS_ERROR_PERMISSION_DENIED;
 
 	maps_view_s *v = (maps_view_s *) view;
 	evas_object_resize(v->panel, width, height);
@@ -1439,8 +1528,13 @@ EXPORT_API int maps_view_get_gesture_enabled(const maps_view_h view, maps_view_g
 
 EXPORT_API int maps_view_add_object(maps_view_h view, maps_view_object_h object)
 {
+	/* Check if parameters are valid */
 	if (!view || !object)
 		return MAPS_ERROR_INVALID_PARAMETER;
+
+	/* Check if privileges enough */
+	if (!maps_condition_check_privilege())
+		return MAPS_ERROR_PERMISSION_DENIED;
 
 	int error = MAPS_ERROR_NONE;
 	do {
@@ -1473,8 +1567,13 @@ EXPORT_API int maps_view_add_object(maps_view_h view, maps_view_object_h object)
 
 EXPORT_API int maps_view_remove_object(maps_view_h view, maps_view_object_h object)
 {
+	/* Check if parameters are valid */
 	if (!view || !object)
 		return MAPS_ERROR_INVALID_PARAMETER;
+
+	/* Check if privileges enough */
+	if (!maps_condition_check_privilege())
+		return MAPS_ERROR_PERMISSION_DENIED;
 
 	int error = MAPS_ERROR_NONE;
 	do {
@@ -1497,8 +1596,13 @@ EXPORT_API int maps_view_remove_object(maps_view_h view, maps_view_object_h obje
 
 EXPORT_API int maps_view_remove_all_objects(maps_view_h view)
 {
+	/* Check if parameters are valid */
 	if (!view)
 		return MAPS_ERROR_INVALID_PARAMETER;
+
+	/* Check if privileges enough */
+	if (!maps_condition_check_privilege())
+		return MAPS_ERROR_PERMISSION_DENIED;
 
 	int error = MAPS_ERROR_NONE;
 	do {

@@ -15,12 +15,11 @@
  */
 
 #include <glib.h>
-#include <unistd.h> /* to check for Tizen 3.x privilege */
-#include <system_info.h>
 #include "maps_service.h"
 #include "maps_error.h"
 #include "maps_service.h"
 #include "maps_util.h"
+#include "maps_condition.h"
 
 #include "command_queue.h"
 #include "commands.h"
@@ -57,39 +56,6 @@ static bool __maps_provider_supported(maps_service_h maps, maps_service_e servic
 	return supported;
 }
 
-bool _is_internet_feature_supported(void)
-{
-	static bool __is_checked = false;
-	static bool __is_supported = true;
-
-	if (!__is_checked) {
-		char *profile = NULL;
-		int ret = system_info_get_platform_string("http://tizen.org/feature/profile", &profile);
-		if (ret == SYSTEM_INFO_ERROR_NONE && profile && *profile) {
-			MAPS_LOGD("profile : %s", profile);
-
-			/* if wearable, check internet feature in addition */
-			if (!strcmp("wearable", profile)) {
-				ret = system_info_get_platform_bool("http://tizen.org/feature/network.internet", &__is_supported);
-				MAPS_LOGD("internet feature supported : %d", __is_supported);
-			}
-			g_free(profile);
-
-			/* set the flag which means feature checked */
-			__is_checked = (ret == SYSTEM_INFO_ERROR_NONE);
-		}
- 	}
-
-	return __is_supported;
-}
-
-static bool __has_maps_service_privilege()
-{
-	/* to check for Tizen 3.x privilege */
-	extern const char *MAPS_PLUGINS_PATH_PREFIX;
-	return (access(MAPS_PLUGINS_PATH_PREFIX, F_OK) != 0) || /* not exist */
-	       (access(MAPS_PLUGINS_PATH_PREFIX, R_OK) == 0);   /* readable */
-}
 
 /*----------------------------------------------------------------------------*/
 /* */
@@ -125,7 +91,7 @@ EXPORT_API int maps_service_create(const char *maps_provider, maps_service_h *ma
 		return MAPS_ERROR_INVALID_PARAMETER;
 
 	/* Check if privileges enough */
-	if (!__has_maps_service_privilege()) {
+	if (!maps_condition_check_privilege()) {
 		MAPS_LOGD("ERROR: privilege is not included");
 		return MAPS_ERROR_PERMISSION_DENIED;
 	}
@@ -187,7 +153,7 @@ EXPORT_API int maps_service_destroy(maps_service_h maps)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
 	/* Check if privileges enough */
-	if (!__has_maps_service_privilege())
+	if (!maps_condition_check_privilege())
 		return MAPS_ERROR_PERMISSION_DENIED;
 
 	maps_service_s *maps_service = (maps_service_s *) maps;
@@ -287,7 +253,7 @@ EXPORT_API int maps_service_geocode(const maps_service_h maps,
 				    int *request_id)
 {
 	/* Check if internet feature is supported */
-	if (!_is_internet_feature_supported())
+	if (!maps_condition_check_feature())
 		return MAPS_ERROR_NOT_SUPPORTED;
 
 	/* Check if the handle of the Maps Service is valid */
@@ -303,7 +269,7 @@ EXPORT_API int maps_service_geocode(const maps_service_h maps,
 		return MAPS_ERROR_INVALID_PARAMETER;
 
 	/* Check if privileges enough */
-	if (!__has_maps_service_privilege())
+	if (!maps_condition_check_privilege())
 		return MAPS_ERROR_PERMISSION_DENIED;
 
 	session::command *cmd = new session::command_geocode(maps, address, preference,
@@ -322,7 +288,7 @@ EXPORT_API int maps_service_geocode_inside_area(const maps_service_h maps,
 						void *user_data, int *request_id)
 {
 	/* Check if internet feature is supported */
-	if (!_is_internet_feature_supported())
+	if (!maps_condition_check_feature())
 		return MAPS_ERROR_NOT_SUPPORTED;
 
 	/* Check if the handle of the Maps Service is valid */
@@ -339,7 +305,7 @@ EXPORT_API int maps_service_geocode_inside_area(const maps_service_h maps,
 		return MAPS_ERROR_INVALID_PARAMETER;
 
 	/* Check if privileges enough */
-	if (!__has_maps_service_privilege())
+	if (!maps_condition_check_privilege())
 		return MAPS_ERROR_PERMISSION_DENIED;
 
 	session::command *cmd = new session::command_geocode_inside_bounds(maps,
@@ -357,7 +323,7 @@ EXPORT_API int maps_service_geocode_by_structured_address(const maps_service_h m
 					void *user_data, int *request_id)
 {
 	/* Check if internet feature is supported */
-	if (!_is_internet_feature_supported())
+	if (!maps_condition_check_feature())
 		return MAPS_ERROR_NOT_SUPPORTED;
 
 	/* Check if the handle of the Maps Service is valid */
@@ -374,7 +340,7 @@ EXPORT_API int maps_service_geocode_by_structured_address(const maps_service_h m
 		return MAPS_ERROR_INVALID_PARAMETER;
 
 	/* Check if privileges enough */
-	if (!__has_maps_service_privilege())
+	if (!maps_condition_check_privilege())
 		return MAPS_ERROR_PERMISSION_DENIED;
 
 	session::command *cmd = new session::command_geocode_by_structured_address(maps,
@@ -393,7 +359,7 @@ EXPORT_API int maps_service_reverse_geocode(const maps_service_h maps,
 					    int *request_id)
 {
 	/* Check if internet feature is supported */
-	if (!_is_internet_feature_supported())
+	if (!maps_condition_check_feature())
 		return MAPS_ERROR_NOT_SUPPORTED;
 
 	/* Check if the handle of the Maps Service is valid */
@@ -413,7 +379,7 @@ EXPORT_API int maps_service_reverse_geocode(const maps_service_h maps,
 		return MAPS_ERROR_INVALID_PARAMETER;
 
 	/* Check if privileges enough */
-	if (!__has_maps_service_privilege())
+	if (!maps_condition_check_privilege())
 		return MAPS_ERROR_PERMISSION_DENIED;
 
 	session::command *cmd = new session::command_reverse_geocode(maps, latitude,
@@ -437,7 +403,7 @@ EXPORT_API int maps_service_search_place(const maps_service_h maps,
 					 void *user_data, int *request_id)
 {
 	/* Check if internet feature is supported */
-	if (!_is_internet_feature_supported())
+	if (!maps_condition_check_feature())
 		return MAPS_ERROR_NOT_SUPPORTED;
 
 	/* Check if the handle of the Maps Service is valid */
@@ -453,7 +419,7 @@ EXPORT_API int maps_service_search_place(const maps_service_h maps,
 		return MAPS_ERROR_INVALID_PARAMETER;
 
 	/* Check if privileges enough */
-	if (!__has_maps_service_privilege())
+	if (!maps_condition_check_privilege())
 		return MAPS_ERROR_PERMISSION_DENIED;
 
 	session::command *cmd = new session::command_search_place(maps, position,
@@ -473,7 +439,7 @@ EXPORT_API int maps_service_search_place_by_area(const maps_service_h maps,
 						 int *request_id)
 {
 	/* Check if internet feature is supported */
-	if (!_is_internet_feature_supported())
+	if (!maps_condition_check_feature())
 		return MAPS_ERROR_NOT_SUPPORTED;
 
 	/* Check if the handle of the Maps Service is valid */
@@ -490,7 +456,7 @@ EXPORT_API int maps_service_search_place_by_area(const maps_service_h maps,
 		return MAPS_ERROR_INVALID_PARAMETER;
 
 	/* Check if privileges enough */
-	if (!__has_maps_service_privilege())
+	if (!maps_condition_check_privilege())
 		return MAPS_ERROR_PERMISSION_DENIED;
 
 	session::command *cmd = new session::command_search_by_area_place(maps,
@@ -511,7 +477,7 @@ EXPORT_API int maps_service_search_place_by_address(const maps_service_h maps,
 							int *request_id)
 {
 	/* Check if internet feature is supported */
-	if (!_is_internet_feature_supported())
+	if (!maps_condition_check_feature())
 		return MAPS_ERROR_NOT_SUPPORTED;
 
 	/* Check if the handle of the Maps Service is valid */
@@ -528,7 +494,7 @@ EXPORT_API int maps_service_search_place_by_address(const maps_service_h maps,
 		return MAPS_ERROR_INVALID_PARAMETER;
 
 	/* Check if privileges enough */
-	if (!__has_maps_service_privilege())
+	if (!maps_condition_check_privilege())
 		return MAPS_ERROR_PERMISSION_DENIED;
 
 	session::command *cmd = new session::command_search_by_address_place(maps,
@@ -547,7 +513,7 @@ EXPORT_API int maps_service_search_place_list(const maps_service_h maps,
 					void *user_data, int *request_id)
 {
 	/* Check if internet feature is supported */
-	if (!_is_internet_feature_supported())
+	if (!maps_condition_check_feature())
 		return MAPS_ERROR_NOT_SUPPORTED;
 
 	if (!maps)
@@ -559,7 +525,7 @@ EXPORT_API int maps_service_search_place_list(const maps_service_h maps,
 	if (!boundary || !filter || !callback || !request_id)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
-	if (!__has_maps_service_privilege())
+	if (!maps_condition_check_privilege())
 		return MAPS_ERROR_PERMISSION_DENIED;
 
 	session::command *cmd = new session::command_search_place_list(maps,
@@ -575,7 +541,7 @@ EXPORT_API int maps_service_get_place_details(const maps_service_h maps,
 	void *user_data, int *request_id)
 {
 	/* Check if internet feature is supported */
-	if (!_is_internet_feature_supported())
+	if (!maps_condition_check_feature())
 		return MAPS_ERROR_NOT_SUPPORTED;
 
 	if (!maps)
@@ -587,7 +553,7 @@ EXPORT_API int maps_service_get_place_details(const maps_service_h maps,
 	if (!url || !callback || !request_id)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
-	if (!__has_maps_service_privilege())
+	if (!maps_condition_check_privilege())
 		return MAPS_ERROR_PERMISSION_DENIED;
 
 	session::command *cmd = new session::command_get_place_details(maps,
@@ -610,7 +576,7 @@ EXPORT_API int maps_service_search_route(const maps_service_h maps,
 					 void *user_data, int *request_id)
 {
 	/* Check if internet feature is supported */
-	if (!_is_internet_feature_supported())
+	if (!maps_condition_check_feature())
 		return MAPS_ERROR_NOT_SUPPORTED;
 
 	/* Check if the handle of the Maps Service is valid */
@@ -626,7 +592,7 @@ EXPORT_API int maps_service_search_route(const maps_service_h maps,
 		return MAPS_ERROR_INVALID_PARAMETER;
 
 	/* Check if privileges enough */
-	if (!__has_maps_service_privilege())
+	if (!maps_condition_check_privilege())
 		return MAPS_ERROR_PERMISSION_DENIED;
 
 	session::command *cmd = new session::command_search_route(maps, preference,
@@ -646,7 +612,7 @@ EXPORT_API int maps_service_search_route_waypoints(const maps_service_h maps,
 						   int *request_id)
 {
 	/* Check if internet feature is supported */
-	if (!_is_internet_feature_supported())
+	if (!maps_condition_check_feature())
 		return MAPS_ERROR_NOT_SUPPORTED;
 
 	/* Check if the handle of the Maps Service is valid */
@@ -663,7 +629,7 @@ EXPORT_API int maps_service_search_route_waypoints(const maps_service_h maps,
 		return MAPS_ERROR_INVALID_PARAMETER;
 
 	/* Check if privileges enough */
-	if (!__has_maps_service_privilege())
+	if (!maps_condition_check_privilege())
 		return MAPS_ERROR_PERMISSION_DENIED;
 
 	session::command *cmd = new session::command_search_route_waypoints(maps,
@@ -693,7 +659,7 @@ EXPORT_API int maps_service_cancel_request(const maps_service_h maps, int reques
 		return MAPS_ERROR_INVALID_PARAMETER;
 
 	/* Check if privileges enough */
-	if (!__has_maps_service_privilege())
+	if (!maps_condition_check_privilege())
 		return MAPS_ERROR_PERMISSION_DENIED;
 
 	session::command *cmd = new session::command_cancel_request(maps, request_id);
@@ -712,7 +678,7 @@ EXPORT_API int maps_service_multi_reverse_geocode(const maps_service_h maps,
 	maps_service_multi_reverse_geocode_cb callback, void *user_data, int *request_id)
 {
 	/* Check if internet feature is supported */
-	if (!_is_internet_feature_supported())
+	if (!maps_condition_check_feature())
 		return MAPS_ERROR_NOT_SUPPORTED;
 
 	if (!maps)
@@ -724,7 +690,7 @@ EXPORT_API int maps_service_multi_reverse_geocode(const maps_service_h maps,
 	if (!coordinates_list || !callback || !request_id)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
-	if (!__has_maps_service_privilege())
+	if (!maps_condition_check_privilege())
 		return MAPS_ERROR_PERMISSION_DENIED;
 
 	session::command *cmd = new session::command_multi_reverse_geocode(maps,

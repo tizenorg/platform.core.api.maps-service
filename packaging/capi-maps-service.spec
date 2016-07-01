@@ -9,22 +9,22 @@ Source0:    %{name}-%{version}.tar.gz
 BuildRequires:  cmake
 
 # Maps API dependencies
-BuildRequires:  pkgconfig(glib-2.0)
-BuildRequires:  pkgconfig(gmodule-2.0)
-BuildRequires:  pkgconfig(capi-base-common)
-BuildRequires:  pkgconfig(dlog)
-BuildRequires:  pkgconfig(capi-system-info)
+BuildRequires: pkgconfig(glib-2.0)
+BuildRequires: pkgconfig(gmodule-2.0)
+BuildRequires: pkgconfig(capi-base-common)
+BuildRequires: pkgconfig(dlog)
+BuildRequires: pkgconfig(capi-system-info)
 
 # Mapping API dependencies
-BuildRequires:  pkgconfig(eina)
-BuildRequires:  pkgconfig(evas)
-BuildRequires:  pkgconfig(ecore)
-BuildRequires:	pkgconfig(cairo)
-BuildRequires:	pkgconfig(elementary)
-BuildRequires:  pkgconfig(capi-media-image-util)
+BuildRequires: pkgconfig(eina)
+BuildRequires: pkgconfig(evas)
+BuildRequires: pkgconfig(ecore)
+BuildRequires: pkgconfig(cairo)
+BuildRequires: pkgconfig(elementary)
+BuildRequires: pkgconfig(capi-media-image-util)
 
-Requires(post):  /sbin/ldconfig
-Requires(postun):  /sbin/ldconfig
+Requires(post): /sbin/ldconfig
+Requires(postun): /sbin/ldconfig
 Provides: capi-maps-service-plugin-devel
 
 %ifarch %{arm}
@@ -45,7 +45,8 @@ export CXXFLAGS="$CXXFLAGS -DTIZEN_ENGINEER_MODE"
 export FFLAGS="$FFLAGS -DTIZEN_ENGINEER_MODE"
 
 MAJORVER=`echo %{version} | awk 'BEGIN {FS="."}{print $1}'`
-cmake . -DCMAKE_INSTALL_PREFIX=%{_prefix} -DMAJORVER=${MAJORVER} -DFULLVER=%{version} -DLIBDIR=%{_libdir}
+cmake . -DCMAKE_INSTALL_PREFIX=%{_prefix} -DMAJORVER=${MAJORVER} -DFULLVER=%{version} \
+	-DLIBDIR=%{_libdir} -DPROFILE=%{?profile} -DTIZEN_VER=300
 make %{?jobs:-j%jobs}
 
 %install
@@ -70,7 +71,7 @@ chsmack -a "*" %{_libdir}/maps/plugins
 %files
 %manifest capi-maps-service.manifest
 %defattr(-,root,root,-)
-/usr/share/license/capi-maps-service
+%{_datadir}/license/%{name}
 %{_libdir}/libcapi-maps-service.so.*
 
 
