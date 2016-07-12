@@ -632,9 +632,7 @@ int maps_plugin_search_place_list(const maps_area_h boundary,
  * \n To check if Maps Provider is capable of Place Search and which Place
  * preferences are supported, see the lists of capacities and preferences above.
  *
- * @param[in]	maps		The Maps Service handle
  * @param[in]	uri			The interested place uri
- * @param[in]	preference	The place preference handle
  * @param[in]	callback	The result callback
  * @param[in]	user_data	The user data to be passed to the callback function
  * @param[out]	request_id	The request id
@@ -823,6 +821,7 @@ typedef void(*maps_plugin_map_view_ready_cb) (maps_view_h hView);
  * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	view		The maps view
+ * @param[in]	callback	The result callback
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
@@ -857,9 +856,6 @@ int maps_plugin_destroy_map_view(maps_view_h view);
  * @param[in]	coordinates	The coordinates of location to draw
  * @param[in]	zoom_factor	The zoom factor
  * @param[in]	rotation_angle	The rotation factor
- * @param[in]	callback	The callback to notify that the rendering is finished
- * @param[in]	user_data	The user data to be passed to the callback
- * @param[out]	request_id	The id of request
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
@@ -884,9 +880,6 @@ int maps_plugin_render_map(maps_view_h view, const maps_coordinates_h coordinate
  * @param[in]	view		The handle of maps_view
  * @param[in]	delta_x		The delta x
  * @param[in]	delta_y		The delta y
- * @param[in]	callback	The callback to notify that the rendering is finished
- * @param[in]	user_data	The user data to be passed to the callback
- * @param[out]	request_id	The id of request
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
@@ -908,7 +901,7 @@ int maps_plugin_move_center(maps_view_h view, int delta_x, int delta_y);
  * @remarks This function requires network access.
  *
  * @param[in]	view		The handle of maps_view
- * @param[in]	enabled		The enable status
+ * @param[in]	enable		The enable status
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter

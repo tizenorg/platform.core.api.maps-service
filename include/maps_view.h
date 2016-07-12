@@ -918,9 +918,9 @@ int maps_view_get_screen_location(const maps_view_h view, int *x, int *y, int *w
  * @remarks Newly created View port has the size of its parent.
  * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  *
- * @param[in]	view		The view handle
- * @param[in]	width		The new new width, in screen units
- * @param[in]	height		The new new height, in screen units
+ * @param[in]	view	The view handle
+ * @param[in]	x	The new new width, in screen units
+ * @param[in]	y	The new new height, in screen units
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
