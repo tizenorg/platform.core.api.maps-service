@@ -28,25 +28,9 @@ EXPORT_API int maps_area_create_rectangle(const maps_coordinates_h top_left,
 	if (!top_left || !bottom_right || !area)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
-	double tf_lat = .0;
-	double tf_lon = .0;
-	double rb_lat = .0;
-	double rb_lon = .0;
-
-	maps_coordinates_get_latitude(top_left, &tf_lat);
-	maps_coordinates_get_latitude(bottom_right, &rb_lat);
-	maps_coordinates_get_longitude(top_left, &tf_lon);
-	maps_coordinates_get_longitude(bottom_right, &rb_lon);
-
-	double lon_interval = rb_lon - tf_lat;
-
-	if (lon_interval < 180 && lon_interval > -180) {
-		if (rb_lon <= tf_lon || rb_lat >= tf_lat)
-			return MAPS_ERROR_INVALID_PARAMETER;
-	} else {
-		if (rb_lon >= tf_lon || rb_lat >= tf_lat)
-			return MAPS_ERROR_INVALID_PARAMETER;
-	}
+	if (!maps_coordinates_is_valid(top_left) ||
+		!maps_coordinates_is_valid(bottom_right))
+		return MAPS_ERROR_INVALID_PARAMETER;
 
 	maps_area_s *bound = g_new0(maps_area_s, 1);
 
@@ -68,9 +52,10 @@ EXPORT_API int maps_area_create_rectangle(const maps_coordinates_h top_left,
 EXPORT_API int maps_area_create_circle(const maps_coordinates_h center,
 				       const double radius, maps_area_h *area)
 {
-	if (!center || !area)
+	if (!center || !area || radius <= 0)
 		return MAPS_ERROR_INVALID_PARAMETER;
-	if (radius < 0)
+
+	if (!maps_coordinates_is_valid(center))
 		return MAPS_ERROR_INVALID_PARAMETER;
 
 	maps_area_s *bound = g_new0(maps_area_s, 1);
@@ -133,41 +118,6 @@ EXPORT_API int maps_area_clone(const maps_area_h origin, maps_area_h *cloned)
 	return MAPS_ERROR_NONE;
 }
 
-bool __is_valid_rect(maps_coordinates_h top_left, maps_coordinates_h bottom_right)
-{
-	bool ret = true;
-
-	do {
-		if (!maps_coordinates_is_valid(top_left) ||
-			!maps_coordinates_is_valid(bottom_right)) {
-			ret = false;
-			break;
-		}
-
-		double tf_lat = .0;
-		double tf_lon = .0;
-		double rb_lat = .0;
-		double rb_lon = .0;
-
-		maps_coordinates_get_latitude(top_left, &tf_lat);
-		maps_coordinates_get_latitude(bottom_right, &rb_lat);
-		maps_coordinates_get_longitude(top_left, &tf_lon);
-		maps_coordinates_get_longitude(bottom_right, &rb_lon);
-
-		double lon_interval = rb_lon - tf_lon;
-
-		if (lon_interval < 180 && lon_interval > -180) {
-			if (rb_lon <= tf_lon || rb_lat >= tf_lat)
-				ret = false;
-		} else {
-			if (rb_lon >= tf_lon || rb_lat >= tf_lat)
-				ret = false;
-		}
-	} while (false);
-
-	return ret;
-}
-
 bool maps_area_is_valid(const maps_area_h area)
 {
 	if (!area) return false;
@@ -179,7 +129,8 @@ bool maps_area_is_valid(const maps_area_h area)
 		if (handle->type == MAPS_AREA_RECTANGLE) {
 			maps_area_rectangle_s rect = handle->rect;
 
-			if (!__is_valid_rect(&rect.top_left, &rect.bottom_right)) {
+			if (!maps_coordinates_is_valid(&rect.top_left) ||
+				!maps_coordinates_is_valid(&rect.bottom_right)) {
 				ret = false;
 				break;
 			}

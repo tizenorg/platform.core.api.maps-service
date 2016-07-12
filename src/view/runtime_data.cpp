@@ -20,7 +20,6 @@
 #include "maps_view_plugin.h"
 #include <glib.h>
 
-
 view::touch_point::touch_point()
 	: _x(0)
 	, _y(0)

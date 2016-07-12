@@ -198,8 +198,7 @@ EXPORT_API int maps_place_review_get_user_link(const maps_place_review_h place,
 {
 	if (!place || !user)
 		return MAPS_ERROR_INVALID_PARAMETER;
-	return maps_place_link_object_clone(((maps_place_review_s *) place)->
-		user, user);
+	return maps_place_link_object_clone(((maps_place_review_s *) place)->user, user);
 }
 
 /*----------------------------------------------------------------------------*/
