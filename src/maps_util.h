@@ -98,6 +98,8 @@ int maps_set_string(const char *src, const int max_length, char **dst);
  */
 int maps_get_string(const char *src, const int max_length, char **dst);
 
+int maps_get_display_dpi();
+
 /* Prevent utility highlights defects in std::vector and std::string, so
 *  simplified versions of that classes are implemented */
 template <class T> class vector {

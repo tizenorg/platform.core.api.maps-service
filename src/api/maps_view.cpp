@@ -111,6 +111,10 @@ typedef struct _maps_view_s {
 	bool public_transit_enabled;
 	bool scalebar_enabled;
 
+	/* To check hit_test */
+	int screen_dpi;
+	int min_hit_area;
+
 	void *maps_plugin_view_handle;
 } maps_view_s;
 
@@ -598,6 +602,10 @@ EXPORT_API int maps_view_create(maps_service_h maps, Evas_Object *obj, maps_view
 	v->buildings_enabled = false;
 	v->traffic_enabled = false;
 	v->public_transit_enabled = false;
+
+	/* To check hit_test */
+	v->screen_dpi = maps_get_display_dpi();
+	v->min_hit_area = MAX(20, v->screen_dpi / 5);
 
 	return MAPS_ERROR_NONE;
 }
@@ -1780,12 +1788,16 @@ static bool __maps_view_hit_test_cb(int index, int total, maps_view_object_h obj
 				y -= h / 2;
 
 			/* Add some margin of the hit-area. */
-			if (w < 30) w = 30;
-			if (h < 30) h = 30;
+			w = MAX(w, htd->v->min_hit_area);
+			h = MAX(h, htd->v->min_hit_area);
+
+			/* Gets a half range to check hit-area */
+			int hw = (int)(w / 2. + .5);
+			int hh = (int)(h / 2. + .5);
 
 			/* Check hit-area */
-			if ((x > (htd->x - w)) && (x < (htd->x + w))
-			   && (y > (htd->y - h)) && (y < (htd->y + h))) {
+			if ((x > (htd->x - hw)) && (x < (htd->x + hw))
+			   && (y > (htd->y - hh)) && (y < (htd->y + hh))) {
 				htd->object = object;
 			}
 			break;
