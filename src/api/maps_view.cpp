@@ -170,7 +170,6 @@ static void __maps_view_on_event_empty_cb(maps_view_event_type_e type,
 	/* empty */
 }
 
-
 session::command_queue *__maps_view_select_q()
 {
 	/*
@@ -311,7 +310,6 @@ static void __on_canvas_multi_tap(void *data, Evas *e, Evas_Object *obj, void *e
 	v->finger_stream->multi_tap((Evas_Event_Multi_Down *)event_info);
 }
 
-
 static void __on_canvas_multi_up(void *data, Evas *e, Evas_Object *obj, void *event_info)
 {
 	MAPS_LOGI("__on_canvas_multi_up");
@@ -327,16 +325,6 @@ static void __on_canvas_multi_up(void *data, Evas *e, Evas_Object *obj, void *ev
 	v->finger_stream->multi_up((Evas_Event_Multi_Up *)event_info);
 }
 
-static int __maps_plugin_render_map(const maps_view_h view,
-	const maps_coordinates_h coordinates, const double zoom_factor, const double rotation_angle)
-{
-	if (!view || !coordinates)
-		return MAPS_ERROR_INVALID_PARAMETER;
-
-	return __get_plugin_interface(view)->maps_plugin_render_map(view,
-										coordinates, zoom_factor, rotation_angle);
-}
-
 static void __on_canvas_multi_line(void *data, Evas *e, Evas_Object *obj, void *event_info)
 {
 	MAPS_LOGI("__on_canvas_multi_line");
@@ -350,6 +338,16 @@ static void __on_canvas_multi_line(void *data, Evas *e, Evas_Object *obj, void *
 
 	/* Detect & Process the gesture */
 	v->finger_stream->multi_move((Evas_Event_Multi_Move *)event_info);
+}
+
+static int __maps_plugin_render_map(const maps_view_h view,
+	const maps_coordinates_h coordinates, const double zoom_factor, const double rotation_angle)
+{
+	if (!view || !coordinates)
+		return MAPS_ERROR_INVALID_PARAMETER;
+
+	return __get_plugin_interface(view)->maps_plugin_render_map(view,
+										coordinates, zoom_factor, rotation_angle);
 }
 
 void _maps_view_set_idle_listener(const maps_view_h view,

@@ -429,8 +429,7 @@ EXPORT_API int maps_int_hashtable_remove(maps_int_hashtable_h table,
 }
 
 EXPORT_API int maps_int_hashtable_foreach(maps_int_hashtable_h table,
-					  maps_int_hashtable_foreach_cb
-					  callback,
+					  maps_int_hashtable_foreach_cb callback,
 					  void *user_data)
 {
 	if (!table || !callback)
@@ -522,9 +521,8 @@ void _maps_hashtable_item_create(maps_hashtable_item_s **item)
 {
 	*item = g_slice_new0(maps_hashtable_item_s);
 
-	if (*item == NULL) {
+	if (*item == NULL)
 		MAPS_LOGE("OUT_OF_MEMORY(0x%08x)", MAPS_ERROR_OUT_OF_MEMORY);
-	}
 }
 
 void _maps_hashtable_item_destroy(gpointer data)
