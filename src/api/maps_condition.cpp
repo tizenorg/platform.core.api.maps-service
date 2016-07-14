@@ -16,9 +16,11 @@
 
 #include <glib.h>
 #include <unistd.h>
-#if TIZEN_VER < 300
+#if TIZEN_VER < 240
 #include <app_manager.h>
 #include <pkgmgr-info.h>
+#include <privilege_checker.h>	/* privilege */
+#elif TIZEN_VER < 300
 #include <privilege_checker.h>	/* privilege */
 #endif
 #include <system_info.h>		/* system_info_get_platform_bool */
@@ -31,7 +33,7 @@
 #define INTERNET_FEATURE		"http://tizen.org/feature/network.internet"
 
 
-#if TIZEN_VER < 300
+#if TIZEN_VER < 240
 static char* __maps_condition_get_package_id(char **package_id)
 {
 	int ret = 0;
@@ -73,7 +75,7 @@ static char* __maps_condition_get_package_id(char **package_id)
 bool maps_condition_check_privilege(void)
 {
 	bool is_permitted = true;
-#if TIZEN_VER < 300
+#if TIZEN_VER < 240
 	/* to check for Tizen 2.x privilege */
 	char *package_id = NULL;
 	if (!__maps_condition_get_package_id(&package_id))
@@ -82,6 +84,9 @@ bool maps_condition_check_privilege(void)
 	int ret = privilege_checker_check_package_privilege(package_id, MAPSERVICE_PRIVILEGE);
 	is_permitted = (ret == PRIV_CHECKER_ERR_NONE);
 	g_free(package_id);
+#elif TIZEN_VER < 300
+	int ret = privilege_checker_check_privilege(MAPSERVICE_PRIVILEGE);
+	is_permitted = (ret == PRIVILEGE_CHECKER_ERR_NONE);
 #else
 	/* to check for Tizen 3.x privilege */
 	extern const char *MAPS_PLUGINS_PATH_PREFIX;
