@@ -390,6 +390,28 @@ int maps_view_object_get_visible(const maps_view_object_h object, bool *visible)
 int maps_view_object_polyline_set_polyline(maps_view_object_h polyline, maps_coordinates_list_h points);
 
 /**
+ * @brief	Appends a point to the polyline.
+ * @details This function appends a point to the polyline.
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
+ *
+ * @param[in]	polyline	The polyline object handle
+ * @param[in]	point		The point to append
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ *
+ * @pre @a polyline is created using maps_view_object_create_polyline().
+ * @pre @a point is created using maps_coordinates_create().
+ *
+ * @see #maps_view_object_h
+ * @see #maps_coordinates_h
+ * @see maps_coordinates_create()
+ * @see maps_view_object_create_polyline()
+ * @see maps_view_object_polyline_foreach_point()
+ */
+int maps_view_object_polyline_append_point(maps_view_object_h polyline,	maps_coordinates_h point);
+
+/**
  * @brief	Retrieves all points, added to the polyline.
  * @details This function retrieves all points, added to the polyline.
  * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif

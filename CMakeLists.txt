@@ -33,7 +33,7 @@ SET(dependents
 	capi-media-image-util
 )
 
-IF(${TIZEN_VER} LESS 300)
+IF(${TIZEN_VER} LESS 240)
 	SET(dependents
 		${dependents}
 		# Privilege check
@@ -41,7 +41,14 @@ IF(${TIZEN_VER} LESS 300)
 		pkgmgr-info
 		capi-security-privilege-manager
 	)
-ENDIF(${TIZEN_VER} LESS 300)
+ELSEIF(${TIZEN_VER} LESS 300)
+	SET(dependents
+		${dependents}
+		# Privilege check
+		security-privilege-checker
+	)
+ENDIF(${TIZEN_VER} LESS 240)
+
 
 SET(pc_dependents "capi-base-common evas")
 
