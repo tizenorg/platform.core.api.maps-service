@@ -590,7 +590,6 @@ int maps_plugin_search_place_by_address(const char *address,
  * \n To check if Maps Provider is capable of Place Search and which Place
  * preferences are supported, see the lists of capacities and preferences above.
  *
- * @param[in]	maps		The Maps Service handle
  * @param[in]	boundary	The interested area
  * @param[in]	filter		The filter handle
  * @param[in]	preference	The place preference handle
@@ -632,7 +631,7 @@ int maps_plugin_search_place_list(const maps_area_h boundary,
  * \n To check if Maps Provider is capable of Place Search and which Place
  * preferences are supported, see the lists of capacities and preferences above.
  *
- * @param[in]	uri			The interested place uri
+ * @param[in]	url			The interested place url
  * @param[in]	callback	The result callback
  * @param[in]	user_data	The user data to be passed to the callback function
  * @param[out]	request_id	The request id
@@ -807,7 +806,7 @@ int maps_plugin_cancel_request(int request_id);
  * @details The Plugin invokes this callback when the initialzing of map is finished.
  * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  *
- * @param[in]	view		The maps view
+ * @param[in]	hView		The maps view
  *
  * @pre maps_plugin_render_map() will invoke this callback.
  *
@@ -917,7 +916,7 @@ int maps_plugin_set_scalebar(maps_view_h view, bool enable);
  * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	view		The handle of maps_view
- * @param[out]enabled		The pointer to a boolean in which to store the enable status
+ * @param[out]	enabled		The pointer to a boolean in which to store the enable status
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
@@ -994,7 +993,7 @@ int maps_plugin_geography_to_screen(maps_view_h view, const maps_coordinates_h c
  * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	view			The handle of maps_view
- * @param[out]min_zoom_level	The minimally available zoom level
+ * @param[out]	min_zoom_level	The minimally available zoom level
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
@@ -1007,7 +1006,7 @@ int maps_plugin_get_min_zoom_level(maps_view_h view, int *min_zoom_level);
  * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	view			The handle of maps_view
- * @param[out]max_zoom_level	The maximally available zoom level
+ * @param[out]	max_zoom_level	The maximally available zoom level
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
@@ -1021,7 +1020,7 @@ int maps_plugin_get_max_zoom_level(maps_view_h view, int *max_zoom_level);
  * @remarks @a coordinates must be released using maps_coordinates_destroy().
  *
  * @param[in]	view		The handle of maps_view
- * @param[out]coordinates	The pointer to #maps_coordinates_h in which to
+ * @param[out]	coordinates	The pointer to #maps_coordinates_h in which to
  * store the geographical coordinates of the central position of the Map
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful

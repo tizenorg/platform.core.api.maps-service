@@ -82,7 +82,7 @@ typedef void *maps_place_list_h;
  * @param[in]	total		The total amount of properties
  * @param[in]	key		The key of property
  * @param[in]	value		The value of property
- * @param[in]	uesr_data	The user data passed from
+ * @param[in]	user_data	The user data passed from
  * maps_place_foreach_property()
  * @return	@c true to continue with the next iteration of the loop, \n @c
  * false to break out of the loop
@@ -107,7 +107,7 @@ typedef bool(*maps_place_properties_cb) (int index, int total, char *key,
  * @param[in]	index		The current index of category
  * @param[in]	total		The total amount of categories
  * @param[in]	category	The place category handle
- * @param[in]	uesr_data	The user data passed from
+ * @param[in]	user_data	The user data passed from
  * maps_place_foreach_category()
  * @return	@c true to continue with the next iteration of the loop, \n @c
  * false to break out of the loop
@@ -134,7 +134,7 @@ typedef bool(*maps_place_categories_cb) (int index, int total,
  * @param[in]	index		The current index of attribute
  * @param[in]	total		The total amount of attributes
  * @param[in]	attribute	The place attribute handle
- * @param[in]	uesr_data	The user data passed from the
+ * @param[in]	user_data	The user data passed from the
  * maps_place_foreach_attribute()
  * @return	@c true to continue with the next iteration of the loop, \n @c
  * false to break out of the loop
@@ -161,7 +161,7 @@ typedef bool(*maps_place_attributes_cb) (int index, int total,
  * @param[in]	index		The current index of contact
  * @param[in]	total		The total amount of contacts
  * @param[in]	contact		The place contact handle
- * @param[in]	uesr_data	The user data passed from the
+ * @param[in]	user_data	The user data passed from the
  * maps_place_foreach_contact()
  * @return	@c true to continue with the next iteration of the loop, \n @c
  * false to break out of the loop
@@ -188,7 +188,7 @@ typedef bool(*maps_place_contacts_cb) (int index, int total,
  * @param[in]	index		The current index of editorial
  * @param[in]	total		The total amount of editorials
  * @param[in]	editorial	The place editorial handle
- * @param[in]	uesr_data	The user data passed from the
+ * @param[in]	user_data	The user data passed from the
  * maps_place_foreach_editorial()
  * @return	@c true to continue with the next iteration of the loop, \n @c
  * false to break out of the loop
@@ -215,7 +215,7 @@ typedef bool(*maps_place_editorials_cb) (int index, int total,
  * @param[in]	index		The current index of image
  * @param[in]	total		The total amount of images
  * @param[in]	image		The place image handle
- * @param[in]	uesr_data	The user data passed from the
+ * @param[in]	user_data	The user data passed from the
  * maps_place_foreach_image()
  * @return	@c true to continue with the next iteration of the loop, \n @c
  * false to break out of the loop
@@ -242,7 +242,7 @@ typedef bool(*maps_place_images_cb) (int index, int total,
  * @param[in]	index		The current index of review
  * @param[in]	total		The total amount of reviews
  * @param[in]	review		The place review handle
- * @param[in]	uesr_data	The user data passed from the
+ * @param[in]	user_data	The user data passed from the
  * maps_place_foreach_review()
  * @return	@c true to continue with the next iteration of the loop, \n @c
  * false to break out of the loop
@@ -263,7 +263,7 @@ typedef bool(*maps_place_reviews_cb) (int index, int total,
  *
  * @param[in]	index		The current index of review
  * @param[in]	place		The place handle
- * @param[in]	uesr_data	The user data passed from the maps_place_list_foreach()
+ * @param[in]	user_data	The user data passed from the maps_place_list_foreach()
  * @return	@c true to continue with the next iteration of the loop,
  * \n @c false to break out of the loop
  *
