@@ -59,7 +59,9 @@ typedef void *maps_route_segment_h;
  * \n To use @a coordinates outside this function, clone it with
  * maps_coordinates_clone().
  *
- * @param[in]	segment		The segment of route
+ * @param[in]	index		The current index of coordinates list
+ * @param[in]	total		The total amount of coordinates
+ * @param[in]	coordinates		The current coordinates
  * @param[in]	user_data	The user data passed from
  * maps_route_segment_foreach_path()
  * @return	@c true to continue with the next iteration of the loop, \n @c
@@ -84,6 +86,8 @@ typedef bool(*maps_route_segment_path_cb) (int index, int total,
  * \n To use @a maneuver outside this function, clone it with
  * maps_route_maneuver_clone().
  *
+ * @param[in]	index		The current index of maneuvers list
+ * @param[in]	total		The total amount of maneuvers
  * @param[in]	maneuver	The maneuver of route
  * @param[in]	user_data	The user data passed from
  * maps_route_segment_foreach_maneuver()

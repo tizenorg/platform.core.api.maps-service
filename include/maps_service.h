@@ -895,7 +895,7 @@ int maps_service_multi_reverse_geocode(const maps_service_h maps,
  * start from 0
  * @param[in]	total		The total number of results
  * @param[in]	place		The resulting Place data
- * @param[in]	uesr_data	The user data passed from
+ * @param[in]	user_data	The user data passed from
  * maps_service_search_place(), maps_service_search_place_by_area() or
  * maps_service_search_place_by_address()
  * @return	@c true to continue with the next iteration of the loop, \n @c
@@ -930,7 +930,7 @@ typedef bool(*maps_service_search_place_cb) (maps_error_e error,
  * @param[in]	request_id	The request id
  * @param[in]	total		The total number of results
  * @param[in]	place_list	The resulting Place list data
- * @param[in]	uesr_data	The user data passed from maps_service_search_place_list()
+ * @param[in]	user_data	The user data passed from maps_service_search_place_list()
  *
  * @pre maps_service_search_place_list() will invoke this callback.
  *
@@ -956,7 +956,7 @@ typedef void(*maps_service_search_place_list_cb) (maps_error_e error,
  * @param[in]	error		The result of request
  * @param[in]	request_id	The request id
  * @param[in]	place		The resulting Place data
- * @param[in]	uesr_data	The user data passed from maps_service_get_place_details()
+ * @param[in]	user_data	The user data passed from maps_service_get_place_details()
  *
  * @pre maps_service_get_place_details() will invoke this callback.
  *
