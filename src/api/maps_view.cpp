@@ -97,6 +97,7 @@ typedef struct _maps_view_s {
 
 	/* Map View callbacks */
 	maps_view_callback_info_s event_callbacks[MAPS_VIEW_EVENT_READY + 1];
+	bool ready;
 
 	/* Evas Queue support */
 	Ecore_Idler *idler;
@@ -418,6 +419,9 @@ void __maps_view_ready(const maps_view_h view)
 {
 	if (!view) return;
 
+	maps_view_s *v = (maps_view_s*)view;
+	v->ready = true;
+
 	_maps_view_set_inertia_enabled(view, true);
 
 	/* Invoke user registered event callback */
@@ -436,10 +440,16 @@ static void __maps_view_parent_resize_cb(void *data, Evas *e, Evas_Object *obj, 
 	maps_view_s *v = (maps_view_s*)data;
 
 	int x, y, w, h, ox, oy, ow, oh;
+
+	/* get geometries of evas object to check how much are changed */
 	evas_object_geometry_get(v->parent, &x, &y, &w, &h);
 	evas_object_geometry_get(v->panel, &ox, &oy, &ow, &oh);
 
-	_maps_view_move_center(v, (x - ox) / 2, (y - oy) / 2);
+	/* compensate difference of center to keep the map image not to move for eyes after ready */
+	if (v->ready)
+		_maps_view_move_center(v, (x - ox) / 2, (y - oy) / 2);
+
+	/* set center with stored value */
 	_maps_view_get_plugin_center(v, &v->center);
 	maps_view_set_screen_location(v, x, y, w, h);
 }
@@ -449,10 +459,16 @@ static void __maps_view_panel_resize_cb(void *data, Evas *e, Evas_Object *obj, v
 	maps_view_s *v = (maps_view_s*)data;
 
 	int x, y, w, h, ox, oy, ow, oh;
+
+	/* get geometries of evas object to check how much are changed */
 	evas_object_geometry_get(v->panel, &x, &y, &w, &h);
 	evas_object_geometry_get(v->clipper, &ox, &oy, &ow, &oh);
 
-	_maps_view_move_center(v, (x - ox) / 2, (y - oy) / 2);
+	/* compensate difference of center to keep the map image not to move for eyes after ready */
+	if (v->ready)
+		_maps_view_move_center(v, (x - ox) / 2, (y - oy) / 2);
+
+	/* set center with stored value */
 	_maps_view_get_plugin_center(v, &v->center);
 	maps_view_set_screen_location(v, x, y, w, h);
 }
@@ -1124,6 +1140,7 @@ EXPORT_API int maps_view_set_type(maps_view_h view, maps_view_type_e type)
 	/* Check if parameters are valid */
 	if (!view)
 		return MAPS_ERROR_INVALID_PARAMETER;
+
 	if ((type < MAPS_VIEW_TYPE_NORMAL) || (type > MAPS_VIEW_TYPE_HYBRID))
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -1412,6 +1429,7 @@ EXPORT_API int maps_view_move(maps_view_h view, int x, int y)
 	if (!maps_condition_check_feature())
 		return MAPS_ERROR_NOT_SUPPORTED;
 
+	/* Check if parameters are valid */
 	if (!view)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -1444,8 +1462,10 @@ EXPORT_API int maps_view_resize(maps_view_h view, int width, int height)
 
 EXPORT_API int maps_view_set_visibility(maps_view_h view, bool visible)
 {
+	/* Check if parameters are valid */
 	if (!view)
 		return MAPS_ERROR_INVALID_PARAMETER;
+
 	maps_view_s *v = (maps_view_s *) view;
 	if (visible)
 		evas_object_show(v->panel);
@@ -1456,8 +1476,10 @@ EXPORT_API int maps_view_set_visibility(maps_view_h view, bool visible)
 
 EXPORT_API int maps_view_get_visibility(const maps_view_h view, bool *visible)
 {
+	/* Check if parameters are valid */
 	if (!view || !visible)
 		return MAPS_ERROR_INVALID_PARAMETER;
+
 	maps_view_s *v = (maps_view_s *) view;
 	*visible = evas_object_visible_get(v->panel) == EINA_TRUE;
 	return MAPS_ERROR_NONE;
@@ -1467,6 +1489,7 @@ int _maps_view_redraw(const maps_view_h view)
 {
 	if (!view)
 		return MAPS_ERROR_INVALID_PARAMETER;
+
 	maps_view_s *v = (maps_view_s *) view;
 
 	/* Signal to the animator, that we are ready to draw */
