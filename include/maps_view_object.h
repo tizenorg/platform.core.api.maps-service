@@ -168,6 +168,7 @@ typedef bool(*maps_view_object_polygon_point_cb) (int index, int total,
  * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
  * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a coordinates are created using map_coordinates_create().
  *
@@ -202,6 +203,7 @@ int maps_view_object_create_marker(maps_coordinates_h coordinates,
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a coordinates is created using maps_coordinates_list_create().
  *
@@ -236,6 +238,7 @@ int maps_view_object_create_polyline(maps_coordinates_list_h coordinates,
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a coordinates is created using maps_coordinates_list_create().
  *
@@ -267,6 +270,7 @@ int maps_view_object_create_polygon(maps_coordinates_list_h coordinates,
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a coordinates is created using maps_coordinates_list_create().
  *
@@ -291,6 +295,7 @@ int maps_view_object_create_overlay(maps_coordinates_h coordinates,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see #maps_view_object_h
  * @see maps_view_object_create_marker()
@@ -310,6 +315,7 @@ int maps_view_object_destroy(maps_view_object_h object);
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a object is created using maps_view_object_create_marker(),
  * maps_view_object_create_polyline() or maps_view_object_create_polygon().
@@ -331,6 +337,7 @@ int maps_view_object_get_type(maps_view_object_h object, maps_view_object_type_e
  * @return	0, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a object is created using maps_view_object_create_marker(),
  * maps_view_object_create_polyline(), maps_view_object_create_polygon().
@@ -351,6 +358,7 @@ int maps_view_object_set_visible(maps_view_object_h object, bool visible);
  * @return	0, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a object is created using maps_view_object_create_marker(),
  * maps_view_object_create_polyline(), maps_view_object_create_polygon().
@@ -376,6 +384,7 @@ int maps_view_object_get_visible(const maps_view_object_h object, bool *visible)
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a polyline is created using maps_view_object_create_polyline().
  * @pre @a points are created using maps_coordinates_list_create().
@@ -402,6 +411,7 @@ int maps_view_object_polyline_set_polyline(maps_view_object_h polyline, maps_coo
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a polyline is created using maps_view_object_create_polyline().
  * @post This function invokes maps_view_object_polyline_point_cb() repeatedly to
@@ -428,6 +438,7 @@ int maps_view_object_polyline_foreach_point(maps_view_object_h polyline,
  * @return	0, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a polyline is created using maps_view_object_create_polyline().
  *
@@ -455,6 +466,7 @@ int maps_view_object_polyline_set_color(maps_view_object_h polyline,
  * @return	0, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a polyline is created using maps_view_object_create_polyline().
  * @pre color components may be previously set using
@@ -477,6 +489,7 @@ int maps_view_object_polyline_get_color(const maps_view_object_h polyline,
  * @return	0, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a polyline is created using maps_view_object_create_polyline().
  *
@@ -496,6 +509,7 @@ int maps_view_object_polyline_set_width(maps_view_object_h polyline, int width);
  * @return	0, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a polyline is created using maps_view_object_create_polyline().
  * @pre @a width may be previously set using maps_view_object_polyline_set_width().
@@ -522,6 +536,7 @@ int maps_view_object_polyline_get_width(const maps_view_object_h polyline, int *
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a polygon is created using maps_view_object_create_polygon().
  * @pre @a points are created using maps_coordinates_list_create().
@@ -547,6 +562,7 @@ int maps_view_object_polygon_set_polygon(maps_view_object_h polygon, maps_coordi
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
  * @retval	#MAPS_ERROR_NOT_FOUND Result not found
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a polygon is created using maps_view_object_create_polygon().
@@ -574,6 +590,7 @@ int maps_view_object_polygon_foreach_point(maps_view_object_h polygon,
  * @return	0, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a polygon is created using maps_view_object_create_polygon().
  *
@@ -600,6 +617,7 @@ int maps_view_object_polygon_set_fill_color(maps_view_object_h polygon,
  * @return	0, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a polygon is created using maps_view_object_create_polygon().
  * @pre fill color components may be previously set using
@@ -627,6 +645,7 @@ int maps_view_object_polygon_get_fill_color(const maps_view_object_h polygon,
  * @return	0, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a marker is created using maps_view_object_create_marker().
  * @pre @a coordinates are created using maps_coordinates_create().
@@ -649,6 +668,7 @@ int maps_view_object_marker_set_coordinates(maps_view_object_h marker, maps_coor
  * @return	0, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a marker is created using maps_view_object_create_marker().
  *
@@ -670,6 +690,7 @@ int maps_view_object_marker_resize(maps_view_object_h marker, int width, int hei
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
  * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a marker is created using maps_view_object_create_marker().
  *
@@ -690,6 +711,7 @@ int maps_view_object_marker_set_image_file(maps_view_object_h marker, const char
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a marker is created using maps_view_object_create_marker().
  * @pre @a file_path may be set previously using maps_view_object_marker_set_image_file().
@@ -712,6 +734,7 @@ int maps_view_object_marker_get_image_file(const maps_view_object_h marker, char
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a marker is created using maps_view_object_create_marker().
  * @pre @a coordinates may be set previously using maps_view_object_marker_set_coordinates().
@@ -735,6 +758,7 @@ int maps_view_object_marker_get_coordinates(const maps_view_object_h marker, map
  * @return	0, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a marker is created using maps_view_object_create_marker().
  * @pre @a width and @a height may be set previously using maps_view_object_marker_resize().
@@ -755,6 +779,7 @@ int maps_view_object_marker_get_size(const maps_view_object_h marker, int *width
  * @return	0, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a marker is created using maps_view_object_create_marker().
  *
@@ -774,6 +799,7 @@ int maps_view_object_marker_get_type(const maps_view_object_h marker, maps_view_
  * @return	0, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a marker is created using maps_view_object_create_marker().
  *
@@ -792,6 +818,7 @@ int maps_view_object_marker_set_z_order(maps_view_object_h marker, int z_order);
  * @return	0, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a marker is created using maps_view_object_create_marker().
  *
@@ -818,6 +845,7 @@ int maps_view_object_marker_get_z_order(const maps_view_object_h marker, int *z_
  * @return	0, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a marker is created using maps_view_object_create_overlay().
  *
@@ -835,6 +863,7 @@ int maps_view_object_overlay_get_object(maps_view_object_h overlay, Evas_Object 
  * @return	0, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a overlay is created using maps_view_object_create_overlay().
  * @pre @a coordinates are created using maps_coordinates_create().
@@ -859,6 +888,7 @@ int maps_view_object_overlay_set_coordinates(maps_view_object_h overlay, maps_co
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a overlay is created using maps_view_object_create_overlay().
  * @pre @a coordinates may be set previously using maps_view_object_overlay_set_coordinates().
@@ -880,6 +910,7 @@ int maps_view_object_overlay_get_coordinates(const maps_view_object_h overlay, m
  * @return	0, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a overlay is created using maps_view_object_create_overlay().
  *
@@ -901,6 +932,7 @@ int maps_view_object_overlay_set_min_zoom_level(maps_view_object_h overlay, int 
  * @return	0, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a overlay is created using maps_view_object_create_overlay().
  *
@@ -921,6 +953,7 @@ int maps_view_object_overlay_get_min_zoom_level(const maps_view_object_h overlay
  * @return	0, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a overlay is created using maps_view_object_create_overlay().
  *
@@ -942,6 +975,7 @@ int maps_view_object_overlay_set_max_zoom_level(maps_view_object_h overlay, int 
  * @return	0, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a overlay is created using maps_view_object_create_overlay().
  *
