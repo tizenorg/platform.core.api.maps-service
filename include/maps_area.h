@@ -126,6 +126,7 @@ typedef struct _maps_area_s {
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a top_left and @a bottom_right are created using
  * maps_coordinates_create().
@@ -159,6 +160,7 @@ int maps_area_create_rectangle(const maps_coordinates_h top_left,
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a center is created using maps_coordinates_create().
  *
@@ -184,6 +186,7 @@ int maps_area_create_circle(const maps_coordinates_h center,
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a area can be created using maps_area_create_rectangle() or
  * maps_area_create_circle().
@@ -206,6 +209,7 @@ int maps_area_destroy(maps_area_h area);
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a origin is created using maps_area_create_rectangle() or
  * maps_area_create_circle().
