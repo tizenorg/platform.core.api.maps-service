@@ -102,8 +102,8 @@ int maps_place_attribute_get_id(const maps_place_attribute_h attribute,
 				char **id);
 
 /**
- * @brief	Gets the place link object label.
- * @details This function gets the place link object label.
+ * @brief	Gets the place attribute label.
+ * @details This function gets the place attribute label.
  * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks @a label must be released using free().
  *
