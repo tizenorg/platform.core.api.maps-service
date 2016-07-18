@@ -115,6 +115,7 @@ typedef bool(*maps_route_segment_maneuver_cb) (int index, int total,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER	Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see maps_route_segment_clone()
  */
@@ -133,6 +134,7 @@ int maps_route_segment_destroy(maps_route_segment_h segment);
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see maps_route_segment_destroy()
  */
@@ -152,6 +154,7 @@ int maps_route_segment_clone(const maps_route_segment_h origin,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see #maps_coordinates_h
  */
@@ -169,6 +172,7 @@ int maps_route_segment_get_origin(const maps_route_segment_h segment,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see #maps_coordinates_h
  */
@@ -186,6 +190,7 @@ int maps_route_segment_get_destination(const maps_route_segment_h segment,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see #maps_area_h
  */
@@ -202,6 +207,7 @@ int maps_route_segment_get_bounding_box(const maps_route_segment_h segment,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  */
 int maps_route_segment_get_distance(const maps_route_segment_h segment,
 				    double *distance);
@@ -216,6 +222,7 @@ int maps_route_segment_get_distance(const maps_route_segment_h segment,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  */
 int maps_route_segment_get_duration(const maps_route_segment_h segment,
 				    long *duration);

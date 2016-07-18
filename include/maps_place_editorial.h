@@ -62,6 +62,7 @@ typedef void *maps_place_editorial_h;
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see maps_place_editorial_clone()
  */
@@ -80,6 +81,7 @@ int maps_place_editorial_destroy(maps_place_editorial_h editorial);
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see maps_place_editorial_destroy()
  */
@@ -99,6 +101,7 @@ int maps_place_editorial_clone(const maps_place_editorial_h origin,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  */
 int maps_place_editorial_get_description(const maps_place_editorial_h
 					 editorial, char **description);
@@ -114,6 +117,7 @@ int maps_place_editorial_get_description(const maps_place_editorial_h
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  */
 int maps_place_editorial_get_language(const maps_place_editorial_h editorial,
 				      char **language);
@@ -129,6 +133,7 @@ int maps_place_editorial_get_language(const maps_place_editorial_h editorial,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see #maps_place_media_h
  */
