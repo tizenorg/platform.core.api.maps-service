@@ -78,6 +78,7 @@ typedef void *maps_item_list_h;
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see maps_item_list_destroy()
  * @see maps_item_list_clone()
@@ -94,6 +95,7 @@ int maps_item_list_create(maps_item_list_h *list);
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a list is created using maps_item_list_create().
  *
@@ -139,6 +141,7 @@ typedef int (*maps_item_list_clone_cb) (void *origin, void **cloned);
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a origin is created using maps_item_list_create().
  * @post #maps_item_list_clone_cb is used to clone each item of the list.
@@ -163,6 +166,7 @@ int maps_item_list_clone(const maps_item_list_h origin,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a list is created using maps_item_list_create().
  *
@@ -213,6 +217,7 @@ typedef bool(*maps_item_list_foreach_cb) (int index, int total, void *data,
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
  * @retval	#MAPS_ERROR_NOT_FOUND Result not found
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a list is created using maps_item_list_create().
  * @post This function invokes maps_item_list_foreach_cb() to deliver list
@@ -262,6 +267,7 @@ typedef int (*maps_item_list_free_cb) (void *data);
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a list is created using maps_item_list_create().
  * @post #maps_item_list_free_cb is used to destroy the item of the list.
@@ -288,6 +294,7 @@ int maps_item_list_remove(maps_item_list_h list,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a list is created using maps_item_list_create().
  * @post #maps_item_list_free_cb is used to destroy each item of the list.
@@ -329,6 +336,7 @@ typedef bool(*maps_item_list_foreach_noclone_cb) (int index, void *data, void *u
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
  * @retval	#MAPS_ERROR_NOT_FOUND Result not found
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a list is created using maps_item_list_create().
  * @post This function invokes maps_item_list_foreach_noclone_cb() to deliver list items.
@@ -394,6 +402,7 @@ typedef void *maps_string_hashtable_h;
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see maps_string_hashtable_clone()
  * @see maps_string_hashtable_destroy()
@@ -412,6 +421,7 @@ int maps_string_hashtable_create(maps_string_hashtable_h *table);
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a table is created using maps_string_hashtable_create().
  *
@@ -435,6 +445,7 @@ int maps_string_hashtable_destroy(maps_string_hashtable_h table);
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a table is created using maps_string_hashtable_create().
  *
@@ -456,6 +467,7 @@ int maps_string_hashtable_clone(const maps_string_hashtable_h origin,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a table is created using maps_string_hashtable_create().
  *
@@ -479,6 +491,7 @@ int maps_string_hashtable_set(maps_string_hashtable_h table, const char *key,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a table is created using maps_string_hashtable_create().
  *
@@ -500,6 +513,7 @@ int maps_string_hashtable_get(maps_string_hashtable_h table, const char *key,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a table is created using maps_string_hashtable_create().
  *
@@ -551,6 +565,7 @@ typedef bool(*maps_string_hashtable_foreach_cb) (int index, int total,
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
  * @retval	#MAPS_ERROR_NOT_FOUND Result not found
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a table is created using maps_string_hashtable_create().
  * @post This function invokes maps_string_hashtable_foreach_cb() to deliver
@@ -577,6 +592,7 @@ int maps_string_hashtable_foreach(maps_string_hashtable_h table,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a table is created using maps_string_hashtable_create().
  *
@@ -637,6 +653,7 @@ typedef void *maps_int_hashtable_h;
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see maps_int_hashtable_clone()
  * @see maps_int_hashtable_destroy()
@@ -655,6 +672,7 @@ int maps_int_hashtable_create(maps_int_hashtable_h *table);
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a table is created using maps_int_hashtable_create().
  *
@@ -678,6 +696,7 @@ int maps_int_hashtable_destroy(maps_int_hashtable_h table);
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a table is created using maps_int_hashtable_create().
  *
@@ -699,6 +718,7 @@ int maps_int_hashtable_clone(const maps_int_hashtable_h origin,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a table is created using maps_int_hashtable_create().
  *
@@ -722,6 +742,7 @@ int maps_int_hashtable_set(maps_int_hashtable_h table, const int key,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a table is created using maps_int_hashtable_create().
  *
@@ -743,6 +764,7 @@ int maps_int_hashtable_get(maps_int_hashtable_h table, const int key,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a table is created using maps_int_hashtable_create().
  *
@@ -793,6 +815,7 @@ typedef bool(*maps_int_hashtable_foreach_cb) (int index, int total,
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
  * @retval	#MAPS_ERROR_NOT_FOUND Result not found
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a table is created using maps_int_hashtable_create().
  * @post This function invokes maps_int_hashtable_foreach_cb() to deliver
@@ -819,6 +842,7 @@ int maps_int_hashtable_foreach(maps_int_hashtable_h table,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a table is created using maps_int_hashtable_create().
  *
@@ -883,6 +907,7 @@ typedef void *maps_item_hashtable_h;
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see maps_item_hashtable_clone()
  * @see maps_item_hashtable_destroy()
@@ -902,6 +927,7 @@ int maps_item_hashtable_create(maps_item_hashtable_h *table);
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a table is created using maps_item_hashtable_create().
  *
@@ -925,6 +951,7 @@ int maps_item_hashtable_destroy(maps_item_hashtable_h table);
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a table is created using maps_item_hashtable_create().
  *
@@ -1001,6 +1028,7 @@ typedef int (*maps_item_hashtable_free_cb) (void *data);
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre maps_item_hashtable_clone() will invoke this callback.
  *
@@ -1027,6 +1055,7 @@ int maps_item_hashtable_clone_string(void *origin, void **cloned);
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre maps_item_hashtable_destroy(), maps_item_hashtable_remove() or
  * maps_item_hashtable_set() will invoke this callback.
@@ -1055,6 +1084,7 @@ int maps_item_hashtable_free_string(void *data);
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre maps_item_hashtable_clone() will invoke this callback.
  *
@@ -1080,6 +1110,7 @@ int maps_item_hashtable_clone_int(void *origin, void **cloned);
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre maps_item_hashtable_destroy(), maps_item_hashtable_remove() or
  * maps_item_hashtable_set() will invoke this callback.
@@ -1108,6 +1139,7 @@ int maps_item_hashtable_free_int(void *data);
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre maps_item_hashtable_clone() will invoke this callback.
  *
@@ -1135,6 +1167,7 @@ int maps_item_hashtable_clone_float(void *origin, void **cloned);
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre maps_item_hashtable_destroy(), maps_item_hashtable_remove() or
  * maps_item_hashtable_set() will invoke this callback.
@@ -1159,11 +1192,12 @@ int maps_item_hashtable_free_float(void *data);
  * maps_item_hashtable_free_string().
  *
  * @param[in]	table		The handle of the table
- * @param[in]	key 	The	string value of "key"
+ * @param[in]	key			The	string value of "key"
  * @param[in]	value		The string (char*) value
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a table is created using maps_item_hashtable_create().
  *
@@ -1189,11 +1223,12 @@ int maps_item_hashtable_set_string(maps_item_hashtable_h table,
  * maps_item_hashtable_free_int().
  *
  * @param[in]	table		The handle of the table
- * @param[in]	key 	The	string value of "key"
+ * @param[in]	key			The	string value of "key"
  * @param[in]	value		The integer value
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a table is created using maps_item_hashtable_create().
  *
@@ -1224,6 +1259,7 @@ int maps_item_hashtable_set_int(maps_item_hashtable_h table, const char *key,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a table is created using maps_item_hashtable_create().
  *
@@ -1273,6 +1309,7 @@ int maps_item_hashtable_set_float(maps_item_hashtable_h table,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a table is created using maps_item_hashtable_create().
  *
@@ -1303,11 +1340,12 @@ int maps_item_hashtable_set(maps_item_hashtable_h table, const char *key,
  * @remark @a value must be released using free().
  *
  * @param[in]	table		The handle of the table
- * @param[in]	key 	The	string value of "key"
+ * @param[in]	key			The	string value of "key"
  * @param[out]	value		The string (char*) value
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a table is created using maps_item_hashtable_create().
  *
@@ -1329,11 +1367,12 @@ int maps_item_hashtable_get_string(maps_item_hashtable_h table,
  * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	table		The handle of the table
- * @param[in]	key 	The	string value of "key"
+ * @param[in]	key			The	string value of "key"
  * @param[out]	value		The integer value
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a table is created using maps_item_hashtable_create().
  *
@@ -1360,6 +1399,7 @@ int maps_item_hashtable_get_int(maps_item_hashtable_h table, const char *key,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a table is created using maps_item_hashtable_create().
  *
@@ -1386,6 +1426,7 @@ int maps_item_hashtable_get_float(maps_item_hashtable_h table,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a table is created using maps_item_hashtable_create().
  *
@@ -1407,6 +1448,7 @@ int maps_item_hashtable_get(maps_item_hashtable_h table, const char *key,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a table is created using maps_item_hashtable_create().
  *
@@ -1458,6 +1500,7 @@ typedef bool(*maps_item_hashtable_foreach_cb) (int index, int total,
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
  * @retval	#MAPS_ERROR_NOT_FOUND Result not found
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a table is created using maps_item_hashtable_create().
  * @post This function invokes maps_item_hashtable_foreach_cb() to deliver
@@ -1483,6 +1526,7 @@ int maps_item_hashtable_foreach(maps_item_hashtable_h table,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a table is created using maps_item_hashtable_create().
  *
