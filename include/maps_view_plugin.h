@@ -58,6 +58,7 @@ typedef enum _maps_view_colorspace_type_e
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
  * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a view is created using maps_view_create().
  * @post This function invokes maps_view_on_event_cb() with the event type
@@ -89,6 +90,7 @@ int maps_view_set_zoom_factor(maps_view_h view, double zoom_factor);
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a view is created using maps_view_create().
  *
@@ -107,6 +109,7 @@ int maps_view_get_zoom_factor(const maps_view_h view, double *zoom_factor);
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a hView is created using maps_view_create().
  *
@@ -123,6 +126,7 @@ int maps_view_get_maps_plugin_view_handle(maps_view_h hView, void **maps_plugin_
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a hView is created using maps_view_create().
  *
