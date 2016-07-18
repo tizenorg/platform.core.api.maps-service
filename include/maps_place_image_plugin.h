@@ -50,6 +50,7 @@ extern "C" {
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see maps_place_image_destroy()
  * @see maps_place_image_clone()
@@ -66,6 +67,7 @@ int maps_place_image_create(maps_place_image_h *image);
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a image is created using maps_place_image_create().
  *
@@ -84,6 +86,7 @@ int maps_place_image_set_id(maps_place_image_h image, const char *id);
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a image is created using maps_place_image_create().
  *
@@ -102,6 +105,7 @@ int maps_place_image_set_url(maps_place_image_h image, const char *url);
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a image is created using maps_place_image_create().
  *
@@ -120,6 +124,7 @@ int maps_place_image_set_width(maps_place_image_h image, const int width);
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a image is created using maps_place_image_create().
  *
@@ -138,6 +143,7 @@ int maps_place_image_set_height(maps_place_image_h image, const int height);
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a image is created using maps_place_image_create().
  *
@@ -158,6 +164,7 @@ int maps_place_image_set_user_link(maps_place_image_h image,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a image is created using maps_place_image_create().
  *

@@ -15,13 +15,9 @@ BuildRequires: pkgconfig(capi-base-common)
 BuildRequires: pkgconfig(dlog)
 BuildRequires: pkgconfig(capi-system-info)
 
-# Privilege check for Tizen 2.3.2
-#BuildRequires: pkgconfig(capi-appfw-app-manager)
-#BuildRequires: pkgconfig(pkgmgr-info)
-#BuildRequires: pkgconfig(capi-security-privilege-manager)
-
-# Privilege check for Tizen 2.4
-#BuildRequires: pkgconfig(security-privilege-checker)
+# Privilege check for Tizen 2.x
+#BuildRequires: pkgconfig(privacy-manager-client)
+#BuildRequires: pkgconfig(libsmack)
 
 # Mapping API dependencies
 BuildRequires: pkgconfig(eina)
@@ -54,7 +50,7 @@ export FFLAGS="$FFLAGS -DTIZEN_ENGINEER_MODE"
 
 MAJORVER=`echo %{version} | awk 'BEGIN {FS="."}{print $1}'`
 cmake . -DCMAKE_INSTALL_PREFIX=%{_prefix} -DMAJORVER=${MAJORVER} -DFULLVER=%{version} \
-	-DLIBDIR=%{_libdir} -DPROFILE=%{?profile} -DTIZEN_VER=300
+	-DLIBDIR=%{_libdir} -DPROFILE=%{?profile} -DTIZEN_VER=0x030000
 make %{?jobs:-j%jobs}
 
 %install

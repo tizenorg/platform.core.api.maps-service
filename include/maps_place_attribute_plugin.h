@@ -51,6 +51,7 @@ extern "C" {
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see maps_place_attribute_destroy()
  * @see maps_place_attribute_clone()
@@ -67,6 +68,7 @@ int maps_place_attribute_create(maps_place_attribute_h *attribute);
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a attribute is created using maps_place_attribute_create().
  *
@@ -86,6 +88,7 @@ int maps_place_attribute_set_id(maps_place_attribute_h attribute,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a attribute is created using maps_place_attribute_create().
  *
@@ -105,6 +108,7 @@ int maps_place_attribute_set_label(maps_place_attribute_h attribute,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a attribute is created using maps_place_attribute_create().
  *

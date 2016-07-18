@@ -22,6 +22,7 @@
 #include "maps_route_segment_plugin.h"
 #include "maps_route_private.h"
 #include "maps_route_segment_private.h"
+#include "maps_condition.h"
 
 static bool __is_supported(const maps_route_h route, maps_service_data_e data)
 {
@@ -70,6 +71,8 @@ const gsize _MAPS_ROUTE_ID_MAX_LENGTH = 32;
 
 EXPORT_API int maps_route_create(maps_route_h *route)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!route)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	*route = (maps_route_h) g_slice_new0(maps_route_s);
@@ -84,6 +87,8 @@ EXPORT_API int maps_route_create(maps_route_h *route)
 
 EXPORT_API int maps_route_destroy(maps_route_h route)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!route)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -119,8 +124,10 @@ EXPORT_API int maps_route_destroy(maps_route_h route)
 }
 
 EXPORT_API int maps_route_clone(const maps_route_h origin,
-				maps_route_h *cloned)
+								maps_route_h *cloned)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!cloned || !origin)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -209,6 +216,8 @@ EXPORT_API int maps_route_clone(const maps_route_h origin,
 EXPORT_API int maps_route_get_route_id(const maps_route_h route,
 								char **route_id)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!route || !route_id)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_get_string(((maps_route_s *) route)->route_id,
@@ -218,6 +227,8 @@ EXPORT_API int maps_route_get_route_id(const maps_route_h route,
 EXPORT_API int maps_route_get_origin(const maps_route_h route,
 								maps_coordinates_h *origin)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!route || !origin)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_coordinates_clone(((maps_route_s *) route)->origin, origin);
@@ -227,6 +238,8 @@ EXPORT_API int maps_route_get_origin(const maps_route_h route,
 EXPORT_API int maps_route_get_destination(const maps_route_h route,
 								maps_coordinates_h *destination)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!route || !destination)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_coordinates_clone(((maps_route_s *) route)->destination,
@@ -236,6 +249,8 @@ EXPORT_API int maps_route_get_destination(const maps_route_h route,
 EXPORT_API int maps_route_get_bounding_box(const maps_route_h route,
 								maps_area_h *bounding_box)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!route || !bounding_box)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_area_clone(((maps_route_s *) route)->bounding_box,
@@ -245,6 +260,8 @@ EXPORT_API int maps_route_get_bounding_box(const maps_route_h route,
 EXPORT_API int maps_route_get_transport_mode(const maps_route_h route,
 								maps_route_transport_mode_e *transport_mode)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!route || !transport_mode)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	*transport_mode = ((maps_route_s *) route)->transport_mode;
@@ -254,6 +271,8 @@ EXPORT_API int maps_route_get_transport_mode(const maps_route_h route,
 EXPORT_API int maps_route_get_total_distance(const maps_route_h route,
 								double *total_distance)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!route || !total_distance)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	*total_distance = ((maps_route_s *) route)->total_distance;
@@ -263,6 +282,8 @@ EXPORT_API int maps_route_get_total_distance(const maps_route_h route,
 EXPORT_API int maps_route_get_total_duration(const maps_route_h route,
 								long *total_duration)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!route || !total_duration)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	*total_duration = ((maps_route_s *) route)->total_duration;
@@ -273,15 +294,12 @@ EXPORT_API int maps_route_foreach_path(const maps_route_h route,
 								maps_route_path_cb callback,
 								void *user_data)
 {
-	/* Check if the handle of the Route is valid */
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!route)
 		return MAPS_ERROR_INVALID_PARAMETER;
-
-	/* Check if this API feature available */
 	if (!__is_supported(route, MAPS_ROUTE_PATH))
 		return MAPS_ERROR_NOT_SUPPORTED;
-
-	/* Check if parameters are valid */
 	if (!callback)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -293,16 +311,13 @@ EXPORT_API int maps_route_foreach_segment(const maps_route_h route,
 								maps_route_segment_cb callback,
 								void *user_data)
 {
-	/* Check if the handle of the Route is valid */
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!route)
 		return MAPS_ERROR_INVALID_PARAMETER;
-
-	/* Check if this API feature available */
 	if (!__is_supported(route, MAPS_ROUTE_SEGMENTS_PATH)
 		&& !__is_supported(route, MAPS_ROUTE_SEGMENTS_MANEUVERS))
 		return MAPS_ERROR_NOT_SUPPORTED;
-
-	/* Check if parameters are valid */
 	if (!callback)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -314,6 +329,8 @@ EXPORT_API int maps_route_foreach_property(const maps_route_h route,
 								maps_route_properties_cb callback,
 								void *user_data)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!route || !callback)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_item_hashtable_foreach(((maps_route_s *) route)->properties,
@@ -323,6 +340,8 @@ EXPORT_API int maps_route_foreach_property(const maps_route_h route,
 EXPORT_API int maps_route_get_distance_unit(const maps_route_h route,
 								maps_distance_unit_e *distance_unit)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!route || !distance_unit)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	*distance_unit = ((maps_route_s *) route)->distance_unit;
@@ -332,6 +351,8 @@ EXPORT_API int maps_route_get_distance_unit(const maps_route_h route,
 int _maps_route_is_data_supported(const maps_route_h route,
 								maps_service_data_e data, bool *supported)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!route || !supported)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -353,6 +374,8 @@ int _maps_route_is_data_supported(const maps_route_h route,
 EXPORT_API int maps_route_set_route_id(const maps_route_h route,
 								const char *route_id)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!route || !route_id)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_set_string(route_id, _MAPS_ROUTE_ID_MAX_LENGTH,
@@ -362,6 +385,8 @@ EXPORT_API int maps_route_set_route_id(const maps_route_h route,
 EXPORT_API int maps_route_set_origin(maps_route_h route,
 								const maps_coordinates_h origin)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!route || !origin)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_route_s *p = (maps_route_s *) route;
@@ -373,6 +398,8 @@ EXPORT_API int maps_route_set_origin(maps_route_h route,
 EXPORT_API int maps_route_set_destination(maps_route_h route,
 								const maps_coordinates_h destination)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!route || !destination)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_route_s *p = (maps_route_s *) route;
@@ -384,6 +411,8 @@ EXPORT_API int maps_route_set_destination(maps_route_h route,
 EXPORT_API int maps_route_set_bounding_box(maps_route_h route,
 								const maps_area_h bounding_box)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!route || !bounding_box)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_route_s *p = (maps_route_s *) route;
@@ -395,6 +424,8 @@ EXPORT_API int maps_route_set_bounding_box(maps_route_h route,
 EXPORT_API int maps_route_set_total_distance(maps_route_h route,
 								const double total_distance)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!route || total_distance < 0)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	((maps_route_s *) route)->total_distance = total_distance;
@@ -404,6 +435,8 @@ EXPORT_API int maps_route_set_total_distance(maps_route_h route,
 EXPORT_API int maps_route_set_total_duration(maps_route_h route,
 								const long total_duration)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!route || total_duration < 0)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	((maps_route_s *) route)->total_duration = total_duration;
@@ -413,6 +446,8 @@ EXPORT_API int maps_route_set_total_duration(maps_route_h route,
 EXPORT_API int maps_route_set_transport_mode(maps_route_h route,
 								const maps_route_transport_mode_e transport_mode)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!route)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	if ((transport_mode < MAPS_ROUTE_TRANSPORT_MODE_CAR) ||
@@ -425,6 +460,8 @@ EXPORT_API int maps_route_set_transport_mode(maps_route_h route,
 EXPORT_API int maps_route_set_path(maps_route_h route,
 								const maps_item_list_h path)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!route || !path)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_route_s *p = (maps_route_s *) route;
@@ -439,6 +476,8 @@ EXPORT_API int maps_route_set_path(maps_route_h route,
 EXPORT_API int maps_route_set_segments(maps_route_h route,
 								const maps_item_list_h segments)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!route || !segments)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_route_s *p = (maps_route_s *) route;
@@ -454,6 +493,8 @@ EXPORT_API int maps_route_set_segments(maps_route_h route,
 EXPORT_API int maps_route_set_properties(maps_route_h route,
 								const maps_item_hashtable_h properties)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!route || !properties)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_route_s *p = (maps_route_s *) route;
@@ -465,6 +506,8 @@ EXPORT_API int maps_route_set_properties(maps_route_h route,
 EXPORT_API int maps_route_set_distance_unit(maps_route_h route,
 								const maps_distance_unit_e distance_unit)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!route)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	if ((distance_unit < MAPS_DISTANCE_UNIT_M) ||
