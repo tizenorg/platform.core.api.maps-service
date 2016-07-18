@@ -18,6 +18,7 @@
 #define __MAPS_SERVICE_H__
 
 #include <tizen_type.h>
+#include <maps_types.h>
 #include <maps_error.h>
 #include <maps_address.h>
 #include <maps_area.h>
@@ -101,17 +102,6 @@ typedef enum _maps_service_data_e {
 	MAPS_VIEW_SCALEBAR				/**< Indicates the availability of scale bar on the Map @if MOBILE (Since 3.0) @endif */
 } maps_service_data_e;
 
-/**
- * @brief	The Maps Service handle
- * @details The Maps Service handle can be created by calling of maps_service_create().
- * \n To release the handle use maps_service_destroy().
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
- *
- * @see maps_service_create()
- * @see maps_service_destroy()
- */
-typedef void *maps_service_h;
-
 
 /**
  * @brief	Called when requesting available Maps Providers.
@@ -146,6 +136,7 @@ typedef bool(*maps_service_provider_info_cb) (char *maps_provider,
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
  * @retval	#MAPS_ERROR_NOT_FOUND Result not found
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @post This function invokes maps_service_provider_info_cb() to deliver Maps
  * Provider information.
