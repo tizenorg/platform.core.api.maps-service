@@ -145,6 +145,7 @@ typedef bool(*maps_service_provider_info_cb) (char *maps_provider,
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
  * @retval	#MAPS_ERROR_NOT_FOUND Result not found
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @post This function invokes maps_service_provider_info_cb() to deliver Maps
  * Provider information.
