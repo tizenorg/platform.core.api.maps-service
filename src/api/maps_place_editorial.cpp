@@ -13,11 +13,12 @@
  * limitations under the License.
  */
 
+#include <glib.h>
 #include "maps_error.h"
 #include "maps_place_editorial_plugin.h"
 #include "maps_place_media_plugin.h"
-#include <glib.h>
 #include "maps_util.h"
+#include "maps_condition.h"
 
 typedef struct _maps_place_editorial_s
 {
@@ -33,10 +34,12 @@ const gsize _MAPS_PLACE_EDITORIAL_LANGUAGE_MAX_LENGTH = 32;
 
 EXPORT_API int maps_place_editorial_create(maps_place_editorial_h *place)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!place)
 		return MAPS_ERROR_INVALID_PARAMETER;
-	*place = (maps_place_editorial_h) g_slice_new0(maps_place_editorial_s);
 
+	*place = (maps_place_editorial_h) g_slice_new0(maps_place_editorial_s);
 	if (*place == NULL) {
 		MAPS_LOGE("OUT_OF_MEMORY(0x%08x)", MAPS_ERROR_OUT_OF_MEMORY);
 		return MAPS_ERROR_OUT_OF_MEMORY;
@@ -47,6 +50,8 @@ EXPORT_API int maps_place_editorial_create(maps_place_editorial_h *place)
 
 EXPORT_API int maps_place_editorial_destroy(maps_place_editorial_h place)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!place)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -67,6 +72,8 @@ EXPORT_API int maps_place_editorial_destroy(maps_place_editorial_h place)
 EXPORT_API int maps_place_editorial_clone(const maps_place_editorial_h origin,
 								maps_place_editorial_h *cloned)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!cloned || !origin)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -111,6 +118,8 @@ EXPORT_API int maps_place_editorial_clone(const maps_place_editorial_h origin,
 EXPORT_API int maps_place_editorial_get_description(const maps_place_editorial_h place,
 								char **description)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!place || !description)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_get_string(((maps_place_editorial_s *) place)->description,
@@ -120,6 +129,8 @@ EXPORT_API int maps_place_editorial_get_description(const maps_place_editorial_h
 EXPORT_API int maps_place_editorial_get_language(const maps_place_editorial_h place,
 								char **language)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!place || !language)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_get_string(((maps_place_editorial_s *) place)->language,
@@ -129,6 +140,8 @@ EXPORT_API int maps_place_editorial_get_language(const maps_place_editorial_h pl
 EXPORT_API int maps_place_editorial_get_media(const maps_place_editorial_h place,
 								maps_place_media_h *media)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!place || !media)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_place_media_clone(((maps_place_editorial_s *) place)->media, media);
@@ -139,26 +152,30 @@ EXPORT_API int maps_place_editorial_get_media(const maps_place_editorial_h place
 EXPORT_API int maps_place_editorial_set_description(maps_place_editorial_h place,
 								const char *description)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!place || !description)
 		return MAPS_ERROR_INVALID_PARAMETER;
-	return maps_set_string(description,
-		_MAPS_PLACE_EDITORIAL_DESCRIPTION_MAX_LENGTH,
+	return maps_set_string(description, _MAPS_PLACE_EDITORIAL_DESCRIPTION_MAX_LENGTH,
 		&((maps_place_editorial_s *) place)->description);
 }
 
 EXPORT_API int maps_place_editorial_set_language(maps_place_editorial_h place,
 								const char *language)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!place || !language)
 		return MAPS_ERROR_INVALID_PARAMETER;
-	return maps_set_string(language,
-		_MAPS_PLACE_EDITORIAL_LANGUAGE_MAX_LENGTH,
+	return maps_set_string(language, _MAPS_PLACE_EDITORIAL_LANGUAGE_MAX_LENGTH,
 		&((maps_place_editorial_s *) place)->language);
 }
 
 EXPORT_API int maps_place_editorial_set_media(maps_place_editorial_h place,
 								const maps_place_media_h media)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!place || !media)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_place_editorial_s *e = (maps_place_editorial_s *) place;

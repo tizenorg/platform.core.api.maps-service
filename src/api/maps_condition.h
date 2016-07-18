@@ -22,9 +22,15 @@
 bool maps_condition_check_privilege(void);
 
 /**
+ * @brief	Gets if maps feature is supported
+ * @remarks	If target is not a wearable gear, it returns true always.
+ */
+bool maps_condition_check_maps_feature(void);
+
+/**
  * @brief	Gets if network.internet feature is supported
  * @remarks	If target is not a wearable gear, it returns true always.
  */
-bool maps_condition_check_feature(void);
+bool maps_condition_check_internet_feature(void);
 
 #endif	/* __MAPS_SERVICE_CHECK_H__ */

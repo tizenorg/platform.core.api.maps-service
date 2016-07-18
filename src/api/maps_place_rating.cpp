@@ -13,10 +13,11 @@
  * limitations under the License.
  */
 
+#include <glib.h>
 #include "maps_error.h"
 #include "maps_place_rating_plugin.h"
-#include <glib.h>
 #include "maps_util.h"
+#include "maps_condition.h"
 
 typedef struct _maps_place_rating_s
 {
@@ -28,6 +29,8 @@ typedef struct _maps_place_rating_s
 
 EXPORT_API int maps_place_rating_create(maps_place_rating_h *place)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!place)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	*place = (maps_place_rating_h) g_slice_new0(maps_place_rating_s);
@@ -42,6 +45,8 @@ EXPORT_API int maps_place_rating_create(maps_place_rating_h *place)
 
 EXPORT_API int maps_place_rating_destroy(maps_place_rating_h place)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!place)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	g_slice_free(maps_place_rating_s, place);
@@ -51,6 +56,8 @@ EXPORT_API int maps_place_rating_destroy(maps_place_rating_h place)
 EXPORT_API int maps_place_rating_clone(const maps_place_rating_h origin,
 								maps_place_rating_h *cloned)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!cloned || !origin)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -83,6 +90,8 @@ EXPORT_API int maps_place_rating_clone(const maps_place_rating_h origin,
 EXPORT_API int maps_place_rating_get_count(const maps_place_rating_h place,
 								int *count)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!place || !count)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	*count = ((maps_place_rating_s *) place)->count;
@@ -92,6 +101,8 @@ EXPORT_API int maps_place_rating_get_count(const maps_place_rating_h place,
 EXPORT_API int maps_place_rating_get_average(const maps_place_rating_h place,
 								double *average)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!place || !average)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	*average = ((maps_place_rating_s *) place)->average;
@@ -103,6 +114,8 @@ EXPORT_API int maps_place_rating_get_average(const maps_place_rating_h place,
 EXPORT_API int maps_place_rating_set_count(maps_place_rating_h place,
 								const int count)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!place || (count < 0))
 		return MAPS_ERROR_INVALID_PARAMETER;
 	((maps_place_rating_s *) place)->count = count;
@@ -112,6 +125,8 @@ EXPORT_API int maps_place_rating_set_count(maps_place_rating_h place,
 EXPORT_API int maps_place_rating_set_average(maps_place_rating_h place,
 								const double average)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!place || (average < 0))
 		return MAPS_ERROR_INVALID_PARAMETER;
 	((maps_place_rating_s *) place)->average = average;
