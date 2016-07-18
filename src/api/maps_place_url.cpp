@@ -13,10 +13,11 @@
  * limitations under the License.
  */
 
+#include <glib.h>
 #include "maps_error.h"
 #include "maps_place_url_plugin.h"
-#include <glib.h>
 #include "maps_util.h"
+#include "maps_condition.h"
 
 typedef struct _maps_place_url_s
 {
@@ -31,10 +32,12 @@ const gsize _MAPS_PLACE_URL_DESC_MAX_LENGTH = 512;
 
 EXPORT_API int maps_place_url_create(maps_place_url_h *place)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!place)
 		return MAPS_ERROR_INVALID_PARAMETER;
-	*place = (maps_place_url_h) g_slice_new0(maps_place_url_s);
 
+	*place = (maps_place_url_h) g_slice_new0(maps_place_url_s);
 	if (*place == NULL) {
 		MAPS_LOGE("OUT_OF_MEMORY(0x%08x)", MAPS_ERROR_OUT_OF_MEMORY);
 		return MAPS_ERROR_OUT_OF_MEMORY;
@@ -45,6 +48,8 @@ EXPORT_API int maps_place_url_create(maps_place_url_h *place)
 
 EXPORT_API int maps_place_url_destroy(maps_place_url_h place)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!place)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -62,6 +67,8 @@ EXPORT_API int maps_place_url_destroy(maps_place_url_h place)
 EXPORT_API int maps_place_url_clone(const maps_place_url_h origin,
 								maps_place_url_h *cloned)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!cloned || !origin)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -98,6 +105,8 @@ EXPORT_API int maps_place_url_clone(const maps_place_url_h origin,
 
 EXPORT_API int maps_place_url_get_path(const maps_place_url_h place, char **path)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!place || !path)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_get_string(((maps_place_url_s *) place)->path,
@@ -106,6 +115,8 @@ EXPORT_API int maps_place_url_get_path(const maps_place_url_h place, char **path
 
 EXPORT_API int maps_place_url_get_description(const maps_place_url_h place, char **desc)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!place || !desc)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_get_string(((maps_place_url_s *) place)->desc,
@@ -116,6 +127,8 @@ EXPORT_API int maps_place_url_get_description(const maps_place_url_h place, char
 
 EXPORT_API int maps_place_url_set_path(maps_place_url_h place, const char *path)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!place || !path)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_set_string(path, _MAPS_PLACE_URL_PATH_MAX_LENGTH,
@@ -125,6 +138,8 @@ EXPORT_API int maps_place_url_set_path(maps_place_url_h place, const char *path)
 EXPORT_API int maps_place_url_set_description(maps_place_url_h place,
 								const char *desc)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!place || !desc)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_set_string(desc, _MAPS_PLACE_URL_DESC_MAX_LENGTH,

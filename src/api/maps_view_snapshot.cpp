@@ -21,6 +21,7 @@
 #include <maps_condition.h>
 #include <module.h>
 #include <empty_module.h>
+#include "maps_condition.h"
 
 
 const plugin::interface_s *__get_plugin_interface(maps_view_h view);
@@ -107,12 +108,11 @@ EXPORT_API int maps_view_capture_snapshot(maps_view_h view,
 											int quality,
 											const char *path)
 {
-	/* Check if parameters are valid */
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!view || type < MAPS_VIEW_SNAPSHOT_BMP || type > MAPS_VIEW_SNAPSHOT_JPEG ||
 		quality < 0 || quality > 100 || !path || (path && *path == '\0'))
 		return MAPS_ERROR_INVALID_PARAMETER;
-
-	/* Check if privileges enough */
 	if (!maps_condition_check_privilege())
 		return MAPS_ERROR_PERMISSION_DENIED;
 

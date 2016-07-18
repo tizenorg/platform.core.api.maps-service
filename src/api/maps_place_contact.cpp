@@ -13,10 +13,11 @@
  * limitations under the License.
  */
 
+#include <glib.h>
 #include "maps_error.h"
 #include "maps_place_contact_plugin.h"
-#include <glib.h>
 #include "maps_util.h"
+#include "maps_condition.h"
 
 typedef struct _maps_place_contact_s
 {
@@ -33,10 +34,12 @@ const gsize _MAPS_PLACE_CONTACT_VALUE_MAX_LENGTH = 512;
 
 EXPORT_API int maps_place_contact_create(maps_place_contact_h *place)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!place)
 		return MAPS_ERROR_INVALID_PARAMETER;
-	*place = (maps_place_contact_h) g_slice_new0(maps_place_contact_s);
 
+	*place = (maps_place_contact_h) g_slice_new0(maps_place_contact_s);
 	if (*place == NULL) {
 		MAPS_LOGE("OUT_OF_MEMORY(0x%08x)", MAPS_ERROR_OUT_OF_MEMORY);
 		return MAPS_ERROR_OUT_OF_MEMORY;
@@ -47,6 +50,8 @@ EXPORT_API int maps_place_contact_create(maps_place_contact_h *place)
 
 EXPORT_API int maps_place_contact_destroy(maps_place_contact_h place)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!place)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -66,6 +71,8 @@ EXPORT_API int maps_place_contact_destroy(maps_place_contact_h place)
 EXPORT_API int maps_place_contact_clone(const maps_place_contact_h origin,
 					maps_place_contact_h *cloned)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!cloned || !origin)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -107,6 +114,8 @@ EXPORT_API int maps_place_contact_clone(const maps_place_contact_h origin,
 
 EXPORT_API int maps_place_contact_get_label(const maps_place_contact_h place, char **label)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!place || !label)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_get_string(((maps_place_contact_s *) place)->label,
@@ -115,6 +124,8 @@ EXPORT_API int maps_place_contact_get_label(const maps_place_contact_h place, ch
 
 EXPORT_API int maps_place_contact_get_type(const maps_place_contact_h place, char **type)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!place || !type)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_get_string(((maps_place_contact_s *) place)->type,
@@ -123,6 +134,8 @@ EXPORT_API int maps_place_contact_get_type(const maps_place_contact_h place, cha
 
 EXPORT_API int maps_place_contact_get_value(const maps_place_contact_h place, char **value)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!place || !value)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_get_string(((maps_place_contact_s *) place)->value,
@@ -133,6 +146,8 @@ EXPORT_API int maps_place_contact_get_value(const maps_place_contact_h place, ch
 
 EXPORT_API int maps_place_contact_set_label(maps_place_contact_h place, const char *label)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!place || !label)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_set_string(label, _MAPS_PLACE_CONTACT_LABEL_MAX_LENGTH,
@@ -141,6 +156,8 @@ EXPORT_API int maps_place_contact_set_label(maps_place_contact_h place, const ch
 
 EXPORT_API int maps_place_contact_set_type(maps_place_contact_h place, const char *type)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!place || !type)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_set_string(type, _MAPS_PLACE_CONTACT_TYPE_MAX_LENGTH,
@@ -149,6 +166,8 @@ EXPORT_API int maps_place_contact_set_type(maps_place_contact_h place, const cha
 
 EXPORT_API int maps_place_contact_set_value(maps_place_contact_h place, const char *value)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!place || !value)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_set_string(value, _MAPS_PLACE_CONTACT_VALUE_MAX_LENGTH,

@@ -19,6 +19,7 @@
 #include "maps_plugin_types.h"
 #include "maps_address.h"
 #include "maps_util.h"
+#include "maps_condition.h"
 
 /*
  * This represents address information such as building number,
@@ -55,6 +56,9 @@ const gsize _MAPS_ADDRESS_COUNTY_MAX_LENGTH = 128;
 
 EXPORT_API int maps_address_create(maps_address_h *address)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
+
 	if (!address)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -70,6 +74,9 @@ EXPORT_API int maps_address_create(maps_address_h *address)
 
 EXPORT_API int maps_address_destroy(maps_address_h address)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
+
 	if (!address)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -105,6 +112,9 @@ EXPORT_API int maps_address_destroy(maps_address_h address)
 EXPORT_API int maps_address_clone(const maps_address_h origin,
 				  maps_address_h *cloned)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
+
 	if (!cloned || !origin)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -192,6 +202,8 @@ EXPORT_API int maps_address_clone(const maps_address_h origin,
 EXPORT_API int maps_address_get_building_number(const maps_address_h address,
 						char **building_number)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!address || !building_number)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_get_string(((maps_address_s *) address)->building_number,
@@ -201,6 +213,8 @@ EXPORT_API int maps_address_get_building_number(const maps_address_h address,
 EXPORT_API int maps_address_get_street(const maps_address_h address,
 				       char **street)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!address || !street)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_get_string(((maps_address_s *) address)->street,
@@ -210,6 +224,8 @@ EXPORT_API int maps_address_get_street(const maps_address_h address,
 EXPORT_API int maps_address_get_district(const maps_address_h address,
 					 char **district)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!address || !district)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_get_string(((maps_address_s *) address)->district,
@@ -218,6 +234,8 @@ EXPORT_API int maps_address_get_district(const maps_address_h address,
 
 EXPORT_API int maps_address_get_city(const maps_address_h address, char **city)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!address || !city)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_get_string(((maps_address_s *) address)->city,
@@ -227,6 +245,8 @@ EXPORT_API int maps_address_get_city(const maps_address_h address, char **city)
 EXPORT_API int maps_address_get_state(const maps_address_h address,
 				      char **state)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!address || !state)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_get_string(((maps_address_s *) address)->state,
@@ -236,6 +256,8 @@ EXPORT_API int maps_address_get_state(const maps_address_h address,
 EXPORT_API int maps_address_get_country(const maps_address_h address,
 					char **country)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!address || !country)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_get_string(((maps_address_s *) address)->country,
@@ -245,6 +267,8 @@ EXPORT_API int maps_address_get_country(const maps_address_h address,
 EXPORT_API int maps_address_get_country_code(const maps_address_h address,
 					     char **country_code)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!address || !country_code)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_get_string(((maps_address_s *) address)->country_code,
@@ -254,6 +278,8 @@ EXPORT_API int maps_address_get_country_code(const maps_address_h address,
 EXPORT_API int maps_address_get_county(const maps_address_h address,
 				       char **county)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!address || !county)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_get_string(((maps_address_s *) address)->county,
@@ -263,6 +289,8 @@ EXPORT_API int maps_address_get_county(const maps_address_h address,
 EXPORT_API int maps_address_get_postal_code(const maps_address_h address,
 					    char **postal_code)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!address || !postal_code)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_get_string(((maps_address_s *) address)->postal_code,
@@ -272,6 +300,8 @@ EXPORT_API int maps_address_get_postal_code(const maps_address_h address,
 EXPORT_API int maps_address_get_freetext(const maps_address_h address,
 					 char **freetext)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!address || !freetext)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_get_string(((maps_address_s *) address)->freetext,
@@ -283,6 +313,8 @@ EXPORT_API int maps_address_get_freetext(const maps_address_h address,
 EXPORT_API int maps_address_set_building_number(maps_address_h address,
 						const char *building_number)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!address || !building_number)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_set_string(building_number,
@@ -293,6 +325,8 @@ EXPORT_API int maps_address_set_building_number(maps_address_h address,
 EXPORT_API int maps_address_set_street(maps_address_h address,
 				       const char *street)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!address || !street)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_set_string(street, _MAPS_ADDRESS_STREET_MAX_LENGTH,
@@ -302,6 +336,8 @@ EXPORT_API int maps_address_set_street(maps_address_h address,
 EXPORT_API int maps_address_set_district(maps_address_h address,
 					 const char *district)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!address || !district)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_set_string(district, _MAPS_ADDRESS_DISTRICT_MAX_LENGTH,
@@ -310,6 +346,8 @@ EXPORT_API int maps_address_set_district(maps_address_h address,
 
 EXPORT_API int maps_address_set_city(maps_address_h address, const char *city)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!address || !city)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_set_string(city, _MAPS_ADDRESS_CITY_MAX_LENGTH,
@@ -318,6 +356,8 @@ EXPORT_API int maps_address_set_city(maps_address_h address, const char *city)
 
 EXPORT_API int maps_address_set_state(maps_address_h address, const char *state)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!address || !state)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_set_string(state, _MAPS_ADDRESS_STATE_MAX_LENGTH,
@@ -327,6 +367,8 @@ EXPORT_API int maps_address_set_state(maps_address_h address, const char *state)
 EXPORT_API int maps_address_set_country(maps_address_h address,
 					const char *country)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!address || !country)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_set_string(country, _MAPS_ADDRESS_COUNTRY_MAX_LENGTH,
@@ -336,6 +378,8 @@ EXPORT_API int maps_address_set_country(maps_address_h address,
 EXPORT_API int maps_address_set_country_code(maps_address_h address,
 					     const char *country_code)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!address || !country_code)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_set_string(country_code,
@@ -346,6 +390,8 @@ EXPORT_API int maps_address_set_country_code(maps_address_h address,
 EXPORT_API int maps_address_set_county(maps_address_h address,
 				       const char *county)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!address || !county)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_set_string(county, _MAPS_ADDRESS_COUNTY_MAX_LENGTH,
@@ -355,6 +401,8 @@ EXPORT_API int maps_address_set_county(maps_address_h address,
 EXPORT_API int maps_address_set_postal_code(maps_address_h address,
 					    const char *postal_code)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!address || !postal_code)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_set_string(postal_code,
@@ -365,6 +413,8 @@ EXPORT_API int maps_address_set_postal_code(maps_address_h address,
 EXPORT_API int maps_address_set_freetext(maps_address_h address,
 					 const char *freetext)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!address || !freetext)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_set_string(freetext, _MAPS_ADDRESS_FREE_TEXT_MAX_LENGTH,
@@ -377,6 +427,8 @@ EXPORT_API int maps_address_set_freetext(maps_address_h address,
 
 EXPORT_API int maps_address_list_create(maps_address_list_h *address_list)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!address_list)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -390,6 +442,8 @@ EXPORT_API int maps_address_list_create(maps_address_list_h *address_list)
 
 EXPORT_API int maps_address_list_append(maps_address_list_h address_list, maps_address_h address)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!address_list || !address)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -402,6 +456,8 @@ EXPORT_API int maps_address_list_append(maps_address_list_h address_list, maps_a
 
 EXPORT_API int maps_address_list_remove(maps_address_list_h address_list, maps_address_h address)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!address_list || !address)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -414,6 +470,8 @@ EXPORT_API int maps_address_list_remove(maps_address_list_h address_list, maps_a
 
 EXPORT_API int maps_address_list_get_length(maps_address_list_h address_list, int *length)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!address_list || !length)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -424,6 +482,8 @@ EXPORT_API int maps_address_list_get_length(maps_address_list_h address_list, in
 
 EXPORT_API int maps_address_list_foreach(maps_address_list_h address_list, maps_address_cb callback, void *user_data)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!address_list || !callback)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -453,6 +513,8 @@ EXPORT_API int maps_address_list_foreach(maps_address_list_h address_list, maps_
 
 EXPORT_API int maps_address_list_destroy(maps_address_list_h address_list)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!address_list)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -467,60 +529,45 @@ EXPORT_API int maps_address_list_destroy(maps_address_list_h address_list)
 
 bool maps_address_is_valid(const maps_address_h address)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!address) return false;
 
-	bool ret = true;
+	bool ret = false;
 	maps_address_s *a = (maps_address_s *) address;
 
 	do {
-		if (a->building_number && strlen(a->building_number) > _MAPS_ADDRESS_BUILDING_NUMBER_MAX_LENGTH) {
-			ret = false;
+		if (a->building_number && strlen(a->building_number) > _MAPS_ADDRESS_BUILDING_NUMBER_MAX_LENGTH)
 			break;
-		}
-		if (a->street && strlen(a->street) > _MAPS_ADDRESS_STREET_MAX_LENGTH) {
-			ret = false;
-			break;
-		}
 
-		if (a->district && strlen(a->district) > _MAPS_ADDRESS_DISTRICT_MAX_LENGTH) {
-			ret = false;
+		if (a->street && strlen(a->street) > _MAPS_ADDRESS_STREET_MAX_LENGTH)
 			break;
-		}
 
-		if (a->city && strlen(a->city) > _MAPS_ADDRESS_CITY_MAX_LENGTH) {
-			ret = false;
+		if (a->district && strlen(a->district) > _MAPS_ADDRESS_DISTRICT_MAX_LENGTH)
 			break;
-		}
 
-		if (a->state && strlen(a->state) > _MAPS_ADDRESS_STATE_MAX_LENGTH) {
-			ret = false;
+		if (a->city && strlen(a->city) > _MAPS_ADDRESS_CITY_MAX_LENGTH)
 			break;
-		}
 
-		if (a->country_code && strlen(a->country_code) > _MAPS_ADDRESS_COUNTRY_CODE_MAX_LENGTH) {
-			ret = false;
+		if (a->state && strlen(a->state) > _MAPS_ADDRESS_STATE_MAX_LENGTH)
 			break;
-		}
 
-		if (a->postal_code && strlen(a->postal_code) > _MAPS_ADDRESS_POSTAL_CODE_MAX_LENGTH) {
-			ret = false;
+		if (a->country_code && strlen(a->country_code) > _MAPS_ADDRESS_COUNTRY_CODE_MAX_LENGTH)
 			break;
-		}
 
-		if (a->freetext && strlen(a->freetext) > _MAPS_ADDRESS_FREE_TEXT_MAX_LENGTH) {
-			ret = false;
+		if (a->postal_code && strlen(a->postal_code) > _MAPS_ADDRESS_POSTAL_CODE_MAX_LENGTH)
 			break;
-		}
 
-		if (a->country && strlen(a->country) > _MAPS_ADDRESS_COUNTRY_MAX_LENGTH) {
-			ret = false;
+		if (a->freetext && strlen(a->freetext) > _MAPS_ADDRESS_FREE_TEXT_MAX_LENGTH)
 			break;
-		}
 
-		if (a->county && strlen(a->county) > _MAPS_ADDRESS_COUNTY_MAX_LENGTH) {
-			ret = false;
+		if (a->country && strlen(a->country) > _MAPS_ADDRESS_COUNTRY_MAX_LENGTH)
 			break;
-		}
+
+		if (a->county && strlen(a->county) > _MAPS_ADDRESS_COUNTY_MAX_LENGTH)
+			break;
+
+		ret = true;
 	} while (false);
 
 	return ret;
