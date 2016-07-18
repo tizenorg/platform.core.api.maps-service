@@ -99,7 +99,6 @@ typedef enum {
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see maps_route_maneuver_clone()
  */
@@ -118,7 +117,6 @@ int maps_route_maneuver_destroy(maps_route_maneuver_h maneuver);
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_OUT_OF_MEMORY		Out of memory
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see maps_route_maneuver_destroy()
  */
@@ -137,7 +135,6 @@ int maps_route_maneuver_clone(const maps_route_maneuver_h origin,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see #maps_route_direction_e
  */
@@ -154,7 +151,6 @@ int maps_route_maneuver_get_direction_id(const maps_route_maneuver_h maneuver,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see #maps_route_turn_type_e
  */
@@ -172,7 +168,6 @@ int maps_route_maneuver_get_turn_type(const maps_route_maneuver_h maneuver,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see #maps_coordinates_h
  */
@@ -190,7 +185,6 @@ int maps_route_maneuver_get_position(const maps_route_maneuver_h maneuver,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  */
 int maps_route_maneuver_get_road_name(const maps_route_maneuver_h maneuver,
 				      char **road_name);
@@ -208,7 +202,6 @@ int maps_route_maneuver_get_road_name(const maps_route_maneuver_h maneuver,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  */
 int maps_route_maneuver_get_instruction_text(const maps_route_maneuver_h
 					     maneuver,
@@ -226,7 +219,6 @@ int maps_route_maneuver_get_instruction_text(const maps_route_maneuver_h
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  */
 int maps_route_maneuver_get_locale(const maps_route_maneuver_h maneuver,
 				   char **locale);
@@ -244,7 +236,6 @@ int maps_route_maneuver_get_locale(const maps_route_maneuver_h maneuver,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  */
 int maps_route_maneuver_get_time_to_next_instruction(const maps_route_maneuver_h
 						     maneuver,
@@ -262,7 +253,6 @@ int maps_route_maneuver_get_time_to_next_instruction(const maps_route_maneuver_h
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  */
 int maps_route_maneuver_get_distance_to_next_instruction(const
 							 maps_route_maneuver_h

@@ -60,7 +60,6 @@ typedef void *maps_place_media_h;
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see maps_place_media_clone()
  */
@@ -79,7 +78,6 @@ int maps_place_media_destroy(maps_place_media_h media);
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see maps_place_media_destroy()
  */
@@ -99,7 +97,6 @@ int maps_place_media_clone(const maps_place_media_h origin,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  */
 int maps_place_media_get_attribution(const maps_place_media_h media,
 				     char **attribution);
@@ -115,7 +112,6 @@ int maps_place_media_get_attribution(const maps_place_media_h media,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see #maps_place_link_object_h
  */
@@ -133,7 +129,6 @@ int maps_place_media_get_supplier(const maps_place_media_h media,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see #maps_place_link_object_h
  */

@@ -63,7 +63,6 @@ typedef void *maps_address_list_h;
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see maps_address_destroy()
  * @see maps_address_clone()
@@ -80,7 +79,6 @@ int maps_address_create(maps_address_h *address);
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a address is created using maps_address_create().
  *
@@ -103,7 +101,6 @@ int maps_address_destroy(maps_address_h address);
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a origin is created using maps_address_create().
  *
@@ -125,7 +122,6 @@ int maps_address_clone(const maps_address_h origin, maps_address_h *cloned);
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a address is created using maps_address_create().
  *
@@ -146,7 +142,6 @@ int maps_address_get_building_number(const maps_address_h address,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a address is created using maps_address_create().
  *
@@ -166,7 +161,6 @@ int maps_address_get_street(const maps_address_h address, char **street);
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a address is created using maps_address_create().
  *
@@ -186,7 +180,6 @@ int maps_address_get_district(const maps_address_h address, char **district);
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a address is created using maps_address_create().
  *
@@ -206,7 +199,6 @@ int maps_address_get_city(const maps_address_h address, char **city);
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a address is created using maps_address_create().
  *
@@ -226,7 +218,6 @@ int maps_address_get_state(const maps_address_h address, char **state);
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a address is created using maps_address_create().
  *
@@ -246,7 +237,6 @@ int maps_address_get_country(const maps_address_h address, char **country);
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a address is created using maps_address_create().
  *
@@ -267,7 +257,6 @@ int maps_address_get_country_code(const maps_address_h address,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a address is created using maps_address_create().
  *
@@ -287,7 +276,6 @@ int maps_address_get_county(const maps_address_h address, char **county);
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a address is created using maps_address_create().
  *
@@ -308,7 +296,6 @@ int maps_address_get_postal_code(const maps_address_h address,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a address is created using maps_address_create().
  *
@@ -329,7 +316,6 @@ int maps_address_get_freetext(const maps_address_h address, char **freetext);
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a address is created using maps_address_create().
  *
@@ -349,7 +335,6 @@ int maps_address_set_building_number(maps_address_h address,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a address is created using maps_address_create().
  *
@@ -368,7 +353,6 @@ int maps_address_set_street(maps_address_h address, const char *street);
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a address is created using maps_address_create().
  *
@@ -387,7 +371,6 @@ int maps_address_set_district(maps_address_h address, const char *district);
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a address is created using maps_address_create().
  *
@@ -406,7 +389,6 @@ int maps_address_set_city(maps_address_h address, const char *city);
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a address is created using maps_address_create().
  *
@@ -425,7 +407,6 @@ int maps_address_set_state(maps_address_h address, const char *state);
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a address is created using maps_address_create().
  *
@@ -444,7 +425,6 @@ int maps_address_set_country(maps_address_h address, const char *country);
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a address is created using maps_address_create().
  *
@@ -464,7 +444,6 @@ int maps_address_set_country_code(maps_address_h address,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a address is created using maps_address_create().
  *
@@ -483,7 +462,6 @@ int maps_address_set_county(maps_address_h address, const char *county);
  * @return	0, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a address is created using maps_address_create().
  *
@@ -503,7 +481,6 @@ int maps_address_set_postal_code(maps_address_h address,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a address is created using maps_address_create().
  *
@@ -521,7 +498,6 @@ int maps_address_set_freetext(maps_address_h address, const char *freetext);
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
  * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see maps_address_list_destroy()
  */
@@ -538,7 +514,6 @@ int maps_address_list_create(maps_address_list_h *address_list);
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
  * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see maps_address_list_create()
  * @see maps_address_list_destroy()
@@ -557,7 +532,6 @@ int maps_address_list_append(maps_address_list_h address_list, maps_address_h ad
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see maps_address_list_create()
  * @see maps_address_list_destroy()
@@ -574,7 +548,6 @@ int maps_address_list_remove(maps_address_list_h address_list, maps_address_h ad
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see maps_address_list_create()
  * @see maps_address_list_destroy()
@@ -607,7 +580,6 @@ typedef bool (*maps_address_cb)(int index, maps_address_h address, void *user_da
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see maps_address_list_create()
  * @see maps_address_list_destroy()
@@ -624,7 +596,6 @@ int maps_address_list_foreach(maps_address_list_h address_list,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see maps_address_list_create()
  */

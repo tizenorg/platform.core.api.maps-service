@@ -60,7 +60,6 @@ typedef void *maps_place_rating_h;
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see maps_place_rating_clone()
  */
@@ -79,7 +78,6 @@ int maps_place_rating_destroy(maps_place_rating_h rating);
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see maps_place_rating_destroy()
  */
@@ -98,7 +96,6 @@ int maps_place_rating_clone(const maps_place_rating_h origin,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  */
 int maps_place_rating_get_count(const maps_place_rating_h rating, int *count);
 
@@ -112,7 +109,6 @@ int maps_place_rating_get_count(const maps_place_rating_h rating, int *count);
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  */
 int maps_place_rating_get_average(const maps_place_rating_h rating,
 				  double *average);

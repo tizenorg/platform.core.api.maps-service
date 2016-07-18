@@ -90,7 +90,6 @@ typedef bool(*maps_place_filter_properties_cb) (int index, int total,
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see maps_place_filter_destroy()
  * @see maps_place_filter_clone()
@@ -107,7 +106,6 @@ int maps_place_filter_create(maps_place_filter_h *filter);
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a filter is created using maps_place_filter_create().
  *
@@ -131,7 +129,6 @@ int maps_place_filter_destroy(maps_place_filter_h filter);
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a origin is created using maps_place_filter_create().
  *
@@ -156,7 +153,6 @@ int maps_place_filter_clone(const maps_place_filter_h origin,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a filter is created using maps_place_filter_create().
  *
@@ -177,7 +173,6 @@ int maps_place_filter_get(const maps_place_filter_h filter, const char *key,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a filter is created using maps_place_filter_create().
  *
@@ -198,7 +193,6 @@ int maps_place_filter_get_keyword(const maps_place_filter_h filter,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a filter is created using maps_place_filter_create().
  *
@@ -220,7 +214,6 @@ int maps_place_filter_get_place_name(const maps_place_filter_h filter,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a filter is created using maps_place_filter_create().
  *
@@ -243,7 +236,6 @@ int maps_place_filter_get_category(const maps_place_filter_h filter,
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
  * @retval	#MAPS_ERROR_NOT_FOUND Result not found
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a filter is created using maps_place_filter_create().
  *
@@ -270,7 +262,6 @@ int maps_place_filter_foreach_property(const maps_place_filter_h filter,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a filter is created using maps_place_filter_create().
  *
@@ -295,7 +286,6 @@ int maps_place_filter_get_place_address(const maps_place_filter_h filter,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a filter is created using maps_place_filter_create().
  *
@@ -315,7 +305,6 @@ int maps_place_filter_set(maps_place_filter_h filter, const char *key,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a filter is created using maps_place_filter_create().
  *
@@ -335,7 +324,6 @@ int maps_place_filter_set_keyword(maps_place_filter_h filter,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a filter is created using maps_place_filter_create().
  *
@@ -355,7 +343,6 @@ int maps_place_filter_set_place_name(maps_place_filter_h filter,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a filter is created using maps_place_filter_create().
  *
@@ -375,7 +362,6 @@ int maps_place_filter_set_category(maps_place_filter_h filter,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a filter is created using maps_place_filter_create().
  *

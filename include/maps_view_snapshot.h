@@ -71,7 +71,6 @@ typedef enum _maps_view_snapshot_format_type_e
  * @retval	#MAPS_ERROR_SERVICE_NOT_AVAILABLE Service not available
  * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
  * @retval	#MAPS_ERROR_INVALID_OPERATION Operation is not valid
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre Call maps_service_create() and map_view_create() to issue Maps Service
  * and Map View handles respectively.

@@ -59,7 +59,6 @@ typedef void *maps_place_url_h;
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER	Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see maps_place_url_clone()
  */
@@ -78,7 +77,6 @@ int maps_place_url_destroy(maps_place_url_h url);
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
  * @retval	#MAPS_ERROR_INVALID_PARAMETER	Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see maps_place_url_destroy()
  */
@@ -98,7 +96,6 @@ int maps_place_url_clone(const maps_place_url_h origin,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER	Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  */
 int maps_place_url_get_path(const maps_place_url_h url, char **path);
 
@@ -113,7 +110,6 @@ int maps_place_url_get_path(const maps_place_url_h url, char **path);
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER	Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  */
 int maps_place_url_get_description(const maps_place_url_h url, char **desc);
 

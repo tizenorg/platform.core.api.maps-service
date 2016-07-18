@@ -61,7 +61,6 @@ typedef void *maps_place_review_h;
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see maps_place_review_clone()
  */
@@ -80,7 +79,6 @@ int maps_place_review_destroy(maps_place_review_h review);
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see maps_place_review_destroy()
  */
@@ -100,7 +98,6 @@ int maps_place_review_clone(const maps_place_review_h origin,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  */
 int maps_place_review_get_date(const maps_place_review_h review, char **date);
 
@@ -115,7 +112,6 @@ int maps_place_review_get_date(const maps_place_review_h review, char **date);
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  */
 int maps_place_review_get_title(const maps_place_review_h review,
 				char **title);
@@ -130,7 +126,6 @@ int maps_place_review_get_title(const maps_place_review_h review,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  */
 int maps_place_review_get_rating(const maps_place_review_h review,
 				 double *rating);
@@ -146,7 +141,6 @@ int maps_place_review_get_rating(const maps_place_review_h review,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  */
 int maps_place_review_get_description(const maps_place_review_h review,
 				      char **description);
@@ -162,7 +156,6 @@ int maps_place_review_get_description(const maps_place_review_h review,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  */
 int maps_place_review_get_language(const maps_place_review_h review,
 				   char **language);
@@ -178,7 +171,6 @@ int maps_place_review_get_language(const maps_place_review_h review,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see #maps_place_media_h
  */
@@ -196,7 +188,6 @@ int maps_place_review_get_media(const maps_place_review_h review,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see #maps_place_link_object_h
  */

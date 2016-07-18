@@ -143,7 +143,6 @@ typedef bool(*maps_route_properties_cb) (int index, int total, char *key,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see maps_route_clone()
  */
@@ -162,7 +161,6 @@ int maps_route_destroy(maps_route_h route);
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
  * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see maps_route_destroy()
  */
@@ -181,7 +179,6 @@ int maps_route_clone(const maps_route_h origin, maps_route_h *cloned);
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  */
 int maps_route_get_route_id(const maps_route_h route, char **route_id);
 
@@ -196,7 +193,6 @@ int maps_route_get_route_id(const maps_route_h route, char **route_id);
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see maps_route_get_destination()
  * @see #maps_coordinates_h
@@ -215,7 +211,6 @@ int maps_route_get_origin(const maps_route_h route,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see maps_route_get_origin()
  * @see #maps_coordinates_h
@@ -234,7 +229,6 @@ int maps_route_get_destination(const maps_route_h route,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see #maps_area_h
  */
@@ -251,7 +245,6 @@ int maps_route_get_bounding_box(const maps_route_h route,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see #maps_route_transport_mode_e
  */
@@ -269,7 +262,6 @@ int maps_route_get_transport_mode(const maps_route_h route,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see maps_route_get_total_duration()
  */
@@ -286,7 +278,6 @@ int maps_route_get_total_distance(const maps_route_h route,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see maps_route_get_total_distance()
  */
@@ -303,7 +294,6 @@ int maps_route_get_total_duration(const maps_route_h route,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see #maps_distance_unit_e
  */
@@ -324,7 +314,6 @@ int maps_route_get_distance_unit(const maps_route_h route,
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
  * @retval	#MAPS_ERROR_NOT_FOUND Result not found
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @post This function invokes maps_route_properties_cb() repeatedly to retrieve
  * each property.

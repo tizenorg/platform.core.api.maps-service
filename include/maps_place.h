@@ -292,7 +292,6 @@ typedef bool(*maps_place_cb) (int index, maps_place_h place, void *user_data);
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see maps_place_clone()
  */
@@ -311,7 +310,6 @@ int maps_place_destroy(maps_place_h place);
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see maps_place_destroy()
  */
@@ -330,7 +328,6 @@ int maps_place_clone(const maps_place_h origin, maps_place_h *cloned);
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  */
 int maps_place_get_id(const maps_place_h place, char **id);
 
@@ -345,7 +342,6 @@ int maps_place_get_id(const maps_place_h place, char **id);
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  */
 int maps_place_get_name(const maps_place_h place, char **name);
 
@@ -360,7 +356,6 @@ int maps_place_get_name(const maps_place_h place, char **name);
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  */
 int maps_place_get_uri(const maps_place_h place, char **uri);
 
@@ -375,7 +370,6 @@ int maps_place_get_uri(const maps_place_h place, char **uri);
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  */
 int maps_place_get_location(const maps_place_h place,
 			    maps_coordinates_h *location);
@@ -391,7 +385,6 @@ int maps_place_get_location(const maps_place_h place,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  */
 int maps_place_get_distance(const maps_place_h place, int *distance);
 
@@ -441,7 +434,6 @@ int maps_place_get_rating(const maps_place_h place,
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
  * @retval	#MAPS_ERROR_NOT_FOUND Result not found
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @post This function invokes maps_place_properties_cb() repeatedly to retrieve
  * each property.
@@ -664,7 +656,6 @@ int maps_place_list_foreach(const maps_place_list_h place_list, maps_place_cb ca
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see maps_place_list_foreach()
  */

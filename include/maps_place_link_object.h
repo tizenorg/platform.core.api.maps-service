@@ -61,7 +61,6 @@ typedef void *maps_place_link_object_h;
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see maps_place_link_object_clone()
  */
@@ -80,7 +79,6 @@ int maps_place_link_object_destroy(maps_place_link_object_h link);
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see maps_place_link_object_destroy()
  */
@@ -100,7 +98,6 @@ int maps_place_link_object_clone(const maps_place_link_object_h origin,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  */
 int maps_place_link_object_get_id(const maps_place_link_object_h link,
 				  char **id);
@@ -116,7 +113,6 @@ int maps_place_link_object_get_id(const maps_place_link_object_h link,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  */
 int maps_place_link_object_get_name(const maps_place_link_object_h link,
 				    char **name);
@@ -132,7 +128,6 @@ int maps_place_link_object_get_name(const maps_place_link_object_h link,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  */
 int maps_place_link_object_get_string(const maps_place_link_object_h link,
 				      char **string);
@@ -148,7 +143,6 @@ int maps_place_link_object_get_string(const maps_place_link_object_h link,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  */
 int maps_place_link_object_get_type(const maps_place_link_object_h link,
 				    char **type);
