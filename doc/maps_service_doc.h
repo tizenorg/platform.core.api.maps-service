@@ -44,7 +44,9 @@
  *
  *
  *
- * @section	CAPI_MAPS_SERVICE_MODULE_FEATURE Features
+ * @section	CAPI_MAPS_SERVICE_MODULE_FEATURE Related Feature
+ * This API is related with the following feature:\n
+ * - http://tizen.org/feature/maps\n
  *
  * Geocoding
  * - The Maps Geocoding API allows translating an address to its geographical

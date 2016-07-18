@@ -63,6 +63,7 @@ typedef void *maps_place_category_h;
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see maps_place_category_destroy()
  * @see maps_place_category_clone()
@@ -83,6 +84,7 @@ int maps_place_category_create(maps_place_category_h *category);
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see maps_place_category_destroy()
  */
@@ -101,6 +103,7 @@ int maps_place_category_clone(const maps_place_category_h origin,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see maps_place_category_clone()
  */
@@ -120,6 +123,7 @@ int maps_place_category_destroy(maps_place_category_h category);
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  */
 int maps_place_category_get_id(const maps_place_category_h category,
 								char **id);
@@ -136,6 +140,7 @@ int maps_place_category_get_id(const maps_place_category_h category,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  */
 int maps_place_category_get_name(const maps_place_category_h category,
 								char **name);
@@ -152,6 +157,7 @@ int maps_place_category_get_name(const maps_place_category_h category,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  */
 int maps_place_category_get_url(const maps_place_category_h category,
 								char **url);
@@ -167,6 +173,7 @@ int maps_place_category_get_url(const maps_place_category_h category,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a category is created using maps_place_category_create().
  *
@@ -187,6 +194,7 @@ int maps_place_category_set_id(maps_place_category_h category,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a category is created using maps_place_category_create().
  *
@@ -207,6 +215,7 @@ int maps_place_category_set_name(maps_place_category_h category,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a category is created using maps_place_category_create().
  *
