@@ -13,10 +13,11 @@
  * limitations under the License.
  */
 
+#include <glib.h>
 #include "maps_error.h"
 #include "maps_plugin_info.h"
-#include <glib.h>
 #include "maps_util.h"
+#include "maps_condition.h"
 
 typedef struct _maps_plugin_info_s
 {
@@ -29,6 +30,8 @@ const gsize _MAPS_PLUGIN_INFO_NAME_MAX_LENGTH = 64;
 
 EXPORT_API int maps_plugin_info_create(maps_plugin_info_h *info)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!info)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	*info = g_slice_new0(maps_plugin_info_s);
@@ -43,6 +46,8 @@ EXPORT_API int maps_plugin_info_create(maps_plugin_info_h *info)
 
 EXPORT_API int maps_plugin_info_destroy(maps_plugin_info_h info)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!info)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	int error = MAPS_ERROR_NONE;
@@ -59,6 +64,8 @@ EXPORT_API int maps_plugin_info_destroy(maps_plugin_info_h info)
 EXPORT_API int maps_plugin_info_clone(const maps_plugin_info_h origin,
 				      maps_plugin_info_h *cloned)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!cloned || !origin)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -90,6 +97,8 @@ EXPORT_API int maps_plugin_info_clone(const maps_plugin_info_h origin,
 EXPORT_API int maps_plugin_info_get_provider_name(const maps_plugin_info_h info,
 						  char **provider_name)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!info || !provider_name)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_get_string(((maps_plugin_info_s *) info)->provider_name,
@@ -101,6 +110,8 @@ EXPORT_API int maps_plugin_info_get_provider_name(const maps_plugin_info_h info,
 EXPORT_API int maps_plugin_info_set_provider_name(maps_plugin_info_h info,
 						  const char *provider_name)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!info || !provider_name)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_set_string(provider_name, _MAPS_PLUGIN_INFO_NAME_MAX_LENGTH,

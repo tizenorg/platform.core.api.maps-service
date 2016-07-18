@@ -27,7 +27,7 @@
 
 
 #define MAPSERVICE_PRIVILEGE	"http://tizen.org/privilege/mapservice"
-
+#define MAPS_FEATURE			"http://tizen.org/feature/maps"
 #define INTERNET_FEATURE		"http://tizen.org/feature/network.internet"
 
 
@@ -72,35 +72,63 @@ static char* __maps_condition_get_package_id(char **package_id)
 
 bool maps_condition_check_privilege(void)
 {
-	bool is_permitted = true;
-#if TIZEN_VER < 300
-	/* to check for Tizen 2.x privilege */
-	char *package_id = NULL;
-	if (!__maps_condition_get_package_id(&package_id))
-		return is_permitted;
+	static bool is_permitted = true;
+	static bool is_read = false;
 
-	int ret = privilege_checker_check_package_privilege(package_id, MAPSERVICE_PRIVILEGE);
-	is_permitted = (ret == PRIV_CHECKER_ERR_NONE);
-	g_free(package_id);
+	if (!is_read) {
+#if TIZEN_VER < 300
+		/* to check for Tizen 2.x privilege */
+		char *package_id = NULL;
+		if (!__maps_condition_get_package_id(&package_id))
+			return is_permitted;
+
+		int ret = privilege_checker_check_package_privilege(package_id, MAPSERVICE_PRIVILEGE);
+		is_permitted = (ret == PRIV_CHECKER_ERR_NONE);
+		g_free(package_id);
 #else
-	/* to check for Tizen 3.x privilege */
-	extern const char *MAPS_PLUGINS_PATH_PREFIX;
-	is_permitted = (access(MAPS_PLUGINS_PATH_PREFIX, F_OK) != 0) || /* not exist */
-	               (access(MAPS_PLUGINS_PATH_PREFIX, R_OK) == 0);   /* readable */
+		/* to check for Tizen 3.x privilege */
+		extern const char *MAPS_PLUGINS_PATH_PREFIX;
+		is_permitted = (access(MAPS_PLUGINS_PATH_PREFIX, F_OK) != 0) || /* not exist */
+		               (access(MAPS_PLUGINS_PATH_PREFIX, R_OK) == 0);   /* readable */
 #endif
-	MAPS_LOGD("mapservice privilege is%sconsented", ( is_permitted ? " " : " not "));
+		is_read = true;
+	}
+	MAPS_LOGD("mapservice privilege is%sconsented", (is_permitted ? " " : " not "));
 	return is_permitted;
 }
 
-bool maps_condition_check_feature(void)
+bool maps_condition_check_maps_feature(void)
 {
-	bool is_supported = true;
+	static bool is_supported = true;
+	static bool is_read = false;
+
+	if (!is_read) {
+		int ret = system_info_get_platform_bool(MAPS_FEATURE, &is_supported);
+		if (ret == SYSTEM_INFO_ERROR_NONE) {
+			MAPS_LOGD("maps feature is%ssupported", (is_supported ? " " : " not "));
+			is_read = true;
+		} else {
+			MAPS_LOGD("system info error (%d)", ret);
+		}
+	}
+	return is_supported;
+}
+
+bool maps_condition_check_internet_feature(void)
+{
+	static bool is_supported = true;
 #ifdef TIZEN_WEARABLE
-	int ret = system_info_get_platform_bool(INTERNET_FEATURE, &is_supported);
-	if (ret == SYSTEM_INFO_ERROR_NONE)
-		MAPS_LOGD("internet feature is%ssupported", (is_supported ? " " : " not "));
-	else
-		MAPS_LOGD("system info error (%d)", ret);
+	static bool is_read = false;
+
+	if (!is_read) {
+		int ret = system_info_get_platform_bool(INTERNET_FEATURE, &is_supported);
+		if (ret == SYSTEM_INFO_ERROR_NONE) {
+			MAPS_LOGD("internet feature is%ssupported", (is_supported ? " " : " not "));
+			is_read = true;
+		} else {
+			MAPS_LOGD("system info error (%d)", ret);
+		}
+	}
 #endif
 	return is_supported;
 }
