@@ -63,6 +63,7 @@ typedef void *maps_plugin_info_h;
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see maps_plugin_info_destroy()
  * @see maps_plugin_info_clone()
@@ -79,6 +80,7 @@ int maps_plugin_info_create(maps_plugin_info_h *info);
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a info is created using maps_plugin_info_create().
  *
@@ -100,6 +102,7 @@ int maps_plugin_info_destroy(maps_plugin_info_h info);
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a info is created using maps_plugin_info_create().
  *
@@ -122,6 +125,7 @@ int maps_plugin_info_clone(const maps_plugin_info_h origin,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a info is created using maps_plugin_info_create().
  *
@@ -140,6 +144,7 @@ int maps_plugin_info_get_provider_name(const maps_plugin_info_h info,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a info is created using maps_plugin_info_create().
  *

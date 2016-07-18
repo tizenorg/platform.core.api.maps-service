@@ -18,6 +18,7 @@
 #include "maps_error.h"
 #include "maps_area.h"
 #include "maps_util.h"
+#include "maps_condition.h"
 
 extern bool maps_coordinates_is_valid(const maps_coordinates_h coordinates);
 
@@ -25,6 +26,9 @@ EXPORT_API int maps_area_create_rectangle(const maps_coordinates_h top_left,
 					  const maps_coordinates_h bottom_right,
 					  maps_area_h *area)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
+
 	if (!top_left || !bottom_right || !area)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -52,6 +56,9 @@ EXPORT_API int maps_area_create_rectangle(const maps_coordinates_h top_left,
 EXPORT_API int maps_area_create_circle(const maps_coordinates_h center,
 				       const double radius, maps_area_h *area)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
+
 	if (!center || !area || radius <= 0)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -75,17 +82,20 @@ EXPORT_API int maps_area_create_circle(const maps_coordinates_h center,
 
 EXPORT_API int maps_area_destroy(maps_area_h area)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!area)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
 	maps_area_s *handle = (maps_area_s *) area;
-
 	g_free(handle);
 	return MAPS_ERROR_NONE;
 }
 
 EXPORT_API int maps_area_clone(const maps_area_h origin, maps_area_h *cloned)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!cloned || !origin)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -120,6 +130,8 @@ EXPORT_API int maps_area_clone(const maps_area_h origin, maps_area_h *cloned)
 
 bool maps_area_is_valid(const maps_area_h area)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!area) return false;
 
 	bool ret = true;

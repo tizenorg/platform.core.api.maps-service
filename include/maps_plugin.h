@@ -66,6 +66,7 @@ typedef void *maps_plugin_h;
  * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
  * @retval	#MAPS_ERROR_SERVICE_NOT_AVAILABLE Service not available
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see maps_plugin_shutdown()
  */
@@ -81,6 +82,7 @@ int maps_plugin_init(maps_plugin_h *plugin);
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see maps_plugin_init()
  */
@@ -97,6 +99,7 @@ int maps_plugin_shutdown(maps_plugin_h plugin);
  * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
  * @retval	#MAPS_ERROR_SERVICE_NOT_AVAILABLE Service not available
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see maps_plugin_init()
  */
@@ -824,6 +827,7 @@ typedef void(*maps_plugin_map_view_ready_cb) (maps_view_h view);
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see #maps_view_h
  * @see maps_plugin_destroy_map_view()
@@ -839,6 +843,7 @@ int maps_plugin_create_map_view(maps_view_h view, maps_plugin_map_view_ready_cb 
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see #maps_view_h
  * @see maps_plugin_create_map_view()
@@ -858,6 +863,7 @@ int maps_plugin_destroy_map_view(maps_view_h view);
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @post It invokes maps_plugin_render_map_cb() to notify that the rendering is
  * finished
@@ -882,6 +888,7 @@ int maps_plugin_render_map(maps_view_h view, const maps_coordinates_h coordinate
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @post It invokes maps_plugin_render_map_cb() to notify that the rendering is
  * finished
@@ -905,6 +912,7 @@ int maps_plugin_move_center(maps_view_h view, int delta_x, int delta_y);
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
  * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see maps_plugin_get_scalebar()
  */
@@ -920,6 +928,7 @@ int maps_plugin_set_scalebar(maps_view_h view, bool enable);
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see maps_plugin_set_scalebar()
  */
@@ -939,6 +948,7 @@ int maps_plugin_get_scalebar(maps_view_h view, bool *enabled);
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see maps_plugin_create()
  */
@@ -958,6 +968,7 @@ int maps_plugin_on_object(maps_view_h view, const maps_view_object_h object,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see maps_plugin_create()
  * @see maps_plugin_geography_to_screen()
@@ -979,6 +990,7 @@ int maps_plugin_screen_to_geography(maps_view_h view, int x, int y,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see maps_plugin_create()
  * @see maps_plugin_screen_to_geography()
@@ -997,6 +1009,7 @@ int maps_plugin_geography_to_screen(maps_view_h view, const maps_coordinates_h c
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  */
 int maps_plugin_get_min_zoom_level(maps_view_h view, int *min_zoom_level);
 
@@ -1010,6 +1023,7 @@ int maps_plugin_get_min_zoom_level(maps_view_h view, int *min_zoom_level);
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  */
 int maps_plugin_get_max_zoom_level(maps_view_h view, int *max_zoom_level);
 
@@ -1025,6 +1039,7 @@ int maps_plugin_get_max_zoom_level(maps_view_h view, int *max_zoom_level);
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see maps_plugin_get_min_zoom_level()
  * @see maps_plugin_get_max_zoom_level
@@ -1044,6 +1059,7 @@ int maps_plugin_get_center(maps_view_h view, maps_coordinates_h *coordinates);
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  */
 int maps_plugin_capture_snapshot(maps_view_h view, void **data, int *width, int *height,
 								maps_view_colorspace_type_e *cs);

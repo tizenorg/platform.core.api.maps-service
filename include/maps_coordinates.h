@@ -87,6 +87,7 @@ typedef void *maps_coordinates_list_h;
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see maps_coordinates_clone()
  * @see maps_coordinates_destroy()
@@ -105,6 +106,7 @@ int maps_coordinates_create(const double latitude, const double longitude,
  * @return	0 on coordinates, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a coordinates are created using maps_coordinates_create_rectangle().
  *
@@ -126,6 +128,7 @@ int maps_coordinates_destroy(maps_coordinates_h coordinates);
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a origin is created using maps_coordinates_create().
  *
@@ -147,6 +150,7 @@ int maps_coordinates_clone(const maps_coordinates_h origin,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a coordinates are created using maps_coordinates_create().
  *
@@ -166,6 +170,7 @@ int maps_coordinates_get_latitude(const maps_coordinates_h coordinates,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a coordinates are created using maps_coordinates_create().
  *
@@ -187,6 +192,7 @@ int maps_coordinates_get_longitude(const maps_coordinates_h coordinates,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a coordinates are created using maps_coordinates_create().
  *
@@ -208,6 +214,7 @@ int maps_coordinates_get_latitude_longitude(const maps_coordinates_h coordinates
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a coordinates are created using maps_coordinates_create().
  *
@@ -227,6 +234,7 @@ int maps_coordinates_set_latitude(maps_coordinates_h coordinates,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a coordinates are created using maps_coordinates_create().
  *
@@ -248,6 +256,7 @@ int maps_coordinates_set_longitude(maps_coordinates_h coordinates,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a coordinates are created using maps_coordinates_create().
  *
@@ -267,6 +276,7 @@ int maps_coordinates_set_latitude_longitude(maps_coordinates_h coordinates,
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
  * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see maps_coordinates_list_destroy()
  */
@@ -279,6 +289,7 @@ int maps_coordinates_list_create(maps_coordinates_list_h *coordinates_list);
  * @param[in]	coordinates_list	coordinates list handle
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see maps_coordinates_list_create()
  */
@@ -294,6 +305,7 @@ int maps_coordinates_list_destroy(maps_coordinates_list_h coordinates_list);
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
  * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see maps_coordinates_list_create()
  * @see maps_coordinates_list_destroy()
@@ -310,6 +322,7 @@ int maps_coordinates_list_append(maps_coordinates_list_h coordinates_list,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see maps_coordinates_list_create()
  * @see maps_coordinates_list_destroy()
@@ -326,6 +339,7 @@ int maps_coordinates_list_remove(maps_coordinates_list_h coordinates_list,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see maps_coordinates_list_create()
  * @see maps_coordinates_list_destroy()
@@ -356,6 +370,7 @@ typedef bool (*maps_coordinates_cb) (int index, maps_coordinates_h coordinates, 
  * @param[in]	user_data	The user data to be passed to the callback function
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see maps_coordinates_list_create()
  * @see maps_coordinates_list_destroy()

@@ -50,6 +50,7 @@ extern "C" {
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
  * @retval	#MAPS_ERROR_INVALID_PARAMETER	Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see maps_place_editorial_destroy()
  * @see maps_place_editorial_clone()
@@ -66,6 +67,7 @@ int maps_place_editorial_create(maps_place_editorial_h *editorial);
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a editorial is created using maps_place_editorial_create().
  *
@@ -85,6 +87,7 @@ int maps_place_editorial_set_description(maps_place_editorial_h editorial,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a editorial is created using maps_place_editorial_create().
  *
@@ -104,6 +107,7 @@ int maps_place_editorial_set_language(maps_place_editorial_h editorial,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a editorial is created using maps_place_editorial_create().
  *
