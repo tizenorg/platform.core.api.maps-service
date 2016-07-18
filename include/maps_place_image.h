@@ -61,6 +61,7 @@ typedef void *maps_place_image_h;
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see maps_place_image_clone()
  */
@@ -79,6 +80,7 @@ int maps_place_image_destroy(maps_place_image_h image);
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see maps_place_image_destroy()
  */
@@ -98,6 +100,7 @@ int maps_place_image_clone(const maps_place_image_h origin,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  */
 int maps_place_image_get_id(const maps_place_image_h image, char **id);
 
@@ -112,6 +115,7 @@ int maps_place_image_get_id(const maps_place_image_h image, char **id);
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  */
 int maps_place_image_get_url(const maps_place_image_h image, char **url);
 
@@ -125,6 +129,7 @@ int maps_place_image_get_url(const maps_place_image_h image, char **url);
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  */
 int maps_place_image_get_width(const maps_place_image_h image, int *width);
 
@@ -138,6 +143,7 @@ int maps_place_image_get_width(const maps_place_image_h image, int *width);
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  */
 int maps_place_image_get_height(const maps_place_image_h image, int *height);
 
@@ -152,6 +158,7 @@ int maps_place_image_get_height(const maps_place_image_h image, int *height);
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see #maps_place_link_object_h
  */
@@ -169,6 +176,7 @@ int maps_place_image_get_user_link(const maps_place_image_h image,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see #maps_place_media_h
  */
