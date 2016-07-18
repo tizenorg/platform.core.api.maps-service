@@ -18,7 +18,6 @@
 #define __MAPS_VIEW_H__
 
 #include <Evas.h>
-#include <maps_service.h>
 #include <maps_view_object.h>
 #include <maps_view_event_data.h>
 
@@ -67,6 +66,16 @@
 extern "C" {
 #endif
 
+/**
+ * @brief	The Maps Service handle
+ * @details The Maps Service handle can be created by calling of maps_service_create().
+ * \n To release the handle use maps_service_destroy().
+ * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
+ *
+ * @see maps_service_create()
+ * @see maps_service_destroy()
+ */
+typedef void *maps_service_h;
 
  /**
  * @brief	The View handle

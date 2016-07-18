@@ -25,6 +25,7 @@
 #include <maps_place.h>
 #include <maps_place_filter.h>
 #include <maps_route.h>
+#include <maps_view.h>
 
 /**
  *
