@@ -31,5 +31,9 @@
  *
  * The Maps Plugin provides maps service providers with interfaces to realize
  * Maps Service APIs.
+ *
+ * @section	CAPI_MAPS_SERVICE_MODULE_FEATURE Related Feature
+ * This API is related with the following feature:\n
+ * - http://tizen.org/feature/maps\n
  */
 #endif /*__MAPS_PLUGIN_DOC_H__ */
