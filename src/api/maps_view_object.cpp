@@ -15,17 +15,18 @@
  */
 
 #include <glib.h>
+#include <cairo.h>
 #include "maps_view_object.h"
 #include "maps_view_object_plugin.h"
 #include "maps_error.h"
 #include "maps_util.h"
 #include "maps_view.h"
 #include "maps_extra_types.h"
+#include "maps_condition.h"
 #include "marker_constructor.h"
 #include "polyline_constructor.h"
 #include "polygon_constructor.h"
 #include "overlay_constructor.h"
-#include <cairo.h>
 
 #ifndef M_PI
 #define M_PI	3.14159265358979323846
@@ -438,6 +439,8 @@ int _maps_view_object_set_view(maps_view_object_h object, maps_view_h view)
 EXPORT_API int maps_view_object_create_marker(maps_coordinates_h coordinates,
 	const char *image_file_path, maps_view_marker_type_e type, maps_view_object_h *marker)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!coordinates || !marker)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	if (type < MAPS_VIEW_MARKER_PIN || type > MAPS_VIEW_MARKER_STICKER)
@@ -459,6 +462,8 @@ EXPORT_API int maps_view_object_create_polyline(maps_coordinates_list_h coordina
 	unsigned char r, unsigned char g, unsigned char b, unsigned char a, int width,
 	maps_view_object_h *polyline)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!coordinates || !polyline || width < 1 || width > 100)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -477,6 +482,8 @@ EXPORT_API int maps_view_object_create_polyline(maps_coordinates_list_h coordina
 EXPORT_API int maps_view_object_create_polygon(maps_coordinates_list_h coordinates,
 	unsigned char r, unsigned char g, unsigned char b, unsigned char a, maps_view_object_h *polygon)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!coordinates || !polygon)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -495,6 +502,8 @@ EXPORT_API int maps_view_object_create_polygon(maps_coordinates_list_h coordinat
 EXPORT_API int maps_view_object_create_overlay(maps_coordinates_h coordinates,
 	Evas_Object *object, maps_view_overlay_type_e type, maps_view_object_h *overlay)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!overlay || !coordinates)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	if (type < MAPS_VIEW_OVERLAY_NORMAL || type > MAPS_VIEW_OVERLAY_BOX)
@@ -517,6 +526,8 @@ EXPORT_API int maps_view_object_create_overlay(maps_coordinates_h coordinates,
 
 EXPORT_API int maps_view_object_destroy(maps_view_object_h object)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!object)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -548,6 +559,8 @@ EXPORT_API int maps_view_object_destroy(maps_view_object_h object)
 
 EXPORT_API int maps_view_object_get_type(maps_view_object_h object, maps_view_object_type_e *type)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!object || !type)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	*type = ((maps_view_object_s *)object)->type;
@@ -561,6 +574,8 @@ EXPORT_API int maps_view_object_get_type(maps_view_object_h object, maps_view_ob
 
 EXPORT_API int maps_view_object_set_visible(maps_view_object_h object, bool visible)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!object)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_view_object_s *o = (maps_view_object_s *)object;
@@ -574,6 +589,8 @@ EXPORT_API int maps_view_object_set_visible(maps_view_object_h object, bool visi
 
 EXPORT_API int maps_view_object_get_visible(const maps_view_object_h object, bool *visible)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!object || !visible)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_view_object_s *o = (maps_view_object_s *)object;
@@ -589,6 +606,8 @@ EXPORT_API int maps_view_object_get_visible(const maps_view_object_h object, boo
 
 EXPORT_API int maps_view_object_polyline_set_polyline(maps_view_object_h polyline, maps_coordinates_list_h points)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!polyline || !points)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -612,6 +631,8 @@ EXPORT_API int maps_view_object_polyline_set_polyline(maps_view_object_h polylin
 EXPORT_API int maps_view_object_polyline_foreach_point(maps_view_object_h polyline,
 	maps_coordinates_cb callback, void *user_data)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!polyline || !callback)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -628,6 +649,8 @@ EXPORT_API int maps_view_object_polyline_foreach_point(maps_view_object_h polyli
 EXPORT_API int maps_view_object_polyline_set_color(maps_view_object_h polyline,
 	unsigned char r, unsigned char g, unsigned char b, unsigned char a)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!polyline)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -653,6 +676,8 @@ EXPORT_API int maps_view_object_polyline_set_color(maps_view_object_h polyline,
 EXPORT_API int maps_view_object_polyline_get_color(const maps_view_object_h polyline,
 	unsigned char *r, unsigned char *g, unsigned char *b, unsigned char *a)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!polyline || (!r && !g && !b && !a))
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -676,6 +701,8 @@ EXPORT_API int maps_view_object_polyline_get_color(const maps_view_object_h poly
 
 EXPORT_API int maps_view_object_polyline_set_width(maps_view_object_h polyline, int width)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!polyline)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	if (width < 0 || width > 100)
@@ -699,6 +726,8 @@ EXPORT_API int maps_view_object_polyline_set_width(maps_view_object_h polyline, 
 
 EXPORT_API int maps_view_object_polyline_get_width(const maps_view_object_h polyline, int *width)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!polyline || !width)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -719,6 +748,8 @@ EXPORT_API int maps_view_object_polyline_get_width(const maps_view_object_h poly
 
 EXPORT_API int maps_view_object_polygon_set_polygon(maps_view_object_h polygon, maps_coordinates_list_h points)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!polygon || !points)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -742,6 +773,8 @@ EXPORT_API int maps_view_object_polygon_set_polygon(maps_view_object_h polygon, 
 EXPORT_API int maps_view_object_polygon_foreach_point(maps_view_object_h polygon,
 	maps_coordinates_cb callback, void *user_data)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!polygon || !callback)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -758,6 +791,8 @@ EXPORT_API int maps_view_object_polygon_foreach_point(maps_view_object_h polygon
 EXPORT_API int maps_view_object_polygon_set_fill_color(maps_view_object_h polygon,
 	unsigned char r, unsigned char g, unsigned char b, unsigned char a)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!polygon)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -783,6 +818,8 @@ EXPORT_API int maps_view_object_polygon_set_fill_color(maps_view_object_h polygo
 EXPORT_API int maps_view_object_polygon_get_fill_color(const maps_view_object_h polygon,
 	unsigned char *r, unsigned char *g, unsigned char *b, unsigned char *a)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!polygon || (!r && !g && !b && !a))
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -812,6 +849,8 @@ EXPORT_API int maps_view_object_polygon_get_fill_color(const maps_view_object_h 
 EXPORT_API int maps_view_object_marker_set_coordinates(maps_view_object_h marker,
 	maps_coordinates_h coordinates)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!marker || !coordinates)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_view_marker_data_s *m = __get_marker_data(marker);
@@ -829,9 +868,9 @@ EXPORT_API int maps_view_object_marker_set_coordinates(maps_view_object_h marker
 
 EXPORT_API int maps_view_object_marker_resize(maps_view_object_h marker, int width, int height)
 {
-	if (!marker)
-		return MAPS_ERROR_INVALID_PARAMETER;
-	if (width < 0 || height < 0)
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
+	if (!marker || width < 0 || height < 0)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_view_marker_data_s *m = __get_marker_data(marker);
 	if (!m)
@@ -847,6 +886,8 @@ EXPORT_API int maps_view_object_marker_resize(maps_view_object_h marker, int wid
 
 EXPORT_API int maps_view_object_marker_set_image_file(maps_view_object_h marker, const char *file_path)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!marker || !file_path)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_view_marker_data_s *m = __get_marker_data(marker);
@@ -863,6 +904,8 @@ EXPORT_API int maps_view_object_marker_set_image_file(maps_view_object_h marker,
 
 EXPORT_API int maps_view_object_marker_get_image_file(const maps_view_object_h marker, char **file_path)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!marker || !file_path)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_view_marker_data_s *m = __get_marker_data(marker);
@@ -873,6 +916,8 @@ EXPORT_API int maps_view_object_marker_get_image_file(const maps_view_object_h m
 
 EXPORT_API int maps_view_object_marker_get_coordinates(const maps_view_object_h marker, maps_coordinates_h *coordinates)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!marker || !coordinates)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_view_marker_data_s *m = __get_marker_data(marker);
@@ -883,6 +928,8 @@ EXPORT_API int maps_view_object_marker_get_coordinates(const maps_view_object_h 
 
 EXPORT_API int maps_view_object_marker_set_size(maps_view_object_h marker, int width, int height)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!marker)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_view_marker_data_s *m = __get_marker_data(marker);
@@ -895,6 +942,8 @@ EXPORT_API int maps_view_object_marker_set_size(maps_view_object_h marker, int w
 
 EXPORT_API int maps_view_object_marker_get_size(const maps_view_object_h marker, int *width, int *height)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!marker || (!width && !height))
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_view_marker_data_s *m = __get_marker_data(marker);
@@ -922,6 +971,8 @@ int _maps_view_object_marker_set_type(maps_view_object_h marker, maps_view_marke
 
 EXPORT_API int maps_view_object_marker_get_type(const maps_view_object_h marker, maps_view_marker_type_e *type)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!marker || !type)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_view_marker_data_s *m = __get_marker_data(marker);
@@ -933,6 +984,8 @@ EXPORT_API int maps_view_object_marker_get_type(const maps_view_object_h marker,
 
 EXPORT_API int maps_view_object_marker_set_z_order(maps_view_object_h marker, int z_order)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!marker || (z_order > 100 || z_order < -100))
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_view_marker_data_s *m = __get_marker_data(marker);
@@ -950,6 +1003,8 @@ EXPORT_API int maps_view_object_marker_set_z_order(maps_view_object_h marker, in
 
 EXPORT_API int maps_view_object_marker_get_z_order(const maps_view_object_h marker,	int *z_order)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!marker || !z_order)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_view_marker_data_s *m = __get_marker_data(marker);
@@ -1072,6 +1127,8 @@ int _maps_view_object_overlay_set_bubble(maps_view_object_h overlay)
 
 EXPORT_API int maps_view_object_overlay_get_object(maps_view_object_h overlay, Evas_Object **object)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!overlay || !object)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_view_overlay_data_s *m = __get_overlay_data(overlay);
@@ -1097,6 +1154,8 @@ int _maps_view_object_overlay_set_object(maps_view_object_h overlay, Evas_Object
 
 EXPORT_API int maps_view_object_overlay_set_coordinates(maps_view_object_h overlay, maps_coordinates_h coordinates)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!overlay || !coordinates)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_view_overlay_data_s *m = __get_overlay_data(overlay);
@@ -1110,6 +1169,8 @@ EXPORT_API int maps_view_object_overlay_set_coordinates(maps_view_object_h overl
 
 EXPORT_API int maps_view_object_overlay_get_coordinates(const maps_view_object_h overlay, maps_coordinates_h *coordinates)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!overlay || !coordinates)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_view_overlay_data_s *m = __get_overlay_data(overlay);
@@ -1120,6 +1181,8 @@ EXPORT_API int maps_view_object_overlay_get_coordinates(const maps_view_object_h
 
 EXPORT_API int maps_view_object_overlay_set_min_zoom_level(maps_view_object_h overlay, int zoom)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!overlay || zoom < 0)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_view_overlay_data_s *m = __get_overlay_data(overlay);
@@ -1136,6 +1199,8 @@ EXPORT_API int maps_view_object_overlay_set_min_zoom_level(maps_view_object_h ov
 
 EXPORT_API int maps_view_object_overlay_get_max_zoom_level(const maps_view_object_h overlay, int *zoom)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!overlay || !zoom)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_view_overlay_data_s *m = __get_overlay_data(overlay);
@@ -1147,6 +1212,8 @@ EXPORT_API int maps_view_object_overlay_get_max_zoom_level(const maps_view_objec
 
 EXPORT_API int maps_view_object_overlay_set_max_zoom_level(maps_view_object_h overlay, int zoom)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!overlay || zoom < 0)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_view_overlay_data_s *m = __get_overlay_data(overlay);
@@ -1163,6 +1230,8 @@ EXPORT_API int maps_view_object_overlay_set_max_zoom_level(maps_view_object_h ov
 
 EXPORT_API int maps_view_object_overlay_get_min_zoom_level(const maps_view_object_h overlay, int *zoom)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!overlay || !zoom)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_view_overlay_data_s *m = __get_overlay_data(overlay);
