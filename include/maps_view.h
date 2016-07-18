@@ -161,6 +161,7 @@ typedef void(*maps_view_on_event_cb) (maps_view_event_type_e type, maps_view_eve
  * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
  * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a maps is created using maps_service_create().
  * @pre @a obj is recommended using a smart object.
@@ -189,6 +190,7 @@ int maps_view_create(maps_service_h maps, Evas_Object *obj, maps_view_h *view);
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
  * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a View is created using maps_view_create().
  *
@@ -245,6 +247,7 @@ int maps_view_set_center(maps_view_h view, maps_coordinates_h coordinates);
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a view is created using maps_view_create().
  *
@@ -300,6 +303,7 @@ int maps_view_set_zoom_level(maps_view_h view, int level);
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a view is created using maps_view_create().
  *
@@ -324,6 +328,7 @@ int maps_view_get_zoom_level(const maps_view_h view, int *level);
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
  * @retval	#MAPS_ERROR_INVALID_OPERATION Operation is not valid
  * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a view is created using maps_view_create().
  *
@@ -348,6 +353,7 @@ int maps_view_set_min_zoom_level(maps_view_h view, int level);
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
  * @retval	#MAPS_ERROR_INVALID_OPERATION Operation is not valid
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a view is created using maps_view_create().
  *
@@ -372,6 +378,7 @@ int maps_view_get_min_zoom_level(const maps_view_h view, int *min_zoom_level);
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
  * @retval	#MAPS_ERROR_INVALID_OPERATION Operation is not valid
  * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a view is created using maps_view_create().
  *
@@ -396,6 +403,7 @@ int maps_view_set_max_zoom_level(maps_view_h view, int level);
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
  * @retval	#MAPS_ERROR_INVALID_OPERATION Operation is not valid
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a view is created using maps_view_create().
  *
@@ -446,6 +454,7 @@ int maps_view_set_orientation(maps_view_h view, double angle);
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a view is created using maps_view_create().
  *
@@ -478,6 +487,7 @@ int maps_view_get_orientation(const maps_view_h view, double *rotation_angle);
  * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
  * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a view is created using maps_view_create().
  *
@@ -507,6 +517,7 @@ int maps_view_screen_to_geolocation(maps_view_h view,
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
  * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a view is created using maps_view_create().
  * @pre @a coordinates is created using maps_coordinates_create().
@@ -564,6 +575,7 @@ int maps_view_set_type(maps_view_h view, maps_view_type_e type);
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a view is created using maps_view_create().
  *
@@ -615,6 +627,7 @@ int maps_view_set_buildings_enabled(maps_view_h view, bool enable);
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a view is created using maps_view_create().
  *
@@ -665,6 +678,7 @@ int maps_view_set_traffic_enabled(maps_view_h view, bool enable);
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a view is created using maps_view_create().
  *
@@ -715,6 +729,7 @@ int maps_view_set_public_transit_enabled(maps_view_h view, bool enable);
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a view is created using maps_view_create().
  *
@@ -776,6 +791,7 @@ int maps_view_set_language(maps_view_h view, const char *language);
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a view is created using maps_view_create().
  *
@@ -821,6 +837,7 @@ int maps_view_set_scalebar_enabled(maps_view_h view, bool enable);
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a view is created using maps_view_create().
  *
@@ -844,6 +861,7 @@ int maps_view_get_scalebar_enabled(const maps_view_h view, bool *enabled);
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a view is created using maps_view_create().
  *
@@ -902,6 +920,7 @@ int maps_view_set_screen_location(maps_view_h view, int x, int y, int width, int
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a view is created using maps_view_create().
  *
@@ -924,6 +943,7 @@ int maps_view_get_screen_location(const maps_view_h view, int *x, int *y, int *w
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a view is created using maps_view_create().
  *
@@ -974,6 +994,7 @@ int maps_view_resize(maps_view_h view, int width, int height);
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a view is created using maps_view_create().
  *
@@ -994,6 +1015,7 @@ int maps_view_set_visibility(maps_view_h view, bool visible);
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a view is created using maps_view_create().
  *
@@ -1020,6 +1042,7 @@ int maps_view_get_visibility(const maps_view_h view, bool *visible);
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a view is created using maps_view_create().
  *
@@ -1041,6 +1064,7 @@ int maps_view_set_event_cb(maps_view_h view, maps_view_event_type_e type,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a view is created using maps_view_create().
  * @pre the event callback is registered using maps_view_set_event_cb()
@@ -1062,6 +1086,7 @@ int maps_view_unset_event_cb(maps_view_h view, maps_view_event_type_e type);
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a view is created using maps_view_create().
  *
@@ -1082,6 +1107,7 @@ int maps_view_set_gesture_enabled(maps_view_h view, maps_view_gesture_e gesture,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a view is created using maps_view_create().
  * @pre @a enabled status set ad default or modified using
@@ -1111,6 +1137,7 @@ int maps_view_get_gesture_enabled(const maps_view_h view, maps_view_gesture_e ge
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
  * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a view is created using maps_view_create().
  * @pre @a object is created using #maps_view_object_create_marker(),
@@ -1141,6 +1168,7 @@ int maps_view_add_object(maps_view_h view, maps_view_object_h object);
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
  * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a view is created using maps_view_create().
  * @pre @a object is added using maps_view_add_object().
@@ -1165,6 +1193,7 @@ int maps_view_remove_object(maps_view_h view, maps_view_object_h object);
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
  * @retval	#MAPS_ERROR_PERMISSION_DENIED Permission Denied
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a view is created using maps_view_create().
  * @pre objects are added using maps_view_add_object().
@@ -1189,6 +1218,7 @@ int maps_view_remove_all_objects(maps_view_h view);
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
  * @retval	#MAPS_ERROR_NOT_FOUND Result not found
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a view is created using maps_view_create().
  * @pre objects are added using maps_view_add_object().

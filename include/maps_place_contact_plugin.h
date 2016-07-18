@@ -51,6 +51,7 @@ extern "C" {
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see place_contact_destroy()
  * @see maps_place_contact_clone()
@@ -67,6 +68,7 @@ int maps_place_contact_create(maps_place_contact_h *contact);
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a contact is created using maps_place_contact_create().
  *
@@ -86,6 +88,7 @@ int maps_place_contact_set_label(maps_place_contact_h contact,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a contact is created using maps_place_contact_create().
  *
@@ -105,6 +108,7 @@ int maps_place_contact_set_type(maps_place_contact_h contact,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a contact is created using maps_place_contact_create().
  *
