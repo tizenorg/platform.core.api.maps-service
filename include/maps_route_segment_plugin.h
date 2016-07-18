@@ -49,6 +49,7 @@ extern "C" {
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see maps_route_segment_destroy()
  * @see maps_route_segment_clone()
@@ -65,6 +66,7 @@ int maps_route_segment_create(maps_route_segment_h *segment);
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a segment is created using maps_route_segment_create().
  *
@@ -84,6 +86,7 @@ int maps_route_segment_set_origin(maps_route_segment_h segment,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a segment is created using maps_route_segment_create().
  *
@@ -103,6 +106,7 @@ int maps_route_segment_set_destination(maps_route_segment_h segment,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a segment is created using maps_route_segment_create().
  *
@@ -122,6 +126,7 @@ int maps_route_segment_set_bounding_box(maps_route_segment_h segment,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a segment is created using maps_route_segment_create().
  *
@@ -141,6 +146,7 @@ int maps_route_segment_set_distance(maps_route_segment_h segment,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a segment is created using maps_route_segment_create().
  *
@@ -160,6 +166,7 @@ int maps_route_segment_set_duration(maps_route_segment_h segment,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a segment is created using maps_route_segment_create().
  *
@@ -179,6 +186,7 @@ int maps_route_segment_set_path(maps_route_segment_h segment,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a segment is created using maps_route_segment_create().
  *

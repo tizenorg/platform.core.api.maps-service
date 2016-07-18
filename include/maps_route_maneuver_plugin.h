@@ -49,6 +49,7 @@ extern "C" {
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see maps_route_maneuver_destroy()
  * @see maps_route_maneuver_clone()
@@ -65,6 +66,7 @@ int maps_route_maneuver_create(maps_route_maneuver_h *maneuver);
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a maneuver is created using maps_route_maneuver_create().
  *
@@ -86,6 +88,7 @@ int maps_route_maneuver_set_direction_id(maps_route_maneuver_h maneuver,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a maneuver is created using maps_route_maneuver_create().
  *
@@ -106,6 +109,7 @@ int maps_route_maneuver_set_turn_type(maps_route_maneuver_h maneuver,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a maneuver is created using maps_route_maneuver_create().
  *
@@ -125,6 +129,7 @@ int maps_route_maneuver_set_road_name(maps_route_maneuver_h maneuver,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a maneuver is created using maps_route_maneuver_create().
  *
@@ -145,6 +150,7 @@ int maps_route_maneuver_set_instruction_text(maps_route_maneuver_h maneuver,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a maneuver is created using maps_route_maneuver_create().
  *
@@ -164,6 +170,7 @@ int maps_route_maneuver_set_locale(maps_route_maneuver_h maneuver,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a maneuver is created using maps_route_maneuver_create().
  *
@@ -183,6 +190,7 @@ int maps_route_maneuver_set_position(maps_route_maneuver_h maneuver,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a maneuver is created using maps_route_maneuver_create().
  *
@@ -205,6 +213,7 @@ int maps_route_maneuver_set_time_to_next_instruction(maps_route_maneuver_h
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a maneuver is created using maps_route_maneuver_create().
  *
