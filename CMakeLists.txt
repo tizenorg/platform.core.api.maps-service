@@ -33,21 +33,14 @@ SET(dependents
 	capi-media-image-util
 )
 
-IF(${TIZEN_VER} LESS 240)
+IF(${TIZEN_VER} LESS 0x030000)
 	SET(dependents
 		${dependents}
-		# Privilege check
-		capi-appfw-app-manager
-		pkgmgr-info
-		capi-security-privilege-manager
+		# Privilege check for Tizen 2.x
+		privacy-manager-client
+		libsmack
 	)
-ELSEIF(${TIZEN_VER} LESS 300)
-	SET(dependents
-		${dependents}
-		# Privilege check
-		security-privilege-checker
-	)
-ENDIF(${TIZEN_VER} LESS 240)
+ENDIF(${TIZEN_VER} LESS 0x030000)
 
 
 SET(pc_dependents "capi-base-common evas")
@@ -72,10 +65,10 @@ IF("${PROFILE}" STREQUAL "wearable")
 	ADD_DEFINITIONS("-DTIZEN_WEARABLE")
 ENDIF("${PROFILE}" STREQUAL "wearable")
 
-ADD_DEFINITIONS("-DTIZEN_VER=${TIZEN_VER}")
 ADD_DEFINITIONS("-DPREFIX=\"${CMAKE_INSTALL_PREFIX}\"")
 ADD_DEFINITIONS("-DEXPORT_API=__attribute__((visibility(\"default\")))")
 #ADD_DEFINITIONS("-DTIZEN_DEBUG")
+ADD_DEFINITIONS("-DTIZEN_VER=${TIZEN_VER}")
 
 SET(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--no-undefined -Wl,--as-needed")
 

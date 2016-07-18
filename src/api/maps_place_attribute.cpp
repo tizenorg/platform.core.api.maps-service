@@ -13,10 +13,11 @@
  * limitations under the License.
  */
 
+#include <glib.h>
 #include "maps_error.h"
 #include "maps_place_attribute_plugin.h"
-#include <glib.h>
 #include "maps_util.h"
+#include "maps_condition.h"
 
 typedef struct _maps_place_attribute_s
 {
@@ -33,6 +34,8 @@ const gsize _MAPS_PLACE_ATTRIBUTE_TEXT_MAX_LENGTH = 512;
 
 EXPORT_API int maps_place_attribute_create(maps_place_attribute_h *place)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!place)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	*place = (maps_place_attribute_h) g_slice_new0(maps_place_attribute_s);
@@ -47,6 +50,8 @@ EXPORT_API int maps_place_attribute_create(maps_place_attribute_h *place)
 
 EXPORT_API int maps_place_attribute_destroy(maps_place_attribute_h place)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!place)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -66,6 +71,8 @@ EXPORT_API int maps_place_attribute_destroy(maps_place_attribute_h place)
 EXPORT_API int maps_place_attribute_clone(const maps_place_attribute_h origin,
 								maps_place_attribute_h *cloned)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!cloned || !origin)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -108,6 +115,8 @@ EXPORT_API int maps_place_attribute_clone(const maps_place_attribute_h origin,
 
 EXPORT_API int maps_place_attribute_get_id(const maps_place_attribute_h place, char **id)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!place || !id)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_get_string(((maps_place_attribute_s *) place)->id,
@@ -116,6 +125,8 @@ EXPORT_API int maps_place_attribute_get_id(const maps_place_attribute_h place, c
 
 EXPORT_API int maps_place_attribute_get_text(const maps_place_attribute_h place, char **text)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!place || !text)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_get_string(((maps_place_attribute_s *) place)->text,
@@ -124,6 +135,8 @@ EXPORT_API int maps_place_attribute_get_text(const maps_place_attribute_h place,
 
 EXPORT_API int maps_place_attribute_get_label(const maps_place_attribute_h place, char **label)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!place || !label)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_get_string(((maps_place_attribute_s *) place)->label,
@@ -134,6 +147,8 @@ EXPORT_API int maps_place_attribute_get_label(const maps_place_attribute_h place
 
 EXPORT_API int maps_place_attribute_set_id(maps_place_attribute_h place, const char * id)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!place || !id)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_set_string(id, _MAPS_PLACE_ATTRIBUTE_ID_MAX_LENGTH,
@@ -142,6 +157,8 @@ EXPORT_API int maps_place_attribute_set_id(maps_place_attribute_h place, const c
 
 EXPORT_API int maps_place_attribute_set_label(maps_place_attribute_h place, const char *label)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!place || !label)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_set_string(label, _MAPS_PLACE_ATTRIBUTE_LABEL_MAX_LENGTH,
@@ -150,6 +167,8 @@ EXPORT_API int maps_place_attribute_set_label(maps_place_attribute_h place, cons
 
 EXPORT_API int maps_place_attribute_set_text(maps_place_attribute_h place, const char *text)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!place || !text)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_set_string(text, _MAPS_PLACE_ATTRIBUTE_TEXT_MAX_LENGTH,

@@ -35,6 +35,10 @@
 extern "C" {
 #endif
 
+#ifndef TIZEN_ERROR_MAPS_SERVICE
+#define TIZEN_ERROR_MAPS_SERVICE	-0x02C20000
+#endif
+
 /**
  * @brief Enumerations of error codes for Maps Service and Plug-ins
  * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
