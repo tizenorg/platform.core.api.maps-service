@@ -292,6 +292,7 @@ typedef bool(*maps_preference_properties_cb) (int index, int total, char *key,
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
  * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see maps_preference_destroy()
  * @see maps_preference_clone()
@@ -309,6 +310,7 @@ int maps_preference_create(maps_preference_h *preference);
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see maps_preference_clone()
  */
@@ -327,6 +329,7 @@ int maps_preference_destroy(maps_preference_h preference);
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
  * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see maps_preference_destroy()
  */
@@ -345,6 +348,7 @@ int maps_preference_clone(const maps_preference_h origin,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  */
 int maps_preference_get_distance_unit(const maps_preference_h preference,
 								maps_distance_unit_e *unit);
@@ -360,6 +364,7 @@ int maps_preference_get_distance_unit(const maps_preference_h preference,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  */
 int maps_preference_get_language(const maps_preference_h preference,
 								char **language);
@@ -374,6 +379,7 @@ int maps_preference_get_language(const maps_preference_h preference,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  */
 int maps_preference_get_max_results(const maps_preference_h preference,
 								int *max_results);
@@ -389,6 +395,7 @@ int maps_preference_get_max_results(const maps_preference_h preference,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  */
 int maps_preference_get_country_code(const maps_preference_h preference,
 								char **country_code);
@@ -403,6 +410,7 @@ int maps_preference_get_country_code(const maps_preference_h preference,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  */
 int maps_preference_get_route_optimization(const maps_preference_h preference,
 								maps_route_optimization_e * optimization);
@@ -417,6 +425,7 @@ int maps_preference_get_route_optimization(const maps_preference_h preference,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  */
 int maps_preference_get_route_transport_mode(const maps_preference_h preference,
 								maps_route_transport_mode_e *transport_mode);
@@ -431,6 +440,7 @@ int maps_preference_get_route_transport_mode(const maps_preference_h preference,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  */
 int maps_preference_get_route_feature_weight(const maps_preference_h preference,
 								maps_route_feature_weight_e *feature_weight);
@@ -445,6 +455,7 @@ int maps_preference_get_route_feature_weight(const maps_preference_h preference,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  */
 int maps_preference_get_route_feature(const maps_preference_h preference,
 								maps_route_feature_e *feature);
@@ -459,6 +470,7 @@ int maps_preference_get_route_feature(const maps_preference_h preference,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  */
 int maps_preference_get_route_alternatives_enabled(const maps_preference_h preference,
 								bool *enable);
@@ -475,6 +487,7 @@ int maps_preference_get_route_alternatives_enabled(const maps_preference_h prefe
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  */
 int maps_preference_get(const maps_preference_h preference,
 								const char *key, char **value);
@@ -494,6 +507,7 @@ int maps_preference_get(const maps_preference_h preference,
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
  * @retval	#MAPS_ERROR_NOT_FOUND Result not found
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @post This function invokes maps_preference_properties_cb() repeatedly to
  * retrieve each property.
@@ -515,6 +529,7 @@ int maps_preference_foreach_property(const maps_preference_h preference,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a preference is created using maps_preference_create().
  *
@@ -539,6 +554,7 @@ int maps_preference_set_distance_unit(maps_preference_h preference,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a preference is created using maps_preference_create().
  *
@@ -558,6 +574,7 @@ int maps_preference_set_language(maps_preference_h preference,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a preference is created using maps_preference_create().
  *
@@ -577,6 +594,7 @@ int maps_preference_set_max_results(maps_preference_h preference,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a preference is created using maps_preference_create().
  *
@@ -596,6 +614,7 @@ int maps_preference_set_country_code(maps_preference_h preference,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a preference is created using maps_preference_create().
  *
@@ -615,6 +634,7 @@ int maps_preference_set_route_optimization(maps_preference_h preference,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a preference is created using maps_preference_create().
  *
@@ -634,6 +654,7 @@ int maps_preference_set_route_transport_mode(maps_preference_h preference,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a preference is created using maps_preference_create().
  *
@@ -653,6 +674,7 @@ int maps_preference_set_route_feature_weight(maps_preference_h preference,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a preference is created using maps_preference_create().
  *
@@ -672,6 +694,7 @@ int maps_preference_set_route_feature(maps_preference_h preference,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a preference is created using maps_preference_create().
  *
@@ -693,6 +716,7 @@ int maps_preference_set_route_alternatives_enabled(maps_preference_h preference,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @pre @a preference is created using maps_preference_create().
  *

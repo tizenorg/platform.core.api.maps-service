@@ -59,6 +59,7 @@ typedef void *maps_place_contact_h;
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see maps_place_contact_clone()
  */
@@ -77,6 +78,7 @@ int maps_place_contact_destroy(maps_place_contact_h contact);
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_OUT_OF_MEMORY Out of memory
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  *
  * @see maps_place_contact_destroy()
  */
@@ -96,6 +98,7 @@ int maps_place_contact_clone(const maps_place_contact_h origin,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  */
 int maps_place_contact_get_label(const maps_place_contact_h contact,
 				 char **label);
@@ -111,6 +114,7 @@ int maps_place_contact_get_label(const maps_place_contact_h contact,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  */
 int maps_place_contact_get_type(const maps_place_contact_h contact,
 				char **type);
@@ -126,6 +130,7 @@ int maps_place_contact_get_type(const maps_place_contact_h contact,
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval	#MAPS_ERROR_NOT_SUPPORTED Not supported
  */
 int maps_place_contact_get_value(const maps_place_contact_h contact,
 				 char **value);
