@@ -19,11 +19,14 @@
 #include "maps_plugin_types.h"
 #include "maps_coordinates.h"
 #include "maps_util.h"
+#include "maps_condition.h"
 
 EXPORT_API int maps_coordinates_create(const double latitude,
 				       const double longitude,
 				       maps_coordinates_h *coords)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!coords)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -48,6 +51,8 @@ EXPORT_API int maps_coordinates_create(const double latitude,
 
 EXPORT_API int maps_coordinates_destroy(maps_coordinates_h coords)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!coords)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -61,6 +66,8 @@ EXPORT_API int maps_coordinates_destroy(maps_coordinates_h coords)
 EXPORT_API int maps_coordinates_clone(const maps_coordinates_h origin,
 				      maps_coordinates_h *cloned)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!cloned || !origin)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	int error = MAPS_ERROR_NONE;
@@ -81,6 +88,8 @@ EXPORT_API int maps_coordinates_clone(const maps_coordinates_h origin,
 EXPORT_API int maps_coordinates_get_latitude(const maps_coordinates_h coords,
 					     double *latitude)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!coords || !latitude)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	*latitude = ((maps_coordinates_s *) coords)->latitude;
@@ -90,6 +99,8 @@ EXPORT_API int maps_coordinates_get_latitude(const maps_coordinates_h coords,
 EXPORT_API int maps_coordinates_get_longitude(const maps_coordinates_h coords,
 					      double *longitude)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!coords || !longitude)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	*longitude = ((maps_coordinates_s *) coords)->longitude;
@@ -100,6 +111,8 @@ EXPORT_API int maps_coordinates_get_latitude_longitude(const maps_coordinates_h 
 					      double *latitude,
 					      double *longitude)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!coords || !latitude || !longitude)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	*latitude = ((maps_coordinates_s *) coords)->latitude;
@@ -112,6 +125,8 @@ EXPORT_API int maps_coordinates_get_latitude_longitude(const maps_coordinates_h 
 EXPORT_API int maps_coordinates_set_latitude(maps_coordinates_h coords,
 					     const double latitude)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!coords)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	MAPS_CHECK_CONDITION(latitude >= -90
@@ -124,6 +139,8 @@ EXPORT_API int maps_coordinates_set_latitude(maps_coordinates_h coords,
 EXPORT_API int maps_coordinates_set_longitude(maps_coordinates_h coords,
 	const double longitude)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!coords)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	MAPS_CHECK_CONDITION(longitude >= -180
@@ -137,6 +154,8 @@ EXPORT_API int maps_coordinates_set_latitude_longitude(maps_coordinates_h coords
 	const double latitude,
 	const double longitude)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!coords)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	MAPS_CHECK_CONDITION(latitude >= -90
@@ -156,6 +175,8 @@ EXPORT_API int maps_coordinates_set_latitude_longitude(maps_coordinates_h coords
 
 EXPORT_API int maps_coordinates_list_create(maps_coordinates_list_h *coordinates_list)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!coordinates_list)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -181,6 +202,8 @@ static void _free_coordinates(gpointer data)
 
 EXPORT_API int maps_coordinates_list_destroy(maps_coordinates_list_h coordinates_list)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!coordinates_list)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -194,6 +217,8 @@ EXPORT_API int maps_coordinates_list_destroy(maps_coordinates_list_h coordinates
 
 EXPORT_API int maps_coordinates_list_append(maps_coordinates_list_h coordinates_list, maps_coordinates_h coordinates)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!coordinates_list || !coordinates)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -207,6 +232,8 @@ EXPORT_API int maps_coordinates_list_append(maps_coordinates_list_h coordinates_
 
 EXPORT_API int maps_coordinates_list_remove(maps_coordinates_list_h coordinates_list, maps_coordinates_h coordinates)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!coordinates_list || !coordinates)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -220,6 +247,8 @@ EXPORT_API int maps_coordinates_list_remove(maps_coordinates_list_h coordinates_
 
 EXPORT_API int maps_coordinates_list_get_length(maps_coordinates_list_h coordinates_list, int *length)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!coordinates_list || !length)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -230,6 +259,8 @@ EXPORT_API int maps_coordinates_list_get_length(maps_coordinates_list_h coordina
 
 EXPORT_API int maps_coordinates_list_foreach(maps_coordinates_list_h coordinates_list, maps_coordinates_cb callback, void *user_data)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!coordinates_list || !callback)
 		return MAPS_ERROR_INVALID_PARAMETER;
 

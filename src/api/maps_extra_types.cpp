@@ -18,6 +18,7 @@
 #include "maps_error.h"
 #include "maps_extra_types.h"
 #include "maps_util.h"
+#include "maps_condition.h"
 
 typedef struct _maps_item_list_s
 {
@@ -26,6 +27,8 @@ typedef struct _maps_item_list_s
 
 EXPORT_API int maps_item_list_create(maps_item_list_h *list)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!list)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_item_list_s *l = g_slice_new0(maps_item_list_s);
@@ -43,6 +46,8 @@ EXPORT_API int maps_item_list_create(maps_item_list_h *list)
 
 EXPORT_API int maps_item_list_destroy(maps_item_list_h list)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!list)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_item_list_s *l = (maps_item_list_s *) list;
@@ -55,6 +60,8 @@ EXPORT_API int maps_item_list_destroy(maps_item_list_h list)
 EXPORT_API int maps_item_list_append(maps_item_list_h list, const void *data,
 				     maps_item_list_clone_cb clone_func)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!list || !data)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	void *p = NULL;
@@ -75,10 +82,11 @@ EXPORT_API int maps_item_list_foreach(maps_item_list_h list,
 				      maps_item_list_foreach_cb callback,
 				      void *user_data)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!list || !callback)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_item_list_s *l = (maps_item_list_s *) list;
-
 	if (!l->l)
 		return MAPS_ERROR_NOT_FOUND;
 
@@ -106,9 +114,10 @@ EXPORT_API int maps_item_list_remove(maps_item_list_h list,
 				     void *item,
 				     maps_item_list_free_cb free_func)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!list)
 		return MAPS_ERROR_INVALID_PARAMETER;
-
 	maps_item_list_s *l = (maps_item_list_s *) list;
 	if (l->l) {
 		l->l = g_list_remove(l->l, item);
@@ -120,6 +129,8 @@ EXPORT_API int maps_item_list_remove(maps_item_list_h list,
 
 EXPORT_API int maps_item_list_foreach_noclone(maps_item_list_h list, maps_item_list_foreach_noclone_cb callback, void *user_data)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!list || !callback)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_item_list_s *l = (maps_item_list_s *) list;
@@ -141,8 +152,11 @@ EXPORT_API int maps_item_list_foreach_noclone(maps_item_list_h list, maps_item_l
 EXPORT_API int maps_item_list_remove_all(maps_item_list_h list,
 					 maps_item_list_free_cb free_func)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!list)
 		return MAPS_ERROR_INVALID_PARAMETER;
+
 	maps_item_list_s *l = (maps_item_list_s *) list;
 	if (l->l) {
 		GList *head = g_list_first(l->l);
@@ -162,6 +176,8 @@ EXPORT_API int maps_item_list_clone(const maps_item_list_h origin,
 				    maps_item_list_clone_cb clone_func,
 				    maps_item_list_h *cloned)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!cloned || !origin || !clone_func)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -207,10 +223,12 @@ typedef struct _maps_string_hashtable_s
 
 EXPORT_API int maps_string_hashtable_create(maps_string_hashtable_h *table)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!table)
 		return MAPS_ERROR_INVALID_PARAMETER;
-	maps_string_hashtable_s *t = g_slice_new0(maps_string_hashtable_s);
 
+	maps_string_hashtable_s *t = g_slice_new0(maps_string_hashtable_s);
 	if (!t) {
 		MAPS_LOGE("OUT_OF_MEMORY(0x%08x)", MAPS_ERROR_OUT_OF_MEMORY);
 		return MAPS_ERROR_OUT_OF_MEMORY;
@@ -223,6 +241,8 @@ EXPORT_API int maps_string_hashtable_create(maps_string_hashtable_h *table)
 
 EXPORT_API int maps_string_hashtable_destroy(maps_string_hashtable_h table)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!table)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_string_hashtable_s *t = (maps_string_hashtable_s *) table;
@@ -235,6 +255,8 @@ EXPORT_API int maps_string_hashtable_destroy(maps_string_hashtable_h table)
 EXPORT_API int maps_string_hashtable_set(maps_string_hashtable_h table,
 					 const char *key, const char *value)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!table || !key || !value)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_string_hashtable_s *t = (maps_string_hashtable_s *) table;
@@ -247,6 +269,8 @@ EXPORT_API int maps_string_hashtable_set(maps_string_hashtable_h table,
 EXPORT_API int maps_string_hashtable_get(maps_string_hashtable_h table,
 					 const char *key, char **value)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!table || !key || !value)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_string_hashtable_s *t = (maps_string_hashtable_s *) table;
@@ -261,6 +285,8 @@ EXPORT_API int maps_string_hashtable_get(maps_string_hashtable_h table,
 EXPORT_API int maps_string_hashtable_remove(maps_string_hashtable_h table,
 					    const char *key)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!table || !key)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_string_hashtable_s *t = (maps_string_hashtable_s *) table;
@@ -274,6 +300,8 @@ EXPORT_API int maps_string_hashtable_foreach(maps_string_hashtable_h table,
 					     callback,
 					     void *user_data)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!table || !callback)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_string_hashtable_s *t = (maps_string_hashtable_s *) table;
@@ -306,6 +334,8 @@ EXPORT_API int maps_string_hashtable_foreach(maps_string_hashtable_h table,
 EXPORT_API int maps_string_hashtable_clone(const maps_string_hashtable_h origin,
 					   maps_string_hashtable_h *cloned)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!cloned || !origin)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -343,6 +373,8 @@ EXPORT_API int maps_string_hashtable_clone(const maps_string_hashtable_h origin,
 EXPORT_API int maps_string_hashtable_contains(maps_string_hashtable_h table,
 					      const char * key, bool * contains)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!table || !key || !contains)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_string_hashtable_s *t = (maps_string_hashtable_s *) table;
@@ -359,6 +391,8 @@ typedef struct _maps_int_hashtable_s
 
 EXPORT_API int maps_int_hashtable_create(maps_int_hashtable_h *table)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!table)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_int_hashtable_s *t = g_slice_new0(maps_int_hashtable_s);
@@ -375,6 +409,8 @@ EXPORT_API int maps_int_hashtable_create(maps_int_hashtable_h *table)
 
 EXPORT_API int maps_int_hashtable_destroy(maps_int_hashtable_h table)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!table)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_int_hashtable_s *t = (maps_int_hashtable_s *) table;
@@ -387,6 +423,8 @@ EXPORT_API int maps_int_hashtable_destroy(maps_int_hashtable_h table)
 EXPORT_API int maps_int_hashtable_set(maps_int_hashtable_h table,
 				      const int key, const int value)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!table)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_int_hashtable_s *t = (maps_int_hashtable_s *) table;
@@ -405,6 +443,8 @@ EXPORT_API int maps_int_hashtable_set(maps_int_hashtable_h table,
 EXPORT_API int maps_int_hashtable_get(maps_int_hashtable_h table,
 				      const int key, int *value)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!table || !value)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_int_hashtable_s *t = (maps_int_hashtable_s *) table;
@@ -420,6 +460,8 @@ EXPORT_API int maps_int_hashtable_get(maps_int_hashtable_h table,
 EXPORT_API int maps_int_hashtable_remove(maps_int_hashtable_h table,
 					 const int key)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!table)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_int_hashtable_s *t = (maps_int_hashtable_s *) table;
@@ -432,6 +474,8 @@ EXPORT_API int maps_int_hashtable_foreach(maps_int_hashtable_h table,
 					  maps_int_hashtable_foreach_cb callback,
 					  void *user_data)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!table || !callback)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_int_hashtable_s *t = (maps_int_hashtable_s *) table;
@@ -459,6 +503,8 @@ EXPORT_API int maps_int_hashtable_foreach(maps_int_hashtable_h table,
 EXPORT_API int maps_int_hashtable_clone(const maps_int_hashtable_h origin,
 					maps_int_hashtable_h *cloned)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!cloned || !origin)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -500,6 +546,8 @@ EXPORT_API int maps_int_hashtable_clone(const maps_int_hashtable_h origin,
 EXPORT_API int maps_int_hashtable_contains(maps_int_hashtable_h table,
 					   const int key, bool *contains)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!table || !contains)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_int_hashtable_s *t = (maps_int_hashtable_s *) table;
@@ -546,6 +594,8 @@ typedef struct _maps_item_hashtable_s
 
 EXPORT_API int maps_item_hashtable_create(maps_item_hashtable_h *table)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!table)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_item_hashtable_s *t = g_slice_new0(maps_item_hashtable_s);
@@ -563,6 +613,8 @@ EXPORT_API int maps_item_hashtable_create(maps_item_hashtable_h *table)
 
 EXPORT_API int maps_item_hashtable_destroy(maps_item_hashtable_h table)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!table)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_item_hashtable_s *t = (maps_item_hashtable_s *) table;
@@ -574,6 +626,8 @@ EXPORT_API int maps_item_hashtable_destroy(maps_item_hashtable_h table)
 
 EXPORT_API int maps_item_hashtable_clone_string(void *origin, void **cloned)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!origin || !cloned)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_get_string((char *) origin, strlen((char *) origin),
@@ -582,12 +636,16 @@ EXPORT_API int maps_item_hashtable_clone_string(void *origin, void **cloned)
 
 EXPORT_API int maps_item_hashtable_free_string(void *data)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	g_free(data);
 	return MAPS_ERROR_NONE;
 }
 
 EXPORT_API int maps_item_hashtable_clone_int(void *origin, void **cloned)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!origin || !cloned)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	int *n_cloned = g_new0(int, 1);
@@ -605,12 +663,16 @@ EXPORT_API int maps_item_hashtable_clone_int(void *origin, void **cloned)
 
 EXPORT_API int maps_item_hashtable_free_int(void *data)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	g_free(data);
 	return MAPS_ERROR_NONE;
 }
 
 EXPORT_API int maps_item_hashtable_clone_float(void *origin, void **cloned)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!origin || !cloned)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	double *n_cloned = g_new0(double, 1);
@@ -628,6 +690,8 @@ EXPORT_API int maps_item_hashtable_clone_float(void *origin, void **cloned)
 
 EXPORT_API int maps_item_hashtable_free_float(void *data)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	g_free(data);
 	return MAPS_ERROR_NONE;
 }
@@ -636,6 +700,8 @@ EXPORT_API int maps_item_hashtable_set_string(maps_item_hashtable_h table,
 					      const char *key,
 					      const char *value)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	return maps_item_hashtable_set(table, key, value,
 		maps_item_hashtable_clone_string,
 		maps_item_hashtable_free_string);
@@ -644,6 +710,8 @@ EXPORT_API int maps_item_hashtable_set_string(maps_item_hashtable_h table,
 EXPORT_API int maps_item_hashtable_set_int(maps_item_hashtable_h table,
 					   const char *key, const int value)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	return maps_item_hashtable_set(table, key, &value,
 		maps_item_hashtable_clone_int, maps_item_hashtable_free_int);
 }
@@ -652,6 +720,8 @@ EXPORT_API int maps_item_hashtable_set_float(maps_item_hashtable_h table,
 					     const char *key,
 					     const double value)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	return maps_item_hashtable_set(table, key, &value,
 		maps_item_hashtable_clone_float,
 		maps_item_hashtable_free_float);
@@ -662,6 +732,8 @@ EXPORT_API int maps_item_hashtable_set(maps_item_hashtable_h table,
 	maps_item_hashtable_clone_cb clone_func,
 	maps_item_hashtable_free_cb free_func)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!table || !key || !value || !clone_func || !free_func)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_item_hashtable_s *t = (maps_item_hashtable_s *) table;
@@ -688,12 +760,16 @@ EXPORT_API int maps_item_hashtable_set(maps_item_hashtable_h table,
 EXPORT_API int maps_item_hashtable_get_string(maps_item_hashtable_h table,
 					      const char *key, char **value)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	return maps_item_hashtable_get(table, key, (void **) value);
 }
 
 EXPORT_API int maps_item_hashtable_get_int(maps_item_hashtable_h table,
 					   const char *key, int *value)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!table || !key || !value)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	int *data = NULL;
@@ -708,6 +784,8 @@ EXPORT_API int maps_item_hashtable_get_int(maps_item_hashtable_h table,
 EXPORT_API int maps_item_hashtable_get_float(maps_item_hashtable_h table,
 					     const char *key, double *value)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!table || !key || !value)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	double *data = NULL;
@@ -722,6 +800,8 @@ EXPORT_API int maps_item_hashtable_get_float(maps_item_hashtable_h table,
 EXPORT_API int maps_item_hashtable_get(maps_item_hashtable_h table,
 				       const char *key, void **value)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!table || !key || !value)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_item_hashtable_s *t = (maps_item_hashtable_s *) table;
@@ -737,6 +817,8 @@ EXPORT_API int maps_item_hashtable_get(maps_item_hashtable_h table,
 EXPORT_API int maps_item_hashtable_remove(maps_item_hashtable_h table,
 					  const char *key)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!table || !key)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_item_hashtable_s *t = (maps_item_hashtable_s *) table;
@@ -750,10 +832,11 @@ EXPORT_API int maps_item_hashtable_foreach(maps_item_hashtable_h table,
 					   callback,
 					   void *user_data)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!table || !callback)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_item_hashtable_s *t = (maps_item_hashtable_s *) table;
-
 	if (!t->t)
 		return MAPS_ERROR_NOT_FOUND;
 
@@ -787,6 +870,8 @@ EXPORT_API int maps_item_hashtable_foreach(maps_item_hashtable_h table,
 EXPORT_API int maps_item_hashtable_clone(const maps_item_hashtable_h origin,
 					 maps_item_hashtable_h* cloned)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!cloned || !origin)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -825,6 +910,8 @@ EXPORT_API int maps_item_hashtable_clone(const maps_item_hashtable_h origin,
 EXPORT_API int maps_item_hashtable_contains(maps_item_hashtable_h table,
 					    const char *key, bool *contains)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!table || !key || !contains)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_item_hashtable_s *t = (maps_item_hashtable_s *) table;
