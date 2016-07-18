@@ -13,13 +13,14 @@
  * limitations under the License.
  */
 
+#include <glib.h>
 #include "maps_error.h"
 #include "maps_place_plugin.h"
 #include "maps_extra_types.h"
 #include "maps_util.h"
 #include "maps_address.h"
 #include "maps_place_private.h"
-#include <glib.h>
+#include "maps_condition.h"
 
 static bool __is_supported(const maps_place_h place, maps_service_data_e data)
 {
@@ -95,6 +96,8 @@ const gsize _MAPS_PLACE_URI_MAX_LENGTH = 256;
 
 EXPORT_API int maps_place_create(maps_place_h *place)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!place)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	*place = (maps_place_h) g_slice_new0(maps_place_s);
@@ -109,6 +112,8 @@ EXPORT_API int maps_place_create(maps_place_h *place)
 
 EXPORT_API int maps_place_destroy(maps_place_h place)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!place)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -183,6 +188,8 @@ EXPORT_API int maps_place_destroy(maps_place_h place)
 EXPORT_API int maps_place_clone(const maps_place_h origin,
 				maps_place_h *cloned)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!cloned || !origin)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -306,6 +313,8 @@ EXPORT_API int maps_place_clone(const maps_place_h origin,
 
 EXPORT_API int maps_place_get_id(const maps_place_h place, char **id)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!place || !id)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_get_string(((maps_place_s *) place)->id,
@@ -314,6 +323,8 @@ EXPORT_API int maps_place_get_id(const maps_place_h place, char **id)
 
 EXPORT_API int maps_place_get_name(const maps_place_h place, char **name)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!place || !name)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_get_string(((maps_place_s *) place)->name,
@@ -322,6 +333,8 @@ EXPORT_API int maps_place_get_name(const maps_place_h place, char **name)
 
 EXPORT_API int maps_place_get_uri(const maps_place_h place, char **uri)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!place || !uri)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_get_string(((maps_place_s *) place)->uri,
@@ -331,6 +344,8 @@ EXPORT_API int maps_place_get_uri(const maps_place_h place, char **uri)
 EXPORT_API int maps_place_get_location(const maps_place_h place,
 								maps_coordinates_h *location)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!place || !location)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_coordinates_clone(((maps_place_s *) place)->location,
@@ -339,6 +354,8 @@ EXPORT_API int maps_place_get_location(const maps_place_h place,
 
 EXPORT_API int maps_place_get_distance(const maps_place_h place, int *distance)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!place || !distance)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	*distance = ((maps_place_s *) place)->distance;
@@ -348,36 +365,24 @@ EXPORT_API int maps_place_get_distance(const maps_place_h place, int *distance)
 EXPORT_API int maps_place_get_address(const maps_place_h place,
 								maps_address_h *address)
 {
-	/* Check if the handle of the Place is valid */
-	if (!place)
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
+	if (!place || !address)
 		return MAPS_ERROR_INVALID_PARAMETER;
-
-	/* Check if this API feature available */
 	if (!__is_supported(place, MAPS_PLACE_ADDRESS))
 		return MAPS_ERROR_NOT_SUPPORTED;
-
-	/* Check if parameters are valid */
-	if (!address)
-		return MAPS_ERROR_INVALID_PARAMETER;
-
 	return maps_address_clone(((maps_place_s *) place)->address, address);
 }
 
 EXPORT_API int maps_place_get_rating(const maps_place_h place,
 								maps_place_rating_h *rating)
 {
-	/* Check if the handle of the Place is valid */
-	if (!place)
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
+	if (!place || !rating)
 		return MAPS_ERROR_INVALID_PARAMETER;
-
-	/* Check if this API feature available */
 	if (!__is_supported(place, MAPS_PLACE_RATING))
 		return MAPS_ERROR_NOT_SUPPORTED;
-
-	/* Check if parameters are valid */
-	if (!rating)
-		return MAPS_ERROR_INVALID_PARAMETER;
-
 	return maps_place_rating_clone(((maps_place_s *) place)->rating,
 		rating);
 }
@@ -386,6 +391,8 @@ EXPORT_API int maps_place_foreach_property(const maps_place_h place,
 								maps_place_properties_cb callback,
 								void *user_data)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!place || !callback)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_item_hashtable_foreach(((maps_place_s *) place)->properties,
@@ -396,18 +403,12 @@ EXPORT_API int maps_place_foreach_category(const maps_place_h place,
 								maps_place_categories_cb callback,
 								void *user_data)
 {
-	/* Check if the handle of the Place is valid */
-	if (!place)
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
+	if (!place || !callback)
 		return MAPS_ERROR_INVALID_PARAMETER;
-
-	/* Check if this API feature available */
 	if (!__is_supported(place, MAPS_PLACE_CATEGORIES))
 		return MAPS_ERROR_NOT_SUPPORTED;
-
-	/* Check if parameters are valid */
-	if (!callback)
-		return MAPS_ERROR_INVALID_PARAMETER;
-
 	return maps_item_list_foreach(((maps_place_s *) place)->categories,
 		maps_place_category_clone, callback, user_data);
 }
@@ -416,18 +417,12 @@ EXPORT_API int maps_place_foreach_attribute(const maps_place_h place,
 								maps_place_attributes_cb callback,
 								void * user_data)
 {
-	/* Check if the handle of the Place is valid */
-	if (!place)
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
+	if (!place || !callback)
 		return MAPS_ERROR_INVALID_PARAMETER;
-
-	/* Check if this API feature available */
 	if (!__is_supported(place, MAPS_PLACE_ATTRIBUTES))
 		return MAPS_ERROR_NOT_SUPPORTED;
-
-	/* Check if parameters are valid */
-	if (!callback)
-		return MAPS_ERROR_INVALID_PARAMETER;
-
 	return maps_item_list_foreach(((maps_place_s *) place)->attribute,
 		maps_place_attribute_clone, callback, user_data);
 }
@@ -436,18 +431,12 @@ EXPORT_API int maps_place_foreach_contact(const maps_place_h place,
 								maps_place_contacts_cb callback,
 								void *user_data)
 {
-	/* Check if the handle of the Place is valid */
-	if (!place)
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
+	if (!place || !callback)
 		return MAPS_ERROR_INVALID_PARAMETER;
-
-	/* Check if this API feature available */
 	if (!__is_supported(place, MAPS_PLACE_CONTACTS))
 		return MAPS_ERROR_NOT_SUPPORTED;
-
-	/* Check if parameters are valid */
-	if (!callback)
-		return MAPS_ERROR_INVALID_PARAMETER;
-
 	return maps_item_list_foreach(((maps_place_s *) place)->contacts,
 		maps_place_contact_clone, callback, user_data);
 }
@@ -456,18 +445,12 @@ EXPORT_API int maps_place_foreach_editorial(const maps_place_h place,
 								maps_place_editorials_cb callback,
 								void *user_data)
 {
-	/* Check if the handle of the Place is valid */
-	if (!place)
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
+	if (!place || !callback)
 		return MAPS_ERROR_INVALID_PARAMETER;
-
-	/* Check if this API feature available */
 	if (!__is_supported(place, MAPS_PLACE_EDITORIALS))
 		return MAPS_ERROR_NOT_SUPPORTED;
-
-	/* Check if parameters are valid */
-	if (!callback)
-		return MAPS_ERROR_INVALID_PARAMETER;
-
 	return maps_item_list_foreach(((maps_place_s *) place)->editorials,
 		maps_place_editorial_clone, callback, user_data);
 }
@@ -476,18 +459,12 @@ EXPORT_API int maps_place_foreach_image(const maps_place_h place,
 								maps_place_images_cb callback,
 								void *user_data)
 {
-	/* Check if the handle of the Place is valid */
-	if (!place)
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
+	if (!place || !callback)
 		return MAPS_ERROR_INVALID_PARAMETER;
-
-	/* Check if this API feature available */
 	if (!__is_supported(place, MAPS_PLACE_IMAGE))
 		return MAPS_ERROR_NOT_SUPPORTED;
-
-	/* Check if parameters are valid */
-	if (!callback)
-		return MAPS_ERROR_INVALID_PARAMETER;
-
 	return maps_item_list_foreach(((maps_place_s *) place)->images,
 		maps_place_image_clone, callback, user_data);
 }
@@ -496,18 +473,12 @@ EXPORT_API int maps_place_foreach_review(const maps_place_h place,
 								maps_place_reviews_cb callback,
 								void *user_data)
 {
-	/* Check if the handle of the Place is valid */
-	if (!place)
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
+	if (!place || !callback)
 		return MAPS_ERROR_INVALID_PARAMETER;
-
-	/* Check if this API feature available */
 	if (!__is_supported(place, MAPS_PLACE_REVIEWS))
 		return MAPS_ERROR_NOT_SUPPORTED;
-
-	/* Check if parameters are valid */
-	if (!callback)
-		return MAPS_ERROR_INVALID_PARAMETER;
-
 	return maps_item_list_foreach(((maps_place_s *) place)->reviews,
 		maps_place_review_clone, callback, user_data);
 }
@@ -515,18 +486,12 @@ EXPORT_API int maps_place_foreach_review(const maps_place_h place,
 EXPORT_API int maps_place_get_supplier_link(const maps_place_image_h place,
 								maps_place_link_object_h *supplier)
 {
-	/* Check if the handle of the Place is valid */
-	if (!place)
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
+	if (!place || !supplier)
 		return MAPS_ERROR_INVALID_PARAMETER;
-
-	/* Check if this API feature available */
 	if (!__is_supported(place, MAPS_PLACE_SUPPLIER))
 		return MAPS_ERROR_NOT_SUPPORTED;
-
-	/* Check if parameters are valid */
-	if (!supplier)
-		return MAPS_ERROR_INVALID_PARAMETER;
-
 	return maps_place_link_object_clone(((maps_place_s *) place)->supplier,
 		supplier);
 }
@@ -534,18 +499,12 @@ EXPORT_API int maps_place_get_supplier_link(const maps_place_image_h place,
 EXPORT_API int maps_place_get_related_link(const maps_place_image_h place,
 								maps_place_link_object_h *related)
 {
-	/* Check if the handle of the Place is valid */
-	if (!place)
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
+	if (!place || !related)
 		return MAPS_ERROR_INVALID_PARAMETER;
-
-	/* Check if this API feature available */
 	if (!__is_supported(place, MAPS_PLACE_RELATED))
 		return MAPS_ERROR_NOT_SUPPORTED;
-
-	/* Check if parameters are valid */
-	if (!related)
-		return MAPS_ERROR_INVALID_PARAMETER;
-
 	return maps_place_link_object_clone(((maps_place_s *) place)->related,
 		related);
 }
@@ -553,6 +512,8 @@ EXPORT_API int maps_place_get_related_link(const maps_place_image_h place,
 int _maps_place_is_data_supported(const maps_place_h place,
 								maps_service_data_e data, bool *supported)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!place || !supported)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -572,6 +533,8 @@ int _maps_place_is_data_supported(const maps_place_h place,
 
 EXPORT_API int maps_place_set_id(maps_place_h place, const char *id)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!place || !id)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_set_string(id, _MAPS_PLACE_ID_MAX_LENGTH,
@@ -580,6 +543,8 @@ EXPORT_API int maps_place_set_id(maps_place_h place, const char *id)
 
 EXPORT_API int maps_place_set_name(maps_place_h place, const char *name)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!place || !name)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_set_string(name, _MAPS_PLACE_NAME_MAX_LENGTH,
@@ -588,6 +553,8 @@ EXPORT_API int maps_place_set_name(maps_place_h place, const char *name)
 
 EXPORT_API int maps_place_set_uri(maps_place_h place, const char *uri)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!place || !uri)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	return maps_set_string(uri, _MAPS_PLACE_URI_MAX_LENGTH,
@@ -596,6 +563,8 @@ EXPORT_API int maps_place_set_uri(maps_place_h place, const char *uri)
 
 EXPORT_API int maps_place_set_location(maps_place_h place, const maps_coordinates_h location)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!place || !location)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_place_s *p = (maps_place_s *) place;
@@ -606,7 +575,9 @@ EXPORT_API int maps_place_set_location(maps_place_h place, const maps_coordinate
 
 EXPORT_API int maps_place_set_distance(maps_place_h place, const int distance)
 {
-	if (!place)
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
+	if (!place || distance < 0)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_place_s *p = (maps_place_s *) place;
 	p->distance = distance;
@@ -615,6 +586,8 @@ EXPORT_API int maps_place_set_distance(maps_place_h place, const int distance)
 
 EXPORT_API int maps_place_set_address(maps_place_h place, const maps_address_h address)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!place || !address)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_place_s *p = (maps_place_s *) place;
@@ -625,12 +598,13 @@ EXPORT_API int maps_place_set_address(maps_place_h place, const maps_address_h a
 
 EXPORT_API int maps_place_set_categories(maps_place_h place, const maps_item_list_h categories)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!place || !categories)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_place_s *p = (maps_place_s *) place;
 	if (p->categories) {
-		maps_item_list_remove_all(p->categories,
-			maps_place_category_destroy);
+		maps_item_list_remove_all(p->categories, maps_place_category_destroy);
 		maps_item_list_destroy(p->categories);
 	}
 	return maps_item_list_clone(categories, maps_place_category_clone,
@@ -639,12 +613,13 @@ EXPORT_API int maps_place_set_categories(maps_place_h place, const maps_item_lis
 
 EXPORT_API int maps_place_set_attributes(maps_place_h place, const maps_item_list_h attributes)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!place || !attributes)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_place_s *p = (maps_place_s *) place;
 	if (p->attribute) {
-		maps_item_list_remove_all(p->attribute,
-			maps_place_attribute_destroy);
+		maps_item_list_remove_all(p->attribute, maps_place_attribute_destroy);
 		maps_item_list_destroy(p->attribute);
 	}
 	return maps_item_list_clone(attributes, maps_place_attribute_clone,
@@ -653,12 +628,13 @@ EXPORT_API int maps_place_set_attributes(maps_place_h place, const maps_item_lis
 
 EXPORT_API int maps_place_set_contacts(maps_place_h place, const maps_item_list_h contacts)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!place || !contacts)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_place_s *p = (maps_place_s *) place;
 	if (p->contacts) {
-		maps_item_list_remove_all(p->contacts,
-			maps_place_contact_destroy);
+		maps_item_list_remove_all(p->contacts, maps_place_contact_destroy);
 		maps_item_list_destroy(p->contacts);
 	}
 	return maps_item_list_clone(contacts, maps_place_contact_clone,
@@ -667,12 +643,13 @@ EXPORT_API int maps_place_set_contacts(maps_place_h place, const maps_item_list_
 
 EXPORT_API int maps_place_set_editorials(maps_place_h place, const maps_item_list_h editorials)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!place || !editorials)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_place_s *p = (maps_place_s *) place;
 	if (p->editorials) {
-		maps_item_list_remove_all(p->editorials,
-			maps_place_editorial_destroy);
+		maps_item_list_remove_all(p->editorials, maps_place_editorial_destroy);
 		maps_item_list_destroy(p->editorials);
 	}
 	return maps_item_list_clone(editorials, maps_place_editorial_clone,
@@ -681,6 +658,8 @@ EXPORT_API int maps_place_set_editorials(maps_place_h place, const maps_item_lis
 
 EXPORT_API int maps_place_set_images(maps_place_h place, const maps_item_list_h images)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!place || !images)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_place_s *p = (maps_place_s *) place;
@@ -693,12 +672,13 @@ EXPORT_API int maps_place_set_images(maps_place_h place, const maps_item_list_h 
 
 EXPORT_API int maps_place_set_reviews(maps_place_h place, const maps_item_list_h reviews)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!place || !reviews)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_place_s *p = (maps_place_s *) place;
 	if (p->reviews) {
-		maps_item_list_remove_all(p->reviews,
-			maps_place_review_destroy);
+		maps_item_list_remove_all(p->reviews, maps_place_review_destroy);
 		maps_item_list_destroy(p->reviews);
 	}
 	return maps_item_list_clone(reviews, maps_place_review_clone,
@@ -708,6 +688,8 @@ EXPORT_API int maps_place_set_reviews(maps_place_h place, const maps_item_list_h
 EXPORT_API int maps_place_set_properties(maps_place_h place,
 								const maps_item_hashtable_h properties)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!place || !properties)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_place_s *p = (maps_place_s *) place;
@@ -718,6 +700,8 @@ EXPORT_API int maps_place_set_properties(maps_place_h place,
 
 EXPORT_API int maps_place_set_rating(maps_place_h place, const maps_place_rating_h rating)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!place || !rating)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_place_s *p = (maps_place_s *) place;
@@ -729,6 +713,8 @@ EXPORT_API int maps_place_set_rating(maps_place_h place, const maps_place_rating
 EXPORT_API int maps_place_set_supplier_link(maps_place_h place,
 								const maps_place_link_object_h supplier)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!place || !supplier)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_place_s *p = (maps_place_s *) place;
@@ -740,6 +726,8 @@ EXPORT_API int maps_place_set_supplier_link(maps_place_h place,
 EXPORT_API int maps_place_set_related_link(maps_place_h place,
 								const maps_place_link_object_h related)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!place || !related)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_place_s *p = (maps_place_s *) place;
@@ -751,6 +739,8 @@ EXPORT_API int maps_place_set_related_link(maps_place_h place,
 int _maps_place_set_supported_data(maps_place_h place,
 								const maps_int_hashtable_h supported_data)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!place || !supported_data)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_place_s *p = (maps_place_s *) place;
@@ -762,30 +752,31 @@ int _maps_place_set_supported_data(maps_place_h place,
 EXPORT_API int maps_place_list_foreach(const maps_place_list_h place_list,
 								maps_place_cb callback, void *user_data)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!place_list || !callback)
 		return MAPS_ERROR_INVALID_PARAMETER;
-
 	return maps_item_list_foreach_noclone((maps_item_list_h) place_list, callback, user_data);
 }
 
 EXPORT_API int maps_place_list_create(maps_place_list_h *place_list)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!place_list)
 		return MAPS_ERROR_INVALID_PARAMETER;
-
 	return maps_item_list_create(place_list);
 }
 
 EXPORT_API int maps_place_list_destroy(maps_place_list_h place_list)
 {
+	if (!maps_condition_check_maps_feature())
+		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!place_list)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
-	int error = MAPS_ERROR_NONE;
-
-	error = maps_item_list_remove_all(place_list, maps_place_destroy);
+	int error = maps_item_list_remove_all(place_list, maps_place_destroy);
 	if (error != MAPS_ERROR_NONE)
 		return error;
-
 	return maps_item_list_destroy(place_list);
 }
