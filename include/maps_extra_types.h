@@ -1158,9 +1158,9 @@ int maps_item_hashtable_free_float(void *data);
  * \n This function uses implicitly maps_item_hashtable_clone_string() and
  * maps_item_hashtable_free_string().
  *
- * @param[in]	table		The handle of the table
- * @param[in]	key 	The	string value of "key"
- * @param[in]	value		The string (char*) value
+ * @param[in]	table	The handle of the table
+ * @param[in]	key		The string value of "key"
+ * @param[in]	value	The string (char*) value
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
@@ -1188,9 +1188,9 @@ int maps_item_hashtable_set_string(maps_item_hashtable_h table,
  * \n This function uses implicitly maps_item_hashtable_clone_int() and
  * maps_item_hashtable_free_int().
  *
- * @param[in]	table		The handle of the table
- * @param[in]	key 	The	string value of "key"
- * @param[in]	value		The integer value
+ * @param[in]	table	The handle of the table
+ * @param[in]	key		The string value of "key"
+ * @param[in]	value	The integer value
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
@@ -1218,9 +1218,9 @@ int maps_item_hashtable_set_int(maps_item_hashtable_h table, const char *key,
  * \n This function uses implicitly maps_item_hashtable_clone_int() and
  * maps_item_hashtable_free_int().
  *
- * @param[in]	table		The handle of the table
+ * @param[in]	table	The handle of the table
  * @param[in]	key		The string value of "key"
- * @param[in]	value		The floating point numeric value
+ * @param[in]	value	The floating point numeric value
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
@@ -1266,7 +1266,7 @@ int maps_item_hashtable_set_float(maps_item_hashtable_h table,
  * and @a value must be released.
  *
  * @param[in]	table		The handle of the table
- * @param[in]	key		The string value of "key"
+ * @param[in]	key			The string value of "key"
  * @param[in]	value		The value
  * @param[in]	clone_func	The function for cloning the value
  * @param[in]	free_func	The function for freeing the value
@@ -1302,9 +1302,9 @@ int maps_item_hashtable_set(maps_item_hashtable_h table, const char *key,
  * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remark @a value must be released using free().
  *
- * @param[in]	table		The handle of the table
- * @param[in]	key 	The	string value of "key"
- * @param[out]	value		The string (char*) value
+ * @param[in]	table	The handle of the table
+ * @param[in]	key		The string value of "key"
+ * @param[out]	value	The string (char*) value
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
@@ -1328,9 +1328,9 @@ int maps_item_hashtable_get_string(maps_item_hashtable_h table,
  * value in the Hash Table.
  * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  *
- * @param[in]	table		The handle of the table
- * @param[in]	key 	The	string value of "key"
- * @param[out]	value		The integer value
+ * @param[in]	table	The handle of the table
+ * @param[in]	key		The string value of "key"
+ * @param[out]	value	The integer value
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
@@ -1354,9 +1354,9 @@ int maps_item_hashtable_get_int(maps_item_hashtable_h table, const char *key,
  * point numeric value in the Hash Table.
  * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  *
- * @param[in]	table		The handle of the table
+ * @param[in]	table	The handle of the table
  * @param[in]	key		The string value of "key"
- * @param[out]	value		The floating point numeric value
+ * @param[out]	value	The floating point numeric value
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
@@ -1380,9 +1380,9 @@ int maps_item_hashtable_get_float(maps_item_hashtable_h table,
  * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remark Th @a value must be released by you.
  *
- * @param[in]	table		The handle of the table
+ * @param[in]	table	The handle of the table
  * @param[in]	key		The string value of "key"
- * @param[out]	value		The corresponding value of "value"
+ * @param[out]	value	The corresponding value of "value"
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
@@ -1402,7 +1402,7 @@ int maps_item_hashtable_get(maps_item_hashtable_h table, const char *key,
  * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks The resources, used by item will be released automatically.
  *
- * @param[in]	table		The handle of the table
+ * @param[in]	table	The handle of the table
  * @param[in]	key		The string value of "key"
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
@@ -1428,7 +1428,7 @@ int maps_item_hashtable_remove(maps_item_hashtable_h table, const char *key);
  *
  * @param[in]	index		The current index of item
  * @param[in]	total		The total amount of items
- * @param[in]	key		The string value of "key"
+ * @param[in]	key			The string value of "key"
  * @param[in]	value		The corresponding value of "value"
  * @param[in]	user_data	The user data passed from
  * maps_item_hashtable_foreach()
@@ -1450,8 +1450,7 @@ typedef bool(*maps_item_hashtable_foreach_cb) (int index, int total,
  * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	table		The handle of table
- * @param[in]	callback	The callback to be invoked for delivering each
- * key-value pair
+ * @param[in]	callback	The callback to be invoked for delivering each key-value pair
  * @param[in]	user_data	The user data to be passed to the callback
  * function
  * @return	0 on success, otherwise a negative error value
@@ -1478,7 +1477,7 @@ int maps_item_hashtable_foreach(maps_item_hashtable_h table,
  * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	table		The handle of the table
- * @param[in]	key		The string value of "key"
+ * @param[in]	key			The string value of "key"
  * @param[out]	contains	The flag of key presence
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful

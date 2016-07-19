@@ -587,7 +587,8 @@ EXPORT_API int maps_view_object_get_visible(const maps_view_object_h object, boo
 * Polyline
  */
 
-EXPORT_API int maps_view_object_polyline_set_polyline(maps_view_object_h polyline, maps_coordinates_list_h points)
+EXPORT_API int maps_view_object_polyline_set_polyline(maps_view_object_h polyline,
+								maps_coordinates_list_h points)
 {
 	if (!polyline || !points)
 		return MAPS_ERROR_INVALID_PARAMETER;
@@ -602,15 +603,13 @@ EXPORT_API int maps_view_object_polyline_set_polyline(maps_view_object_h polylin
 	p->points = points;
 
 	/* Notify view, that the object specific preferences is changed */
-	_maps_view_on_object_operation(__get_view(polyline),
-				      polyline,
-				      MAPS_VIEW_OBJECT_CHANGE);
+	_maps_view_on_object_operation(__get_view(polyline), polyline, MAPS_VIEW_OBJECT_CHANGE);
 
 	return MAPS_ERROR_NONE;
 }
 
 EXPORT_API int maps_view_object_polyline_foreach_point(maps_view_object_h polyline,
-	maps_coordinates_cb callback, void *user_data)
+								maps_coordinates_cb callback, void *user_data)
 {
 	if (!polyline || !callback)
 		return MAPS_ERROR_INVALID_PARAMETER;
@@ -623,7 +622,6 @@ EXPORT_API int maps_view_object_polyline_foreach_point(maps_view_object_h polyli
 	/* Iterate over polyline trajectory */
 	return maps_coordinates_list_foreach(p->points, callback, user_data);
 }
-
 
 EXPORT_API int maps_view_object_polyline_set_color(maps_view_object_h polyline,
 	unsigned char r, unsigned char g, unsigned char b, unsigned char a)
@@ -643,9 +641,7 @@ EXPORT_API int maps_view_object_polyline_set_color(maps_view_object_h polyline,
 	p->a = a;
 
 	/* Notify view, that the object specific preferences is changed */
-	_maps_view_on_object_operation(__get_view(polyline),
-				      polyline,
-				      MAPS_VIEW_OBJECT_CHANGE);
+	_maps_view_on_object_operation(__get_view(polyline), polyline, MAPS_VIEW_OBJECT_CHANGE);
 
 	return MAPS_ERROR_NONE;
 }
@@ -690,9 +686,7 @@ EXPORT_API int maps_view_object_polyline_set_width(maps_view_object_h polyline, 
 	p->width = width;
 
 	/* Notify view, that the object specific preferences is changed */
-	_maps_view_on_object_operation(__get_view(polyline),
-				      polyline,
-				      MAPS_VIEW_OBJECT_CHANGE);
+	_maps_view_on_object_operation(__get_view(polyline), polyline, MAPS_VIEW_OBJECT_CHANGE);
 
 	return MAPS_ERROR_NONE;
 }
@@ -732,9 +726,7 @@ EXPORT_API int maps_view_object_polygon_set_polygon(maps_view_object_h polygon, 
 	p->points = points;
 
 	/* Notify view, that the object specific preferences is changed */
-	_maps_view_on_object_operation(__get_view(polygon),
-				      polygon,
-				      MAPS_VIEW_OBJECT_CHANGE);
+	_maps_view_on_object_operation(__get_view(polygon), polygon, MAPS_VIEW_OBJECT_CHANGE);
 
 	return MAPS_ERROR_NONE;
 }
@@ -773,9 +765,7 @@ EXPORT_API int maps_view_object_polygon_set_fill_color(maps_view_object_h polygo
 	p->a = a;
 
 	/* Notify view, that the object specific preferences is changed */
-	_maps_view_on_object_operation(__get_view(polygon),
-				      polygon,
-				      MAPS_VIEW_OBJECT_CHANGE);
+	_maps_view_on_object_operation(__get_view(polygon), polygon, MAPS_VIEW_OBJECT_CHANGE);
 
 	return MAPS_ERROR_NONE;
 }
