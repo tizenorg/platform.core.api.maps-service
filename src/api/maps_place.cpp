@@ -629,12 +629,10 @@ EXPORT_API int maps_place_set_categories(maps_place_h place, const maps_item_lis
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_place_s *p = (maps_place_s *) place;
 	if (p->categories) {
-		maps_item_list_remove_all(p->categories,
-			maps_place_category_destroy);
+		maps_item_list_remove_all(p->categories, maps_place_category_destroy);
 		maps_item_list_destroy(p->categories);
 	}
-	return maps_item_list_clone(categories, maps_place_category_clone,
-		&p->categories);
+	return maps_item_list_clone(categories, maps_place_category_clone, &p->categories);
 }
 
 EXPORT_API int maps_place_set_attributes(maps_place_h place, const maps_item_list_h attributes)
@@ -643,12 +641,10 @@ EXPORT_API int maps_place_set_attributes(maps_place_h place, const maps_item_lis
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_place_s *p = (maps_place_s *) place;
 	if (p->attribute) {
-		maps_item_list_remove_all(p->attribute,
-			maps_place_attribute_destroy);
+		maps_item_list_remove_all(p->attribute, maps_place_attribute_destroy);
 		maps_item_list_destroy(p->attribute);
 	}
-	return maps_item_list_clone(attributes, maps_place_attribute_clone,
-		&p->attribute);
+	return maps_item_list_clone(attributes, maps_place_attribute_clone, &p->attribute);
 }
 
 EXPORT_API int maps_place_set_contacts(maps_place_h place, const maps_item_list_h contacts)
@@ -657,12 +653,10 @@ EXPORT_API int maps_place_set_contacts(maps_place_h place, const maps_item_list_
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_place_s *p = (maps_place_s *) place;
 	if (p->contacts) {
-		maps_item_list_remove_all(p->contacts,
-			maps_place_contact_destroy);
+		maps_item_list_remove_all(p->contacts, maps_place_contact_destroy);
 		maps_item_list_destroy(p->contacts);
 	}
-	return maps_item_list_clone(contacts, maps_place_contact_clone,
-		&p->contacts);
+	return maps_item_list_clone(contacts, maps_place_contact_clone, &p->contacts);
 }
 
 EXPORT_API int maps_place_set_editorials(maps_place_h place, const maps_item_list_h editorials)
@@ -671,12 +665,10 @@ EXPORT_API int maps_place_set_editorials(maps_place_h place, const maps_item_lis
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_place_s *p = (maps_place_s *) place;
 	if (p->editorials) {
-		maps_item_list_remove_all(p->editorials,
-			maps_place_editorial_destroy);
+		maps_item_list_remove_all(p->editorials, maps_place_editorial_destroy);
 		maps_item_list_destroy(p->editorials);
 	}
-	return maps_item_list_clone(editorials, maps_place_editorial_clone,
-		&p->editorials);
+	return maps_item_list_clone(editorials, maps_place_editorial_clone, &p->editorials);
 }
 
 EXPORT_API int maps_place_set_images(maps_place_h place, const maps_item_list_h images)
@@ -697,12 +689,10 @@ EXPORT_API int maps_place_set_reviews(maps_place_h place, const maps_item_list_h
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_place_s *p = (maps_place_s *) place;
 	if (p->reviews) {
-		maps_item_list_remove_all(p->reviews,
-			maps_place_review_destroy);
+		maps_item_list_remove_all(p->reviews, maps_place_review_destroy);
 		maps_item_list_destroy(p->reviews);
 	}
-	return maps_item_list_clone(reviews, maps_place_review_clone,
-		&p->reviews);
+	return maps_item_list_clone(reviews, maps_place_review_clone, &p->reviews);
 }
 
 EXPORT_API int maps_place_set_properties(maps_place_h place,
