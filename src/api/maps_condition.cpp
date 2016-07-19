@@ -93,7 +93,7 @@ bool maps_condition_check_privilege(void)
 	is_permitted = (access(MAPS_PLUGINS_PATH_PREFIX, F_OK) != 0) || /* not exist */
 	               (access(MAPS_PLUGINS_PATH_PREFIX, R_OK) == 0);   /* readable */
 #endif
-	MAPS_LOGD("mapservice privilege is%sconsented", ( is_permitted ? " " : " not "));
+	MAPS_LOGD("mapservice privilege is%sconsented", (is_permitted ? " " : " not "));
 	return is_permitted;
 }
 
