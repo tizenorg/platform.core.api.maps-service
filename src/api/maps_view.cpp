@@ -506,11 +506,8 @@ static void __maps_view_create_panel(maps_view_h view, Evas_Object *obj)
 /* Create the panel and link it to the instance of Maps Service */
 EXPORT_API int maps_view_create(maps_service_h maps, Evas_Object *obj, maps_view_h *view)
 {
-	/* Check if parameters are valid */
 	if (!maps || !obj || !view)
 		return MAPS_ERROR_INVALID_PARAMETER;
-
-	/* Check if privileges enough */
 	if (!maps_condition_check_privilege())
 		return MAPS_ERROR_PERMISSION_DENIED;
 
@@ -1425,11 +1422,8 @@ EXPORT_API int maps_view_get_screen_location(const maps_view_h view, int *x, int
 
 EXPORT_API int maps_view_move(maps_view_h view, int x, int y)
 {
-	/* Check if internet feature is supported */
 	if (!maps_condition_check_feature())
 		return MAPS_ERROR_NOT_SUPPORTED;
-
-	/* Check if parameters are valid */
 	if (!view)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -1462,7 +1456,6 @@ EXPORT_API int maps_view_resize(maps_view_h view, int width, int height)
 
 EXPORT_API int maps_view_set_visibility(maps_view_h view, bool visible)
 {
-	/* Check if parameters are valid */
 	if (!view)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
@@ -1476,7 +1469,6 @@ EXPORT_API int maps_view_set_visibility(maps_view_h view, bool visible)
 
 EXPORT_API int maps_view_get_visibility(const maps_view_h view, bool *visible)
 {
-	/* Check if parameters are valid */
 	if (!view || !visible)
 		return MAPS_ERROR_INVALID_PARAMETER;
 

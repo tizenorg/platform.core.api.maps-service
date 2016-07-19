@@ -1159,7 +1159,7 @@ int maps_item_hashtable_free_float(void *data);
  * maps_item_hashtable_free_string().
  *
  * @param[in]	table		The handle of the table
- * @param[in]	key 	The	string value of "key"
+ * @param[in]	key The		string value of "key"
  * @param[in]	value		The string (char*) value
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
@@ -1189,7 +1189,7 @@ int maps_item_hashtable_set_string(maps_item_hashtable_h table,
  * maps_item_hashtable_free_int().
  *
  * @param[in]	table		The handle of the table
- * @param[in]	key 	The	string value of "key"
+ * @param[in]	key The		string value of "key"
  * @param[in]	value		The integer value
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
@@ -1303,7 +1303,7 @@ int maps_item_hashtable_set(maps_item_hashtable_h table, const char *key,
  * @remark @a value must be released using free().
  *
  * @param[in]	table		The handle of the table
- * @param[in]	key 	The	string value of "key"
+ * @param[in]	key The		string value of "key"
  * @param[out]	value		The string (char*) value
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
@@ -1329,7 +1329,7 @@ int maps_item_hashtable_get_string(maps_item_hashtable_h table,
  * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	table		The handle of the table
- * @param[in]	key 	The	string value of "key"
+ * @param[in]	key The		string value of "key"
  * @param[out]	value		The integer value
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
