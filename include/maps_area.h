@@ -95,7 +95,7 @@ typedef struct _maps_area_circle_s {
  * type, circular or rectangular, and appropriate coordinates and radius.
  * @warning Do not use #maps_area_s directly
  * if you are an application developer.
- * Using #maps_area_h is recommanded.
+ * Using #maps_area_h is recommended.
  * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  */
 typedef struct _maps_area_s {

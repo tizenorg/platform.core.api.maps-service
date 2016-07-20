@@ -802,8 +802,8 @@ int maps_plugin_cancel_request(int request_id);
 /*----------------------------------------------------------------------------*/
 
 /**
- * @brief	Called when the map initialzing is finished.
- * @details The Plugin invokes this callback when the initialzing of map is finished.
+ * @brief	Called when the map initializing is finished.
+ * @details The Plugin invokes this callback when the initializing of map is finished.
  * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	view		The maps view
@@ -832,7 +832,7 @@ int maps_plugin_create_map_view(maps_view_h view, maps_plugin_map_view_ready_cb 
 
 /**
  * @brief	Destroy a maps view.
- * @details This function destory a maps view to the plugin.
+ * @details This function destroy a maps view to the plugin.
  * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	view		The maps view
@@ -926,11 +926,11 @@ int maps_plugin_set_scalebar(maps_view_h view, bool enable);
 int maps_plugin_get_scalebar(maps_view_h view, bool *enabled);
 
 /**
- * @brief	Notifyes that the visual object is changed.
- * @details This function notifyes the Plugin that the visual object is
+ * @brief	Notifies that the visual object is changed.
+ * @details This function notifies the Plugin that the visual object is
  * changed. The possible causes of changes are enumerated in
- * #maps_view_object_operation_e ind nclude object adding, moving, removing,
- * visibility modificating or editing object specific properties.
+ * #maps_view_object_operation_e including in object adding, moving, removing,
+ * visibility modifying or editing object specific properties.
  * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	view		The handle of maps_view

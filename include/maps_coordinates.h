@@ -51,7 +51,7 @@ typedef void *maps_coordinates_h;
  * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  * @remarks #maps_coordinates_h is a void pointer to the #maps_coordinates_h.
  * @warning Do not use #maps_coordinates_s directly if you are an application developer.
- * Using #maps_coordinates_h is recommanded.
+ * Using #maps_coordinates_h is recommended.
  *
  * @see maps_coordinates_h
  */
@@ -61,8 +61,8 @@ typedef struct _maps_coordinates_s {
 } maps_coordinates_s;
 
 /**
- * @brief	The coorinates list handle.
- * @details The coorindates list handle can be obtained via calling of maps_coordinates_list_create().
+ * @brief	The coordinates list handle.
+ * @details The coordinates list handle can be obtained via calling of maps_coordinates_list_create().
  * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
  */
 typedef void *maps_coordinates_list_h;

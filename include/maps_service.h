@@ -755,7 +755,7 @@ int maps_service_reverse_geocode(const maps_service_h maps, double latitude,
 
 
 /**
- * @brief	Called when responsed the request of multi reverse geocoding.
+ * @brief	Called when respond to a request of multi reverse geocoding.
  * @details The Maps Service invokes this callback once when gets the response
  * from map service provider.
  * \n The value of @a total is same with requested coordinates list size.
@@ -942,7 +942,7 @@ typedef void(*maps_service_search_place_list_cb) (maps_error_e error,
 					     int request_id, int total, maps_place_list_h place_list, void *user_data);
 
 /**
- * @brief	Called for Place datail information of Place Search request
+ * @brief	Called for Place detail information of Place Search request
  * @details The Maps Service invokes this callback when the Place detail data
  * obtained from the specified uri.
  * \n If search is failed, @a place is NULL

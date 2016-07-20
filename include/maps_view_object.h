@@ -729,15 +729,15 @@ int maps_view_object_marker_get_coordinates(const maps_view_object_h marker, map
  *
  * @param[in]	marker		The marker object handle
  * @param[out]	width		The pointer to an integer in which to store the
- * marker pixels in width on the screen
+ * marker width on the screen in pixels
  * @param[out]	height		The pointer to an integer in which to store the
- * marker pixels in height on the screen
+ * marker height on the screen in pixels
  * @return	0, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
  *
  * @pre @a marker is created using maps_view_object_create_marker().
- * @pre @a width ind @a height may be set previously using maps_view_object_marker_resize().
+ * @pre @a width and @a height may be set previously using maps_view_object_marker_resize().
  *
  * @see maps_view_object_marker_resize()
  * @see maps_view_object_create_marker()

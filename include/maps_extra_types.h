@@ -664,7 +664,7 @@ int maps_int_hashtable_create(maps_int_hashtable_h *table);
 int maps_int_hashtable_destroy(maps_int_hashtable_h table);
 
 /*
- * @brief	Clones the Hash Table of integerss.
+ * @brief	Clones the Hash Table of integers.
  * @details This function clones the Hash Table of integers @a origin and all
  * its resources.
  * \n The list handle @a origin may be created using
