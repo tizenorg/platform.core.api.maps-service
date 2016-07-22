@@ -608,6 +608,37 @@ EXPORT_API int maps_view_object_polyline_set_polyline(maps_view_object_h polylin
 	return MAPS_ERROR_NONE;
 }
 
+EXPORT_API int maps_view_object_polyline_append_point(maps_view_object_h polyline,
+								maps_coordinates_h point)
+{
+	if (!polyline || !point)
+		return MAPS_ERROR_INVALID_PARAMETER;
+
+	/* Get the polyline data pointer */
+	maps_view_polyline_data_s *p = __get_polyline_data(polyline);
+	if (!p)
+		return MAPS_ERROR_INVALID_PARAMETER;
+
+	/* Set new polyline trajectory */
+	int error = MAPS_ERROR_NONE;
+	do {
+		if (!p->points) {
+			error = maps_coordinates_list_create(&p->points);
+			if (error != MAPS_ERROR_NONE)
+				break;
+		}
+
+		error = maps_coordinates_list_append(p->points, point);
+		if (error != MAPS_ERROR_NONE)
+			break;
+
+		/* Notify view, that the object specific preferences is changed */
+		_maps_view_on_object_operation(__get_view(polyline), polyline, MAPS_VIEW_OBJECT_CHANGE);
+	} while(0);
+
+	return error;
+}
+
 EXPORT_API int maps_view_object_polyline_foreach_point(maps_view_object_h polyline,
 								maps_coordinates_cb callback, void *user_data)
 {
