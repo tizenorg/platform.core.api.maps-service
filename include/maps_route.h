@@ -17,6 +17,7 @@
 #ifndef __MAPS_ROUTE_H__
 #define __MAPS_ROUTE_H__
 
+#include <time.h>
 #include <tizen_type.h>
 #include <maps_area.h>
 #include <maps_route_segment.h>

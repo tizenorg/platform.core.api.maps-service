@@ -464,6 +464,20 @@ int maps_preference_get_route_alternatives_enabled(const maps_preference_h prefe
 								bool *enable);
 
 /**
+ * @brief	Gets the departure time of a route.
+ * @details This function retrieves the departure time of a route.
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
+ *
+ * @param[in]	preference	The preference handle
+ * @param[out]	time		The departure time
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ */
+int maps_preference_get_route_departure_time(const maps_preference_h preference,
+								time_t *time);
+
+/**
  * @brief	Gets the maps preference value by key.
  * @details This function gets the maps preference value by key.
  * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
@@ -680,6 +694,20 @@ int maps_preference_set_route_feature(maps_preference_h preference,
  */
 int maps_preference_set_route_alternatives_enabled(maps_preference_h preference,
 								bool enable);
+
+/**
+ * @brief	Sets the departure time of a route.
+ * @details This function sets the departure time of a route.
+ * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
+ *
+ * @param[in]	preference	The preference handle
+ * @param[in]	time		The departure time
+ * @return	0 on success, otherwise a negative error value
+ * @retval	#MAPS_ERROR_NONE Successful
+ * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
+ */
+int maps_preference_set_route_departure_time(const maps_preference_h preference,
+								time_t time);
 
 /**
  * @brief	Sets the preference value by key.
