@@ -56,7 +56,8 @@ static bool __isnamed_preference(const char *key)
 		g_str_hash("MAPS_PREFERENCE_ROUTE_TRANSPORT_MODE"),
 		g_str_hash("MAPS_PREFERENCE_ROUTE_FEATURE_WEIGHT"),
 		g_str_hash("MAPS_PREFERENCE_ROUTE_FEATURE"),
-		g_str_hash("MAPS_PREFERENCE_ROUTE_ALTERNATIVES")
+		g_str_hash("MAPS_PREFERENCE_ROUTE_ALTERNATIVES"),
+		g_str_hash("MAPS_PREFERENCE_ROUTE_DEPARTURE_TIME"),
 	};
 	const int size = sizeof(names) / sizeof(names[0]);
 
@@ -111,6 +112,10 @@ EXPORT_API int maps_preference_create(maps_preference_h *preference)
 			break;
 
 		error = maps_item_hashtable_set_int(*preference, "MAPS_PREFERENCE_ROUTE_ALTERNATIVES", 0);
+		if (error != MAPS_ERROR_NONE)
+			break;
+
+		error = maps_item_hashtable_set_int(*preference, "MAPS_PREFERENCE_ROUTE_DEPARTURE_TIME", 0);
 		if (error != MAPS_ERROR_NONE)
 			break;
 
@@ -213,17 +218,24 @@ EXPORT_API int maps_preference_get_route_feature(const maps_preference_h prefere
 EXPORT_API int maps_preference_get_route_alternatives_enabled(
 								const maps_preference_h preference, bool *enable)
 {
-	if (!preference)
+	if (!preference || !enable)
 		return MAPS_ERROR_INVALID_PARAMETER;
-
-	int alternatives;
-	int error = maps_item_hashtable_get_int(preference, "MAPS_PREFERENCE_ROUTE_ALTERNATIVES", &alternatives);
+	int alternatives = 0;
+	int error = maps_item_hashtable_get_int(preference,
+		"MAPS_PREFERENCE_ROUTE_ALTERNATIVES", &alternatives);
 	if (error != MAPS_ERROR_NONE)
 		return error;
-
 	*enable = (alternatives == _DEFAULT_ALTERNATIVES_SIZE) ? true :false;
-
 	return MAPS_ERROR_NONE;
+}
+
+EXPORT_API int maps_preference_get_route_departure_time(const maps_preference_h preference,
+								time_t *time)
+{
+	if (!preference || !time)
+		return MAPS_ERROR_INVALID_PARAMETER;
+	return maps_item_hashtable_get_int(preference,
+		"MAPS_PREFERENCE_ROUTE_DEPARTURE_TIME", (int *)time);
 }
 
 EXPORT_API int maps_preference_get(const maps_preference_h preference,
@@ -338,12 +350,18 @@ EXPORT_API int maps_preference_set_route_alternatives_enabled(maps_preference_h 
 {
 	if (!preference)
 		return MAPS_ERROR_INVALID_PARAMETER;
+	int alternatives = _DEFAULT_ALTERNATIVES_SIZE * enable;
+	return maps_item_hashtable_set_int(preference,
+		"MAPS_PREFERENCE_ROUTE_ALTERNATIVES", alternatives);
+}
 
-	int alternatives = 0;
-	if (enable)
-		alternatives = _DEFAULT_ALTERNATIVES_SIZE;
-
-	return maps_item_hashtable_set_int(preference, "MAPS_PREFERENCE_ROUTE_ALTERNATIVES", alternatives);
+EXPORT_API int maps_preference_set_route_departure_time(const maps_preference_h preference,
+								time_t time)
+{
+	if (!preference)
+		return MAPS_ERROR_INVALID_PARAMETER;
+	return maps_item_hashtable_set_int(preference,
+		"MAPS_PREFERENCE_ROUTE_DEPARTURE_TIME", (int)time);
 }
 
 EXPORT_API int maps_preference_set_property(maps_preference_h preference,
