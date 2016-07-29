@@ -18,8 +18,9 @@
 #define __MAPS_VIEW_H__
 
 #include <Evas.h>
-#include <maps_view_object.h>
+#include <maps_types.h>
 #include <maps_view_event_data.h>
+#include <maps_view_snapshot.h>
 
 /**
  *
@@ -66,27 +67,6 @@
 extern "C" {
 #endif
 
-/**
- * @brief	The Maps Service handle
- * @details The Maps Service handle can be created by calling of maps_service_create().
- * \n To release the handle use maps_service_destroy().
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
- *
- * @see maps_service_create()
- * @see maps_service_destroy()
- */
-typedef void *maps_service_h;
-
- /**
- * @brief	The View handle
- * @details The handle of View instance.
- * @remarks To release the handle use maps_view_destroy().
- * @since_tizen @if MOBILE 3.0 @elseif WEARABLE 2.3.2 @endif
- *
- * @see maps_view_create()
- * @see maps_view_destroy()
- */
-typedef void *maps_view_h;
 
 /**
  * @brief	Enumeration of View types (themes)
@@ -1244,15 +1224,6 @@ int maps_view_remove_all_objects(maps_view_h view);
  * @see maps_view_create()
  */
 int maps_view_foreach_object(const maps_view_h view, maps_view_object_cb callback, void *user_data);
-
-
-
-/*----------------------------------------------------------------------------*/
-/*
- * Snapshot Capture Service
- */
-
-#include <maps_view_snapshot.h>
 
 
 /**

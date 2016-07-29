@@ -17,6 +17,8 @@
 #ifndef __MAPS_COORDINATES_H__
 #define __MAPS_COORDINATES_H__
 
+#include <tizen_type.h>
+
 /**
  * @ingroup	CAPI_MAPS_SERVICE_MODULE
  * @defgroup	CAPI_MAPS_COORDS_MODULE Coordinates

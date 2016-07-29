@@ -18,6 +18,7 @@
 #define __MAPS_SERVICE_H__
 
 #include <tizen_type.h>
+#include <maps_types.h>
 #include <maps_error.h>
 #include <maps_address.h>
 #include <maps_area.h>
@@ -100,17 +101,6 @@ typedef enum _maps_service_data_e {
 	MAPS_VIEW_BUILDING,				/**< Indicates the availability of 3D building drawable on the Map @if MOBILE (Since 3.0) @endif */
 	MAPS_VIEW_SCALEBAR				/**< Indicates the availability of scale bar on the Map @if MOBILE (Since 3.0) @endif */
 } maps_service_data_e;
-
-/**
- * @brief	The Maps Service handle
- * @details The Maps Service handle can be created by calling of maps_service_create().
- * \n To release the handle use maps_service_destroy().
- * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
- *
- * @see maps_service_create()
- * @see maps_service_destroy()
- */
-typedef void *maps_service_h;
 
 
 /**

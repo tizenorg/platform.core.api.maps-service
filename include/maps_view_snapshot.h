@@ -17,6 +17,7 @@
 #ifndef __MAPS_VIEW_SNAPSHOT_H__
 #define __MAPS_VIEW_SNAPSHOT_H__
 
+#include <maps_types.h>
 
 /**
  * @ingroup	CAPI_MAPS_VIEW_MODULE
