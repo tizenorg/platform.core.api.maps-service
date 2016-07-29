@@ -530,7 +530,10 @@ int maps_preference_set_distance_unit(maps_preference_h preference,
  * @since_tizen @if MOBILE 2.4 @elseif WEARABLE 2.3.2 @endif
  *
  * @param[in]	preference	The preference handle
- * @param[in]	language	The maps language
+ * @param[in]	language	The maps language.
+ * A language is specified as an ISO 3166 alpha-2 two letter country-code 
+ * followed by ISO 639-1 for the two-letter language code.
+ * For example, "ko_KR" for Korean, "en_US" for American English.
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter
