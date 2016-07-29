@@ -751,10 +751,12 @@ int maps_view_get_public_transit_enabled(const maps_view_h view, bool *enable);
  * default language as the mother tongue of the country or English.
  *
  * @param[in]	view		The view handle
- * @param[in]	language	The display language in the <LANGUAGE>_<COUNTRY CODE> syntax.
- * The <LANGUAGE> is the ISO 639-1 format and the <COUNTRY CODE> is the ISO 3166-1 alpha-2 format.
- * ISO 639 is a standardized nomenclature used to classify all known languages. Each language is assigned a two-letter (639-1).
- * ISO 3166-1 alpha-2 codes are two-letter country codes defined in ISO 3166-1.
+ * @param[in]	language	The display language in the map.
+ * A language is specified as an ISO 3166 alpha-2 two letter country-code 
+ * followed by ISO 639-1 for the two-letter language code.
+ * Each language tag is composed of one or more "subtags" separated by hyphens (-).
+ * Each subtag is composed of basic Latin letters or digits only.
+ * For example, "ko-KR" for Korean, "en-US" for American English.
  * @return	0 on success, otherwise a negative error value
  * @retval	#MAPS_ERROR_NONE Successful
  * @retval	#MAPS_ERROR_INVALID_PARAMETER Invalid parameter

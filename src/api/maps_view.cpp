@@ -1319,33 +1319,6 @@ EXPORT_API int maps_view_set_language(maps_view_h view, const char *language)
 	if (!maps_condition_check_privilege())
 		return MAPS_ERROR_PERMISSION_DENIED;
 
-	/* Check if language is supported */
-	static const char *lngs[] = {
-		"ara",
-		"chi",
-		"cht",
-		"dut",
-		"eng",
-		"ger",
-		"gle",
-		"fre",
-		"ita",
-		"spa",
-		"rus",
-		"pol",
-		"gre",
-		"wel"
-	};
-	bool supported = false;
-	for(unsigned int i = 0; i < (sizeof(lngs) / sizeof(lngs[0])); i ++) {
-		if (g_strcmp0(language, lngs[i]) == 0) {
-			supported = true;
-			break;
-		}
-	}
-	if (!supported)
-		return MAPS_ERROR_INVALID_PARAMETER;
-
 	maps_view_s *v = (maps_view_s *) view;
 	int error = maps_set_string(language, _MAPS_VIEW_LANGUAGE_MAX_LENGTH, &v->language);
 	if (error == MAPS_ERROR_NONE)
