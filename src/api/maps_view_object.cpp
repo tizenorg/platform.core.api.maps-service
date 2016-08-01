@@ -1154,6 +1154,10 @@ EXPORT_API int maps_view_object_overlay_set_coordinates(maps_view_object_h overl
 	if (m->coordinates)
 		maps_coordinates_destroy(m->coordinates);
 	m->coordinates = coordinates;
+
+	/* Notify view, that the object specific preferences is changed */
+	_maps_view_on_object_operation(__get_view(overlay), overlay, MAPS_VIEW_OBJECT_CHANGE);
+
 	return MAPS_ERROR_NONE;
 }
 
