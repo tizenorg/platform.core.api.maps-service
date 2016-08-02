@@ -83,11 +83,9 @@ bool maps_condition_check_maps_feature(void)
 	static bool is_read = false;
 
 	if (!is_read) {
-		int ret = system_info_get_platform_bool(MAPS_FEATURE, &is_supported);
-		if (ret == SYSTEM_INFO_ERROR_NONE) {
-			MAPS_LOGD("maps feature is%ssupported", (is_supported ? " " : " not "));
-			is_read = true;
-		}
+		system_info_get_platform_bool(MAPS_FEATURE, &is_supported);
+		MAPS_LOGD("maps feature is%ssupported", (is_supported ? " " : " not "));
+		is_read = true;
 	}
 	return is_supported;
 }
@@ -99,11 +97,9 @@ bool maps_condition_check_internet_feature(void)
 	static bool is_read = false;
 
 	if (!is_read) {
-		int ret = system_info_get_platform_bool(INTERNET_FEATURE, &is_supported);
-		if (ret == SYSTEM_INFO_ERROR_NONE) {
-			MAPS_LOGD("internet feature is%ssupported", (is_supported ? " " : " not "));
-			is_read = true;
-		}
+		system_info_get_platform_bool(INTERNET_FEATURE, &is_supported);
+		MAPS_LOGD("internet feature is%ssupported", (is_supported ? " " : " not "));
+		is_read = true;
 	}
 #endif
 	return is_supported;
