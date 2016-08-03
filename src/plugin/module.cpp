@@ -75,6 +75,36 @@ plugin::provider_info plugin::binary_extractor::get_plugin_info(const
 	return info;
 }
 
+int plugin::binary_extractor::check_agreement(
+								const string &file_name, Evas *e,
+								maps_service_check_agreement_cb callback,
+								void *user_data) const
+{
+	if (file_name.empty())
+		return MAPS_ERROR_INVALID_PARAMETER;
+
+	/* 1.Initialize plugin */
+	GMod *plugin = gmod_new(file_name, FALSE);
+	if (!plugin)
+		return MAPS_ERROR_OUT_OF_MEMORY;
+
+	int error = MAPS_ERROR_NONE;
+
+	/* 2. Check agreement */
+	maps_plugin_check_agreement_f func =
+		(maps_plugin_check_agreement_f) gmod_find_sym(plugin,
+		"maps_plugin_check_agreement");
+
+	if (func)
+		error = func(e, callback, user_data);
+
+	/* 3. shutdown plugin */
+	gmod_free(plugin);
+
+	return error;
+}
+
+
 maps_plugin_h plugin::binary_extractor::init(const provider_info &info,
 					     const char *module, int *init_error)
 {

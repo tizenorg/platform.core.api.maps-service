@@ -156,6 +156,14 @@ typedef bool(*maps_service_provider_info_cb) (char *maps_provider,
 int maps_service_foreach_provider(maps_service_provider_info_cb callback,
 				  void *user_data);
 
+
+
+typedef bool(*maps_service_check_agreement_cb) (maps_error_e error, char *maps_provider,
+								Evas *e, void *user_data);
+
+int maps_service_check_agreement(const char *maps_provider, Evas *e,
+								maps_service_check_agreement_cb callback, void *user_data);
+
 /**
  * @brief	Creates a new Maps Service and assigns it with a handle.
  * @details While Maps Service is being created, a Maps Provider is initialized
