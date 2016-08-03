@@ -84,6 +84,32 @@ EXPORT_API int maps_service_foreach_provider(maps_service_provider_info_cb callb
 	return MAPS_ERROR_NONE;
 }
 
+EXPORT_API int maps_service_check_agreement(const char *maps_provider, Evas *e, maps_service_check_agreement_cb callback, void *user_data)
+{
+	/* Check if parameters are valid */
+	if (!maps_provider)
+		return MAPS_ERROR_INVALID_PARAMETER;
+
+	/* Check if privileges enough */
+	if (!maps_condition_check_privilege())
+		return MAPS_ERROR_PERMISSION_DENIED;
+
+	int error = MAPS_ERROR_SERVICE_NOT_AVAILABLE;
+	char *provider = NULL, *module = NULL;
+
+	do {
+		plugin::split_provider_name(maps_provider, &provider, &module);
+		const plugin::provider_info info = plugin::find_by_names(provider);
+
+		if (!info.empty())
+			error = plugin::binary_extractor().check_agreement(info.file, maps_provider, e, callback, user_data);
+	} while(0);
+
+	g_free(provider);
+	g_free(module);
+	return error;
+}
+
 EXPORT_API int maps_service_create(const char *maps_provider, maps_service_h *maps)
 {
 	/* Check if parameters are valid */

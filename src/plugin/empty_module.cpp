@@ -41,6 +41,13 @@ int maps_plugin_get_info_empty(maps_plugin_info_h *info)
 	return 0;
 }
 
+int maps_plugin_check_agreement_empty(const char *provider, Evas *e,
+								maps_service_check_agreement_cb callback,
+								void *user_data)
+{
+	return 0;
+}
+
 /* Maps Provider access key, preference and capabilities */
 int maps_plugin_set_provider_key_empty(const char *provider_key)
 {
@@ -270,6 +277,7 @@ plugin::interface_s empty_interface = {
 	maps_plugin_shutdown_empty,
 	maps_plugin_get_info_empty,
 	maps_plugin_init_module_empty,
+	maps_plugin_check_agreement_empty,
 
 	maps_plugin_set_provider_key_empty,
 	maps_plugin_get_provider_key_empty,

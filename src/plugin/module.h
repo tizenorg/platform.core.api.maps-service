@@ -30,6 +30,9 @@ typedef int (*maps_plugin_init_f) (maps_plugin_h *plugin);
 typedef int (*maps_plugin_init_module_f) (maps_plugin_h *plugin, const char *module);
 typedef int (*maps_plugin_shutdown_f) (maps_plugin_h plugin);
 typedef int (*maps_plugin_get_info_f) (maps_plugin_info_h *info);
+typedef int (*maps_plugin_check_agreement_f) (const char *provider, Evas *e,
+								maps_service_check_agreement_cb callback,
+								void *user_data);
 
 /* Maps Provider access key, preference and capabilities */
 typedef int (*maps_plugin_set_provider_key_f) (const char *provider_key);
@@ -140,6 +143,7 @@ typedef struct _interface_s {
 	maps_plugin_shutdown_f maps_plugin_shutdown;
 	maps_plugin_get_info_f maps_plugin_get_info;
 	maps_plugin_init_module_f maps_plugin_init_module;
+	maps_plugin_check_agreement_f maps_plugin_check_agreement;
 
 	/* Maps Provider access key, preference and capabilities */
 	maps_plugin_set_provider_key_f maps_plugin_set_provider_key;
@@ -229,6 +233,8 @@ public:
 	virtual ~binary_extractor() {}
 public:
 	provider_info get_plugin_info(const string &file_name) const;
+	int check_agreement(const string &file_name, const char *provider, Evas *e,
+		maps_service_check_agreement_cb callback, void *user_data) const;
 	maps_plugin_h init(const provider_info &info, const char *module, int *init_error);
 	void shutdown(maps_plugin_h plugin_h);
 private:
