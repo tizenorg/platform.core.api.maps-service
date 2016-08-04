@@ -639,6 +639,8 @@ EXPORT_API int maps_view_object_polyline_foreach_point(maps_view_object_h polyli
 	maps_view_polyline_data_s *p = __get_polyline_data(polyline);
 	if (!p)
 		return MAPS_ERROR_INVALID_PARAMETER;
+	if (!p->points)
+		return MAPS_ERROR_NOT_FOUND;
 
 	/* Iterate over polyline trajectory */
 	return maps_coordinates_list_foreach(p->points, callback, user_data);
@@ -774,6 +776,8 @@ EXPORT_API int maps_view_object_polygon_foreach_point(maps_view_object_h polygon
 	maps_view_polygon_data_s *p = __get_polygon_data(polygon);
 	if (!p)
 		return MAPS_ERROR_INVALID_PARAMETER;
+	if (!p->points)
+		return MAPS_ERROR_NOT_FOUND;
 
 	/* Iterate over polygon border */
 	return maps_coordinates_list_foreach(p->points, callback, user_data);

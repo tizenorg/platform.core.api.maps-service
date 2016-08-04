@@ -234,6 +234,8 @@ EXPORT_API int maps_route_segment_foreach_path(const maps_route_segment_h segmen
 		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!callback)
 		return MAPS_ERROR_INVALID_PARAMETER;
+	if (!((maps_route_segment_s *) segment)->path)
+		return MAPS_ERROR_NOT_FOUND;
 
 	return maps_item_list_foreach(((maps_route_segment_s *) segment)->path,
 		maps_coordinates_clone, callback, user_data);
@@ -251,9 +253,11 @@ EXPORT_API int maps_route_segment_foreach_maneuver(const maps_route_segment_h se
 		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!callback)
 		return MAPS_ERROR_INVALID_PARAMETER;
+	if (!((maps_route_segment_s *) segment)->maneuvers)
+		return MAPS_ERROR_NOT_FOUND;
 
-	return maps_item_list_foreach(((maps_route_segment_s *) segment)->
-		maneuvers, maps_route_maneuver_clone, callback, user_data);
+	return maps_item_list_foreach(((maps_route_segment_s *) segment)->maneuvers,
+		maps_route_maneuver_clone, callback, user_data);
 }
 
 int _maps_route_segment_is_data_supported(const maps_route_segment_h segment,

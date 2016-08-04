@@ -302,6 +302,8 @@ EXPORT_API int maps_route_foreach_path(const maps_route_h route,
 		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!callback)
 		return MAPS_ERROR_INVALID_PARAMETER;
+	if (!((maps_route_s *) route)->path)
+		return MAPS_ERROR_NOT_FOUND;
 
 	return maps_item_list_foreach(((maps_route_s *) route)->path,
 		maps_coordinates_clone, callback, user_data);
@@ -320,6 +322,8 @@ EXPORT_API int maps_route_foreach_segment(const maps_route_h route,
 		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!callback)
 		return MAPS_ERROR_INVALID_PARAMETER;
+	if (!((maps_route_s *) route)->segments)
+		return MAPS_ERROR_NOT_FOUND;
 
 	return maps_item_list_foreach(((maps_route_s *) route)->segments,
 		maps_route_segment_clone, callback, user_data);
@@ -333,6 +337,8 @@ EXPORT_API int maps_route_foreach_property(const maps_route_h route,
 		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!route || !callback)
 		return MAPS_ERROR_INVALID_PARAMETER;
+	if (!((maps_route_s *) route)->properties)
+		return MAPS_ERROR_NOT_FOUND;
 	return maps_item_hashtable_foreach(((maps_route_s *) route)->properties,
 		callback, user_data);
 }
