@@ -231,6 +231,8 @@ int _maps_view_on_overlay_update_all(maps_view_h view)
 		return MAPS_ERROR_INVALID_PARAMETER;
 
 	maps_view_s *v = (maps_view_s *)view;
+	if (!v->view_objects)
+		return MAPS_ERROR_NOT_FOUND;
 	return maps_item_list_foreach(v->view_objects, NULL, _maps_view_object_overlay_cb, v->clipper);
 }
 
@@ -1605,6 +1607,8 @@ EXPORT_API int maps_view_foreach_object(maps_view_h view, maps_view_object_cb ca
 	if (!view || !callback)
 		return MAPS_ERROR_INVALID_PARAMETER;
 	maps_view_s *v = (maps_view_s *)view;
+	if (!v->view_objects)
+		return MAPS_ERROR_NOT_FOUND;
 	return maps_item_list_foreach(v->view_objects, NULL, callback, user_data);
 }
 

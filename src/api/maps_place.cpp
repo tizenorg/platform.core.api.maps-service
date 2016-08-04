@@ -395,6 +395,8 @@ EXPORT_API int maps_place_foreach_property(const maps_place_h place,
 		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!place || !callback)
 		return MAPS_ERROR_INVALID_PARAMETER;
+	if (!((maps_place_s *) place)->properties)
+		return MAPS_ERROR_NOT_FOUND;
 	return maps_item_hashtable_foreach(((maps_place_s *) place)->properties,
 		callback, user_data);
 }
@@ -409,6 +411,8 @@ EXPORT_API int maps_place_foreach_category(const maps_place_h place,
 		return MAPS_ERROR_INVALID_PARAMETER;
 	if (!__is_supported(place, MAPS_PLACE_CATEGORIES))
 		return MAPS_ERROR_NOT_SUPPORTED;
+	if (!((maps_place_s *) place)->categories)
+		return MAPS_ERROR_NOT_FOUND;
 	return maps_item_list_foreach(((maps_place_s *) place)->categories,
 		maps_place_category_clone, callback, user_data);
 }
@@ -423,6 +427,8 @@ EXPORT_API int maps_place_foreach_attribute(const maps_place_h place,
 		return MAPS_ERROR_INVALID_PARAMETER;
 	if (!__is_supported(place, MAPS_PLACE_ATTRIBUTES))
 		return MAPS_ERROR_NOT_SUPPORTED;
+	if (!((maps_place_s *) place)->attribute)
+		return MAPS_ERROR_NOT_FOUND;
 	return maps_item_list_foreach(((maps_place_s *) place)->attribute,
 		maps_place_attribute_clone, callback, user_data);
 }
@@ -437,6 +443,8 @@ EXPORT_API int maps_place_foreach_contact(const maps_place_h place,
 		return MAPS_ERROR_INVALID_PARAMETER;
 	if (!__is_supported(place, MAPS_PLACE_CONTACTS))
 		return MAPS_ERROR_NOT_SUPPORTED;
+	if (!((maps_place_s *) place)->contacts)
+		return MAPS_ERROR_NOT_FOUND;
 	return maps_item_list_foreach(((maps_place_s *) place)->contacts,
 		maps_place_contact_clone, callback, user_data);
 }
@@ -451,6 +459,8 @@ EXPORT_API int maps_place_foreach_editorial(const maps_place_h place,
 		return MAPS_ERROR_INVALID_PARAMETER;
 	if (!__is_supported(place, MAPS_PLACE_EDITORIALS))
 		return MAPS_ERROR_NOT_SUPPORTED;
+	if (!((maps_place_s *) place)->editorials)
+		return MAPS_ERROR_NOT_FOUND;
 	return maps_item_list_foreach(((maps_place_s *) place)->editorials,
 		maps_place_editorial_clone, callback, user_data);
 }
@@ -465,6 +475,8 @@ EXPORT_API int maps_place_foreach_image(const maps_place_h place,
 		return MAPS_ERROR_INVALID_PARAMETER;
 	if (!__is_supported(place, MAPS_PLACE_IMAGE))
 		return MAPS_ERROR_NOT_SUPPORTED;
+	if (!((maps_place_s *) place)->images)
+		return MAPS_ERROR_NOT_FOUND;
 	return maps_item_list_foreach(((maps_place_s *) place)->images,
 		maps_place_image_clone, callback, user_data);
 }
@@ -479,6 +491,8 @@ EXPORT_API int maps_place_foreach_review(const maps_place_h place,
 		return MAPS_ERROR_INVALID_PARAMETER;
 	if (!__is_supported(place, MAPS_PLACE_REVIEWS))
 		return MAPS_ERROR_NOT_SUPPORTED;
+	if (!((maps_place_s *) place)->reviews)
+		return MAPS_ERROR_NOT_FOUND;
 	return maps_item_list_foreach(((maps_place_s *) place)->reviews,
 		maps_place_review_clone, callback, user_data);
 }

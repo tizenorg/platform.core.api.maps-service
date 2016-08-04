@@ -107,8 +107,8 @@ EXPORT_API int maps_place_filter_get(const maps_place_filter_h filter,
 		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!filter)
 		return MAPS_ERROR_INVALID_PARAMETER;
-	return maps_item_hashtable_get_string(((maps_place_filter_s *) filter)->
-		table, key, value);
+	return maps_item_hashtable_get_string(((maps_place_filter_s *) filter)->table,
+		key, value);
 }
 
 EXPORT_API int maps_place_filter_foreach_property(const maps_place_filter_h filter,
@@ -119,8 +119,10 @@ EXPORT_API int maps_place_filter_foreach_property(const maps_place_filter_h filt
 		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!filter || !callback)
 		return MAPS_ERROR_INVALID_PARAMETER;
-	return maps_item_hashtable_foreach(((maps_place_filter_s *) filter)->
-		table, callback, user_data);
+	if (!((maps_place_filter_s *) filter)->table)
+		return MAPS_ERROR_NOT_FOUND;
+	return maps_item_hashtable_foreach(((maps_place_filter_s *) filter)->table,
+		callback, user_data);
 }
 
 EXPORT_API int maps_place_filter_get_keyword(const maps_place_filter_h filter,
@@ -130,8 +132,8 @@ EXPORT_API int maps_place_filter_get_keyword(const maps_place_filter_h filter,
 		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!filter || !keyword)
 		return MAPS_ERROR_INVALID_PARAMETER;
-	return maps_item_hashtable_get_string(((maps_place_filter_s *) filter)->
-		table, "MAPS_PLACE_FILTER_KEYWORD", keyword);
+	return maps_item_hashtable_get_string(((maps_place_filter_s *) filter)->table,
+		"MAPS_PLACE_FILTER_KEYWORD", keyword);
 }
 
 EXPORT_API int maps_place_filter_get_place_name(const maps_place_filter_h filter,
@@ -141,8 +143,8 @@ EXPORT_API int maps_place_filter_get_place_name(const maps_place_filter_h filter
 		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!filter || !place_name)
 		return MAPS_ERROR_INVALID_PARAMETER;
-	return maps_item_hashtable_get_string(((maps_place_filter_s *) filter)->
-		table, "MAPS_PLACE_FILTER_PLACE_NAME", place_name);
+	return maps_item_hashtable_get_string(((maps_place_filter_s *) filter)->table,
+		"MAPS_PLACE_FILTER_PLACE_NAME", place_name);
 }
 
 EXPORT_API int maps_place_filter_get_category(const maps_place_filter_h filter,
@@ -163,8 +165,8 @@ EXPORT_API int maps_place_filter_get_place_address(const maps_place_filter_h fil
 		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!filter || !place_address)
 		return MAPS_ERROR_INVALID_PARAMETER;
-	return maps_item_hashtable_get_string(((maps_place_filter_s *) filter)->
-		table, "MAPS_PLACE_FILTER_PLACE_ADDRESS", place_address);
+	return maps_item_hashtable_get_string(((maps_place_filter_s *) filter)->table,
+		"MAPS_PLACE_FILTER_PLACE_ADDRESS", place_address);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -176,8 +178,8 @@ EXPORT_API int maps_place_filter_set(maps_place_filter_h filter,
 		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!filter)
 		return MAPS_ERROR_INVALID_PARAMETER;
-	return maps_item_hashtable_set_string(((maps_place_filter_s *) filter)->
-		table, key, value);
+	return maps_item_hashtable_set_string(((maps_place_filter_s *) filter)->table,
+		key, value);
 }
 
 EXPORT_API int maps_place_filter_set_keyword(maps_place_filter_h filter,
@@ -187,8 +189,8 @@ EXPORT_API int maps_place_filter_set_keyword(maps_place_filter_h filter,
 		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!filter || !keyword)
 		return MAPS_ERROR_INVALID_PARAMETER;
-	return maps_item_hashtable_set_string(((maps_place_filter_s *) filter)->
-		table, "MAPS_PLACE_FILTER_KEYWORD", keyword);
+	return maps_item_hashtable_set_string(((maps_place_filter_s *) filter)->table,
+		"MAPS_PLACE_FILTER_KEYWORD", keyword);
 }
 
 EXPORT_API int maps_place_filter_set_place_name(maps_place_filter_h filter,
@@ -198,8 +200,8 @@ EXPORT_API int maps_place_filter_set_place_name(maps_place_filter_h filter,
 		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!filter || !place_name)
 		return MAPS_ERROR_INVALID_PARAMETER;
-	return maps_item_hashtable_set_string(((maps_place_filter_s *) filter)->
-		table, "MAPS_PLACE_FILTER_PLACE_NAME", place_name);
+	return maps_item_hashtable_set_string(((maps_place_filter_s *) filter)->table,
+		"MAPS_PLACE_FILTER_PLACE_NAME", place_name);
 }
 
 EXPORT_API int maps_place_filter_set_category(maps_place_filter_h filter,
@@ -221,6 +223,6 @@ EXPORT_API int maps_place_filter_set_place_address(maps_place_filter_h filter,
 		return MAPS_ERROR_NOT_SUPPORTED;
 	if (!filter || !place_address)
 		return MAPS_ERROR_INVALID_PARAMETER;
-	return maps_item_hashtable_set_string(((maps_place_filter_s *) filter)->
-		table, "MAPS_PLACE_FILTER_PLACE_ADDRESS", place_address);
+	return maps_item_hashtable_set_string(((maps_place_filter_s *) filter)->table,
+		"MAPS_PLACE_FILTER_PLACE_ADDRESS", place_address);
 }
